@@ -23,6 +23,7 @@ module.exports = {
     'coverage',
     '**/*.js',
     '!.eslintrc.js',
+    '**/*.test.ts',
   ],
   env: {
     browser: true,
