@@ -1,5 +1,11 @@
 # @microfox/rest-sdk
 
+## 1.0.3
+
+### Patch Changes
+
+- ae0779a: minor bug fix
+
 ## 1.0.2
 
 ### Patch Changes
