@@ -5,6 +5,7 @@ import { createSlackSDK } from '@microfox/slack-web-tiny';
 const CHANNEL_ID = process.env.SLACK_CHANNEL_ID ?? '';
 const INVALID_CHANNEL = 'INVALID';
 const INVALID_TOKEN = 'xoxb-invalid-token';
+const MOCK_TOKEN = 'xoxb-mock-12345'; // Valid format but not a real token
 
 // Check if required environment variables are available
 const hasRequiredEnvVars =
@@ -24,12 +25,11 @@ describe('Slack SDK Integration Tests', () => {
       );
     } else {
       console.log('Running tests with channel ID:', CHANNEL_ID);
+      // Initialize SDK only if we have a real token
+      slackSDK = createSlackSDK({
+        botToken: process.env.SLACK_BOT_TOKEN as string,
+      });
     }
-
-    // Initialize SDK (will be used only if tests run)
-    slackSDK = createSlackSDK({
-      botToken: process.env.SLACK_BOT_TOKEN ?? '',
-    });
   });
 
   describe('Message Operations', () => {
@@ -178,7 +178,23 @@ describe('Slack SDK Integration Tests', () => {
     it('should handle invalid channel errors', async () => {
       // Create SDK with valid token to test invalid channel
       if (!process.env.SLACK_BOT_TOKEN) {
-        console.log('Skipping invalid channel test due to missing token');
+        // Use mock token for testing when real token isn't available
+        const testSDK = createSlackSDK({
+          botToken: MOCK_TOKEN,
+        });
+
+        try {
+          const response = await testSDK.sendMessage({
+            channel: INVALID_CHANNEL,
+            text: 'Test message to invalid channel',
+          });
+
+          // Test will likely fail at the API level rather than validation
+          expect(response.ok).toBe(false);
+        } catch (error) {
+          // This is the expected outcome with a mock token
+          expect(error).toBeDefined();
+        }
         return;
       }
 
@@ -206,7 +222,7 @@ describe('Slack SDK Integration Tests', () => {
 
       try {
         const response = await invalidSDK.sendMessage({
-          channel: CHANNEL_ID,
+          channel: CHANNEL_ID ?? '', // Use default channel ID if not provided
           text: 'Test message with invalid token',
         });
 
