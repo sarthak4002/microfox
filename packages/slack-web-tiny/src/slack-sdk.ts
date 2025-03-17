@@ -668,26 +668,18 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       message: SlackMessage,
     ): Promise<SlackMessageResponse> => {
       // Validate message before making API call
+      const validatedMessage = SlackMessageSchema.parse(message);
+
       try {
-        const validatedMessage = SlackMessageSchema.parse(message);
+        const response = await restSDK
+          .post('chat.postMessage', validatedMessage)
+          .json();
 
-        try {
-          const response = await restSDK
-            .post('chat.postMessage', validatedMessage)
-            .json();
-
-          console.log('response', response);
-
-          return SlackMessageResponseSchema.parse(response);
-        } catch (error) {
-          console.log('error', error);
-          throw new Error(
-            `Failed to send Slack message: ${error instanceof Error ? error.message : String(error)}`,
-          );
-        }
-      } catch (validationError) {
-        // Re-throw validation errors directly
-        throw validationError;
+        return SlackMessageResponseSchema.parse(response);
+      } catch (error) {
+        throw new Error(
+          `Failed to send Slack message: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
     },
 
@@ -699,23 +691,18 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       message: UpdateMessage,
     ): Promise<SlackMessageResponse> => {
       // Validate update before making API call
+      const validatedMessage = UpdateMessageSchema.parse(message);
+
       try {
-        const validatedMessage = UpdateMessageSchema.parse(message);
+        const response = await restSDK
+          .post('chat.update', validatedMessage)
+          .json();
 
-        try {
-          const response = await restSDK
-            .post('chat.update', validatedMessage)
-            .json();
-
-          return SlackMessageResponseSchema.parse(response);
-        } catch (error) {
-          throw new Error(
-            `Failed to update Slack message: ${error instanceof Error ? error.message : String(error)}`,
-          );
-        }
-      } catch (validationError) {
-        // Re-throw validation errors directly
-        throw validationError;
+        return SlackMessageResponseSchema.parse(response);
+      } catch (error) {
+        throw new Error(
+          `Failed to update Slack message: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
     },
 
@@ -724,34 +711,29 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
      * @see https://slack.com/api/files.upload
      */
     uploadFile: async (file: FileUpload): Promise<FileUploadResponse> => {
-      try {
-        const validatedFile = FileUploadSchema.parse(file);
+      const validatedFile = FileUploadSchema.parse(file);
 
-        const formData = new FormData();
-        Object.entries(validatedFile).forEach(([key, value]) => {
-          if (value !== undefined) {
-            formData.append(key, String(value));
-          }
-        });
-
-        try {
-          const response = await restSDK
-            .post('files.upload', formData, {
-              headers: {
-                Authorization: `Bearer ${botToken}`,
-              },
-            })
-            .json();
-
-          return FileUploadResponseSchema.parse(response);
-        } catch (error) {
-          throw new Error(
-            `Failed to upload file to Slack: ${error instanceof Error ? error.message : String(error)}`,
-          );
+      const formData = new FormData();
+      Object.entries(validatedFile).forEach(([key, value]) => {
+        if (value !== undefined) {
+          formData.append(key, String(value));
         }
-      } catch (validationError) {
-        // Re-throw validation errors directly
-        throw validationError;
+      });
+
+      try {
+        const response = await restSDK
+          .post('files.upload', formData, {
+            headers: {
+              Authorization: `Bearer ${botToken}`,
+            },
+          })
+          .json();
+
+        return FileUploadResponseSchema.parse(response);
+      } catch (error) {
+        throw new Error(
+          `Failed to upload file to Slack: ${error instanceof Error ? error.message : String(error)}`,
+        );
       }
     },
 
