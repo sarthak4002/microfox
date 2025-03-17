@@ -3,130 +3,163 @@ import { createRestSDK } from '@microfox/rest-sdk';
 import crypto from 'crypto';
 
 // AWS SES API response schemas
-const SendEmailResultSchema = z.object({
-  MessageId: z.string()
-    .describe('The unique identifier for the sent email')
-}).describe('The result of the successful SendEmail operation');
+const SendEmailResultSchema = z
+  .object({
+    MessageId: z.string().describe('The unique identifier for the sent email'),
+  })
+  .describe('The result of the successful SendEmail operation');
 
-const ResponseMetadataSchema = z.object({
-  RequestId: z.string()
-    .describe('The unique request identifier')
-}).describe('Metadata about the AWS SES API request');
+const ResponseMetadataSchema = z
+  .object({
+    RequestId: z.string().describe('The unique request identifier'),
+  })
+  .describe('Metadata about the AWS SES API request');
 
-const SendEmailResponsePartSchema = z.object({
-  SendEmailResult: SendEmailResultSchema,
-  ResponseMetadata: ResponseMetadataSchema
-}).describe('The actual response body from the SendEmail API');
+const SendEmailResponsePartSchema = z
+  .object({
+    SendEmailResult: SendEmailResultSchema,
+    ResponseMetadata: ResponseMetadataSchema,
+  })
+  .describe('The actual response body from the SendEmail API');
 
-const SendEmailResponseSchema = z.object({
-  SendEmailResponse: SendEmailResponsePartSchema
-}).passthrough()
+const SendEmailResponseSchema = z
+  .object({
+    SendEmailResponse: SendEmailResponsePartSchema,
+  })
+  .passthrough()
   .describe('Response from AWS SES SendEmail API');
 
 // AWS SES configuration schema
-const SESConfigSchema = z.object({
-  accessKeyId: z.string().min(1)
-    .describe('AWS access key ID for authentication'),
-  secretAccessKey: z.string().min(1)
-    .describe('AWS secret access key for authentication'),
-  region: z.string().min(1)
-    .describe('AWS region where SES is configured (e.g., us-east-1)'),
-}).describe('AWS SES SDK configuration');
+const SESConfigSchema = z
+  .object({
+    accessKeyId: z
+      .string()
+      .min(1)
+      .describe('AWS access key ID for authentication'),
+    secretAccessKey: z
+      .string()
+      .min(1)
+      .describe('AWS secret access key for authentication'),
+    region: z
+      .string()
+      .min(1)
+      .describe('AWS region where SES is configured (e.g., us-east-1)'),
+  })
+  .describe('AWS SES SDK configuration');
 
 // Email parameters schema
-const EmailParamsSchema = z.object({
-  sender: z.string().email()
-    .describe('Email address of the sender (must be verified in AWS SES)'),
-  recipient: z.string().email()
-    .describe('Email address of the recipient'),
-  displayName: z.string().optional()
-    .describe('Display name for the sender (e.g., "John Doe" <john@example.com>)'),
-  subject: z.string().min(1)
-    .describe('Subject line of the email'),
-  bodyText: z.string().optional()
-    .describe('Plain text version of the email body (recommended for email clients that cannot display HTML)'),
-  bodyHtml: z.string().optional()
-    .describe('HTML version of the email body (for rich text formatting)'),
-}).refine(
-  data => !(data.bodyText && data.bodyHtml),
-  {
+const EmailParamsSchema = z
+  .object({
+    sender: z
+      .string()
+      .email()
+      .describe('Email address of the sender (must be verified in AWS SES)'),
+    recipient: z.string().email().describe('Email address of the recipient'),
+    displayName: z
+      .string()
+      .optional()
+      .describe(
+        'Display name for the sender (e.g., "John Doe" <john@example.com>)',
+      ),
+    subject: z.string().min(1).describe('Subject line of the email'),
+    bodyText: z
+      .string()
+      .optional()
+      .describe(
+        'Plain text version of the email body (recommended for email clients that cannot display HTML)',
+      ),
+    bodyHtml: z
+      .string()
+      .optional()
+      .describe('HTML version of the email body (for rich text formatting)'),
+  })
+  .refine(data => !(data.bodyText && data.bodyHtml), {
     message: 'Cannot provide both bodyText and bodyHtml at the same time',
-    path: ['bodyContent']
-  }
-).describe('Parameters for sending a single email. Only one of bodyText or bodyHtml can be provided');
+    path: ['bodyContent'],
+  })
+  .describe(
+    'Parameters for sending a single email. Only one of bodyText or bodyHtml can be provided',
+  );
 
 // Bulk email parameters schema
-const BulkEmailParamsSchema = z.object({
-  sender: z.string().email()
-    .describe('Email address of the sender (must be verified in AWS SES)'),
-  recipients: z.array(z.string().email()).min(1)
-    .describe('List of recipient email addresses'),
-  displayName: z.string().optional()
-    .describe('Display name for the sender (e.g., "John Doe" <john@example.com>)'),
-  subject: z.string().min(1)
-    .describe('Subject line of the email'),
-  bodyText: z.string().optional()
-    .describe('Plain text version of the email body (recommended for email clients that cannot display HTML)'),
-  bodyHtml: z.string().optional()
-    .describe('HTML version of the email body (for rich text formatting)'),
-}).refine(
-  data => !(data.bodyText && data.bodyHtml),
-  {
+const BulkEmailParamsSchema = z
+  .object({
+    sender: z
+      .string()
+      .email()
+      .describe('Email address of the sender (must be verified in AWS SES)'),
+    recipients: z
+      .array(z.string().email())
+      .min(1)
+      .describe('List of recipient email addresses'),
+    displayName: z
+      .string()
+      .optional()
+      .describe(
+        'Display name for the sender (e.g., "John Doe" <john@example.com>)',
+      ),
+    subject: z.string().min(1).describe('Subject line of the email'),
+    bodyText: z
+      .string()
+      .optional()
+      .describe(
+        'Plain text version of the email body (recommended for email clients that cannot display HTML)',
+      ),
+    bodyHtml: z
+      .string()
+      .optional()
+      .describe('HTML version of the email body (for rich text formatting)'),
+  })
+  .refine(data => !(data.bodyText && data.bodyHtml), {
     message: 'Cannot provide both bodyText and bodyHtml at the same time',
-    path: ['bodyContent']
-  }
-).refine(
-  data => data.recipients.length > 0,
-  {
+    path: ['bodyContent'],
+  })
+  .refine(data => data.recipients.length > 0, {
     message: 'Recipients array must contain at least one email address',
-    path: ['recipients']
-  }
-).describe('Parameters for sending bulk emails. Only one of bodyText or bodyHtml can be provided');
+    path: ['recipients'],
+  })
+  .describe(
+    'Parameters for sending bulk emails. Only one of bodyText or bodyHtml can be provided',
+  );
 
 // AWS SES request parameter schemas
-const SignatureInputSchema = z.object({
-  key: z.string()
-    .describe('AWS secret key for signature generation'),
-  dateStamp: z.string()
-    .describe('AWS formatted date stamp (YYYYMMDD)'),
-  regionName: z.string()
-    .describe('AWS region name'),
-  serviceName: z.string()
-    .describe('AWS service name (ses)'),
-}).describe('Input parameters for AWS signature generation');
+const SignatureInputSchema = z
+  .object({
+    key: z.string().describe('AWS secret key for signature generation'),
+    dateStamp: z.string().describe('AWS formatted date stamp (YYYYMMDD)'),
+    regionName: z.string().describe('AWS region name'),
+    serviceName: z.string().describe('AWS service name (ses)'),
+  })
+  .describe('Input parameters for AWS signature generation');
 
-const CanonicalRequestInputSchema = z.object({
-  method: z.string()
-    .describe('HTTP method (POST for SES)'),
-  uri: z.string()
-    .describe('Request URI'),
-  queryString: z.string()
-    .describe('URL query string'),
-  headers: z.string()
-    .describe('Canonical headers string'),
-  signedHeaders: z.string()
-    .describe('List of signed header names'),
-  payloadHash: z.string()
-    .describe('SHA256 hash of the request payload'),
-}).describe('Input parameters for creating a canonical request');
+const CanonicalRequestInputSchema = z
+  .object({
+    method: z.string().describe('HTTP method (POST for SES)'),
+    uri: z.string().describe('Request URI'),
+    queryString: z.string().describe('URL query string'),
+    headers: z.string().describe('Canonical headers string'),
+    signedHeaders: z.string().describe('List of signed header names'),
+    payloadHash: z.string().describe('SHA256 hash of the request payload'),
+  })
+  .describe('Input parameters for creating a canonical request');
 
-const StringToSignInputSchema = z.object({
-  algorithm: z.string()
-    .describe('AWS signature algorithm (AWS4-HMAC-SHA256)'),
-  requestDate: z.string()
-    .describe('AWS formatted request date'),
-  credentialScope: z.string()
-    .describe('AWS credential scope'),
-  canonicalRequest: z.string()
-    .describe('Canonical request string'),
-}).describe('Input parameters for creating string to sign');
+const StringToSignInputSchema = z
+  .object({
+    algorithm: z
+      .string()
+      .describe('AWS signature algorithm (AWS4-HMAC-SHA256)'),
+    requestDate: z.string().describe('AWS formatted request date'),
+    credentialScope: z.string().describe('AWS credential scope'),
+    canonicalRequest: z.string().describe('Canonical request string'),
+  })
+  .describe('Input parameters for creating string to sign');
 
-const FormattedDateSchema = z.object({
-  amzDate: z.string()
-    .describe('AWS formatted date (YYYYMMDDTHHMMSSZ)'),
-  dateStamp: z.string()
-    .describe('AWS formatted date stamp (YYYYMMDD)'),
-}).describe('AWS formatted date components');
+const FormattedDateSchema = z
+  .object({
+    amzDate: z.string().describe('AWS formatted date (YYYYMMDDTHHMMSSZ)'),
+    dateStamp: z.string().describe('AWS formatted date stamp (YYYYMMDD)'),
+  })
+  .describe('AWS formatted date components');
 
 // Type inference from schemas
 export type SESConfig = z.infer<typeof SESConfigSchema>;
@@ -137,22 +170,41 @@ export type SendEmailResult = z.infer<typeof SendEmailResultSchema>;
 export type ResponseMetadata = z.infer<typeof ResponseMetadataSchema>;
 
 // Helper functions for AWS SES authentication
-const getSignatureKey = (params: z.infer<typeof SignatureInputSchema>): Buffer => {
-  const { key, dateStamp, regionName, serviceName } = SignatureInputSchema.parse(params);
-  const kDate = crypto.createHmac('sha256', `AWS4${key}`).update(dateStamp).digest();
-  const kRegion = crypto.createHmac('sha256', kDate).update(regionName).digest();
-  const kService = crypto.createHmac('sha256', kRegion).update(serviceName).digest();
-  const kSigning = crypto.createHmac('sha256', kService).update('aws4_request').digest();
+const getSignatureKey = (
+  params: z.infer<typeof SignatureInputSchema>,
+): Buffer => {
+  const { key, dateStamp, regionName, serviceName } =
+    SignatureInputSchema.parse(params);
+  const kDate = crypto
+    .createHmac('sha256', `AWS4${key}`)
+    .update(dateStamp)
+    .digest();
+  const kRegion = crypto
+    .createHmac('sha256', kDate)
+    .update(regionName)
+    .digest();
+  const kService = crypto
+    .createHmac('sha256', kRegion)
+    .update(serviceName)
+    .digest();
+  const kSigning = crypto
+    .createHmac('sha256', kService)
+    .update('aws4_request')
+    .digest();
   return kSigning;
 };
 
-const getCanonicalRequest = (params: z.infer<typeof CanonicalRequestInputSchema>): string => {
+const getCanonicalRequest = (
+  params: z.infer<typeof CanonicalRequestInputSchema>,
+): string => {
   const { method, uri, queryString, headers, signedHeaders, payloadHash } =
     CanonicalRequestInputSchema.parse(params);
   return `${method}\n${uri}\n${queryString}\n${headers}\n${signedHeaders}\n${payloadHash}`;
 };
 
-const getStringToSign = (params: z.infer<typeof StringToSignInputSchema>): string => {
+const getStringToSign = (
+  params: z.infer<typeof StringToSignInputSchema>,
+): string => {
   const { algorithm, requestDate, credentialScope, canonicalRequest } =
     StringToSignInputSchema.parse(params);
   return `${algorithm}\n${requestDate}\n${credentialScope}\n${crypto.createHash('sha256').update(canonicalRequest).digest('hex')}`;
@@ -170,7 +222,10 @@ const getFormattedDate = (date: Date): z.infer<typeof FormattedDateSchema> => {
   return FormattedDateSchema.parse({ amzDate, dateStamp });
 };
 
-const flattenParams = (params: any, prefix: string = ''): { [key: string]: string } => {
+const flattenParams = (
+  params: any,
+  prefix: string = '',
+): { [key: string]: string } => {
   const flatParams: { [key: string]: string } = {};
   for (const key in params) {
     if (params.hasOwnProperty(key)) {
@@ -180,7 +235,10 @@ const flattenParams = (params: any, prefix: string = ''): { [key: string]: strin
         Object.assign(flatParams, flattenParams(value, newKey));
       } else if (Array.isArray(value)) {
         value.forEach((item, index) => {
-          Object.assign(flatParams, flattenParams(item, `${newKey}.${index + 1}`));
+          Object.assign(
+            flatParams,
+            flattenParams(item, `${newKey}.${index + 1}`),
+          );
         });
       } else {
         flatParams[newKey] = String(value);
@@ -258,7 +316,10 @@ const getRequestHeaders = (config: SESConfig, params: any) => {
     regionName: config.region,
     serviceName,
   });
-  const signature = crypto.createHmac('sha256', signingKey).update(stringToSign).digest('hex');
+  const signature = crypto
+    .createHmac('sha256', signingKey)
+    .update(stringToSign)
+    .digest('hex');
   const authorizationHeader = `${algorithm} Credential=${config.accessKeyId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
   return {
@@ -271,22 +332,26 @@ const getRequestHeaders = (config: SESConfig, params: any) => {
 };
 
 // SDK interface with method descriptions
-export const SESSdkSchema = z.object({
-  sendEmail: z.function()
-    .args(EmailParamsSchema)
-    .returns(z.promise(SendEmailResponseSchema))
-    .describe('Send a single email using AWS SES'),
-  sendBulkEmails: z.function()
-    .args(BulkEmailParamsSchema)
-    .returns(z.promise(z.array(SendEmailResponseSchema)))
-    .describe('Send multiple emails in parallel using AWS SES'),
-}).describe('AWS SES SDK interface');
+export const SESSdkSchema = z
+  .object({
+    sendEmail: z
+      .function()
+      .args(EmailParamsSchema)
+      .returns(z.promise(SendEmailResponseSchema))
+      .describe('Send a single email using AWS SES'),
+    sendBulkEmails: z
+      .function()
+      .args(BulkEmailParamsSchema)
+      .returns(z.promise(z.array(SendEmailResponseSchema)))
+      .describe('Send multiple emails in parallel using AWS SES'),
+  })
+  .describe('AWS SES SDK interface');
 
 export type SESSDK = z.infer<typeof SESSdkSchema>;
 
 /**
  * Create an AWS SES SDK instance for sending emails.
- * 
+ *
  * @example
  * ```typescript
  * const ses = createSESSdk({
@@ -294,7 +359,7 @@ export type SESSDK = z.infer<typeof SESSdkSchema>;
  *   secretAccessKey: 'YOUR_AWS_SECRET_ACCESS_KEY',
  *   region: 'us-east-1'
  * });
- * 
+ *
  * // Send a plain text email
  * await ses.sendEmail({
  *   sender: 'sender@example.com',
@@ -302,7 +367,7 @@ export type SESSDK = z.infer<typeof SESSdkSchema>;
  *   subject: 'Hello!',
  *   bodyText: 'This is a plain text email'
  * });
- * 
+ *
  * // Send an HTML email
  * await ses.sendEmail({
  *   sender: 'sender@example.com',
@@ -326,17 +391,23 @@ export const createSESSdk = (config: SESConfig): SESSDK => {
     });
 
     try {
-      const response = await sdk.post<SendEmailResponse>('/', formattedParams, {
-        contentType: 'application/x-www-form-urlencoded'
-      }).json();
+      const response = await sdk
+        .post<SendEmailResponse>('/', formattedParams, {
+          contentType: 'application/x-www-form-urlencoded',
+        })
+        .json();
 
       return SendEmailResponseSchema.parse(response);
     } catch (error) {
-      throw new Error(`Failed to send email: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error(
+        `Failed to send email: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   };
 
-  const sendBulkEmails = async (params: BulkEmailParams): Promise<SendEmailResponse[]> => {
+  const sendBulkEmails = async (
+    params: BulkEmailParams,
+  ): Promise<SendEmailResponse[]> => {
     const validatedParams = BulkEmailParamsSchema.parse(params);
     const { recipients, ...rest } = validatedParams;
 
@@ -344,7 +415,7 @@ export const createSESSdk = (config: SESConfig): SESSDK => {
       sendEmail({
         ...rest,
         recipient,
-      })
+      }),
     );
 
     const responses = await Promise.all(emailPromises);

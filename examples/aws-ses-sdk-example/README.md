@@ -9,13 +9,14 @@ This example demonstrates how to use the `@microfox/aws-ses` package to send ema
 3. AWS credentials with appropriate IAM permissions
 
 ## Examples:
+
 ```typescript
 // Valid: Plain text email
 await sesSdk.sendEmail({
   sender: 'sender@example.com',
   recipient: 'recipient@example.com',
   subject: 'Plain Text Email',
-  bodyText: 'This is a plain text email'
+  bodyText: 'This is a plain text email',
 });
 
 // Valid: HTML email
@@ -23,9 +24,8 @@ await sesSdk.sendEmail({
   sender: 'sender@example.com',
   recipient: 'recipient@example.com',
   subject: 'HTML Email',
-  bodyHtml: '<p>This is an HTML email</p>'
+  bodyHtml: '<p>This is an HTML email</p>',
 });
-
 ```
 
 ## Running Integration Tests

@@ -4,7 +4,7 @@ export {
   type EmailParams,
   type BulkEmailParams,
   type SendEmailResponse,
-  type SESSDK
+  type SESSDK,
 } from './aws-ses-sdk';
 
-export { default } from './aws-ses-sdk'; 
+export { default } from './aws-ses-sdk';
