@@ -228,7 +228,7 @@ const flattenParams = (
 ): { [key: string]: string } => {
   const flatParams: { [key: string]: string } = {};
   for (const key in params) {
-    if (params.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(params, key)) {
       const value = params[key];
       const newKey = prefix ? `${prefix}.${key}` : key;
       if (typeof value === 'object' && !Array.isArray(value)) {
