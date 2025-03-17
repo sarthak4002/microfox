@@ -153,9 +153,6 @@ export const createRestSDK = (config: RestSDKConfig) => {
     headers: globalHeaders = {},
     timeout,
   } = RestSDKConfigSchema.parse(config);
-  const baseUrlObj = new URL(baseUrl);
-  const cleanBaseUrl = `${baseUrlObj.protocol}//${baseUrlObj.host}`;
-
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   /**
@@ -248,9 +245,9 @@ export const createRestSDK = (config: RestSDKConfig) => {
     } = options ?? {};
 
     // Normalize path and handle edge cases
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-    const combinedPath = new URL(normalizedPath, baseUrlObj).pathname;
-    const endpointUrl = new URL(combinedPath, cleanBaseUrl);
+    const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
+    const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+    const endpointUrl = new URL(`${normalizedBaseUrl}${normalizedPath}`);
 
     // Handle query parameters
     if (query) {
