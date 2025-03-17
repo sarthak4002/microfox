@@ -1,1 +1,1 @@
-export * from './slack-sdk'; 
+export * from './slack-sdk';
