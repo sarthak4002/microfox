@@ -355,25 +355,20 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
         }
 
         const url = `${baseUrl}${endpoint}`;
-        // console.log(`Making ${method} request to: ${url}`);
-        // console.log('Query parameters:', params);
 
         // Generate OAuth header
         const authHeader = generateOAuthHeader(method, url, params);
-        // console.log('Generated OAuth header:', authHeader);
 
         const options: RequestOptions = {
           method,
           hostname: 'api.twitter.com',
-          path: urlPath, // Use the path with query parameters
+          path: urlPath,
           headers: {
             Authorization: authHeader,
             'Content-Type': 'application/json',
             'User-Agent': 'X-SDK-Node',
           },
         };
-
-        // console.log('Request options:', JSON.stringify(options, null, 2));
 
         const req = https.request(options, res => {
           let data = '';
@@ -382,10 +377,6 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
           });
 
           res.on('end', () => {
-            // console.log('Response status:', res.statusCode);
-            // console.log('Response headers:', res.headers);
-            // console.log('Response data:', data);
-
             try {
               const parsed = JSON.parse(data);
               if (
@@ -409,19 +400,16 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
         });
 
         req.on('error', error => {
-          console.error('Request error:', error);
           reject(new XError(`Network error: ${error.message}`));
         });
 
         if (body) {
           const bodyString = JSON.stringify(body);
-          // console.log('Request body:', bodyString);
           req.write(bodyString);
         }
 
         req.end();
       } catch (error) {
-        console.error('Request preparation error:', error);
         reject(new XError(`Failed to make request: ${error}`));
       }
     });
@@ -435,62 +423,52 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
     url: string,
     params: { [key: string]: string } = {},
   ): string => {
-    try {
-      // Basic OAuth parameters
-      const oauthParams: { [key: string]: string } = {
-        oauth_consumer_key: apiKey,
-        oauth_nonce: crypto.randomBytes(16).toString('hex'),
-        oauth_signature_method: 'HMAC-SHA1',
-        oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-        oauth_token: accessToken,
-        oauth_version: '1.0',
-      };
+    // Basic OAuth parameters
+    const oauthParams: { [key: string]: string } = {
+      oauth_consumer_key: apiKey,
+      oauth_nonce: crypto.randomBytes(16).toString('hex'),
+      oauth_signature_method: 'HMAC-SHA1',
+      oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
+      oauth_token: accessToken,
+      oauth_version: '1.0',
+    };
 
-      // console.log('OAuth params:', oauthParams);
+    // For GET requests, include query parameters in signature
+    const allParams =
+      method === 'GET' ? { ...params, ...oauthParams } : { ...oauthParams };
 
-      // For GET requests, include query parameters in signature
-      const allParams =
-        method === 'GET' ? { ...params, ...oauthParams } : { ...oauthParams };
+    // Sort parameters alphabetically
+    const sortedKeys = Object.keys(allParams).sort();
+    const paramString = sortedKeys
+      .map(
+        key =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(allParams[key])}`,
+      )
+      .join('&');
 
-      // Sort parameters alphabetically
-      const sortedKeys = Object.keys(allParams).sort();
-      const paramString = sortedKeys
+    // Create signature base string
+    const signatureBaseString = `${method.toUpperCase()}&${encodeURIComponent(url)}&${encodeURIComponent(paramString)}`;
+
+    const signingKey = `${encodeURIComponent(apiSecret)}&${encodeURIComponent(accessSecret)}`;
+    const oauthSignature = crypto
+      .createHmac('sha1', signingKey)
+      .update(signatureBaseString)
+      .digest('base64');
+
+    oauthParams.oauth_signature = oauthSignature;
+
+    // Build OAuth header string
+    const authHeader =
+      'OAuth ' +
+      Object.keys(oauthParams)
+        .sort()
         .map(
           key =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(allParams[key])}`,
+            `${encodeURIComponent(key)}="${encodeURIComponent(oauthParams[key])}"`,
         )
-        .join('&');
+        .join(', ');
 
-      // Create signature base string
-      const signatureBaseString = `${method.toUpperCase()}&${encodeURIComponent(url)}&${encodeURIComponent(paramString)}`;
-      // console.log('Signature base string:', signatureBaseString);
-
-      const signingKey = `${encodeURIComponent(apiSecret)}&${encodeURIComponent(accessSecret)}`;
-      const oauthSignature = crypto
-        .createHmac('sha1', signingKey)
-        .update(signatureBaseString)
-        .digest('base64');
-
-      // console.log('Generated signature:', oauthSignature);
-      oauthParams.oauth_signature = oauthSignature;
-
-      // Build OAuth header string
-      const authHeader =
-        'OAuth ' +
-        Object.keys(oauthParams)
-          .sort()
-          .map(
-            key =>
-              `${encodeURIComponent(key)}="${encodeURIComponent(oauthParams[key])}"`,
-          )
-          .join(', ');
-
-      // console.log('Final auth header:', authHeader);
-      return authHeader;
-    } catch (error) {
-      console.error('Error generating OAuth header:', error);
-      throw error;
-    }
+    return authHeader;
   };
 
   // Create Posts API
@@ -649,7 +627,6 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
 
           const mediaEndpoint = '/1.1/media/upload.json';
           const fullUrl = 'https://upload.twitter.com' + mediaEndpoint;
-          // console.log('Media upload URL:', fullUrl);
 
           const boundary = `--------------------------${crypto.randomBytes(32).toString('hex')}`;
           const CRLF = '\r\n';
@@ -690,7 +667,6 @@ export const createXSDK = (config: XSDKConfig): XSDK => {
             let data = '';
             res.on('data', chunk => (data += chunk));
             res.on('end', () => {
-              // console.log('Media upload response:', data);
               if (
                 res.statusCode &&
                 res.statusCode >= 200 &&

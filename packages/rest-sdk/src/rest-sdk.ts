@@ -386,7 +386,7 @@ export const createRestSDK = (config: RestSDKConfig): RestClient => {
           : localAbortController?.signal;
 
         const formattedBody = formatRequestBody(body, contentType);
-        let fetchOptions: RequestInit = {
+        const fetchOptions: RequestInit = {
           method,
           headers: {
             ...globalHeaders,
@@ -402,14 +402,8 @@ export const createRestSDK = (config: RestSDKConfig): RestClient => {
           mode,
           redirect,
           referrerPolicy,
+          ...(signal ? { signal } : {}),
         };
-
-        console.log('Sending request with headers:', fetchOptions.headers);
-
-        // Only add signal if it exists
-        if (signal) {
-          fetchOptions.signal = signal;
-        }
 
         const response = await fetch(endpointUrl.toString(), fetchOptions);
 
