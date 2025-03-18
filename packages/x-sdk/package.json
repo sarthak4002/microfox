@@ -1,6 +1,6 @@
 {
   "name": "@microfox/x-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Slack Web Tiny SDK for Microfox",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -53,6 +53,5 @@
     "x",
     "twitter",
     "api"
-    
   ]
 }

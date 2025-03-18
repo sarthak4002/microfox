@@ -1,5 +1,11 @@
 # @microfox/rest-sdk
 
+## 1.0.4
+
+### Patch Changes
+
+- 8ec9875: export types
+
 ## 1.0.3
 
 ### Patch Changes
