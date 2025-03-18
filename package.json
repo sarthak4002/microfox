@@ -3,6 +3,7 @@
   "name": "microfox",
   "scripts": {
     "build": "turbo build",
+    "build:watch": "turbo build -- --watch",
     "changeset": "changeset",
     "clean": "turbo clean",
     "dev": "turbo dev",

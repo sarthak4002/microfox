@@ -29,7 +29,7 @@ const RestSDKConfigSchema = z
 /**
  * Supported content types for requests
  */
-type ContentType =
+export type ContentType =
   | 'application/json'
   | 'multipart/form-data'
   | 'application/x-www-form-urlencoded'
@@ -79,14 +79,14 @@ const EnhancedRestRequestOptionsSchema = RestRequestOptionsSchema.extend({
     .optional(),
 }).strict();
 
-type EnhancedRestRequestOptions<TBody = unknown> = z.infer<
+export type EnhancedRestRequestOptions<TBody = unknown> = z.infer<
   typeof EnhancedRestRequestOptionsSchema
 > & {
   body?: TBody;
 };
 
 // SDK types
-type RestRequestOptions<TBody = unknown> = z.infer<
+export type RestRequestOptions<TBody = unknown> = z.infer<
   typeof RestRequestOptionsSchema
 > & {
   body?: TBody;
@@ -97,18 +97,120 @@ type RestRequestOptions<TBody = unknown> = z.infer<
  * @property baseUrl - Base URL for all requests
  * @property headers - Global headers to be included in all requests
  * @property timeout - Request timeout in milliseconds (optional)
+ * @property requestInterceptors - Array of request interceptor functions (optional)
  */
-interface RestSDKConfig {
+export interface RestSDKConfig {
   baseUrl: string;
   headers?: Record<string, string>;
   timeout?: number;
 }
 
 /**
+ * RestClient interface representing the minimal requirements for a REST client
+ */
+export interface RestClient {
+  /**
+   * Get a resource
+   * @param path - The path of the resource to get
+   * @param options - The options for the request
+   * @returns A promise resolving to the response
+   */
+  get: <T>(
+    path: string,
+    options?: Record<string, any>,
+  ) => {
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+    blob: () => Promise<Blob>;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+    formData: () => Promise<FormData>;
+    headers: () => Promise<Record<string, string>>;
+    raw: () => Promise<Response>;
+  };
+  /**
+   * Create a resource
+   * @param path - The path of the resource to create
+   * @param body - The body of the resource to create
+   * @param options - The options for the request
+   * @returns A promise resolving to the response
+   */
+  post: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+    blob: () => Promise<Blob>;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+    formData: () => Promise<FormData>;
+    headers: () => Promise<Record<string, string>>;
+    raw: () => Promise<Response>;
+  };
+  /**
+   * Update a resource
+   * @param path - The path of the resource to update
+   * @param body - The body of the resource to update
+   * @param options - The options for the request
+   * @returns A promise resolving to the response
+   */
+  put: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+    blob: () => Promise<Blob>;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+    formData: () => Promise<FormData>;
+    headers: () => Promise<Record<string, string>>;
+    raw: () => Promise<Response>;
+  };
+  /**
+   * Patch a resource
+   * @param path - The path of the resource to patch
+   * @param body - The body of the resource to patch
+   * @param options - The options for the request
+   * @returns A promise resolving to the response
+   */
+  patch: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+    blob: () => Promise<Blob>;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+    formData: () => Promise<FormData>;
+    headers: () => Promise<Record<string, string>>;
+    raw: () => Promise<Response>;
+  };
+  /**
+   * Delete a resource
+   * @param path - The path of the resource to delete
+   * @param options - The options for the request
+   * @returns A promise resolving to the response
+   */
+  delete: <T>(
+    path: string,
+    options?: Record<string, any>,
+  ) => {
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+    blob: () => Promise<Blob>;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+    formData: () => Promise<FormData>;
+    headers: () => Promise<Record<string, string>>;
+    raw: () => Promise<Response>;
+  };
+}
+/**
  * Response wrapper providing type-safe access to different response formats
  * @template T - Type of the expected JSON response
  */
-type SDKResponse<T> = {
+export type SDKResponse<T> = {
   /** Parse response as JSON */
   json: () => Promise<T>;
   /** Get response as text */
@@ -147,15 +249,12 @@ type SDKResponse<T> = {
  * const data = await api.get('/users').json();
  * ```
  */
-export const createRestSDK = (config: RestSDKConfig) => {
+export const createRestSDK = (config: RestSDKConfig): RestClient => {
   const {
     baseUrl,
     headers: globalHeaders = {},
     timeout,
   } = RestSDKConfigSchema.parse(config);
-  const baseUrlObj = new URL(baseUrl);
-  const cleanBaseUrl = `${baseUrlObj.protocol}//${baseUrlObj.host}`;
-
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   /**
@@ -248,9 +347,9 @@ export const createRestSDK = (config: RestSDKConfig) => {
     } = options ?? {};
 
     // Normalize path and handle edge cases
-    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-    const combinedPath = new URL(normalizedPath, baseUrlObj).pathname;
-    const endpointUrl = new URL(combinedPath, cleanBaseUrl);
+    const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
+    const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+    const endpointUrl = new URL(`${normalizedBaseUrl}${normalizedPath}`);
 
     // Handle query parameters
     if (query) {
@@ -303,12 +402,8 @@ export const createRestSDK = (config: RestSDKConfig) => {
           mode,
           redirect,
           referrerPolicy,
+          ...(signal ? { signal } : {}),
         };
-
-        // Only add signal if it exists
-        if (signal) {
-          fetchOptions.signal = signal;
-        }
 
         const response = await fetch(endpointUrl.toString(), fetchOptions);
 
@@ -476,5 +571,5 @@ export const createRestSDK = (config: RestSDKConfig) => {
  * @returns boolean indicating if response is JSON
  * @internal
  */
-const isRestJsonResponse = (response: Response): boolean =>
+export const isRestJsonResponse = (response: Response): boolean =>
   response.headers.get('content-type')?.includes('application/json') ?? false;
