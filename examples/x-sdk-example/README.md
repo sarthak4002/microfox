@@ -49,14 +49,14 @@ const sdk = createXSDK({
   apiKey: process.env.X_API_KEY!,
   apiSecret: process.env.X_API_SECRET!,
   accessToken: process.env.X_ACCESS_TOKEN!,
-  accessSecret: process.env.X_ACCESS_SECRET!
+  accessSecret: process.env.X_ACCESS_SECRET!,
 });
 
 async function main() {
   try {
     // Create a simple tweet
     const tweet = await sdk.tweets.create({
-      text: 'Hello from X SDK!'
+      text: 'Hello from X SDK!',
     });
     console.log('Tweet created:', tweet);
 
@@ -84,7 +84,7 @@ const sdk = createXSDK({
   apiKey: process.env.X_API_KEY!,
   apiSecret: process.env.X_API_SECRET!,
   accessToken: process.env.X_ACCESS_TOKEN!,
-  accessSecret: process.env.X_ACCESS_SECRET!
+  accessSecret: process.env.X_ACCESS_SECRET!,
 });
 
 async function main() {
@@ -92,15 +92,15 @@ async function main() {
     // Upload an image
     const imageBuffer = readFileSync('path/to/image.jpg');
     const mediaResponse = await sdk.media.upload(imageBuffer, 'image/jpeg');
-    
+
     // Create a tweet with the uploaded image
     const tweet = await sdk.tweets.create({
       text: 'Check out this image!',
       media: {
-        media_ids: [mediaResponse.media_id_string]
-      }
+        media_ids: [mediaResponse.media_id_string],
+      },
     });
-    
+
     console.log('Tweet with media created:', tweet);
   } catch (error) {
     console.error('Error:', error);
@@ -122,7 +122,7 @@ const sdk = createXSDK({
   apiKey: process.env.X_API_KEY!,
   apiSecret: process.env.X_API_SECRET!,
   accessToken: process.env.X_ACCESS_TOKEN!,
-  accessSecret: process.env.X_ACCESS_SECRET!
+  accessSecret: process.env.X_ACCESS_SECRET!,
 });
 
 async function main() {
@@ -158,7 +158,7 @@ const sdk = createXSDK({
   apiKey: process.env.X_API_KEY!,
   apiSecret: process.env.X_API_SECRET!,
   accessToken: process.env.X_ACCESS_TOKEN!,
-  accessSecret: process.env.X_ACCESS_SECRET!
+  accessSecret: process.env.X_ACCESS_SECRET!,
 });
 
 async function main() {

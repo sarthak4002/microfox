@@ -18,7 +18,7 @@ describe('X SDK Integration Tests', () => {
     if (!hasRequiredEnvVars) {
       console.warn(
         'Skipping X SDK integration tests. Required environment variables not set.\n' +
-        'Set X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, and X_ACCESS_SECRET to run these tests.',
+          'Set X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, and X_ACCESS_SECRET to run these tests.',
       );
     } else {
       console.log('Running X SDK integration tests with provided credentials');

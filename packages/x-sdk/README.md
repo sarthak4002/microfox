@@ -18,32 +18,35 @@ const xSDK = createXSDK({
   apiKey: 'your-api-key',
   apiSecret: 'your-api-secret',
   accessToken: 'your-access-token',
-  accessSecret: 'your-access-secret'
+  accessSecret: 'your-access-secret',
 });
 
 // Create a tweet
 const tweet = await xSDK.tweets.create({
-  text: 'Hello from X SDK!'
+  text: 'Hello from X SDK!',
 });
 
 // Create a tweet with media
 const mediaResponse = await xSDK.media.upload(
-  Buffer.from('image data'), 
-  'image/jpeg'
+  Buffer.from('image data'),
+  'image/jpeg',
 );
 
 const tweetWithMedia = await xSDK.tweets.create({
   text: 'Check out this image!',
   media: {
-    media_ids: [mediaResponse.media_id_string]
-  }
+    media_ids: [mediaResponse.media_id_string],
+  },
 });
 
 // Get a tweet by ID
 const tweetLookup = await xSDK.tweets.get('1234567890');
 
 // Get multiple tweets
-const multipleTweets = await xSDK.tweets.getMultiple(['1234567890', '0987654321']);
+const multipleTweets = await xSDK.tweets.getMultiple([
+  '1234567890',
+  '0987654321',
+]);
 
 // Delete a tweet
 const deleteResponse = await xSDK.tweets.delete('1234567890');
@@ -164,7 +167,7 @@ Example:
 ```typescript
 try {
   const tweet = await xSDK.tweets.create({
-    text: 'Hello, X!'
+    text: 'Hello, X!',
   });
   console.log('Tweet created:', tweet);
 } catch (error) {

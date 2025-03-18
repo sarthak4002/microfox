@@ -105,7 +105,6 @@ export interface RestSDKConfig {
   timeout?: number;
 }
 
-
 /**
  * RestClient interface representing the minimal requirements for a REST client
  */
@@ -116,7 +115,10 @@ export interface RestClient {
    * @param options - The options for the request
    * @returns A promise resolving to the response
    */
-  get: <T>(path: string, options?: Record<string, any>) => {
+  get: <T>(
+    path: string,
+    options?: Record<string, any>,
+  ) => {
     json: () => Promise<T>;
     text: () => Promise<string>;
     blob: () => Promise<Blob>;
@@ -132,7 +134,11 @@ export interface RestClient {
    * @param options - The options for the request
    * @returns A promise resolving to the response
    */
-  post: <T>(path: string, body: any, options?: Record<string, any>) => {
+  post: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
     json: () => Promise<T>;
     text: () => Promise<string>;
     blob: () => Promise<Blob>;
@@ -148,7 +154,11 @@ export interface RestClient {
    * @param options - The options for the request
    * @returns A promise resolving to the response
    */
-  put: <T>(path: string, body: any, options?: Record<string, any>) => {
+  put: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
     json: () => Promise<T>;
     text: () => Promise<string>;
     blob: () => Promise<Blob>;
@@ -164,7 +174,11 @@ export interface RestClient {
    * @param options - The options for the request
    * @returns A promise resolving to the response
    */
-  patch: <T>(path: string, body: any, options?: Record<string, any>) => {
+  patch: <T>(
+    path: string,
+    body: any,
+    options?: Record<string, any>,
+  ) => {
     json: () => Promise<T>;
     text: () => Promise<string>;
     blob: () => Promise<Blob>;
@@ -179,7 +193,10 @@ export interface RestClient {
    * @param options - The options for the request
    * @returns A promise resolving to the response
    */
-    delete: <T>(path: string, options?: Record<string, any>) => {
+  delete: <T>(
+    path: string,
+    options?: Record<string, any>,
+  ) => {
     json: () => Promise<T>;
     text: () => Promise<string>;
     blob: () => Promise<Blob>;
