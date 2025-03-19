@@ -1,5 +1,11 @@
 # @microfox/x-sdk
 
+## 1.0.2
+
+### Patch Changes
+
+- 8168c7b: minor update
+
 ## 1.0.1
 
 ### Patch Changes
