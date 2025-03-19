@@ -1,0 +1,70 @@
+{
+  "name": "@microfox/core",
+  "version": "1.0.0",
+  "description": "Microfox AI utils which work with any LLM and TypeScript AI SDK.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test:unit": "vitest run"
+  },
+  "dependencies": {
+    "dedent": "^1.5.3",
+    "delay": "^6.0.0",
+    "jsonrepair": "^3.9.0",
+    "ky": "^1.7.5",
+    "openai-zod-to-json-schema": "^1.0.3",
+    "p-throttle": "^6.2.0",
+    "type-fest": "^4.37.0",
+    "zod-validation-error": "^3.4.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@microfox/tsconfig": "*",
+    "openai-fetch": "^3.4.2",
+    "vitest": "^1.3.1",
+    "@vitest/coverage-v8": "^1.3.1"
+  },
+  "keywords": [
+    "microfox",
+    "ai",
+    "sdk",
+    "openai",
+    "llm",
+    "tools",
+    "stdlib",
+    "standard",
+    "library",
+    "functions",
+    "typescript",
+    "agent",
+    "agents"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

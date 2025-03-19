@@ -1,0 +1,49 @@
+{
+  "name": "@microfox/jigsawstack",
+  "version": "1.0.0",
+  "description": "Microfox adapter for the Jigsawstack AI SDK.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit",
+    "test-unit": "vitest run"
+  },
+  "peerDependencies": {
+    "@microfox/core": "*"
+  },
+  "devDependencies": {
+    "@microfox/core": "*",
+    "@microfox/tsconfig": "*",
+    "@ai-sdk/openai": "^1.2.5",
+    "ai": "^4.1.61"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "ky": "^1.7.5",
+    "p-throttle": "^6.2.0"
+  }
+}
