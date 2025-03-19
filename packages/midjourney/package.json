@@ -1,6 +1,6 @@
 {
   "name": "@microfox/midjourney",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for the unofficial Midjourney API via imagineapi.dev.",
   "license": "MIT",
   "repository": {

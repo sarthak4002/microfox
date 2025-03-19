@@ -1,6 +1,6 @@
 {
   "name": "@microfox/searxng",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for the SearXNG meta search engine.",
   "license": "MIT",
   "repository": {

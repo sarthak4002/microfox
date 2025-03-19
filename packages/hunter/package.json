@@ -1,6 +1,6 @@
 {
   "name": "@microfox/hunter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for hunter.io email lookup.",
   "license": "MIT",
   "repository": {
