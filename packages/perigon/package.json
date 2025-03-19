@@ -1,6 +1,6 @@
 {
   "name": "@microfox/perigon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Microfox SDK for the Perigon News API.",
   "license": "MIT",
   "repository": {

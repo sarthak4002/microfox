@@ -1,6 +1,6 @@
 {
   "name": "@microfox/dexa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Microfox SDK for Dexa's API (currently closed beta).",
   "license": "MIT",
   "repository": {

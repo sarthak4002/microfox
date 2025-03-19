@@ -1,6 +1,6 @@
 {
   "name": "@microfox/apollo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Microfox SDK for Apollo.io.",
   "license": "MIT",
   "repository": {
