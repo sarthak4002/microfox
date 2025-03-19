@@ -1,0 +1,101 @@
+{
+  "name": "@microfox/stdlib",
+  "version": "7.5.1",
+  "description": "Standard library of AI functions which work with any LLM and TypeScript AI SDK.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@microfox/apollo": "*",
+    "@microfox/bing": "*",
+    "@microfox/calculator": "*",
+    "@microfox/clearbit": "*",
+    "@microfox/core": "*",
+    "@microfox/dexa": "*",
+    "@microfox/diffbot": "*",
+    "@microfox/e2b": "*",
+    "@microfox/exa": "*",
+    "@microfox/firecrawl": "*",
+    "@microfox/github": "*",
+    "@microfox/gravatar": "*",
+    "@microfox/hacker-news": "*",
+    "@microfox/hunter": "*",
+    "@microfox/jina": "*",
+    "@microfox/leadmagic": "*",
+    "@microfox/midjourney": "*",
+    "@microfox/novu": "*",
+    "@microfox/people-data-labs": "*",
+    "@microfox/perigon": "*",
+    "@microfox/polygon": "*",
+    "@microfox/predict-leads": "*",
+    "@microfox/proxycurl": "*",
+    "@microfox/rocketreach": "*",
+    "@microfox/searxng": "*",
+    "@microfox/serpapi": "*",
+    "@microfox/serper": "*",
+    "@microfox/slack": "*",
+    "@microfox/social-data": "*",
+    "@microfox/tavily": "*",
+    "@microfox/twilio": "*",
+    "@microfox/weather": "*",
+    "@microfox/wikidata": "*",
+    "@microfox/wikipedia": "*",
+    "@microfox/wolfram-alpha": "*",
+    "@microfox/zoominfo": "*",
+    "@e2b/code-interpreter": "^1.0.2"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@microfox/tsconfig": "*"
+  },
+  "keywords": [
+    "microfox",
+    "ai",
+    "sdk",
+    "openai",
+    "llm",
+    "tools",
+    "functions",
+    "stdlib",
+    "standard",
+    "library",
+    "functions",
+    "typescript",
+    "agent",
+    "agents",
+    "ai tools",
+    "ai functions",
+    "ai function calling",
+    "ai tool calling",
+    "tool use"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

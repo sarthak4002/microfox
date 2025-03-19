@@ -1,0 +1,49 @@
+{
+  "name": "@microfox/zoominfo",
+  "version": "7.5.1",
+  "description": "Microfox SDK for ZoomInfo.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git",
+    "directory": "packages/zoominfo"
+  },
+  "type": "module",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "del dist",
+    "test": "run-s test:*",
+    "test:lint": "eslint .",
+    "test:typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@microfox/core": "*",
+    "jsrsasign": "^10.9.0",
+    "ky": "^1.7.5",
+    "p-throttle": "^6.2.0"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@microfox/tsconfig": "*",
+    "@types/jsrsasign": "^10.5.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
