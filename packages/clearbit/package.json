@@ -1,8 +1,7 @@
 {
   "name": "@microfox/clearbit",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox SDK for Clearbit.",
-
   "license": "MIT",
   "repository": {
     "type": "git",

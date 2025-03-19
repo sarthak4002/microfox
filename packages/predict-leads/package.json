@@ -1,6 +1,6 @@
 {
   "name": "@microfox/predict-leads",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox SDK for Predict Leads.",
   "license": "MIT",
   "repository": {

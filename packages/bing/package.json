@@ -1,8 +1,7 @@
 {
   "name": "@microfox/bing",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox SDK for Bing search.",
-
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,8 +1,7 @@
 {
   "name": "@microfox/calculator",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox calculator tool wrapping mathjs.",
-
   "license": "MIT",
   "repository": {
     "type": "git",

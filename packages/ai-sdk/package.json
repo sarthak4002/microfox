@@ -2,7 +2,6 @@
   "name": "@microfox/ai-sdk",
   "version": "1.0.0",
   "description": "Microfox adapter for the Vercel AI SDK.",
-
   "license": "MIT",
   "repository": {
     "type": "git",

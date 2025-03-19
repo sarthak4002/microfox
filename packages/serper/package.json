@@ -1,6 +1,6 @@
 {
   "name": "@microfox/serper",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox SDK for Serper Google Search.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@microfox/exa",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox SDK for the Exa search engine.",
   "license": "MIT",
   "repository": {

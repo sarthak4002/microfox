@@ -1,6 +1,6 @@
 {
   "name": "@microfox/dexter",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox adapter for the Dexter AI SDK by Dexa.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@microfox/jigsawstack",
-  "version": "7.5.1",
+  "version": "1.0.0",
   "description": "Microfox adapter for the Jigsawstack AI SDK.",
   "license": "MIT",
   "repository": {
