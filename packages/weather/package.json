@@ -20,15 +20,14 @@
     }
   },
   "files": [
-    "dist"
+    "dist/**/*",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "clean": "del dist",
-    "test": "run-s test:*",
-    "test:lint": "eslint .",
-    "test:typecheck": "tsc --noEmit"
+    "clean": "rm -rf dist",
+    "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "dependencies": {
     "@microfox/core": "*",
