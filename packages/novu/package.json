@@ -1,6 +1,6 @@
 {
   "name": "@microfox/novu",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for the Novu notifications API.",
   "license": "MIT",
   "repository": {

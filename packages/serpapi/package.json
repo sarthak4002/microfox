@@ -1,6 +1,6 @@
 {
   "name": "@microfox/serpapi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for SerpAPI Google Search.",
   "license": "MIT",
   "repository": {

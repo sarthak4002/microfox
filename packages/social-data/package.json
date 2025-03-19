@@ -1,6 +1,6 @@
 {
   "name": "@microfox/social-data",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox SDK for accessing Twitter via Social Data.",
   "license": "MIT",
   "repository": {

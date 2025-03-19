@@ -1,6 +1,6 @@
 {
   "name": "@microfox/genkit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Microfox adapter for the Firebase Genkit AI SDK.",
   "license": "MIT",
   "repository": {
