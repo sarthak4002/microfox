@@ -1,1 +1,8 @@
-{"name": "@microfox/drive-sdk","title": "Microfox Drive SDK","description": "Google Drive SDK for Microfox","path": "packages/drive-sdk","dependencies": ["@microfox/google-sdk","@microfox/rest-sdk","zod"],"status": "partial"} 
+{
+  "name": "@microfox/drive-sdk",
+  "title": "Microfox Drive SDK",
+  "description": "Google Drive SDK for Microfox",
+  "path": "packages/drive-sdk",
+  "dependencies": ["@microfox/google-sdk", "@microfox/rest-sdk", "zod"],
+  "status": "stable"
+}

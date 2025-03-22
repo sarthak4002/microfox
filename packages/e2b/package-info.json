@@ -4,5 +4,5 @@
   "description": "Microfox SDK for E2B's hosted code interpreter",
   "path": "packages/e2b",
   "dependencies": ["@microfox/core", "@e2b/code-interpreter"],
-  "status": "stable"
+  "status": "partial"
 } 

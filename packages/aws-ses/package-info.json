@@ -1,1 +1,8 @@
-{"name": "@microfox/aws-ses","title": "Microfox AWS SES","description": "AWS SES SDK for Microfox","path": "packages/aws-ses","dependencies": ["@microfox/rest-sdk","zod"],"status": "partial"} 
+{
+  "name": "@microfox/aws-ses",
+  "title": "Microfox AWS SES",
+  "description": "AWS SES SDK for Microfox",
+  "path": "packages/aws-ses",
+  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "status": "stable"
+}

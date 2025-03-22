@@ -4,5 +4,5 @@
   "description": "Microfox SDK for the unofficial Midjourney API via imagineapi.dev",
   "path": "packages/midjourney",
   "dependencies": ["@microfox/core"],
-  "status": "stable"
+  "status": "partial"
 } 

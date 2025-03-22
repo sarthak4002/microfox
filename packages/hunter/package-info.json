@@ -4,5 +4,5 @@
   "description": "Microfox SDK for Hunter.io email finder and verification",
   "path": "packages/hunter",
   "dependencies": ["@microfox/core"],
-  "status": "stable"
+  "status": "partial"
 } 
