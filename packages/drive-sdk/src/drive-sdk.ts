@@ -173,9 +173,6 @@ export const createDriveSDKWithTokens = async (options: DriveSDKOptions) => {
       // Simple metadata-only upload (for creating empty files or folders)
       response = await makeRequest('/files', 'POST', metadata);
     } else {
-      // Multipart upload for files with content
-      const formData = new FormData();
-
       // Convert metadata to JSON string
       const metadataStr = JSON.stringify(metadata);
 

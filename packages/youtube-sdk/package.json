@@ -1,6 +1,6 @@
 {
   "name": "@microfox/youtube-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "YouTube SDK for Microfox",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -14,9 +14,6 @@
     "build:watch": "tsup --watch",
     "clean": "rm -rf dist",
     "lint": "eslint \"./**/*.ts*\"",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "exports": {

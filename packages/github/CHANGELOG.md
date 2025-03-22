@@ -1,5 +1,11 @@
 # @microfox/github
 
+## 1.0.1
+
+### Patch Changes
+
+- 09bdc67: add more functions
+
 ## 1.0.2
 
 ### Patch Changes

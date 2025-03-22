@@ -1,1 +1,2 @@
-export * from './github-client';
+export * from './github-sdk';
+export * from './types';
