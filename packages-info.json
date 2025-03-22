@@ -1,0 +1,646 @@
+[
+  {
+    "name": "@microfox/ai-sdk",
+    "title": "Microfox AI SDK",
+    "description": "Microfox adapter for the Vercel AI SDK",
+    "path": "packages/ai-sdk",
+    "dependencies": [
+      "@microfox/core",
+      "zod",
+      "ai"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/apollo",
+    "title": "Microfox Apollo",
+    "description": "Microfox SDK for Apollo.io",
+    "path": "packages/apollo",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/aws-ses",
+    "title": "Microfox AWS SES",
+    "description": "AWS SES SDK for Microfox",
+    "path": "packages/aws-ses",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/bing",
+    "title": "Microfox Bing",
+    "description": "Microfox SDK for Bing search",
+    "path": "packages/bing",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/calculator",
+    "title": "Microfox Calculator",
+    "description": "Microfox calculator tool wrapping mathjs",
+    "path": "packages/calculator",
+    "dependencies": [
+      "@microfox/core",
+      "mathjs",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/clearbit",
+    "title": "Microfox Clearbit",
+    "description": "Microfox SDK for Clearbit",
+    "path": "packages/clearbit",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/core",
+    "title": "Microfox Core",
+    "description": "Microfox AI utils which work with any LLM and TypeScript AI SDK",
+    "path": "packages/core",
+    "dependencies": [
+      "dedent",
+      "delay",
+      "jsonrepair",
+      "ky",
+      "openai-zod-to-json-schema",
+      "p-throttle",
+      "type-fest",
+      "zod",
+      "zod-validation-error"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/dexa",
+    "title": "Microfox Dexa",
+    "description": "Microfox SDK for Dexa's API (access to trusted podcast knowledge)",
+    "path": "packages/dexa",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/dexter",
+    "title": "Microfox Dexter",
+    "description": "Microfox adapter for the Dexter AI SDK by Dexa",
+    "path": "packages/dexter",
+    "dependencies": [
+      "@microfox/core",
+      "@dexaai/dexter"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/diffbot",
+    "title": "Microfox Diffbot",
+    "description": "Microfox SDK for Diffbot",
+    "path": "packages/diffbot",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/discord-sdk",
+    "title": "Microfox Discord SDK",
+    "description": "Discord SDK for Microfox",
+    "path": "packages/discord-sdk",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/drive-sdk",
+    "title": "Microfox Drive SDK",
+    "description": "Google Drive SDK for Microfox",
+    "path": "packages/drive-sdk",
+    "dependencies": [
+      "@microfox/google-sdk",
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/e2b",
+    "title": "Microfox E2B",
+    "description": "Microfox SDK for E2B's hosted code interpreter",
+    "path": "packages/e2b",
+    "dependencies": [
+      "@microfox/core",
+      "@e2b/code-interpreter"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/exa",
+    "title": "Microfox Exa",
+    "description": "Microfox SDK for the Exa search engine",
+    "path": "packages/exa",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/firecrawl",
+    "title": "Microfox Firecrawl",
+    "description": "Microfox SDK for Firecrawl web scraping and crawling",
+    "path": "packages/firecrawl",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/genkit",
+    "title": "Microfox Genkit",
+    "description": "Microfox adapter for the Firebase Genkit AI SDK",
+    "path": "packages/genkit",
+    "dependencies": [
+      "@microfox/core",
+      "zod",
+      "genkit"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/github",
+    "title": "Microfox GitHub",
+    "description": "Microfox SDK for GitHub",
+    "path": "packages/github",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "octokit",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/google-sdk",
+    "title": "Microfox Google SDK",
+    "description": "Google SDK for Microfox",
+    "path": "packages/google-sdk",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/gravatar",
+    "title": "Microfox Gravatar",
+    "description": "Microfox SDK for Gravatar profile and avatar services",
+    "path": "packages/gravatar",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/hacker-news",
+    "title": "Microfox Hacker News",
+    "description": "Microfox SDK for Hacker News",
+    "path": "packages/hacker-news",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/hunter",
+    "title": "Microfox Hunter",
+    "description": "Microfox SDK for Hunter.io email finder and verification",
+    "path": "packages/hunter",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/jigsawstack",
+    "title": "Microfox Jigsawstack",
+    "description": "Microfox adapter for the Jigsawstack AI SDK",
+    "path": "packages/jigsawstack",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/jina",
+    "title": "Microfox Jina",
+    "description": "Microfox SDK for Jina AI",
+    "path": "packages/jina",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/langchain",
+    "title": "Microfox LangChain",
+    "description": "Microfox adapter for the LangChain AI SDK",
+    "path": "packages/langchain",
+    "dependencies": [
+      "@microfox/core",
+      "@langchain/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/leadmagic",
+    "title": "Microfox LeadMagic",
+    "description": "Microfox SDK for LeadMagic lead generation and enrichment",
+    "path": "packages/leadmagic",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/llamaindex",
+    "title": "Microfox LlamaIndex",
+    "description": "Microfox adapter for the LlamaIndex AI SDK",
+    "path": "packages/llamaindex",
+    "dependencies": [
+      "@microfox/core",
+      "llamaindex"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/mastra",
+    "title": "Microfox Mastra",
+    "description": "Microfox adapter for the Mastra AI Agent SDK",
+    "path": "packages/mastra",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/midjourney",
+    "title": "Microfox Midjourney",
+    "description": "Microfox SDK for the unofficial Midjourney API via imagineapi.dev",
+    "path": "packages/midjourney",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/novu",
+    "title": "Microfox Novu",
+    "description": "Microfox SDK for the Novu notifications API",
+    "path": "packages/novu",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/people-data-labs",
+    "title": "Microfox People Data Labs",
+    "description": "Microfox SDK for People Data Labs",
+    "path": "packages/people-data-labs",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/perigon",
+    "title": "Microfox Perigon",
+    "description": "Microfox SDK for the Perigon News API",
+    "path": "packages/perigon",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/polygon",
+    "title": "Microfox Polygon",
+    "description": "Microfox SDK for the Polygon stock API",
+    "path": "packages/polygon",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/predict-leads",
+    "title": "Microfox Predict Leads",
+    "description": "Microfox SDK for Predict Leads company intelligence and signals",
+    "path": "packages/predict-leads",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/proxycurl",
+    "title": "Proxycurl Scraping API",
+    "description": "Proxycurl API client",
+    "path": "packages/proxycurl",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/rest-sdk",
+    "title": "Microfox REST SDK",
+    "description": "REST SDK for Microfox",
+    "path": "packages/rest-sdk",
+    "dependencies": [
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/rocketreach",
+    "title": "Microfox RocketReach",
+    "description": "Microfox SDK for RocketReach contact enrichment and B2B intelligence",
+    "path": "packages/rocketreach",
+    "dependencies": [
+      "@microfox/core"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/searxng",
+    "title": "Microfox SearXNG",
+    "description": "Microfox SDK for the SearXNG meta search engine",
+    "path": "packages/searxng",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/serpapi",
+    "title": "Microfox SerpAPI",
+    "description": "Microfox SDK for SerpAPI Google Search",
+    "path": "packages/serpapi",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/serper",
+    "title": "Microfox Serper",
+    "description": "Microfox SDK for Serper Google Search",
+    "path": "packages/serper",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/slack",
+    "title": "Microfox Slack",
+    "description": "Microfox SDK for Slack",
+    "path": "packages/slack",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/slack-web-tiny",
+    "title": "Microfox Slack Web Tiny",
+    "description": "Slack Web Tiny SDK for Microfox",
+    "path": "packages/slack-web-tiny",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/social-data",
+    "title": "Microfox Social Data",
+    "description": "Microfox SDK for accessing Twitter via Social Data",
+    "path": "packages/social-data",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/stdlib",
+    "title": "Microfox Stdlib",
+    "description": "Standard library of AI functions which work with any LLM and TypeScript AI SDK",
+    "path": "packages/stdlib",
+    "dependencies": [
+      "@microfox/apollo",
+      "@microfox/bing",
+      "@microfox/calculator",
+      "@microfox/clearbit",
+      "@microfox/core",
+      "@microfox/dexa",
+      "@microfox/diffbot",
+      "@microfox/e2b",
+      "@microfox/exa",
+      "@microfox/firecrawl",
+      "@microfox/github",
+      "@microfox/gravatar",
+      "@microfox/hacker-news",
+      "@microfox/hunter",
+      "@microfox/jina",
+      "@microfox/leadmagic",
+      "@microfox/midjourney",
+      "@microfox/novu",
+      "@microfox/people-data-labs",
+      "@microfox/perigon",
+      "@microfox/polygon",
+      "@microfox/predict-leads",
+      "@microfox/proxycurl",
+      "@microfox/rocketreach",
+      "@microfox/searxng",
+      "@microfox/serpapi",
+      "@microfox/serper",
+      "@microfox/slack",
+      "@microfox/social-data",
+      "@microfox/tavily",
+      "@microfox/twilio",
+      "@microfox/weather",
+      "@microfox/wikidata",
+      "@microfox/wikipedia",
+      "@microfox/wolfram-alpha",
+      "@microfox/zoominfo",
+      "@e2b/code-interpreter",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/tavily",
+    "title": "Microfox Tavily",
+    "description": "Microfox SDK for Tavily",
+    "path": "packages/tavily",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/twilio",
+    "title": "Microfox Twilio",
+    "description": "Microfox SDK for Twilio",
+    "path": "packages/twilio",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/weather",
+    "title": "Microfox Weather",
+    "description": "Microfox SDK for weatherapi.com",
+    "path": "packages/weather",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/wikidata",
+    "title": "Microfox Wikidata",
+    "description": "Microfox SDK for Wikidata",
+    "path": "packages/wikidata",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "wikibase-sdk",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/wikipedia",
+    "title": "Microfox Wikipedia",
+    "description": "Microfox SDK for Wikipedia",
+    "path": "packages/wikipedia",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/wolfram-alpha",
+    "title": "Microfox Wolfram Alpha",
+    "description": "Microfox SDK for Wolfram Alpha",
+    "path": "packages/wolfram-alpha",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial"
+  },
+  {
+    "name": "@microfox/x-sdk",
+    "title": "Microfox X SDK",
+    "description": "Twitter/X V2 SDK for Microfox",
+    "path": "packages/x-sdk",
+    "dependencies": [
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/youtube-sdk",
+    "title": "Microfox YouTube SDK",
+    "description": "YouTube SDK for Microfox",
+    "path": "packages/youtube-sdk",
+    "dependencies": [
+      "@microfox/google-sdk",
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable"
+  },
+  {
+    "name": "@microfox/zoominfo",
+    "title": "Microfox ZoomInfo",
+    "description": "Microfox SDK for ZoomInfo",
+    "path": "packages/zoominfo",
+    "dependencies": [
+      "@microfox/core",
+      "jsrsasign",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial"
+  }
+]
