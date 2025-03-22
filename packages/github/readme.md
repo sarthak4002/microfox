@@ -32,7 +32,7 @@ import { createGithubSdk } from '@microfox/github';
 const githubSdk = createGithubSdk({
   owner: 'your-organization',
   repo: 'your-repository',
-  token: 'your-github-token' // or process.env.GITHUB_TOKEN
+  token: 'your-github-token', // or process.env.GITHUB_TOKEN
 });
 ```
 
@@ -45,7 +45,7 @@ const pr = await githubSdk.createPullRequest({
   title: 'Feature: Add new functionality',
   head: 'feature-branch',
   base: 'main',
-  body: 'This PR adds exciting new features!'
+  body: 'This PR adds exciting new features!',
 });
 ```
 
@@ -54,7 +54,7 @@ const pr = await githubSdk.createPullRequest({
 ```typescript
 const branch = await githubSdk.createBranch({
   branchName: 'feature/new-feature',
-  baseBranch: 'main'
+  baseBranch: 'main',
 });
 ```
 
@@ -65,7 +65,7 @@ const updatedFile = await githubSdk.updateFile({
   path: 'src/config.json',
   content: JSON.stringify({ version: '2.0.0' }),
   commitMessage: 'Update config version',
-  branch: 'main'
+  branch: 'main',
 });
 ```
 
@@ -112,16 +112,16 @@ All main interfaces are Zod-validated:
 
 ```typescript
 interface GithubSdkConfig {
-  owner: string;      // Repository owner
-  repo: string;       // Repository name
-  token: string;      // GitHub personal access token
+  owner: string; // Repository owner
+  repo: string; // Repository name
+  token: string; // GitHub personal access token
 }
 
 interface PRParams {
-  title: string;      // Pull request title
-  head: string;       // Source branch
-  base: string;       // Target branch
-  body?: string;      // Pull request description
+  title: string; // Pull request title
+  head: string; // Source branch
+  base: string; // Target branch
+  body?: string; // Pull request description
 }
 
 interface BranchParams {
@@ -130,10 +130,10 @@ interface BranchParams {
 }
 
 interface UpdateFileParams {
-  path: string;       // File path in repository
-  content: string;    // New file content
+  path: string; // File path in repository
+  content: string; // New file content
   commitMessage: string; // Commit message
-  branch: string;     // Target branch
+  branch: string; // Target branch
 }
 ```
 
@@ -146,7 +146,7 @@ try {
   const pr = await githubSdk.createPullRequest({
     title: 'My PR',
     head: 'feature',
-    base: 'main'
+    base: 'main',
   });
 } catch (error) {
   console.error('Failed to create PR:', error);
