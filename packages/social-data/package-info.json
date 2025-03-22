@@ -1,0 +1,1 @@
+{"name": "@microfox/social-data","title": "Microfox Social Data","description": "Microfox SDK for accessing Twitter via Social Data","path": "packages/social-data","dependencies": ["@microfox/core","ky","p-throttle","zod"],"status": "partial"} 

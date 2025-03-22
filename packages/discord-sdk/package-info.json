@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/discord-sdk",
+  "title": "Microfox Discord SDK",
+  "description": "Discord SDK for Microfox",
+  "path": "packages/discord-sdk",
+  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "status": "stable"
+}

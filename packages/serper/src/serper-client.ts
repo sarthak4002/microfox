@@ -13,10 +13,28 @@ export namespace serper {
 
   export const SearchParamsSchema = z.object({
     q: z.string().describe('search query'),
-    autocorrect: z.boolean().default(true).optional(),
-    gl: z.string().default('us').optional(),
-    hl: z.string().default('en').optional(),
-    page: z.number().int().positive().default(1).optional(),
+    autocorrect: z
+      .boolean()
+      .default(true)
+      .optional()
+      .describe('Whether to autocorrect typos in search query'),
+    gl: z
+      .string()
+      .default('us')
+      .optional()
+      .describe('Google country code (geo-location)'),
+    hl: z
+      .string()
+      .default('en')
+      .optional()
+      .describe('Language code for search results'),
+    page: z
+      .number()
+      .int()
+      .positive()
+      .default(1)
+      .optional()
+      .describe('Page number of search results'),
     num: z
       .number()
       .int()
@@ -36,174 +54,235 @@ export namespace serper {
   });
   export type GeneralSearchParams = z.infer<typeof GeneralSearchSchema>;
 
-  export interface SearchResponse {
-    searchParameters: SearchParameters & { type: 'search' };
-    organic: Organic[];
-    answerBox?: AnswerBox;
-    knowledgeGraph?: KnowledgeGraph;
-    topStories?: TopStory[];
-    peopleAlsoAsk?: PeopleAlsoAsk[];
-    relatedSearches?: RelatedSearch[];
-  }
+  export const siteLinkSchema = z.object({
+    title: z.string().describe('Title of the site link'),
+    link: z.string().describe('URL of the site link'),
+  });
+  export type SiteLink = z.infer<typeof siteLinkSchema>;
 
-  export interface SearchImagesResponse {
-    searchParameters: SearchParameters & { type: 'images' };
-    images: Image[];
-  }
+  export const organicSchema = z.object({
+    title: z.string().describe('Title of the search result'),
+    link: z.string().describe('URL of the search result'),
+    snippet: z.string().describe('Text snippet from the search result'),
+    position: z.number().describe('Position in search results'),
+    imageUrl: z
+      .string()
+      .optional()
+      .describe('URL to an image associated with the result'),
+    sitelinks: z
+      .array(siteLinkSchema)
+      .optional()
+      .describe('Additional links from the same site'),
+  });
+  export type Organic = z.infer<typeof organicSchema>;
 
-  export interface SearchVideosResponse {
-    searchParameters: SearchParameters & { type: 'videos' };
-    videos: Video[];
-  }
+  export const answerBoxSchema = z.object({
+    snippet: z.string().describe('Main text snippet from the answer box'),
+    snippetHighlighted: z
+      .array(z.string())
+      .optional()
+      .describe('Highlighted portions of the snippet'),
+    title: z.string().describe('Title of the answer box'),
+    link: z.string().describe('URL of the source for the answer box'),
+    date: z
+      .string()
+      .optional()
+      .describe('Date associated with the answer box content'),
+    position: z.number().optional().describe('Position in search results'),
+  });
+  export type AnswerBox = z.infer<typeof answerBoxSchema>;
 
-  export interface SearchPlacesResponse {
-    searchParameters: SearchParameters & { type: 'places' };
-    places: Place[];
-  }
+  export const knowledgeGraphSchema = z.object({
+    title: z.string().describe('Title of the knowledge graph entity'),
+    type: z.string().describe('Type of the entity (e.g., Person, Company)'),
+    website: z.string().describe('Website of the entity'),
+    imageUrl: z.string().describe('URL to an image of the entity'),
+    description: z.string().describe('Description of the entity'),
+    descriptionSource: z.string().describe('Source of the description'),
+    descriptionLink: z.string().describe('Link to the description source'),
+    attributes: z
+      .record(z.string())
+      .describe('Various attributes of the entity'),
+  });
+  export type KnowledgeGraph = z.infer<typeof knowledgeGraphSchema>;
 
-  export interface SearchNewsResponse {
-    searchParameters: SearchParameters & { type: 'news' };
-    news: News[];
-  }
+  export const peopleAlsoAskSchema = z.object({
+    question: z.string().describe('Related question'),
+    snippet: z.string().describe('Snippet answer to the question'),
+    title: z.string().describe('Title of the source for the answer'),
+    link: z.string().describe('URL of the source for the answer'),
+  });
+  export type PeopleAlsoAsk = z.infer<typeof peopleAlsoAskSchema>;
 
-  export interface SearchShoppingResponse {
-    searchParameters: SearchParameters & { type: 'shopping' };
-    shopping: Shopping[];
-  }
+  export const relatedSearchSchema = z.object({
+    query: z.string().describe('Related search query'),
+  });
+  export type RelatedSearch = z.infer<typeof relatedSearchSchema>;
 
-  export type Response =
-    | SearchResponse
-    | SearchImagesResponse
-    | SearchVideosResponse
-    | SearchPlacesResponse
-    | SearchNewsResponse
-    | SearchShoppingResponse;
+  export const searchParametersSchema = z.object({
+    q: z.string().describe('Search query used'),
+    gl: z.string().describe('Google country code used'),
+    hl: z.string().describe('Language code used'),
+    num: z.number().describe('Number of results requested'),
+    autocorrect: z.boolean().describe('Whether autocorrect was enabled'),
+    page: z.number().describe('Page number of results'),
+    type: z.string().describe('Type of search performed'),
+    engine: z.string().describe('Search engine used'),
+  });
+  export type SearchParameters = z.infer<typeof searchParametersSchema>;
 
-  export interface KnowledgeGraph {
-    title: string;
-    type: string;
-    website: string;
-    imageUrl: string;
-    description: string;
-    descriptionSource: string;
-    descriptionLink: string;
-    attributes: Record<string, string>;
-  }
+  export const topStorySchema = z.object({
+    title: z.string().describe('Title of the news story'),
+    link: z.string().describe('URL of the news story'),
+    source: z.string().describe('Source of the news story'),
+    date: z.string().describe('Date the story was published'),
+    imageUrl: z.string().describe('URL to an image for the story'),
+  });
+  export type TopStory = z.infer<typeof topStorySchema>;
 
-  export interface Organic {
-    title: string;
-    link: string;
-    snippet: string;
-    position: number;
-    imageUrl?: string;
-    sitelinks?: SiteLink[];
-  }
+  export const imageSchema = z.object({
+    title: z.string().describe('Title of the image'),
+    imageUrl: z.string().describe('URL to the full image'),
+    imageWidth: z.number().describe('Width of the full image in pixels'),
+    imageHeight: z.number().describe('Height of the full image in pixels'),
+    thumbnailUrl: z.string().describe('URL to the thumbnail image'),
+    thumbnailWidth: z.number().describe('Width of the thumbnail in pixels'),
+    thumbnailHeight: z.number().describe('Height of the thumbnail in pixels'),
+    source: z.string().describe('Source of the image'),
+    domain: z.string().describe('Domain where the image is hosted'),
+    link: z.string().describe('URL to the page containing the image'),
+    googleUrl: z.string().describe('Google URL for the image'),
+    position: z.number().describe('Position in search results'),
+  });
+  export type Image = z.infer<typeof imageSchema>;
 
-  export interface AnswerBox {
-    snippet: string;
-    snippetHighlighted?: string[];
-    title: string;
-    link: string;
-    date?: string;
-    position?: number;
-  }
+  export const videoSchema = z.object({
+    title: z.string().describe('Title of the video'),
+    link: z.string().describe('URL to the video'),
+    snippet: z.string().describe('Text snippet describing the video'),
+    date: z.string().describe('Date the video was published'),
+    imageUrl: z.string().describe('URL to a thumbnail image of the video'),
+    position: z.number().describe('Position in search results'),
+  });
+  export type Video = z.infer<typeof videoSchema>;
 
-  export interface SiteLink {
-    title: string;
-    link: string;
-  }
+  export const placeSchema = z.object({
+    position: z.number().describe('Position in search results'),
+    title: z.string().describe('Name of the place'),
+    address: z.string().describe('Address of the place'),
+    latitude: z.number().describe('Latitude coordinate'),
+    longitude: z.number().describe('Longitude coordinate'),
+    category: z.string().describe('Category of the place (e.g., Restaurant)'),
+    phoneNumber: z.string().optional().describe('Contact phone number'),
+    website: z.string().describe('Website of the place'),
+    cid: z.string().describe('Google Maps CID identifier'),
+    rating: z.number().optional().describe('Average rating of the place'),
+    ratingCount: z.number().optional().describe('Number of ratings'),
+  });
+  export type Place = z.infer<typeof placeSchema>;
 
-  export interface PeopleAlsoAsk {
-    question: string;
-    snippet: string;
-    title: string;
-    link: string;
-  }
+  export const newsSchema = z.object({
+    title: z.string().describe('Title of the news article'),
+    link: z.string().describe('URL to the news article'),
+    snippet: z.string().describe('Text snippet from the article'),
+    date: z.string().describe('Date the article was published'),
+    source: z.string().describe('Source of the article'),
+    imageUrl: z.string().describe('URL to an image for the article'),
+    position: z.number().describe('Position in search results'),
+  });
+  export type News = z.infer<typeof newsSchema>;
 
-  export interface RelatedSearch {
-    query: string;
-  }
+  export const shoppingSchema = z.object({
+    title: z.string().describe('Title of the product'),
+    source: z.string().describe('Source/seller of the product'),
+    link: z.string().describe('URL to the product page'),
+    price: z.string().describe('Price of the product'),
+    imageUrl: z.string().describe('URL to an image of the product'),
+    delivery: z.record(z.string()).optional().describe('Delivery information'),
+    rating: z.number().optional().describe('Average rating of the product'),
+    ratingCount: z.number().optional().describe('Number of ratings'),
+    offers: z.string().optional().describe('Special offers information'),
+    productId: z.string().optional().describe('Product identifier'),
+    position: z.number().describe('Position in search results'),
+  });
+  export type Shopping = z.infer<typeof shoppingSchema>;
 
-  export interface SearchParameters {
-    q: string;
-    gl: string;
-    hl: string;
-    num: number;
-    autocorrect: boolean;
-    page: number;
-    type: string;
-    engine: string;
-  }
+  export const searchResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('search') })
+      .describe('Parameters used for the search'),
+    organic: z.array(organicSchema).describe('Organic search results'),
+    answerBox: answerBoxSchema
+      .optional()
+      .describe('Featured snippet/answer box'),
+    knowledgeGraph: knowledgeGraphSchema
+      .optional()
+      .describe('Knowledge graph information'),
+    topStories: z.array(topStorySchema).optional().describe('Top news stories'),
+    peopleAlsoAsk: z
+      .array(peopleAlsoAskSchema)
+      .optional()
+      .describe('Related questions people also ask'),
+    relatedSearches: z
+      .array(relatedSearchSchema)
+      .optional()
+      .describe('Related search queries'),
+  });
+  export type SearchResponse = z.infer<typeof searchResponseSchema>;
 
-  export interface TopStory {
-    title: string;
-    link: string;
-    source: string;
-    date: string;
-    imageUrl: string;
-  }
+  export const searchImagesResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('images') })
+      .describe('Parameters used for the image search'),
+    images: z.array(imageSchema).describe('Image search results'),
+  });
+  export type SearchImagesResponse = z.infer<typeof searchImagesResponseSchema>;
 
-  export interface Image {
-    title: string;
-    imageUrl: string;
-    imageWidth: number;
-    imageHeight: number;
-    thumbnailUrl: string;
-    thumbnailWidth: number;
-    thumbnailHeight: number;
-    source: string;
-    domain: string;
-    link: string;
-    googleUrl: string;
-    position: number;
-  }
+  export const searchVideosResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('videos') })
+      .describe('Parameters used for the video search'),
+    videos: z.array(videoSchema).describe('Video search results'),
+  });
+  export type SearchVideosResponse = z.infer<typeof searchVideosResponseSchema>;
 
-  export interface Video {
-    title: string;
-    link: string;
-    snippet: string;
-    date: string;
-    imageUrl: string;
-    position: number;
-  }
+  export const searchPlacesResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('places') })
+      .describe('Parameters used for the places search'),
+    places: z.array(placeSchema).describe('Place search results'),
+  });
+  export type SearchPlacesResponse = z.infer<typeof searchPlacesResponseSchema>;
 
-  export interface Place {
-    position: number;
-    title: string;
-    address: string;
-    latitude: number;
-    longitude: number;
-    category: string;
-    phoneNumber?: string;
-    website: string;
-    cid: string;
-    rating?: number;
-    ratingCount?: number;
-  }
+  export const searchNewsResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('news') })
+      .describe('Parameters used for the news search'),
+    news: z.array(newsSchema).describe('News search results'),
+  });
+  export type SearchNewsResponse = z.infer<typeof searchNewsResponseSchema>;
 
-  export interface News {
-    title: string;
-    link: string;
-    snippet: string;
-    date: string;
-    source: string;
-    imageUrl: string;
-    position: number;
-  }
+  export const searchShoppingResponseSchema = z.object({
+    searchParameters: searchParametersSchema
+      .extend({ type: z.literal('shopping') })
+      .describe('Parameters used for the shopping search'),
+    shopping: z.array(shoppingSchema).describe('Shopping search results'),
+  });
+  export type SearchShoppingResponse = z.infer<
+    typeof searchShoppingResponseSchema
+  >;
 
-  export interface Shopping {
-    title: string;
-    source: string;
-    link: string;
-    price: string;
-    imageUrl: string;
-    delivery?: Record<string, string>;
-    rating?: number;
-    ratingCount?: number;
-    offers?: string;
-    productId?: string;
-    position: number;
-  }
+  export const responseSchema = z
+    .union([
+      searchResponseSchema,
+      searchImagesResponseSchema,
+      searchVideosResponseSchema,
+      searchPlacesResponseSchema,
+      searchNewsResponseSchema,
+      searchShoppingResponseSchema,
+    ])
+    .describe('Combined response from any type of search');
+  export type Response = z.infer<typeof responseSchema>;
 
   export type ClientParams = Partial<Omit<SearchParams, 'q'>>;
 }

@@ -1,0 +1,1 @@
+{"name": "@microfox/bing","title": "Microfox Bing","description": "Microfox SDK for Bing search","path": "packages/bing","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

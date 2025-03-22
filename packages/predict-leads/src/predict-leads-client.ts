@@ -534,7 +534,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'get_company',
     description:
-      'Returns basic information about a company given its `domain` like location, name, stock ticker, description, etc.',
+      'Retrieves comprehensive company information based on a domain name. Returns details such as company name, location, industry, description, stock ticker, founding date, employee count, social media profiles, and more.',
     inputSchema: predictleads.CompanyParamsSchema,
   })
   async getCompany(domainOrOpts: string | predictleads.CompanyParams) {
@@ -611,7 +611,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'get_company_job_openings',
     description:
-      'Returns a list of job openings for a given company. Job openings are found on companies’ career sites and job boards.',
+      "Returns a list of job openings for a given company. Job openings are found on companies' career sites and job boards.",
     inputSchema: predictleads.CompanyJobOpeningsParamsSchema,
   })
   async getCompanyJobOpenings(
@@ -694,7 +694,7 @@ export class PredictLeadsClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'get_company_website_evolution',
     description:
-      'Returns insights into how a website has changed over time. E.g., when pages like “Blog”, “Privacy policy”, “Pricing”, “Product”, “API Docs”, “Team”, “Support pages” etc were added. This can serve as a proxy to how quickly a website is growing, to determine the growth stage they are at and also to help segment websites.',
+      "Returns insights into how a website has changed over time. E.g., when pages like 'Blog', 'Privacy policy', 'Pricing', 'Product', 'API Docs', 'Team', 'Support pages' etc were added. This can serve as a proxy to how quickly a website is growing, to determine the growth stage they are at and also to help segment websites.",
     inputSchema: predictleads.CompanyWebsiteEvolutionParamsSchema,
   })
   async getCompanyWebsiteEvolution(

@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/rest-sdk",
+  "title": "Microfox REST SDK",
+  "description": "REST SDK for Microfox",
+  "path": "packages/rest-sdk",
+  "dependencies": ["zod"],
+  "status": "stable"
+}

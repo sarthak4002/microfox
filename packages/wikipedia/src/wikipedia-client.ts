@@ -16,88 +16,127 @@ export namespace wikipedia {
     interval: 1000,
   });
 
-  export interface SearchOptions {
-    query: string;
-    limit?: number;
-  }
+  export const thumbnailSchema = z.object({
+    url: z.string().describe('URL of the thumbnail image'),
+    width: z.number().describe('Width of the thumbnail in pixels'),
+    height: z.number().describe('Height of the thumbnail in pixels'),
+    mimetype: z.string().describe('MIME type of the thumbnail image'),
+    duration: z.null().describe('Duration of media (null for images)'),
+  });
+  export type Thumbnail = z.infer<typeof thumbnailSchema>;
 
-  export interface PageSearchResponse {
-    pages: Page[];
-  }
+  export const pageSchema = z.object({
+    id: z.number().describe('Unique identifier of the page'),
+    key: z.string().describe('Unique key for the page'),
+    title: z.string().describe('Title of the page'),
+    matched_title: z
+      .null()
+      .describe('Title that matched the search query if different from title'),
+    excerpt: z.string().describe('Brief excerpt from the page'),
+    description: z
+      .union([z.string(), z.null()])
+      .describe('Short description of the page content'),
+    thumbnail: z
+      .union([thumbnailSchema, z.null()])
+      .describe('Thumbnail image for the page'),
+  });
+  export type Page = z.infer<typeof pageSchema>;
 
-  export interface Page {
-    id: number;
-    key: string;
-    title: string;
-    matched_title: null;
-    excerpt: string;
-    description: null | string;
-    thumbnail: Thumbnail | null;
-  }
+  export const searchOptionsSchema = z.object({
+    query: z.string().describe('Search query to find Wikipedia pages'),
+    limit: z
+      .number()
+      .optional()
+      .describe('Maximum number of results to return'),
+  });
+  export type SearchOptions = z.infer<typeof searchOptionsSchema>;
 
-  export interface Thumbnail {
-    url: string;
-    width: number;
-    height: number;
-    mimetype: string;
-    duration: null;
-  }
+  export const pageSearchResponseSchema = z.object({
+    pages: z
+      .array(pageSchema)
+      .describe('List of pages matching the search query'),
+  });
+  export type PageSearchResponse = z.infer<typeof pageSearchResponseSchema>;
 
-  export interface PageSummaryOptions {
-    title: string;
-    redirect?: boolean;
-    acceptLanguage?: string;
-  }
+  export const namespaceSchema = z.object({
+    id: z.number().describe('ID of the namespace'),
+    text: z.string().describe('Text representation of the namespace'),
+  });
 
-  export interface PageSummaryResponse {
-    ns?: number;
-    index?: number;
-    type: string;
-    title: string;
-    displaytitle: string;
-    namespace: { id: number; text: string };
-    wikibase_item: string;
-    titles: { canonical: string; normalized: string; display: string };
-    pageid: number;
-    thumbnail: {
-      source: string;
-      width: number;
-      height: number;
-    };
-    originalimage: {
-      source: string;
-      width: number;
-      height: number;
-    };
-    lang: string;
-    dir: string;
-    revision: string;
-    tid: string;
-    timestamp: string;
-    description: string;
-    description_source: string;
-    content_urls: {
-      desktop: {
-        page: string;
-        revisions: string;
-        edit: string;
-        talk: string;
-      };
-      mobile: {
-        page: string;
-        revisions: string;
-        edit: string;
-        talk: string;
-      };
-    };
-    extract: string;
-    extract_html: string;
-    normalizedtitle?: string;
-    coordinates?: {
-      lat: number;
-      lon: number;
-    };
-  }
+  export const titlesSchema = z.object({
+    canonical: z.string().describe('Canonical title of the page'),
+    normalized: z.string().describe('Normalized title of the page'),
+    display: z.string().describe('Display title of the page'),
+  });
+
+  export const thumbnailResponseSchema = z.object({
+    source: z.string().describe('Source URL of the thumbnail'),
+    width: z.number().describe('Width of the thumbnail in pixels'),
+    height: z.number().describe('Height of the thumbnail in pixels'),
+  });
+
+  export const urlsSchema = z.object({
+    page: z.string().describe('URL to the page'),
+    revisions: z.string().describe('URL to page revisions'),
+    edit: z.string().describe('URL to edit the page'),
+    talk: z.string().describe('URL to the talk page'),
+  });
+
+  export const contentUrlsSchema = z.object({
+    desktop: urlsSchema.describe('URLs for desktop view'),
+    mobile: urlsSchema.describe('URLs for mobile view'),
+  });
+
+  export const coordinatesSchema = z.object({
+    lat: z.number().describe('Latitude coordinate'),
+    lon: z.number().describe('Longitude coordinate'),
+  });
+
+  export const pageSummaryOptionsSchema = z.object({
+    title: z.string().describe('Title of the Wikipedia page to retrieve'),
+    redirect: z.boolean().optional().describe('Whether to follow redirects'),
+    acceptLanguage: z
+      .string()
+      .optional()
+      .describe('Language code for localized content'),
+  });
+  export type PageSummaryOptions = z.infer<typeof pageSummaryOptionsSchema>;
+
+  export const pageSummaryResponseSchema = z.object({
+    ns: z.number().optional().describe('Namespace number'),
+    index: z.number().optional().describe('Index of the page'),
+    type: z.string().describe('Type of the page (e.g., "standard")'),
+    title: z.string().describe('Title of the page'),
+    displaytitle: z
+      .string()
+      .describe('Display title of the page, which may include formatting'),
+    namespace: namespaceSchema.describe('Namespace information'),
+    wikibase_item: z.string().describe('Wikibase item identifier'),
+    titles: titlesSchema.describe('Various title formats'),
+    pageid: z.number().describe('Unique identifier of the page'),
+    thumbnail: thumbnailResponseSchema.describe('Thumbnail image information'),
+    originalimage: thumbnailResponseSchema.describe(
+      'Original image information',
+    ),
+    lang: z.string().describe('Language code of the content'),
+    dir: z.string().describe('Text direction (ltr or rtl)'),
+    revision: z.string().describe('Revision identifier'),
+    tid: z.string().describe('TID of the page'),
+    timestamp: z.string().describe('Timestamp of the page version'),
+    description: z.string().describe('Short description of the page'),
+    description_source: z.string().describe('Source of the description'),
+    content_urls: contentUrlsSchema.describe('URLs to various page views'),
+    extract: z.string().describe('Plain text extract of the page content'),
+    extract_html: z.string().describe('HTML extract of the page content'),
+    normalizedtitle: z
+      .string()
+      .optional()
+      .describe('Normalized title if different from the requested title'),
+    coordinates: coordinatesSchema
+      .optional()
+      .describe('Geographic coordinates if applicable'),
+  });
+  export type PageSummaryResponse = z.infer<typeof pageSummaryResponseSchema>;
 }
 
 /**
@@ -144,9 +183,7 @@ export class WikipediaClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'wikipedia_search',
     description: 'Searches Wikipedia for pages matching the given query.',
-    inputSchema: z.object({
-      query: z.string().describe('Search query'),
-    }),
+    inputSchema: wikipedia.searchOptionsSchema.pick({ query: true }),
   })
   async search({ query, ...opts }: wikipedia.SearchOptions) {
     return (

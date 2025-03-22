@@ -1,0 +1,8 @@
+{
+    "name": "@microfox/proxycurl",
+    "title": "Proxycurl Scraping API",
+    "description": "Proxycurl API client",
+    "path": "packages/proxycurl",
+    "dependencies": ["@microfox/core"],
+    "status": "partial"
+}

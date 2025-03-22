@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/youtube-sdk",
+  "title": "Microfox YouTube SDK",
+  "description": "YouTube SDK for Microfox",
+  "path": "packages/youtube-sdk",
+  "dependencies": ["@microfox/google-sdk", "@microfox/rest-sdk", "zod"],
+  "status": "stable"
+}

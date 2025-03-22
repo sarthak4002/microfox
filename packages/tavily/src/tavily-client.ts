@@ -19,90 +19,107 @@ export namespace tavily {
     interval: 60 * 1000,
   });
 
-  export interface SearchOptions {
-    /** Search query. (required) */
-    query: string;
+  export const SearchOptionsSchema = z.object({
+    query: z.string().describe('Search query. (required)'),
+    topic: z
+      .string()
+      .optional()
+      .describe(
+        'The category of the search. ' +
+          'This will determine which of our agents willbe used for the search. ' +
+          'Currently, only "general" and "news" are supported. ' +
+          'Default is "general".',
+      ),
+    search_depth: z
+      .enum(['basic', 'advanced'])
+      .optional()
+      .describe(
+        'The depth of the search. It can be basic or advanced. Default is basic ' +
+          'for quick results and advanced for indepth high quality results but ' +
+          'longer response time. Advanced calls equals 2 requests.',
+      ),
+    include_answer: z
+      .boolean()
+      .optional()
+      .describe(
+        'Include a synthesized answer in the search results. Default is `false`.',
+      ),
+    include_images: z
+      .boolean()
+      .optional()
+      .describe(
+        'Include a list of query related images in the response. Default is `false`.',
+      ),
+    include_raw_content: z
+      .boolean()
+      .optional()
+      .describe(
+        'Include raw content in the search results. Default is `false`.',
+      ),
+    max_results: z
+      .number()
+      .optional()
+      .describe(
+        'The number of maximum search results to return. Default is `5`.',
+      ),
+    include_domains: z
+      .array(z.string())
+      .optional()
+      .describe(
+        'A list of domains to specifically include in the search results. ' +
+          'Default is `undefined`, which includes all domains.',
+      ),
+    exclude_domains: z
+      .array(z.string())
+      .optional()
+      .describe(
+        'A list of domains to specifically exclude from the search results. ' +
+          "Default is `undefined`, which doesn't exclude any domains.",
+      ),
+  });
+  export type SearchOptions = z.infer<typeof SearchOptionsSchema>;
 
-    /**
-     * The category of the search.
-     * This will determine which of our agents willbe used for the search.
-     * Currently, only "general" and "news" are supported.
-     * Default is "general".
-     */
-    topic?: string;
+  export const SearchResultSchema = z.object({
+    url: z.string().describe('The url of the search result.'),
+    title: z.string().describe('The title of the search result page.'),
+    content: z
+      .string()
+      .describe(
+        'The most query related content from the scraped url. We use proprietary ' +
+          'AI and algorithms to extract only the most relevant content from each ' +
+          'url, to optimize for context quality and size.',
+      ),
+    raw_content: z
+      .string()
+      .optional()
+      .describe(
+        'The parsed and cleaned HTML of the site. For now includes parsed text only.',
+      ),
+    score: z.string().describe('The relevance score of the search result.'),
+  });
+  export type SearchResult = z.infer<typeof SearchResultSchema>;
 
-    /**
-     * The depth of the search. It can be basic or advanced. Default is basic
-     * for quick results and advanced for indepth high quality results but
-     * longer response time. Advanced calls equals 2 requests.
-     */
-    search_depth?: 'basic' | 'advanced';
-
-    /** Include a synthesized answer in the search results. Default is `false`. */
-    include_answer?: boolean;
-
-    /** Include a list of query related images in the response. Default is `false`. */
-    include_images?: boolean;
-
-    /** Include raw content in the search results. Default is `false`. */
-    include_raw_content?: boolean;
-
-    /** The number of maximum search results to return. Default is `5`. */
-    max_results?: number;
-
-    /**
-     * A list of domains to specifically include in the search results.
-     * Default is `undefined`, which includes all domains.
-     */
-    include_domains?: string[];
-
-    /**
-     * A list of domains to specifically exclude from the search results.
-     * Default is `undefined`, which doesn't exclude any domains.
-     */
-    exclude_domains?: string[];
-  }
-
-  export interface SearchResponse {
-    /** The search query. */
-    query: string;
-
-    /** A list of sorted search results ranked by relevancy. */
-    results: SearchResult[];
-
-    /** The answer to your search query. */
-    answer?: string;
-
-    /** A list of query related image urls. */
-    images?: string[];
-
-    /** A list of suggested research follow up questions related to original query. */
-    follow_up_questions?: string[];
-
-    /** How long it took to generate a response. */
-    response_time: string;
-  }
-
-  export interface SearchResult {
-    /** The url of the search result. */
-    url: string;
-
-    /** The title of the search result page. */
-    title: string;
-
-    /**
-     * The most query related content from the scraped url. We use proprietary
-     * AI and algorithms to extract only the most relevant content from each
-     * url, to optimize for context quality and size.
-     */
-    content: string;
-
-    /** The parsed and cleaned HTML of the site. For now includes parsed text only. */
-    raw_content?: string;
-
-    /** The relevance score of the search result. */
-    score: string;
-  }
+  export const SearchResponseSchema = z.object({
+    query: z.string().describe('The search query.'),
+    results: z
+      .array(SearchResultSchema)
+      .describe('A list of sorted search results ranked by relevancy.'),
+    answer: z.string().optional().describe('The answer to your search query.'),
+    images: z
+      .array(z.string())
+      .optional()
+      .describe('A list of query related image urls.'),
+    follow_up_questions: z
+      .array(z.string())
+      .optional()
+      .describe(
+        'A list of suggested research follow up questions related to original query.',
+      ),
+    response_time: z
+      .string()
+      .describe('How long it took to generate a response.'),
+  });
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 }
 
 /**

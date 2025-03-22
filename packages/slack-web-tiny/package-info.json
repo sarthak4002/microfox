@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/slack-web-tiny",
+  "title": "Microfox Slack Web Tiny",
+  "description": "Slack Web Tiny SDK for Microfox",
+  "path": "packages/slack-web-tiny",
+  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "status": "stable"
+}

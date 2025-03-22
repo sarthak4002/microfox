@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/github",
+  "title": "Microfox GitHub",
+  "description": "Microfox SDK for GitHub",
+  "path": "packages/github",
+  "dependencies": ["@microfox/core", "ky", "octokit", "p-throttle", "zod"],
+  "status": "stable"
+}

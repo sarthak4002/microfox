@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/gravatar",
+  "title": "Microfox Gravatar",
+  "description": "Microfox SDK for Gravatar profile and avatar services",
+  "path": "packages/gravatar",
+  "dependencies": ["@microfox/core"],
+  "status": "partial"
+} 

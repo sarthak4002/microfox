@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/jigsawstack",
+  "title": "Microfox Jigsawstack",
+  "description": "Microfox adapter for the Jigsawstack AI SDK",
+  "path": "packages/jigsawstack",
+  "dependencies": ["@microfox/core"],
+  "status": "partial"
+} 

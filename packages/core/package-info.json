@@ -1,0 +1,1 @@
+{"name": "@microfox/core","title": "Microfox Core","description": "Microfox AI utils which work with any LLM and TypeScript AI SDK","path": "packages/core","dependencies": ["dedent","delay","jsonrepair","ky","openai-zod-to-json-schema","p-throttle","type-fest","zod","zod-validation-error"],"status": "partial"} 

@@ -29,14 +29,12 @@
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
   "dependencies": {
-    "@microfox/core": "*"
-  },
-  "peerDependencies": {
+    "@microfox/core": "*",
+    "zod": "^3.24.2",
     "genkit": "^1.2.0"
   },
   "devDependencies": {
-    "@microfox/tsconfig": "*",
-    "genkit": "^1.2.0"
+    "@microfox/tsconfig": "*"
   },
   "publishConfig": {
     "access": "public"

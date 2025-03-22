@@ -8,6 +8,7 @@ import {
 } from '@microfox/core';
 import defaultKy, { type KyInstance } from 'ky';
 import pThrottle from 'p-throttle';
+import { z } from 'zod';
 
 export namespace clearbit {
   // Allow up to 600 requests per minute by default.
@@ -19,13 +20,84 @@ export namespace clearbit {
 
   export const MAX_PAGE_SIZE = 100;
 
-  export interface CompanyEnrichmentOptions {
-    domain: string;
-    webhook_url?: string;
-    company_name?: string;
-    linkedin?: string;
-    twitter?: string;
-    facebook?: string;
+  export const companyEnrichmentSchema = z.object({
+    domain: z.string(),
+    webhook_url: z.string().optional(),
+    company_name: z.string().optional(),
+    linkedin: z.string().optional(),
+    twitter: z.string().optional(),
+    facebook: z.string().optional(),
+  });
+
+  export type CompanyEnrichmentOptions = z.infer<
+    typeof companyEnrichmentSchema
+  >;
+
+  export const companySearchSchema = z.object({
+    query: z
+      .string()
+      .describe(
+        'See clearbit docs: https://dashboard.clearbit.com/docs?shell#discovery-api-tech-queries',
+      ),
+    page: z.number().optional(),
+    page_size: z.number().optional(),
+    limit: z.number().optional(),
+    sort: z.string().optional(),
+  });
+
+  export type CompanySearchOptions = z.infer<typeof companySearchSchema>;
+
+  export const peopleSearchOptionsV2Schema = z.object({
+    domains: z.array(z.string()).optional(),
+    names: z.array(z.string()).optional(),
+    roles: z.array(z.string()).optional(),
+    seniorities: z.array(z.string()).optional(),
+    titles: z.array(z.string()).optional(),
+    locations: z.array(z.string()).optional(),
+    employees_ranges: z.array(z.string()).optional(),
+    company_tags: z.array(z.string()).optional(),
+    company_tech: z.array(z.string()).optional(),
+    company_types: z.array(z.string()).optional(),
+    industries: z.array(z.string()).optional(),
+    revenue_ranges: z.array(z.string()).optional(),
+    linkedin_profile_handles: z.array(z.string()).optional(),
+    page: z.number().optional(),
+    page_size: z.number().optional(),
+    suppression: z.string().optional(),
+  });
+
+  export type PeopleSearchOptionsV2 = z.infer<
+    typeof peopleSearchOptionsV2Schema
+  >;
+
+  export const peopleSearchOptionsV1Schema = z.object({
+    domain: z.string(),
+    role: z.string().optional(),
+    roles: z.array(z.string()).optional(),
+    seniority: z.string().optional(),
+    seniorities: z.array(z.string()).optional(),
+    title: z.string().optional(),
+    titles: z.array(z.string()).optional(),
+    city: z.string().optional(),
+    cities: z.array(z.string()).optional(),
+    state: z.string().optional(),
+    states: z.array(z.string()).optional(),
+    country: z.string().optional(),
+    countries: z.array(z.string()).optional(),
+    name: z.string().optional(),
+    query: z.string().optional(),
+    page: z.number().optional(),
+    page_size: z.number().optional(),
+    suppression: z.string().optional(),
+    email: z.boolean().optional(),
+  });
+
+  export type PeopleSearchOptionsV1 = z.infer<
+    typeof peopleSearchOptionsV1Schema
+  >;
+
+  export interface Company {
+    name: string;
   }
 
   export type CompanyNullableProps = {
@@ -187,20 +259,6 @@ export namespace clearbit {
     id: string;
   } & Partial<CompanyNullableProps>;
 
-  export interface CompanySearchOptions {
-    /**
-     * See clearbit docs: https://dashboard.clearbit.com/docs?shell#discovery-api-tech-queries
-     * Examples:
-     * tech:google_apps
-     * or:(twitter_followers:10000~ type:nonprofit)
-     */
-    query: string;
-    page?: number;
-    page_size?: number;
-    limit?: number;
-    sort?: string;
-  }
-
   export interface CompanySearchResponse {
     total: number;
     page: number;
@@ -213,24 +271,7 @@ export namespace clearbit {
     name: string;
   }
 
-  export interface PeopleSearchOptionsV2 {
-    domains?: string[];
-    names?: string[];
-    roles?: string[];
-    seniorities?: string[];
-    titles?: string[];
-    locations?: string[];
-    employees_ranges?: string[];
-    company_tags?: string[];
-    company_tech?: string[];
-    company_types?: string[];
-    industries?: string[];
-    revenue_ranges?: string[];
-    linkedin_profile_handles?: string[];
-    page?: number;
-    page_size?: number;
-    suppression?: string;
-  }
+  // Removed duplicate PeopleSearchOptionsV2 interface
 
   // Prospector types
   export interface ProspectorResponseV2 {
@@ -283,32 +324,6 @@ export namespace clearbit {
     emails: EmailAttributes[];
     phones: PhoneAttributes[];
   }>;
-
-  export type PeopleSearchOptionsV1 = {
-    domain: string;
-    role?: string;
-    roles?: string[];
-    seniority?: string;
-    seniorities?: string[];
-    title?: string;
-    titles?: string[];
-    city?: string;
-    cities?: string[];
-    state?: string;
-    states?: string[];
-    country?: string;
-    countries?: string[];
-    name?: string;
-    query?: string;
-    page?: number;
-    page_size?: number;
-    suppression?: string;
-    email?: boolean;
-  };
-
-  export interface Company {
-    name: string;
-  }
 
   export interface PeopleSearchResponseV1 {
     id: string;

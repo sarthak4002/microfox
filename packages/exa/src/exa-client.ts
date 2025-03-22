@@ -123,48 +123,50 @@ export namespace exa {
   /**
    * Represents a search result object.
    */
-  export type SearchResult = {
-    /** The title of the search result. */
-    title: string | null;
-
-    /** The URL of the search result. */
-    url: string;
-
-    /** The estimated creation date of the content (ISO 8601 format). */
-    publishedDate?: string;
-
-    /** The author of the content, if available. */
-    author?: string;
-
-    /** Similarity score between the query/url and the result. */
-    score?: number;
-
-    /** The temporary Exa ID for the document. */
-    id: string;
-
-    /** Text from page */
-    text?: string;
-
-    /** The highlights as an array of strings. */
-    highlights?: string[];
-
-    /** The corresponding scores as an array of floats, 0 to 1 */
-    highlightScores?: number[];
-  };
+  export const SearchResultSchema = z.object({
+    title: z.string().nullable().describe('The title of the search result.'),
+    url: z.string().describe('The URL of the search result.'),
+    publishedDate: z
+      .string()
+      .optional()
+      .describe(
+        'The estimated creation date of the content (ISO 8601 format).',
+      ),
+    author: z
+      .string()
+      .optional()
+      .describe('The author of the content, if available.'),
+    score: z
+      .number()
+      .optional()
+      .describe('Similarity score between the query/url and the result.'),
+    id: z.string().describe('The temporary Exa ID for the document.'),
+    text: z.string().optional().describe('Text from page'),
+    highlights: z
+      .array(z.string())
+      .optional()
+      .describe('The highlights as an array of strings.'),
+    highlightScores: z
+      .array(z.number())
+      .optional()
+      .describe('The corresponding scores as an array of floats, 0 to 1'),
+  });
+  export type SearchResult = z.infer<typeof SearchResultSchema>;
 
   /**
    * Represents a search response object.
    */
-  export type SearchResponse = {
-    /** The list of search results. */
-    results: SearchResult[];
-
-    /** The autoprompt string, if applicable. */
-    autopromptString?: string;
-
-    /** Internal ID of this request. */
-    requestId?: string;
-  };
+  export const SearchResponseSchema = z.object({
+    results: z
+      .array(SearchResultSchema)
+      .describe('The list of search results.'),
+    autopromptString: z
+      .string()
+      .optional()
+      .describe('The autoprompt string, if applicable.'),
+    requestId: z.string().optional().describe('Internal ID of this request.'),
+  });
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 }
 
 /**

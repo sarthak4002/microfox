@@ -23,961 +23,956 @@ export namespace zoominfo {
     interval: 60_000,
   });
 
-  export interface EnrichContactOptions {
-    personId?: string;
-    emailAddress?: string;
-    hashedEmail?: string;
-    phone?: string;
+  export const EnrichContactOptionsSchema = z.object({
+    personId: z
+      .string()
+      .optional()
+      .describe('ZoomInfo identifier for a person'),
+    emailAddress: z
+      .string()
+      .optional()
+      .describe('Email address for contact lookup'),
+    hashedEmail: z
+      .string()
+      .optional()
+      .describe('Hashed email value for contact lookup'),
+    phone: z.string().optional().describe('Phone number for contact lookup'),
+    firstName: z.string().optional().describe('First name of the contact'),
+    lastName: z.string().optional().describe('Last name of the contact'),
+    companyId: z.string().optional().describe('ZoomInfo company identifier'),
+    companyName: z
+      .string()
+      .optional()
+      .describe('Company name for contact lookup'),
+    fullName: z.string().optional().describe('Full name of the contact'),
+    jobTitle: z.string().optional().describe('Contact job title'),
+    externalURL: z.string().optional().describe('External URL for the contact'),
+    lastUpdatedDateAfter: z
+      .string()
+      .optional()
+      .describe('Filter for contacts updated after this date'),
+    validDateAfter: z
+      .string()
+      .optional()
+      .describe('Filter for contacts valid after this date'),
+    contactAccuracyScoreMin: z
+      .number()
+      .optional()
+      .describe('Minimum accuracy score for contact'),
+    outputFields: z
+      .array(z.string())
+      .optional()
+      .describe('Specific fields to return in the response'),
+  });
+  export type EnrichContactOptions = z.infer<typeof EnrichContactOptionsSchema>;
 
-    firstName?: string;
-    lastName?: string;
-    companyId?: string;
-    companyName?: string;
+  export const EnrichCompanyOptionsSchema = z.object({
+    companyId: z
+      .string()
+      .optional()
+      .describe('Unique ZoomInfo identifier for a company'),
+    companyName: z.string().optional().describe('Company name'),
+    companyWebsite: z
+      .string()
+      .optional()
+      .describe('Company website URL in http://www.example.com format'),
+    companyTicker: z
+      .string()
+      .optional()
+      .describe('Company stock ticker symbol'),
+    companyPhone: z
+      .string()
+      .optional()
+      .describe('Phone number of the company headquarters'),
+    companyFax: z
+      .string()
+      .optional()
+      .describe('Fax number of the company headquarters'),
+    companyStreet: z
+      .string()
+      .optional()
+      .describe("Street address for the company's primary address"),
+    companyCity: z
+      .string()
+      .optional()
+      .describe("City for the company's primary address"),
+    companyState: z
+      .string()
+      .optional()
+      .describe('Company state (U.S.) or province (Canada)'),
+    companyZipCode: z
+      .string()
+      .optional()
+      .describe("Zip Code or Postal Code for the company's primary address"),
+    companyCountry: z
+      .string()
+      .optional()
+      .describe("Country for the company's primary address"),
+    ipAddress: z
+      .string()
+      .optional()
+      .describe('IP address associated with the company'),
+    outputFields: z
+      .array(z.string())
+      .optional()
+      .describe('List of fields to return in the response'),
+  });
+  export type EnrichCompanyOptions = z.infer<typeof EnrichCompanyOptionsSchema>;
 
-    fullName?: string;
+  export const MatchStatusSchema = z
+    .enum([
+      'NO_MATCH',
+      'FULL_MATCH',
+      'CONTACT_ONLY_MATCH',
+      'COMPANY_ONLY_MATCH',
+      'MULTI_MATCH',
+      'IP_MATCH',
+      'MULTI_CONTACT_MATCH',
+      'MULTI_COMPANY_MATCH',
+      'SERVICE_ERROR',
+      'BAD_DATA',
+    ])
+    .describe('Status of the matching process');
+  export type MatchStatus = z.infer<typeof MatchStatusSchema>;
 
-    jobTitle?: string;
-    externalURL?: string;
-    lastUpdatedDateAfter?: string;
-    validDateAfter?: string;
-    contactAccuracyScoreMin?: number;
+  // Forward declare EnrichContactResultSchema to avoid circular reference
+  export let EnrichContactResultSchema: z.ZodType<any>;
+  // Forward declare EnrichCompanyResultSchema to avoid circular reference
+  export let EnrichCompanyResultSchema: z.ZodType<any>;
 
-    outputFields?: string[];
-  }
+  export const JobFunctionSchema = z.object({
+    name: z.string().describe('Name of the job function'),
+    department: z
+      .string()
+      .describe('Department associated with the job function'),
+  });
+  export type JobFunction = z.infer<typeof JobFunctionSchema>;
 
-  export interface EnrichCompanyOptions {
-    /**
-     * Unique ZoomInfo identifier for a company
-     */
-    companyId?: string;
-    /**
-     * Company name
-     */
-    companyName?: string;
-    /**
-     * Company website URL in http://www.example.com format
-     */
-    companyWebsite?: string;
-    /**
-     * Company stock ticker symbol
-     */
-    companyTicker?: string;
-    /**
-     * Phone number of the company headquarters
-     */
-    companyPhone?: string;
-    /**
-     * Fax number of the company headquarters
-     */
-    companyFax?: string;
-    /**
-     * Street address for the company's primary address
-     */
-    companyStreet?: string;
-    /**
-     * City for the company's primary address
-     */
-    companyCity?: string;
-    /**
-     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
-     */
-    companyState?: string;
-    /**
-     * Zip Code or Postal Code for the company's primary address
-     */
-    companyZipCode?: string;
-    /**
-     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
-     */
-    companyCountry?: string;
-    /**
-     * IP address associated with the company
-     */
-    ipAddress?: string;
+  export const EducationDegreeSchema = z.object({
+    degree: z.string().describe('Degree earned'),
+    areaOfStudy: z.string().describe('Area or field of study'),
+  });
+  export type EducationDegree = z.infer<typeof EducationDegreeSchema>;
 
-    outputFields?: string[];
-  }
+  export const EducationSchema = z.object({
+    school: z.string().describe('Educational institution attended'),
+    educationDegree: EducationDegreeSchema.describe('Degree information'),
+  });
+  export type Education = z.infer<typeof EducationSchema>;
 
-  export interface EnrichContactResponse {
-    success: boolean;
-    data: {
-      outputFields: string[][];
-      result: EnrichContactResult[];
-    };
-  }
+  export const ExternalUrlSchema = z.object({
+    type: z.string().describe('Type of external URL (e.g., LinkedIn, Twitter)'),
+    url: z.string().describe('URL to external profile'),
+  });
+  export type ExternalUrl = z.infer<typeof ExternalUrlSchema>;
 
-  export type MatchStatus =
-    | 'NO_MATCH'
-    | 'FULL_MATCH'
-    | 'CONTACT_ONLY_MATCH'
-    | 'COMPANY_ONLY_MATCH'
-    | 'NON_MATCH_BY_REQUIRED_FIELDS'
-    | 'NON_MATCH_BY_LAST_UPDATED_DATE'
-    | 'NON_MATCH_BY_VALID_DATE'
-    | 'NON_MATCH_BY_CONTACT_ACCURACY_MIN'
-    | 'INVALID_INPUT'
-    | 'LIMIT_EXCEEDED'
-    | 'SERVICE_ERROR'
-    | 'OPT_OUT';
+  export const EmploymentHistoryCompanySchema = z.object({
+    companyId: z.number().describe('ZoomInfo identifier for the company'),
+    companyName: z.string().describe('Name of the company'),
+    companyPhone: z.string().optional().describe('Phone number of the company'),
+    companyWebsite: z.string().optional().describe('Website of the company'),
+  });
 
-  export interface EnrichContactResult {
-    input: Partial<Omit<EnrichContactOptions, 'outputFields'>>;
-    data: EnrichedContact[];
-    matchStatus?: MatchStatus;
-  }
+  export const EmploymentHistorySchema = z.object({
+    jobTitle: z.string().describe('Job title at the company'),
+    managementLevel: z
+      .array(z.string())
+      .describe('Management level(s) at the company'),
+    fromDate: z.string().describe('Start date of employment'),
+    toDate: z.string().describe('End date of employment'),
+    company: EmploymentHistoryCompanySchema.describe('Company information'),
+  });
+  export type EmploymentHistory = z.infer<typeof EmploymentHistorySchema>;
 
-  export interface EnrichedContact {
-    id: number;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    email: string;
-    hasCanadianEmail: string;
-    phone: string;
-    directPhoneDoNotCall: boolean;
-    street: string;
-    city: string;
-    region: string;
-    metroArea: string;
-    zipCode: string;
-    state: string;
-    country: string;
-    personHasMoved: string;
-    withinEu: boolean;
-    withinCalifornia: boolean;
-    withinCanada: boolean;
-    lastUpdatedDate: string;
-    noticeProvidedDate: string;
-    salutation: string;
-    suffix: string;
-    jobTitle: string;
-    jobFunction: JobFunction[];
-    education: Education[];
-    hashedEmails: string[];
-    picture: string;
-    mobilePhoneDoNotCall: boolean;
-    externalUrls: ExternalUrl[];
-    contactAccuracyScore: number;
-    isDefunct: boolean;
-    employmentHistory: EmploymentHistory[];
-    managementLevel: string[];
-    locationCompanyId: number;
-    company: Company;
-  }
+  export const DescriptionListSchema = z.object({
+    description: z.string().describe('Company description text'),
+  });
+  export type DescriptionList = z.infer<typeof DescriptionListSchema>;
 
-  export interface JobFunction {
-    name: string;
-    department: string;
-  }
+  export const CodeSchema = z.object({
+    id: z.string().describe('Code identifier'),
+    name: z.string().describe('Code name or description'),
+  });
+  export type Code = z.infer<typeof CodeSchema>;
 
-  export interface Education {
-    school: string;
-    educationDegree: EducationDegree;
-  }
+  export const CompanySchema = z.object({
+    id: z.number().describe('ZoomInfo unique identifier for the company'),
+    name: z.string().describe('Name of the company'),
+    type: z.string().describe('Type of company'),
+    division: z.string().describe('Division of the company'),
+    descriptionList: z
+      .array(DescriptionListSchema)
+      .describe('List of company descriptions'),
+    phone: z.string().describe('Phone number of the company headquarters'),
+    fax: z.string().describe('Fax number of the company headquarters'),
+    street: z.string().describe('Street of the company primary address'),
+    city: z.string().describe('City of the company primary address'),
+    state: z.string().describe('State or province of the company'),
+    zipCode: z
+      .string()
+      .describe('Zip or postal code of the company primary address'),
+    country: z.string().describe('Country of the company primary address'),
+    logo: z.string().describe('URL to company logo'),
+    sicCodes: z
+      .array(CodeSchema)
+      .describe('SIC (Standard Industrial Classification) codes'),
+    naicsCodes: z
+      .array(CodeSchema)
+      .describe('NAICS (North American Industry Classification System) codes'),
+    website: z.string().describe('Website URL of the company'),
+    revenue: z.string().describe('Annual revenue of the company'),
+    revenueNumeric: z.number().describe('Annual revenue as a numeric value'),
+    employeeCount: z.number().describe('Number of employees at the company'),
+    ticker: z.string().describe('Stock ticker symbol of the company'),
+    ranking: z.array(z.string()).describe('Company rankings'),
+    socialMediaUrls: z
+      .array(z.any())
+      .describe('Social media URLs for the company'),
+    primaryIndustry: z
+      .array(z.string())
+      .describe('Primary industry classifications'),
+    industries: z
+      .array(z.string())
+      .describe('Industries the company operates in'),
+    revenueRange: z.string().describe('Range of the company revenue'),
+    employeeRange: z.string().describe('Range of the company employee count'),
+  });
+  export type Company = z.infer<typeof CompanySchema>;
 
-  export interface EducationDegree {
-    degree: string;
-    areaOfStudy: string;
-  }
+  export const EnrichedContactSchema = z.object({
+    id: z.number().describe('ZoomInfo unique identifier for the contact'),
+    firstName: z.string().describe('First name of the contact'),
+    middleName: z.string().describe('Middle name of the contact'),
+    lastName: z.string().describe('Last name of the contact'),
+    email: z.string().describe('Email address of the contact'),
+    hasCanadianEmail: z
+      .string()
+      .describe('Whether the contact has a Canadian email address'),
+    phone: z.string().describe('Phone number of the contact'),
+    directPhoneDoNotCall: z
+      .boolean()
+      .describe('Indicates if direct phone is on a do-not-call list'),
+    street: z.string().describe('Street address of the contact'),
+    city: z.string().describe('City of the contact'),
+    region: z.string().describe('Region where the contact is located'),
+    metroArea: z.string().describe('Metropolitan area of the contact'),
+    zipCode: z.string().describe('Zip or postal code of the contact'),
+    state: z.string().describe('State or province of the contact'),
+    country: z.string().describe('Country of the contact'),
+    personHasMoved: z
+      .string()
+      .describe('Indicates if the person has recently moved'),
+    withinEu: z
+      .boolean()
+      .describe('Whether the contact is within the European Union'),
+    withinCalifornia: z
+      .boolean()
+      .describe('Whether the contact is within California'),
+    withinCanada: z.boolean().describe('Whether the contact is within Canada'),
+    lastUpdatedDate: z
+      .string()
+      .describe('Date the contact information was last updated'),
+    noticeProvidedDate: z
+      .string()
+      .describe('Date notice was provided to the contact'),
+    salutation: z.string().describe('Formal greeting/title of the contact'),
+    suffix: z.string().describe('Name suffix of the contact'),
+    jobTitle: z.string().describe('Job title of the contact'),
+    jobFunction: z
+      .array(JobFunctionSchema)
+      .describe('Job functions of the contact'),
+    education: z
+      .array(EducationSchema)
+      .describe('Educational background of the contact'),
+    hashedEmails: z
+      .array(z.string())
+      .describe('Hashed email addresses for the contact'),
+    picture: z.string().describe('URL to a picture of the contact'),
+    mobilePhoneDoNotCall: z
+      .boolean()
+      .describe('Indicates if mobile phone is on a do-not-call list'),
+    externalUrls: z
+      .array(ExternalUrlSchema)
+      .describe('URLs to external profiles'),
+    contactAccuracyScore: z
+      .number()
+      .describe('Accuracy score for the contact data'),
+    isDefunct: z.boolean().describe('Whether the contact is defunct'),
+    employmentHistory: z
+      .array(EmploymentHistorySchema)
+      .describe('Employment history of the contact'),
+    managementLevel: z
+      .array(z.string())
+      .describe('Management level(s) of the contact'),
+    locationCompanyId: z.number().describe('ID of the company location'),
+    company: CompanySchema.describe('Current company information'),
+  });
+  export type EnrichedContact = z.infer<typeof EnrichedContactSchema>;
 
-  export interface ExternalUrl {
-    type: string;
-    url: string;
-  }
+  export const EnrichContactResponseSchema = z.object({
+    success: z.boolean().describe('Indicates if the request was successful'),
+    data: z
+      .object({
+        outputFields: z
+          .array(z.array(z.string()))
+          .describe('Output fields returned in the response'),
+        result: z
+          .array(z.lazy(() => EnrichContactResultSchema))
+          .describe('Results of the contact enrichment'),
+      })
+      .describe('Response data'),
+  });
+  export type EnrichContactResponse = z.infer<
+    typeof EnrichContactResponseSchema
+  >;
 
-  export interface EmploymentHistory {
-    jobTitle: string;
-    managementLevel: string[];
-    fromDate: string;
-    toDate: string;
-    company: {
-      companyId: number;
-      companyName: string;
-      companyPhone?: string;
-      companyWebsite?: string;
-    };
-  }
+  // Define EnrichContactResultSchema after EnrichedContactSchema
+  EnrichContactResultSchema = z.object({
+    input: z
+      .record(z.any())
+      .optional()
+      .describe('Input parameters used for the enrichment request'),
+    data: z
+      .array(EnrichedContactSchema)
+      .describe('Array of enriched contact data'),
+    matchStatus: MatchStatusSchema.optional(),
+  });
+  export type EnrichContactResult = z.infer<typeof EnrichContactResultSchema>;
 
-  export interface Company {
-    id: number;
-    name: string;
-    type: string;
-    division: string;
-    descriptionList: DescriptionList[];
-    phone: string;
-    fax: string;
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-    logo: string;
-    sicCodes: Code[];
-    naicsCodes: Code[];
-    website: string;
-    revenue: string;
-    revenueNumeric: number;
-    employeeCount: number;
-    ticker: string;
-    ranking: string[];
-    socialMediaUrls: any[];
-    primaryIndustry: string[];
-    industries: string[];
-    revenueRange: string;
-    employeeRange: string;
-  }
-
-  export interface DescriptionList {
-    description: string;
-  }
-
-  export interface Code {
-    id: string;
-    name: string;
-  }
-
-  export interface EnrichCompanyResponse {
-    success: boolean;
-    data: {
-      outputFields: string[][];
-      result: EnrichCompanyResult[];
-    };
-  }
-
-  export interface EnrichCompanyResult {
-    input: Partial<EnrichCompanyOptions>;
-    data: EnrichedCompany[];
-    matchStatus?: MatchStatus;
-  }
-
+  // Use a type definition rather than Zod schema for EnrichedCompany due to its complexity
   export interface EnrichedCompany {
     id: number;
     ticker: string;
     name: string;
     website: string;
-    domainList: string[];
-    logo: string;
-    socialMediaUrls: SocialMediaUrl[];
-    revenue: number;
-    employeeCount: number;
-    numberOfContactsInZoomInfo: number;
-    phone: string;
-    fax: string;
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-    continent: string;
-    companyStatus: string;
-    companyStatusDate: string;
-    descriptionList: DescriptionList[];
-    sicCodes: Code[];
-    naicsCodes: Code[];
-    competitors: Competitor[];
-    ultimateParentId: number;
-    ultimateParentName: string;
-    ultimateParentRevenue: number;
-    ultimateParentEmployees: number;
-    subUnitCodes: any[];
-    subUnitType: string;
-    subUnitIndustries: string[];
-    primaryIndustry: string[];
-    industries: string[];
-    parentId: number;
-    parentName: string;
-    locationCount: number;
-    alexaRank: string;
-    metroArea: string;
-    lastUpdatedDate: string;
-    createdDate: string;
-    certificationDate: string;
-    certified: boolean;
-    hashtags: Hashtag[];
-    products: any[];
-    techAttributes: TechAttribute[];
-    revenueRange: string;
-    employeeRange: string;
-    companyFunding: CompanyFunding[];
-    recentFundingAmount: number;
-    recentFundingDate: string;
-    totalFundingAmount: number;
-    employeeGrowth: EmployeeGrowth;
+    // ... other fields
   }
 
-  export interface SocialMediaUrl {
-    type: string;
-    url: string;
-    followerCount: string;
-  }
+  export const EnrichCompanyResponseSchema = z.object({
+    success: z.boolean().describe('Indicates if the request was successful'),
+    data: z
+      .object({
+        outputFields: z
+          .array(z.array(z.string()))
+          .describe('Output fields returned in the response'),
+        result: z
+          .array(z.lazy(() => EnrichCompanyResultSchema))
+          .describe('Results of the company enrichment'),
+      })
+      .describe('Response data'),
+  });
+  export type EnrichCompanyResponse = z.infer<
+    typeof EnrichCompanyResponseSchema
+  >;
 
-  export interface DescriptionList {
-    description: string;
-  }
+  // Define EnrichCompanyResultSchema after EnrichedCompany
+  EnrichCompanyResultSchema = z.object({
+    input: z
+      .record(z.any())
+      .optional()
+      .describe('Input parameters used for the enrichment request'),
+    data: z.array(z.any()).describe('Array of enriched company data'),
+    matchStatus: MatchStatusSchema.optional().describe(
+      'Status of the matching process',
+    ),
+  });
+  export type EnrichCompanyResult = z.infer<typeof EnrichCompanyResultSchema>;
 
-  export interface Competitor {
-    rank: number;
-    id: number;
-    name: string;
-    website: string;
-    employeeCount: number;
-  }
+  export const SearchContactsOptionsSchema = z
+    .object({
+      rpp: z
+        .number()
+        .optional()
+        .describe(
+          'Limits the results returned to the given number of results per page. Default is 25.',
+        ),
+      page: z
+        .number()
+        .optional()
+        .describe(
+          'Provides the results for the given page, used in conjunction with rpp.',
+        ),
+      sortOrder: z
+        .string()
+        .optional()
+        .describe(
+          'Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.',
+        ),
+      sortBy: z
+        .string()
+        .optional()
+        .describe(
+          'Sort results by valid output fields: firstName, lastName, title, companyName, email, personId, dateCreated, lastUpdatedDate.',
+        ),
+      personId: z
+        .string()
+        .optional()
+        .describe('ZoomInfo unique identifier for the contact.'),
+      emailAddress: z
+        .string()
+        .optional()
+        .describe(
+          'Complete email address of the contact in the format username@domain.',
+        ),
+      hashedEmail: z.string().optional().describe('SHA-256 hashed email.'),
+      fullName: z
+        .string()
+        .optional()
+        .describe(
+          'First and last name of the contact in the format: First Last.',
+        ),
+      firstName: z.string().optional().describe('First name of the contact.'),
+      lastName: z.string().optional().describe('Last name of the contact.'),
+      jobTitle: z.string().optional().describe('Title of the contact.'),
+      jobFunction: z
+        .string()
+        .optional()
+        .describe('Function that the contact performs at the company.'),
+      managementLevel: z
+        .string()
+        .optional()
+        .describe('Management level of the contact within their company.'),
+      personDepartment: z
+        .string()
+        .optional()
+        .describe('Department that the contact belongs to.'),
+      phone: z
+        .string()
+        .optional()
+        .describe('Direct phone number of the contact.'),
+      mobilePhone: z
+        .string()
+        .optional()
+        .describe('Mobile phone number of the contact.'),
+      externalUrl: z
+        .string()
+        .optional()
+        .describe('External URL associated with the contact.'),
+      lastUpdatedDateAfter: z
+        .string()
+        .optional()
+        .describe(
+          "The date after which the contact's profile was last updated in YYYY-MM-DD format.",
+        ),
+      validDateAfter: z
+        .string()
+        .optional()
+        .describe(
+          "The date after which the contact's profile was last validated in YYYY-MM-DD format.",
+        ),
+      lastUpdatedInMonths: z
+        .number()
+        .optional()
+        .describe(
+          "Number of months within which the contact's profile was last updated.",
+        ),
+      hasBeenNotified: z
+        .string()
+        .optional()
+        .describe(
+          "Contacts who have been notified of inclusion in ZoomInfo's database. Values are exclude, include, and only.",
+        ),
+      companyPastOrPresent: z
+        .string()
+        .optional()
+        .describe(
+          "Returns companies based on a contact's work history. Values are present (default), past, and pastAndPresent.",
+        ),
+      school: z
+        .string()
+        .optional()
+        .describe('Contact educational institution.'),
+      degree: z.string().optional().describe('Contact education degree.'),
+      locationCompanyId: z
+        .array(z.string())
+        .optional()
+        .describe("Searches by contact's location IDs."),
+      companyId: z
+        .string()
+        .optional()
+        .describe(
+          'ZoomInfo unique identifier for the company. Will accept a comma-separated list.',
+        ),
+      companyName: z
+        .string()
+        .optional()
+        .describe(
+          'Company name. Can use OR and NOT operators to include or exclude companies by name.',
+        ),
+      companyWebsite: z
+        .string()
+        .optional()
+        .describe(
+          'URL to the company website in http://www.example.com format.',
+        ),
+      companyTicker: z
+        .array(z.string())
+        .optional()
+        .describe('Company stock ticker symbol.'),
+      companyDescription: z
+        .string()
+        .optional()
+        .describe(
+          'Text description unique to the company you want to use as search criteria.',
+        ),
+      parentId: z
+        .string()
+        .optional()
+        .describe('ZoomInfo Company ID for parent company.'),
+      ultimateParentId: z
+        .string()
+        .optional()
+        .describe('ZoomInfo Company ID for ultimate parent company.'),
+      companyType: z
+        .string()
+        .optional()
+        .describe('Company type (private, public, and so on).'),
+      address: z.string().optional().describe('Company address.'),
+      street: z.string().optional().describe('Company street.'),
+      state: z
+        .string()
+        .optional()
+        .describe('Company state (U.S.) or province (Canada).'),
+      zipCode: z
+        .string()
+        .optional()
+        .describe("Zip Code of the company's primary address."),
+      country: z
+        .string()
+        .optional()
+        .describe("Country for the company's primary address."),
+      continent: z
+        .string()
+        .optional()
+        .describe("Continent for the company's primary address."),
+      zipCodeRadiusMiles: z
+        .string()
+        .optional()
+        .describe(
+          'Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.',
+        ),
+      hashTagString: z
+        .string()
+        .optional()
+        .describe(
+          'Hash tags for a company. Can include a comma-separated list.',
+        ),
+      techAttributeTagList: z
+        .string()
+        .optional()
+        .describe('Specify technology product tags.'),
+      subUnitTypes: z
+        .string()
+        .optional()
+        .describe('Company sub types (e.g., division, subsidiary and so on).'),
+      primaryIndustriesOnly: z
+        .boolean()
+        .optional()
+        .describe(
+          'Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry.',
+        ),
+      industryCodes: z
+        .string()
+        .optional()
+        .describe('Top-level industry that the contact works in.'),
+      industryKeywords: z
+        .string()
+        .optional()
+        .describe('Industry keywords associated with a company.'),
+      sicCodes: z
+        .string()
+        .optional()
+        .describe(
+          'The Standard Industrial Classification is a system for classifying industries by a four-digit code.',
+        ),
+      naicsCodes: z
+        .string()
+        .optional()
+        .describe(
+          'The North American Industry Classification System (NAICS) code.',
+        ),
+      revenueMin: z
+        .number()
+        .optional()
+        .describe('Minimum annual revenue for a company in U.S. dollars.'),
+      revenueMax: z
+        .number()
+        .optional()
+        .describe('Maximum annual revenue for a company in U.S. dollars.'),
+      revenue: z
+        .string()
+        .optional()
+        .describe('Annual revenue range in U.S. dollars.'),
+      employeeRangeMin: z
+        .string()
+        .optional()
+        .describe('Minimum employee count for a company.'),
+      employeeRangeMax: z
+        .string()
+        .optional()
+        .describe('Maximum employee count for a company.'),
+      employeeCount: z.string().optional().describe('Employee count range.'),
+      companyRanking: z
+        .string()
+        .optional()
+        .describe('Company ranking list (e.g., Fortune 500 and so on).'),
+      metroRegion: z.string().optional().describe('Company metro area.'),
+      locationSearchType: z
+        .string()
+        .optional()
+        .describe(
+          'Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.',
+        ),
+      fundingAmountMin: z
+        .number()
+        .optional()
+        .describe('Minimum funding amount in thousands.'),
+      fundingAmountMax: z
+        .number()
+        .optional()
+        .describe('Maximum funding amount in thousands.'),
+      fundingStartDate: z
+        .string()
+        .optional()
+        .describe('Start date of the funding in YYYY-MM-DD format.'),
+      fundingEndDate: z
+        .string()
+        .optional()
+        .describe('End date of the funding in YYYY-MM-DD format.'),
+      excludedRegions: z
+        .string()
+        .optional()
+        .describe('Exclude a company metro area.'),
+      zoominfoContactsMin: z
+        .string()
+        .optional()
+        .describe(
+          'Minimum number of ZoomInfo contacts associated with company.',
+        ),
+      zoominfoContactsMax: z
+        .string()
+        .optional()
+        .describe(
+          'Maximum number of ZoomInfo contacts associated with company.',
+        ),
+      companyStructureIncludedSubUnitTypes: z
+        .string()
+        .optional()
+        .describe('Company hierarchical structure.'),
+      oneYearEmployeeGrowthRateMin: z
+        .string()
+        .optional()
+        .describe('Minimum one year employee growth rate for a company.'),
+      oneYearEmployeeGrowthRateMax: z
+        .string()
+        .optional()
+        .describe('Maximum one year employee growth rate for a company.'),
+      twoYearEmployeeGrowthRateMin: z
+        .string()
+        .optional()
+        .describe('Minimum two year employee growth rate for a company.'),
+      twoYearEmployeeGrowthRateMax: z
+        .string()
+        .optional()
+        .describe('Maximum two year employee growth rate for a company.'),
+      positionStartDateMin: z
+        .string()
+        .optional()
+        .describe('Minimum date for when a contact began current employment.'),
+      positionStartDateMax: z
+        .string()
+        .optional()
+        .describe('Maximum date for when a contact began current employment.'),
+      webReferences: z
+        .array(z.string())
+        .optional()
+        .describe('List of web references for a contact.'),
+      filterByBuyingCommittee: z
+        .boolean()
+        .optional()
+        .describe('Boolean flag for Buying Committee.'),
+      techSkills: z
+        .array(z.string())
+        .optional()
+        .describe('List of technology skills for a contact.'),
+      yearsOfExperience: z
+        .string()
+        .optional()
+        .describe('Years of overall experience.'),
+      engagementStartDate: z
+        .string()
+        .optional()
+        .describe('Engagement start date in YYYY-MM-DD format.'),
+      engagementEndDate: z
+        .string()
+        .optional()
+        .describe('Engagement end date in YYYY-MM-DD format.'),
+      engagementType: z
+        .array(z.string())
+        .optional()
+        .describe('List of engagement types to search for.'),
+    })
+    .strict();
+  export type SearchContactsOptions = z.infer<
+    typeof SearchContactsOptionsSchema
+  >;
 
-  export interface Hashtag {
-    tag: string;
-    external_id: any;
-    searchString: string;
-    displayLabel: string;
-    description: string;
-    group: string;
-    score: any;
-    priority?: number;
-    parentCategory: string;
-    displayScore: string;
-    inverseScoreBase?: number;
-    scoreMultipler: any;
-    scoreUnit: string;
-    hidden: boolean;
-    label: string;
-    categorizedFlag: boolean;
-  }
+  export const SearchCompaniesOptionsSchema = z
+    .object({
+      rpp: z
+        .number()
+        .optional()
+        .describe(
+          'Limits the results returned to the given number of results per page. Default is 25.',
+        ),
+      page: z
+        .number()
+        .optional()
+        .describe(
+          'Provides the results for the given page, used in conjunction with rpp',
+        ),
+      sortOrder: z
+        .string()
+        .optional()
+        .describe(
+          'Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.',
+        ),
+      sortBy: z
+        .string()
+        .optional()
+        .describe(
+          'Sort results by valid output fields: name, employeeCount, revenue',
+        ),
+      companyId: z
+        .string()
+        .optional()
+        .describe(
+          'ZoomInfo unique identifier for the company. Will accept-comma-separated list.',
+        ),
+      companyName: z.string().optional().describe('Company name'),
+      companyWebsite: z
+        .string()
+        .optional()
+        .describe(
+          'URL to the company website in http://www.example.com format',
+        ),
+      companyDescription: z
+        .string()
+        .optional()
+        .describe(
+          'Text description unique to the company you want to use as search criteria',
+        ),
+      parentId: z
+        .string()
+        .optional()
+        .describe('ZoomInfo Company ID for parent company'),
+      ultimateParentId: z
+        .string()
+        .optional()
+        .describe('ZoomInfo Company ID for ultimate parent company'),
+      companyTicker: z
+        .array(z.string())
+        .optional()
+        .describe('Company stock ticker symbol'),
+      companyType: z
+        .string()
+        .optional()
+        .describe(
+          'Company type (private, public, and so on). See the Company Type lookup endpoint for values.',
+        ),
+      businessModel: z
+        .array(z.string())
+        .optional()
+        .describe(
+          'Search using Business Model (B2C, B2B, B2G) for a company. Default is All',
+        ),
+      address: z.string().optional().describe('Company address'),
+      street: z.string().optional().describe('Company street'),
+      state: z
+        .string()
+        .optional()
+        .describe('Company state (U.S.) or province (Canada)'),
+      zipCode: z
+        .string()
+        .optional()
+        .describe("Zip Code of the company's primary address."),
+      country: z
+        .string()
+        .optional()
+        .describe("Country for the company's primary address"),
+      continent: z
+        .string()
+        .optional()
+        .describe("Continent for the company's primary address"),
+      zipCodeRadiusMiles: z
+        .string()
+        .optional()
+        .describe(
+          'Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.',
+        ),
+      hashTagString: z
+        .string()
+        .optional()
+        .describe(
+          'Hash tags for a company. Can include a comma-separated list.',
+        ),
+      techAttributeTagList: z
+        .string()
+        .optional()
+        .describe('Specify technology product tags'),
+      subUnitTypes: z
+        .string()
+        .optional()
+        .describe('Company sub types (e.g., division, subsidiary and so on)'),
+      primaryIndustriesOnly: z
+        .boolean()
+        .optional()
+        .describe(
+          'Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry.',
+        ),
+      industryCodes: z
+        .string()
+        .optional()
+        .describe('Top-level Industry that the contact works in'),
+      industryKeywords: z
+        .string()
+        .optional()
+        .describe('Industry keywords associated with a company'),
+      sicCodes: z
+        .string()
+        .optional()
+        .describe(
+          'The Standard Industrial Classification is a system for classifying industries by a four-digit code',
+        ),
+      naicsCodes: z
+        .string()
+        .optional()
+        .describe(
+          'The North American Industry Classification System (NAICS) code',
+        ),
+      revenueMin: z
+        .number()
+        .optional()
+        .describe('Minimum annual revenue for a company in U.S. dollars'),
+      revenueMax: z
+        .number()
+        .optional()
+        .describe('Maximum annual revenue for a company in U.S. dollars'),
+      revenue: z
+        .string()
+        .optional()
+        .describe('Annual revenue range in U.S. dollars'),
+      employeeRangeMin: z
+        .string()
+        .optional()
+        .describe('Minimum employee count for a company'),
+      employeeRangeMax: z
+        .string()
+        .optional()
+        .describe('Maximum employee count for a company'),
+      employeeCount: z.string().optional().describe('Employee count range'),
+      companyRanking: z
+        .string()
+        .optional()
+        .describe('Company ranking list (e.g., Fortune 500 and so on)'),
+      metroRegion: z.string().optional().describe('Company metro area'),
+      locationSearchType: z
+        .string()
+        .optional()
+        .describe(
+          'Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.',
+        ),
+      fundingAmountMin: z
+        .number()
+        .optional()
+        .describe('Minimum funding amount in thousands'),
+      fundingAmountMax: z
+        .number()
+        .optional()
+        .describe('Maximum funding amount in thousands'),
+      fundingStartDate: z
+        .string()
+        .optional()
+        .describe('Start date of the funding in YYYY-MM-DD format'),
+      fundingEndDate: z
+        .string()
+        .optional()
+        .describe('End date of the funding in YYYY-MM-DD format'),
+      excludedRegions: z
+        .string()
+        .optional()
+        .describe('Exclude a company metro area'),
+      zoominfoContactsMin: z
+        .string()
+        .optional()
+        .describe(
+          'Minimum number of ZoomInfo contacts associated with company',
+        ),
+      zoominfoContactsMax: z
+        .string()
+        .optional()
+        .describe(
+          'Maximum number of ZoomInfo contacts associated with company',
+        ),
+      companyStructureIncludedSubUnitTypes: z
+        .string()
+        .optional()
+        .describe('Company hierarchical structure'),
+      certified: z
+        .number()
+        .optional()
+        .describe(
+          "Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months",
+        ),
+      excludeDefunctCompanies: z
+        .boolean()
+        .optional()
+        .describe(
+          'Include or exclude defunct companies. The default value is false.',
+        ),
+      oneYearEmployeeGrowthRateMin: z
+        .string()
+        .optional()
+        .describe('Minimum one year employee growth rate for a company'),
+      oneYearEmployeeGrowthRateMax: z
+        .string()
+        .optional()
+        .describe('Maximum one year employee growth rate for a company'),
+      twoYearEmployeeGrowthRateMin: z
+        .string()
+        .optional()
+        .describe('Minimum two year employee growth rate for a company'),
+      twoYearEmployeeGrowthRateMax: z
+        .string()
+        .optional()
+        .describe('Maximum two year employee growth rate for a company'),
+      engagementStartDate: z
+        .string()
+        .optional()
+        .describe('Engagement start date in YYYY-MM-DD format'),
+      engagementEndDate: z
+        .string()
+        .optional()
+        .describe('Engagement end date in YYYY-MM-DD format'),
+      engagementType: z
+        .array(z.string())
+        .optional()
+        .describe('List of engagement types to search for'),
+    })
+    .strict();
+  export type SearchCompaniesOptions = z.infer<
+    typeof SearchCompaniesOptionsSchema
+  >;
 
-  export interface TechAttribute {
-    tag: string;
-    categoryParent: string;
-    category: string;
-    vendor: string;
-    product: string;
-    attribute: string;
-    website: string;
-    logo?: string;
-    domain?: string;
-    createdTime: string;
-    modifiedTime: string;
-    description: string;
-  }
-
-  export interface CompanyFunding {
-    date: string;
-    type: string;
-    amount: number;
-  }
-
-  export interface EmployeeGrowth {
-    oneYearGrowthRate: string;
-    twoYearGrowthRate: string;
-    employeeGrowthDataPoints: EmployeeGrowthDataPoint[];
-  }
-
-  export interface EmployeeGrowthDataPoint {
-    label: string;
-    employeeCount: number;
-  }
-
-  export interface SearchContactsOptions {
-    /**
-     * Limits the results returned to the given number of results per page. Default is 25.
-     */
-    rpp?: number;
-    /**
-     * Provides the results for the given page, used in conjunction with rpp
-     */
-    page?: number;
-    /**
-     * Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
-     */
-    sortOrder?: string;
-    /**
-     * Sort results by valid output fields: contactAccuracyScore, lastName, companyName, hierarchy, sourceCount, lastMentioned, relevance
-     */
-    sortBy?: string;
-    /**
-     * Unique ZoomInfo identifier for the contact. Can include a comma-separated list.
-     */
-    personId?: string;
-    /**
-     * Work email address for the contact in example@example.com format
-     */
-    emailAddress?: string;
-    /**
-     * Supplemental email address for the contact in example@example.com format
-     */
-    supplementalEmail?: string[];
-    /**
-     * Hashed email value for the contact. Allows searching via an email address with the extra security of not exposing the email. Supported hash algorithms are: MD5, SHA1, SHA256 and SHA512.
-     */
-    hashedEmail?: string;
-    /**
-     * List of person phones or mobile numbers. Here's an example list - any of the following phone number formats are acceptable: ["(123)-456-7890", "1234567890", "123 456 7890", "123-445-7890"]. Alphabetical characters are not allowed.
-     */
-    phone?: string[];
-    /**
-     * Contact full name
-     */
-    fullName?: string;
-    /**
-     * Contact first name
-     */
-    firstName?: string;
-    /**
-     * Contact middle initial
-     */
-    middleInitial?: string;
-    /**
-     * Contact last name
-     */
-    lastName?: string;
-    /**
-     * Contact title at current place of employment. Use OR to input multiple job titles.
-     */
-    jobTitle?: string;
-    /**
-     * Exclude comma-separated list of job titles
-     */
-    excludeJobTitle?: string;
-    /**
-     * Contact management level at current place of employment. See the Management Levels lookup endpoint for values.
-     */
-    managementLevel?: string;
-    /**
-     * Exclude contact based on management level. See the Management Levels lookup endpoint for values.
-     */
-    excludeManagementLevel?: string;
-    /**
-     * Contact department at current place of employment. See the Contact Departments lookup endpoint for values.
-     */
-    department?: string;
-    /**
-     * Exclude or include board members from search results. By default, the API includes board members in results. See the Board Members lookup endpoint for values.
-     */
-    boardMember?: string;
-    /**
-     * Contacts who do not have an active company associated with them are considered partial profiles. Exclude contacts with a partial profile from search results.
-     */
-    excludePartialProfiles?: boolean;
-    /**
-     * Return only executives
-     */
-    executivesOnly?: boolean;
-    /**
-     * Specify a list of required fields for each record returned. Can include email, phone (direct or company), directPhone, personalEmail, and mobilePhone. Can include a comma-separated list of these fields. For example, requiring direct phone (directPhone) will only return contacts which have the Direct Phone Number field populated.
-     */
-    requiredFields?: string;
-    /**
-     * Minimum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
-     */
-    contactAccuracyScoreMin?: string;
-    /**
-     * Maximum accuracy score for search results. This score indicates the likelihood that a contact is reachable and still employed by the company listed. Minimum score is 70 and maximum is 99.
-     */
-    contactAccuracyScoreMax?: string;
-    /**
-     * Contact job function at their current place of employment. See the Job Function lookup endpoint for values.
-     */
-    jobFunction?: string;
-    /**
-     * The date after which the contact's profile was last updated in YYYY-MM-DD format
-     */
-    lastUpdatedDateAfter?: string;
-    /**
-     * The date after which the contact's profile was last validated in YYYY-MM-DD format
-     */
-    validDateAfter?: string;
-    /**
-     * Number of months within which the contact's profile was last updated. For example, if lastUpdatedinMonths is 12 only contacts that were updated in the last 12 months will be returned.
-     */
-    lastUpdatedInMonths?: number;
-    /**
-     * Contacts who have been notified of inclusion in ZoomInfo's database. Values are exclude, include, and only.
-     */
-    hasBeenNotified?: string;
-    /**
-     * Returns companies based on a contact's work history. Values are present (default), past, and pastAndPresent.
-     */
-    companyPastOrPresent?: string;
-    /**
-     * Contact educational institution
-     */
-    school?: string;
-    /**
-     * Contact education degree
-     */
-    degree?: string;
-    /**
-     * Searches by contact's location IDs. Use the Location Enrich endpoint to obtain a list of location IDs for a company.
-     */
-    locationCompanyId?: string[];
-    /**
-     * ZoomInfo unique identifier for the company. Will accept a comma-separated list.
-     */
-    companyId?: string;
-    /**
-     * Company name. Can use OR and NOT operators to include or exclude companies by name. For example, "Vodaphone OR Comcast NOT Verizon"
-     */
-    companyName?: string;
-    /**
-     * URL to the company website in http://www.example.com format
-     */
-    companyWebsite?: string;
-    /**
-     * Company stock ticker symbol
-     */
-    companyTicker?: string[];
-    /**
-     * Text description unique to the company you want to use as search criteria
-     */
-    companyDescription?: string;
-    /**
-     * ZoomInfo Company ID for parent company
-     */
-    parentId?: string;
-    /**
-     * ZoomInfo Company ID for ultimate parent company
-     */
-    ultimateParentId?: string;
-    /**
-     * Company type (private, public, and so on). See the Company Type lookup endpoint for values.
-     */
-    companyType?: string;
-    /**
-     * Company address
-     */
-    address?: string;
-    /**
-     * Company street
-     */
-    street?: string;
-    /**
-     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint.
-     */
-    state?: string;
-    /**
-     * Zip Code of the company's primary address.
-     */
-    zipCode?: string;
-    /**
-     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values.
-     */
-    country?: string;
-    /**
-     * Continent for the company's primary address. See the Continent lookup endpoint for values.
-     */
-    continent?: string;
-    /**
-     * Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
-     */
-    zipCodeRadiusMiles?: string;
-    /**
-     * Hash tags for a company. Can include a comma-separated list.
-     */
-    hashTagString?: string;
-    /**
-     * Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\\\*, \\\\\\*.202.\\\\\\*, and so on).
-     */
-    techAttributeTagList?: string;
-    /**
-     * Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
-     */
-    subUnitTypes?: string;
-    /**
-     * Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
-     */
-    primaryIndustriesOnly?: boolean;
-    /**
-     * Top-level industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
-     */
-    industryCodes?: string;
-    /**
-     * Industry keywords associated with a company. Can include a comma-separated list.
-     */
-    industryKeywords?: string;
-    /**
-     * The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
-     */
-    sicCodes?: string;
-    /**
-     * The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
-     */
-    naicsCodes?: string;
-    /**
-     * Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-     */
-    revenueMin?: number;
-    /**
-     * Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-     */
-    revenueMax?: number;
-    /**
-     * Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
-     */
-    revenue?: string;
-    /**
-     * Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-     */
-    employeeRangeMin?: string;
-    /**
-     * Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-     */
-    employeeRangeMax?: string;
-    /**
-     * Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
-     */
-    employeeCount?: string;
-    /**
-     * Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
-     */
-    companyRanking?: string;
-    /**
-     * Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-     */
-    metroRegion?: string;
-    /**
-     * Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
-     */
-    locationSearchType?: string;
-    /**
-     * Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
-     */
-    fundingAmountMin?: number;
-    /**
-     * Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
-     */
-    fundingAmountMax?: number;
-    /**
-     * Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-     */
-    fundingStartDate?: string;
-    /**
-     * End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-     */
-    fundingEndDate?: string;
-    /**
-     * Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-     */
-    excludedRegions?: string;
-    /**
-     * Minimum number of ZoomInfo contacts associated with company
-     */
-    zoominfoContactsMin?: string;
-    /**
-     * Maximum number of ZoomInfo contacts associated with company
-     */
-    zoominfoContactsMax?: string;
-    /**
-     * Company hierarchical structure
-     */
-    companyStructureIncludedSubUnitTypes?: string;
-    /**
-     * Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
-     */
-    oneYearEmployeeGrowthRateMin?: string;
-    /**
-     * Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
-     */
-    oneYearEmployeeGrowthRateMax?: string;
-    /**
-     * Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
-     */
-    twoYearEmployeeGrowthRateMin?: string;
-    /**
-     * Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
-     */
-    twoYearEmployeeGrowthRateMax?: string;
-    /**
-     * Minimum date for when a contact began current employment. Use with positionStartDateMax to set a range.
-     */
-    positionStartDateMin?: string;
-    /**
-     * Maximum date for when a contact began current employment. Use with positionStartDateMin to set a range.
-     */
-    positionStartDateMax?: string;
-    /**
-     * List of web references for a contact. Default criteria is OR between multiple values. Should only contain english letters and numbers.
-     */
-    webReferences?: string[];
-    /**
-     * Boolean flag for Buying Committee. Setting this to TRUE will filter the results based on the Buying Committees set for the account. Default is FALSE.
-     */
-    filterByBuyingCommittee?: boolean;
-    /**
-     * List of technology skills for a contact. Default criteria is OR between multiple values. Should only contain string numbers
-     */
-    techSkills?: string[];
-    /**
-     * Years of overall experience. Must be a comma-separated string of values. See the Years of Experience lookup endpoint for values.
-     */
-    yearsOfExperience?: string;
-    /**
-     * Engagement start date in YYYY-MM-DD format.
-     */
-    engagementStartDate?: string;
-    /**
-     * Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
-     */
-    engagementEndDate?: string;
-    /**
-     * List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
-     */
-    engagementType?: string[];
-  }
-
-  export interface SearchCompaniesOptions {
-    /**
-     * Limits the results returned to the given number of results per page. Default is 25.
-     */
-    rpp?: number;
-    /**
-     * Provides the results for the given page, used in conjunction with rpp
-     */
-    page?: number;
-    /**
-     * Provide sortBy if specifying sortOrder. Valid values are asc, ascending, desc, and descending. By default, results are sorted in descending order.
-     */
-    sortOrder?: string;
-    /**
-     * Sort results by valid output fields: name, employeeCount, revenue
-     */
-    sortBy?: string;
-    /**
-     * ZoomInfo unique identifier for the company. Will accept-comma-separated list.
-     */
-    companyId?: string;
-    /**
-     * Company name
-     */
-    companyName?: string;
-    /**
-     * URL to the company website in http://www.example.com format
-     */
-    companyWebsite?: string;
-    /**
-     * Text description unique to the company you want to use as search criteria
-     */
-    companyDescription?: string;
-    /**
-     * ZoomInfo Company ID for parent company
-     */
-    parentId?: string;
-    /**
-     * ZoomInfo Company ID for ultimate parent company
-     */
-    ultimateParentId?: string;
-    /**
-     * Company stock ticker symbol
-     */
-    companyTicker?: string[];
-    /**
-     * Company type (private, public, and so on). See the Company Type lookup endpoint for values.
-     */
-    companyType?: string;
-    /**
-     * Search using Business Model (B2C, B2B, B2G) for a company. Default is All
-     */
-    businessModel?: string[];
-    /**
-     * Company address
-     */
-    address?: string;
-    /**
-     * Company street
-     */
-    street?: string;
-    /**
-     * Company state (U.S.) or province (Canada). You can use free text state or province names (e.g., "new hampshire"), the two-letter common abbreviation for a U.S. state (e.g., "nh"), or values provided in the State lookup endpoint. Do not use state in conjunction with country in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
-     */
-    state?: string;
-    /**
-     * Zip Code of the company's primary address.
-     */
-    zipCode?: string;
-    /**
-     * Country for the company's primary address. You can use free text or see the Country lookup endpoint for values. Do not use country in conjunction with state in a search request, as the system uses OR logic between these two fields. If both are included in the request, the returned results will reflect all states.
-     */
-    country?: string;
-    /**
-     * Continent for the company's primary address. See the Continent lookup endpoint for values.
-     */
-    continent?: string;
-    /**
-     * Used in conjunction with zipCode, designates a geographical radius (in miles) from the zipCode provided.
-     */
-    zipCodeRadiusMiles?: string;
-    /**
-     * Hash tags for a company. Can include a comma-separated list.
-     */
-    hashTagString?: string;
-    /**
-     * Specify technology product tags. See the Tech - Product lookup endpoint for values. This string uses a numerical dot notation format similar to an IP address. The notation denotes the hierarchical structure: parent-category.category.vendor. For example, 333.202.28. You can use wildcards in the notation (e.g., 333.202.\\\\*, \\\\*.202.\\\\*, and so on).
-     */
-    techAttributeTagList?: string;
-    /**
-     * Company sub types (e.g., division, subsidiary and so on). See the Sub Unit Type lookup endpoint for values.
-     */
-    subUnitTypes?: string;
-    /**
-     * Used in conjunction with the industryCodes input parameter. When set to true, any result returned must have one of the specified industries as a primary industry. If no industries are specified, then this parameter will be ignored. Default is false.
-     */
-    primaryIndustriesOnly?: boolean;
-    /**
-     * Top-level Industry that the contact works in. A contact can have multiple top level industries. Tags are based on the contact's current company. Can include a comma-separated list. See the Industry Codes lookup endpoint for values.
-     */
-    industryCodes?: string;
-    /**
-     * Industry keywords associated with a company. Can include either 'AND' or 'OR' operators. For example, 'software AND security' or 'software OR security'.
-     */
-    industryKeywords?: string;
-    /**
-     * The Standard Industrial Classification is a system for classifying industries by a four-digit code. See the SIC Codes lookup endpoint for values.
-     */
-    sicCodes?: string;
-    /**
-     * The North American Industry Classification System (NAICS) is the standard used by Federal statistical agencies in classifying business establishments for the purpose of collecting, analyzing, and publishing statistical data related to the U.S. business economy. See the NAICS Codes lookup endpoint for values.
-     */
-    naicsCodes?: string;
-    /**
-     * Minimum annual revenue for a company in U.S. dollars. Use with revenueMax to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-     */
-    revenueMin?: number;
-    /**
-     * Maximum annual revenue for a company in U.S. dollars. Use with revenueMin to set a range. Alternatively, you can use the revenue parameter to search for pre-defined ranges.
-     */
-    revenueMax?: number;
-    /**
-     * Annual revenue range in U.S. dollars. Accepts a comma-separated list of values. See the Revenue Range lookup endpoint for values. Alternatively, to get more granular ranges, you can use the revenueMin and revenueMax parameters.
-     */
-    revenue?: string;
-    /**
-     * Minimum employee count for a company. Use with employeeRangeMax to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-     */
-    employeeRangeMin?: string;
-    /**
-     * Maximum employee count for a company. Use with employeeRangeMin to set a range. Alternatively, you can use the employeeCount parameter to search for pre-defined ranges.
-     */
-    employeeRangeMax?: string;
-    /**
-     * Employee count range. Accepts a comma-separated list of values. See the Employee Count lookup endpoint for values. Alternatively, to get more granular ranges, you can use the employeeRangeMin and employeeRangeMax parameters.
-     */
-    employeeCount?: string;
-    /**
-     * Company ranking list (e.g., Fortune 500 and so on). See the Company Ranking lookup endpoint for values.
-     */
-    companyRanking?: string;
-    /**
-     * Company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-     */
-    metroRegion?: string;
-    /**
-     * Location criteria for search. Values are PersonOrHQ, PersonAndHQ, Person, HQ, PersonThenHQ.
-     */
-    locationSearchType?: string;
-    /**
-     * Minimum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMin is used without fundingAmountMax, the result will be the amount specified or greater.
-     */
-    fundingAmountMin?: number;
-    /**
-     * Maximum funding amount in thousands (e.g., 1 = 1000, 500 = 500,000). If fundingAmountMax is used without fundingAmountMin, the result will be the amount specified or less.
-     */
-    fundingAmountMax?: number;
-    /**
-     * Start date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-     */
-    fundingStartDate?: string;
-    /**
-     * End date of the funding in YYYY-MM-DD format. If fundingStartDate and fundingEndDate are both specified, they will be used as a range. Start date after end date returns an error. If start date and end date are the same, will return results for exact date.
-     */
-    fundingEndDate?: string;
-    /**
-     * Exclude a company metro area. Accepts a comma-separated list of U.S. and Canada metro areas. See the Metro Area lookup endpoint for values.
-     */
-    excludedRegions?: string;
-    /**
-     * Minimum number of ZoomInfo contacts associated with company
-     */
-    zoominfoContactsMin?: string;
-    /**
-     * Maximum number of ZoomInfo contacts associated with company
-     */
-    zoominfoContactsMax?: string;
-    /**
-     * Company hierarchical structure
-     */
-    companyStructureIncludedSubUnitTypes?: string;
-    /**
-     * Denotes if ZoomInfo's research and data team has confirmed activity within the past 12 months
-     */
-    certified?: number;
-    /**
-     * Include or exclude defunct companies. The default value is false.
-     */
-    excludeDefunctCompanies?: boolean;
-    /**
-     * Minimum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMax to set a range.
-     */
-    oneYearEmployeeGrowthRateMin?: string;
-    /**
-     * Maximum one year employee growth rate for a company. Use with oneYearEmployeeGrowthRateMin to set a range.
-     */
-    oneYearEmployeeGrowthRateMax?: string;
-    /**
-     * Minimum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMax to set a range.
-     */
-    twoYearEmployeeGrowthRateMin?: string;
-    /**
-     * Maximum two year employee growth rate for a company. Use with twoYearEmployeeGrowthRateMin to set a range.
-     */
-    twoYearEmployeeGrowthRateMax?: string;
-    /**
-     * Engagement start date in YYYY-MM-DD format.
-     */
-    engagementStartDate?: string;
-    /**
-     * Engagement end date in YYYY-MM-DD format. EngagementStartDate is required.
-     */
-    engagementEndDate?: string;
-    /**
-     * List of engagement types to search for. Accepted values are a list of email, phone, online meeting.
-     */
-    engagementType?: string[];
-  }
-
-  export interface SearchResult<T> {
-    maxResults: number;
-    totalResults: number;
-    currentPage: number;
+  export const SearchResultSchema = z.object({
+    maxResults: z.number().describe('Maximum number of results available'),
+    totalResults: z.number().describe('Total number of results found'),
+    currentPage: z.number().describe('Current page number'),
+    data: z.array(z.any()).describe('Array of search result data'),
+  });
+  export type SearchResult<T> = z.infer<typeof SearchResultSchema> & {
     data: T[];
-  }
-
-  export type SearchContactsResponse = SearchResult<ContactSearchResult>;
-  export type SearchCompaniesResponse = SearchResult<CompanySearchResult>;
-
-  export interface ContactSearchResult {
-    id: number;
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    validDate: string;
-    lastUpdatedDate: string;
-    jobTitle: string;
-    contactAccuracyScore: number;
-    hasEmail: boolean;
-    hasSupplementalEmail: boolean;
-    hasDirectPhone: boolean;
-    hasMobilePhone: boolean;
-    hasCompanyIndustry: boolean;
-    hasCompanyPhone: boolean;
-    hasCompanyStreet: boolean;
-    hasCompanyState: boolean;
-    hasCompanyZipCode: boolean;
-    hasCompanyCountry: boolean;
-    hasCompanyRevenue: boolean;
-    hasCompanyEmployeeCount: boolean;
-    company: CompanySearchResult;
-  }
-
-  export interface CompanySearchResult {
-    id: number;
-    name: string;
-  }
+  };
 
   export const defaultEnrichContactOutputFields = [
     'id',
@@ -1097,17 +1092,83 @@ export namespace zoominfo {
     'employeeGrowth',
   ] as const;
 
-  export interface UsageResponse {
-    usage: Usage[];
-  }
+  export const UsageSchema = z.object({
+    limitType: z.string().describe('Type of limit being tracked'),
+    description: z.string().describe('Description of the usage limit'),
+    limit: z.number().describe('Maximum allowed usage'),
+    currentUsage: z.number().describe('Current amount used'),
+    usageRemaining: z.number().describe('Remaining amount available'),
+  });
+  export type Usage = z.infer<typeof UsageSchema>;
 
-  export interface Usage {
-    limitType: string;
-    description: string;
-    limit: number;
-    currentUsage: number;
-    usageRemaining: number;
-  }
+  export const UsageResponseSchema = z.object({
+    usage: z.array(UsageSchema).describe('Array of usage information'),
+  });
+  export type UsageResponse = z.infer<typeof UsageResponseSchema>;
+
+  export const ContactSearchResultSchema = z.object({
+    id: z.number().describe('ZoomInfo unique identifier for the contact'),
+    firstName: z.string().describe('First name of the contact'),
+    middleName: z.string().describe('Middle name of the contact'),
+    lastName: z.string().describe('Last name of the contact'),
+    validDate: z
+      .string()
+      .describe('Date when the contact information was last validated'),
+    lastUpdatedDate: z
+      .string()
+      .describe('Date when the contact information was last updated'),
+    jobTitle: z.string().describe('Job title of the contact'),
+    contactAccuracyScore: z
+      .number()
+      .describe('Accuracy score for the contact data'),
+    hasEmail: z.boolean().describe('Whether the contact has an email address'),
+    hasSupplementalEmail: z
+      .boolean()
+      .describe('Whether the contact has a supplemental email address'),
+    hasDirectPhone: z
+      .boolean()
+      .describe('Whether the contact has a direct phone number'),
+    hasMobilePhone: z
+      .boolean()
+      .describe('Whether the contact has a mobile phone number'),
+    hasCompanyIndustry: z
+      .boolean()
+      .describe('Whether company industry information is available'),
+    hasCompanyPhone: z
+      .boolean()
+      .describe('Whether company phone information is available'),
+    hasCompanyStreet: z
+      .boolean()
+      .describe('Whether company street address is available'),
+    hasCompanyState: z
+      .boolean()
+      .describe('Whether company state information is available'),
+    hasCompanyZipCode: z
+      .boolean()
+      .describe('Whether company zip code information is available'),
+    hasCompanyCountry: z
+      .boolean()
+      .describe('Whether company country information is available'),
+    hasCompanyRevenue: z
+      .boolean()
+      .describe('Whether company revenue information is available'),
+    hasCompanyEmployeeCount: z
+      .boolean()
+      .describe('Whether company employee count information is available'),
+    company: z
+      .lazy(() => CompanySearchResultSchema)
+      .describe('Company information for the contact'),
+  });
+  export type ContactSearchResult = z.infer<typeof ContactSearchResultSchema>;
+
+  export const CompanySearchResultSchema = z.object({
+    id: z.number().describe('ZoomInfo unique identifier for the company'),
+    name: z.string().describe('Name of the company'),
+  });
+  export type CompanySearchResult = z.infer<typeof CompanySearchResultSchema>;
+
+  export type SearchContactsResponse = SearchResult<ContactSearchResult>;
+  export type SearchCompaniesResponse = SearchResult<CompanySearchResult>;
 }
 
 /**
@@ -1314,34 +1375,7 @@ personId OR emailAddress OR hashedEmail OR phone. Because these values are uniqu
 firstName AND lastName AND companyId/companyName. Combining these values effectively results in a unique person.
 
 fullName AND companyId/companyName. Combining these values effectively results in a unique person.`,
-    inputSchema: z.object({
-      firstName: z.string().optional().describe('First name of the person.'),
-      lastName: z.string().optional().describe('Last name of the person.'),
-      companyId: z
-        .string()
-        .optional()
-        .describe("Unique ZoomInfo identifier of the person's company."),
-      companyName: z
-        .string()
-        .optional()
-        .describe(
-          'Name of the company where the contact works, or has worked.',
-        ),
-      personId: z
-        .string()
-        .optional()
-        .describe('Unique ZoomInfo identifier of the person.'),
-      emailAddress: z.string().optional(),
-      hashedEmail: z.string().optional(),
-      phone: z.string().optional(),
-      fullName: z.string().optional(),
-      jobTitle: z.string().optional(),
-      externalURL: z.string().optional(),
-      lastUpdatedDateAfter: z.string().optional(),
-      validDateAfter: z.string().optional(),
-      contactAccuracyScoreMin: z.number().optional(),
-      outputFields: z.array(z.string()).optional(),
-    }),
+    inputSchema: zoominfo.EnrichContactOptionsSchema,
   })
   async enrichContact(opts: zoominfo.EnrichContactOptions) {
     await this.authenticate();
@@ -1368,27 +1402,10 @@ fullName AND companyId/companyName. Combining these values effectively results i
    * Attempts to enrich a company with ZoomInfo data.
    */
   @aiFunction({
-    name: 'zoominfo_enrich_company',
+    name: 'enrichCompany',
     description:
       'Attempts to enrich a company with ZoomInfo data. To match a company, you should ideally provide the `companyName` and `companyWebsite`.',
-    inputSchema: z.object({
-      companyId: z
-        .string()
-        .optional()
-        .describe('Unique ZoomInfo identifier of company.'),
-      companyName: z.string().optional().describe('Name of the company.'),
-      companyWebsite: z.string().optional(),
-      companyTicker: z.string().optional(),
-      companyPhone: z.string().optional(),
-      companyFax: z.string().optional(),
-      companyStreet: z.string().optional(),
-      companyCity: z.string().optional(),
-      companyState: z.string().optional(),
-      companyZipCode: z.string().optional(),
-      companyCountry: z.string().optional(),
-      ipAddress: z.string().optional(),
-      outputFields: z.array(z.string()).optional(),
-    }),
+    inputSchema: zoominfo.EnrichCompanyOptionsSchema,
   })
   async enrichCompany(opts: zoominfo.EnrichCompanyOptions) {
     await this.authenticate();
@@ -1416,97 +1433,10 @@ fullName AND companyId/companyName. Combining these values effectively results i
    * search criteria.
    */
   @aiFunction({
-    name: 'zoominfo_search_contacts',
+    name: 'searchContacts',
     description:
       "Returns a list of Contacts from ZoomInfo's data that meet the specified search criteria.",
-    inputSchema: z.object({
-      rpp: z.number().optional(),
-      page: z.number().optional(),
-      sortOrder: z.string().optional(),
-      sortBy: z.string().optional(),
-      personId: z.string().optional(),
-      emailAddress: z.string().optional(),
-      supplementalEmail: z.array(z.string()).optional(),
-      hashedEmail: z.string().optional(),
-      phone: z.array(z.string()).optional(),
-      fullName: z.string().optional(),
-      firstName: z.string().optional(),
-      middleInitial: z.string().optional(),
-      lastName: z.string().optional(),
-      jobTitle: z.string().optional(),
-      excludeJobTitle: z.string().optional(),
-      managementLevel: z.string().optional(),
-      excludeManagementLevel: z.string().optional(),
-      department: z.string().optional(),
-      boardMember: z.string().optional(),
-      excludePartialProfiles: z.boolean().optional(),
-      executivesOnly: z.boolean().optional(),
-      requiredFields: z.string().optional(),
-      contactAccuracyScoreMin: z.string().optional(),
-      contactAccuracyScoreMax: z.string().optional(),
-      jobFunction: z.string().optional(),
-      lastUpdatedDateAfter: z.string().optional(),
-      validDateAfter: z.string().optional(),
-      lastUpdatedInMonths: z.number().optional(),
-      hasBeenNotified: z.string().optional(),
-      companyPastOrPresent: z.string().optional(),
-      school: z.string().optional(),
-      degree: z.string().optional(),
-      locationCompanyId: z.array(z.string()).optional(),
-      companyId: z.string().optional(),
-      companyName: z.string().optional(),
-      companyWebsite: z.string().optional(),
-      companyTicker: z.array(z.string()).optional(),
-      companyDescription: z.string().optional(),
-      parentId: z.string().optional(),
-      ultimateParentId: z.string().optional(),
-      companyType: z.string().optional(),
-      address: z.string().optional(),
-      street: z.string().optional(),
-      state: z.string().optional(),
-      zipCode: z.string().optional(),
-      country: z.string().optional(),
-      continent: z.string().optional(),
-      zipCodeRadiusMiles: z.string().optional(),
-      hashTagString: z.string().optional(),
-      techAttributeTagList: z.string().optional(),
-      subUnitTypes: z.string().optional(),
-      primaryIndustriesOnly: z.boolean().optional(),
-      industryCodes: z.string().optional(),
-      industryKeywords: z.string().optional(),
-      sicCodes: z.string().optional(),
-      naicsCodes: z.string().optional(),
-      revenueMin: z.number().optional(),
-      revenueMax: z.number().optional(),
-      revenue: z.string().optional(),
-      employeeRangeMin: z.string().optional(),
-      employeeRangeMax: z.string().optional(),
-      employeeCount: z.string().optional(),
-      companyRanking: z.string().optional(),
-      metroRegion: z.string().optional(),
-      locationSearchType: z.string().optional(),
-      fundingAmountMin: z.number().optional(),
-      fundingAmountMax: z.number().optional(),
-      fundingStartDate: z.string().optional(),
-      fundingEndDate: z.string().optional(),
-      excludedRegions: z.string().optional(),
-      zoominfoContactsMin: z.string().optional(),
-      zoominfoContactsMax: z.string().optional(),
-      companyStructureIncludedSubUnitTypes: z.string().optional(),
-      oneYearEmployeeGrowthRateMin: z.string().optional(),
-      oneYearEmployeeGrowthRateMax: z.string().optional(),
-      twoYearEmployeeGrowthRateMin: z.string().optional(),
-      twoYearEmployeeGrowthRateMax: z.string().optional(),
-      positionStartDateMin: z.string().optional(),
-      positionStartDateMax: z.string().optional(),
-      webReferences: z.array(z.string()).optional(),
-      filterByBuyingCommittee: z.boolean().optional(),
-      techSkills: z.array(z.string()).optional(),
-      yearsOfExperience: z.string().optional(),
-      engagementStartDate: z.string().optional(),
-      engagementEndDate: z.string().optional(),
-      engagementType: z.array(z.string()).optional(),
-    }),
+    inputSchema: zoominfo.SearchContactsOptionsSchema,
   })
   async searchContacts(opts: zoominfo.SearchContactsOptions) {
     await this.authenticate();
@@ -1526,65 +1456,10 @@ fullName AND companyId/companyName. Combining these values effectively results i
    * search criteria.
    */
   @aiFunction({
-    name: 'zoominfo_search_companies',
+    name: 'searchCompanies',
     description:
       "Returns a list of Companies from ZoomInfo's data that meet the specified search criteria.",
-    inputSchema: z.object({
-      rpp: z.number().optional(),
-      page: z.number().optional(),
-      sortOrder: z.string().optional(),
-      sortBy: z.string().optional(),
-      companyId: z.string().optional(),
-      companyName: z.string().optional(),
-      companyWebsite: z.string().optional(),
-      companyDescription: z.string().optional(),
-      parentId: z.string().optional(),
-      ultimateParentId: z.string().optional(),
-      companyTicker: z.array(z.string()).optional(),
-      companyType: z.string().optional(),
-      businessModel: z.array(z.string()).optional(),
-      address: z.string().optional(),
-      street: z.string().optional(),
-      state: z.string().optional(),
-      zipCode: z.string().optional(),
-      country: z.string().optional(),
-      continent: z.string().optional(),
-      zipCodeRadiusMiles: z.string().optional(),
-      hashTagString: z.string().optional(),
-      techAttributeTagList: z.string().optional(),
-      subUnitTypes: z.string().optional(),
-      primaryIndustriesOnly: z.boolean().optional(),
-      industryCodes: z.string().optional(),
-      industryKeywords: z.string().optional(),
-      sicCodes: z.string().optional(),
-      naicsCodes: z.string().optional(),
-      revenueMin: z.number().optional(),
-      revenueMax: z.number().optional(),
-      revenue: z.string().optional(),
-      employeeRangeMin: z.string().optional(),
-      employeeRangeMax: z.string().optional(),
-      employeeCount: z.string().optional(),
-      companyRanking: z.string().optional(),
-      metroRegion: z.string().optional(),
-      locationSearchType: z.string().optional(),
-      fundingAmountMin: z.number().optional(),
-      fundingAmountMax: z.number().optional(),
-      fundingStartDate: z.string().optional(),
-      fundingEndDate: z.string().optional(),
-      excludedRegions: z.string().optional(),
-      zoominfoContactsMin: z.string().optional(),
-      zoominfoContactsMax: z.string().optional(),
-      companyStructureIncludedSubUnitTypes: z.string().optional(),
-      certified: z.number().optional(),
-      excludeDefunctCompanies: z.boolean().optional(),
-      oneYearEmployeeGrowthRateMin: z.string().optional(),
-      oneYearEmployeeGrowthRateMax: z.string().optional(),
-      twoYearEmployeeGrowthRateMin: z.string().optional(),
-      twoYearEmployeeGrowthRateMax: z.string().optional(),
-      engagementStartDate: z.string().optional(),
-      engagementEndDate: z.string().optional(),
-      engagementType: z.array(z.string()).optional(),
-    }),
+    inputSchema: zoominfo.SearchCompaniesOptionsSchema,
   })
   async searchCompanies(opts: zoominfo.SearchCompaniesOptions) {
     await this.authenticate();

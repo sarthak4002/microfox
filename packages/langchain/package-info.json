@@ -1,0 +1,1 @@
+{"name": "@microfox/langchain","title": "Microfox LangChain","description": "Microfox adapter for the LangChain AI SDK","path": "packages/langchain","dependencies": ["@microfox/core","@langchain/core"],"status": "partial"} 

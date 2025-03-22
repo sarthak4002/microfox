@@ -1,0 +1,1 @@
+{"name": "@microfox/hacker-news","title": "Microfox Hacker News","description": "Microfox SDK for Hacker News","path": "packages/hacker-news","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

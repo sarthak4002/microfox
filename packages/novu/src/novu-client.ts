@@ -140,18 +140,51 @@ export class NovuClient extends AIFunctionsProvider {
     description:
       'Sends a notification to a person given their novu `subscriberId` and an `email` or `phone` number. Useful for sending emails or SMS text messages to people.',
     inputSchema: z.object({
-      name: z.string(),
-      // TODO: make this more
-      payload: z.record(z.any()),
-      to: z.array(
-        z.object({
-          subscriberId: z.string(),
-          email: z.string().optional(),
-          firstName: z.string().optional(),
-          lastName: z.string().optional(),
-          phone: z.string().optional(),
-        }),
-      ),
+      name: z
+        .string()
+        .describe(
+          'Name of the event to trigger. This should match the name of an existing notification template in Novu.',
+        ),
+      payload: z
+        .record(z.any())
+        .describe(
+          'Payload to use for the event. This will be used to populate any handlebars placeholders in the notification template.',
+        ),
+      to: z
+        .array(
+          z.object({
+            subscriberId: z
+              .string()
+              .describe(
+                'Unique identifier for the subscriber. This can be any value that is meaningful to your application such as a user ID or email address.',
+              ),
+            email: z
+              .string()
+              .optional()
+              .describe(
+                'Email address of the subscriber. Required for email notifications.',
+              ),
+            firstName: z
+              .string()
+              .optional()
+              .describe(
+                'First name of the subscriber. Used for personalization.',
+              ),
+            lastName: z
+              .string()
+              .optional()
+              .describe(
+                'Last name of the subscriber. Used for personalization.',
+              ),
+            phone: z
+              .string()
+              .optional()
+              .describe(
+                'Phone number of the subscriber. Required for SMS notifications.',
+              ),
+          }),
+        )
+        .describe('List of subscribers to send the notification to.'),
     }),
   })
   async triggerEvent(options: novu.TriggerOptions) {

@@ -1,0 +1,1 @@
+{"name": "@microfox/jina","title": "Microfox Jina","description": "Microfox SDK for Jina AI","path": "packages/jina","dependencies": ["@microfox/core","ky","p-throttle","zod"],"status": "partial"} 

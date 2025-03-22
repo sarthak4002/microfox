@@ -7,6 +7,8 @@ import {
 } from '@microfox/core';
 import defaultKy, { type KyInstance } from 'ky';
 import pThrottle from 'p-throttle';
+import { aiFunction } from '@microfox/core';
+import { z } from 'zod';
 
 export namespace rocketreach {
   export const API_BASE_URL = 'https://api.rocketreach.co';
@@ -181,6 +183,59 @@ export class RocketReachClient extends AIFunctionsProvider {
     });
   }
 
+  /**
+   * Enriches a person's profile with contact information like email and phone.
+   */
+  @aiFunction({
+    name: 'rocketreach_lookup_person',
+    description:
+      'Enriches a person profile with contact information like email and phone based on identifiers such as name and company, LinkedIn URL, or RocketReach ID.',
+    inputSchema: z.object({
+      id: z
+        .number()
+        .optional()
+        .describe('RocketReach internal person ID returned by searches'),
+      name: z
+        .string()
+        .optional()
+        .describe('Must specify along with current_employer'),
+      current_employer: z
+        .string()
+        .optional()
+        .describe('Must specify along with name'),
+      title: z
+        .string()
+        .optional()
+        .describe("Desired prospect's job title. May improve match rate"),
+      linkedin_url: z
+        .string()
+        .optional()
+        .describe('LinkedIn URL of prospect to lookup'),
+      email: z
+        .string()
+        .optional()
+        .describe(
+          'A known email address of the prospect. May improve match rate',
+        ),
+      npi_number: z
+        .number()
+        .optional()
+        .describe(
+          'An NPI number for a US healthcare professional. Can be used as a unique match criteria',
+        ),
+      lookup_type: z
+        .enum([
+          'standard',
+          'premium',
+          'premium (feeds disabled)',
+          'bulk',
+          'phone',
+          'enrich',
+        ])
+        .optional()
+        .describe('Specify an alternative lookup type to use (if available)'),
+    }),
+  })
   async lookupPerson(opts: rocketreach.EnrichPersonOptions) {
     return this.ky
       .get('api/v2/person/lookup', { searchParams: sanitizeSearchParams(opts) })
