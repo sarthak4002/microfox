@@ -87,7 +87,7 @@ describe('Discord SDK Integration Tests', () => {
   });
 
   describe('Error Handling', () => {
-    it('should reject invalid message data', async () => {
+    itIfEnvVars('should reject invalid message data', async () => {
       await expect(
         discord.sendMessage({
           channelId: '',
@@ -96,7 +96,7 @@ describe('Discord SDK Integration Tests', () => {
       ).rejects.toThrow();
     });
 
-    it('should reject invalid token', async () => {
+    itIfEnvVars('should reject invalid token', async () => {
       const invalidDiscord = createDiscordSdk('INVALID_TOKEN');
 
       await expect(
