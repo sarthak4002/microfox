@@ -1,46 +1,59 @@
 {
   "name": "@microfox/github",
-  "version": "1.0.2",
-  "description": "Microfox SDK for GitHub.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/microfox-ai/microfox.git"
-  },
-  "type": "module",
-  "source": "./src/index.ts",
+  "version": "1.0.0",
+  "description": "GitHub SDK for Microfox",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
   "files": [
     "dist/**/*",
     "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
+    "build:watch": "tsup --watch",
     "clean": "rm -rf dist",
+    "lint": "eslint \"./**/*.ts*\"",
     "prettier-check": "prettier --check \"./**/*.ts*\""
   },
-  "dependencies": {
-    "@microfox/core": "*",
-    "ky": "^1.7.5",
-    "octokit": "^4.0.2",
-    "p-throttle": "^6.2.0"
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
   },
-  "peerDependencies": {
-    "zod": "^3.24.2"
+  "dependencies": {
+    "@microfox/rest-sdk": "1.0.4",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@microfox/tsconfig": "*"
+    "@microfox/tsconfig": "*",
+    "@types/node": "^18",
+    "tsup": "^8",
+    "typescript": "5.6.3"
+  },
+  "peerDependencies": {
+    "@microfox/rest-sdk": ">=1.0.4"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "homepage": "https://github.com/microfox-ai/microfox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microfox-ai/microfox/issues"
+  },
+  "keywords": [
+    "microfox",
+    "sdk",
+    "typescript",
+    "github"
+  ]
 }
