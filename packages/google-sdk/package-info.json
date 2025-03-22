@@ -1,0 +1,1 @@
+{"name": "@microfox/google-sdk","title": "Microfox Google SDK","description": "Google SDK for Microfox","path": "packages/google-sdk","dependencies": ["@microfox/rest-sdk","zod"],"status": "partial"} 

@@ -1,0 +1,12 @@
+{
+  "name": "@microfox/polygon",
+  "title": "Microfox Polygon",
+  "description": "Microfox SDK for the Polygon stock API",
+  "path": "packages/polygon",
+  "dependencies": [
+    "@microfox/core",
+    "ky",
+    "zod"
+  ],
+  "status": "partial"
+} 

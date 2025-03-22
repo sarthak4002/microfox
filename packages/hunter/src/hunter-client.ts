@@ -250,12 +250,12 @@ export class HunterClient extends AIFunctionsProvider {
   }
 
   /**
-   * Gets all the email addresses associated with a given company or domain.
+   * Finds all email addresses on a domain name with sources, verification status, etc.
    */
   @aiFunction({
     name: 'hunter_domain_search',
     description:
-      'Gets all the email addresses associated with a given company or domain.',
+      'Searches for email addresses associated with a domain or company. Returns all the email addresses found using various public sources, with additional information like social media profiles, sources, verification status, and more.',
     inputSchema: hunter.DomainSearchOptionsSchema.pick({
       domain: true,
       company: true,
@@ -291,7 +291,7 @@ export class HunterClient extends AIFunctionsProvider {
   @aiFunction({
     name: 'hunter_email_finder',
     description:
-      'Finds the most likely email address from a domain name, a first name and a last name.',
+      'Finds the most likely email address for a person at a company, using their first name, last name, and domain/company name. Uses pattern analysis and available data to generate the most probable email format.',
     inputSchema: hunter.EmailFinderOptionsSchema.pick({
       domain: true,
       company: true,
@@ -321,7 +321,8 @@ export class HunterClient extends AIFunctionsProvider {
    */
   @aiFunction({
     name: 'hunter_email_verifier',
-    description: 'Verifies the deliverability of an email address.',
+    description:
+      'Verifies the deliverability of an email address by checking domain information, email syntax, and mail server responses. Provides a verification score and detailed status information.',
     inputSchema: hunter.EmailVerifierOptionsSchema,
   })
   async emailVerifier(emailOrOpts: string | hunter.EmailVerifierOptions) {

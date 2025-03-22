@@ -8,6 +8,7 @@ import {
 import defaultKy, { type KyInstance } from 'ky';
 import pThrottle from 'p-throttle';
 import wdk from 'wikibase-sdk/wikidata.org';
+import { z } from 'zod';
 
 export namespace wikidata {
   // Allow up to 200 requests per second by default.
@@ -16,31 +17,59 @@ export namespace wikidata {
     interval: 1000,
   });
 
-  export type SimplifiedEntityMap = Record<string, SimplifiedEntity>;
+  export const descriptionsSchema = z
+    .record(z.string())
+    .describe('Map of language codes to descriptions');
+  export type Descriptions = z.infer<typeof descriptionsSchema>;
 
-  export interface SimplifiedEntity {
-    id: string;
-    type: string;
-    claims: Claims;
-    modified: string;
-    labels?: Descriptions;
-    descriptions?: Descriptions;
-    aliases?: any;
-    sitelinks?: Sitelinks;
-  }
+  export const sitelinksSchema = z
+    .record(z.string())
+    .describe('Map of site codes to page titles');
+  export type Sitelinks = z.infer<typeof sitelinksSchema>;
 
-  export interface Claims {
-    [key: string]: Claim[];
-  }
+  export const claimSchema = z.object({
+    value: z.string().describe('The value of the claim'),
+    qualifiers: z
+      .record(z.union([z.array(z.string()), z.array(z.number())]))
+      .describe('Qualifiers for the claim'),
+    references: z
+      .array(z.record(z.array(z.string())))
+      .describe('References supporting the claim'),
+  });
+  export type Claim = z.infer<typeof claimSchema>;
 
-  export interface Claim {
-    value: string;
-    qualifiers: Record<string, string[] | number[]>;
-    references: Record<string, string[]>[];
-  }
+  export const claimsSchema = z
+    .record(z.array(claimSchema))
+    .describe('Map of property IDs to claim values');
+  export type Claims = z.infer<typeof claimsSchema>;
 
-  export type Descriptions = Record<string, string>;
-  export type Sitelinks = Record<string, string>;
+  export const simplifiedEntitySchema = z.object({
+    id: z.string().describe('Entity identifier (e.g., Q42 for Douglas Adams)'),
+    type: z.string().describe('Entity type (e.g., "item" or "property")'),
+    claims: claimsSchema.describe('Property claims for this entity'),
+    modified: z.string().describe('Last modification timestamp'),
+    labels: descriptionsSchema
+      .optional()
+      .describe('Map of language codes to entity labels'),
+    descriptions: descriptionsSchema
+      .optional()
+      .describe('Map of language codes to entity descriptions'),
+    aliases: z
+      .any()
+      .optional()
+      .describe('Entity aliases in different languages'),
+    sitelinks: sitelinksSchema
+      .optional()
+      .describe(
+        'Links to pages about this entity on different Wikimedia sites',
+      ),
+  });
+  export type SimplifiedEntity = z.infer<typeof simplifiedEntitySchema>;
+
+  export const simplifiedEntityMapSchema = z
+    .record(simplifiedEntitySchema)
+    .describe('Map of entity IDs to simplified entities');
+  export type SimplifiedEntityMap = z.infer<typeof simplifiedEntityMapSchema>;
 }
 
 /**

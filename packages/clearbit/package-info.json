@@ -1,0 +1,1 @@
+{"name": "@microfox/clearbit","title": "Microfox Clearbit","description": "Microfox SDK for Clearbit","path": "packages/clearbit","dependencies": ["@microfox/core","ky","p-throttle","zod"],"status": "partial"} 

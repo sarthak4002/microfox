@@ -6,33 +6,76 @@ const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 
 // Zod schemas for validation
 export const TokenResponseSchema = z.object({
-  access_token: z.string(),
-  expires_in: z.number(),
-  token_type: z.string().optional(),
-  scope: z.string().optional(),
-  refresh_token: z.string().optional(),
+  access_token: z
+    .string()
+    .describe('The access token issued by the authorization server'),
+  expires_in: z
+    .number()
+    .describe('The lifetime of the access token in seconds'),
+  token_type: z
+    .string()
+    .optional()
+    .describe('The type of the token, typically "Bearer"'),
+  scope: z
+    .string()
+    .optional()
+    .describe('The scopes that the access token is valid for'),
+  refresh_token: z
+    .string()
+    .optional()
+    .describe('The refresh token used to obtain new access tokens'),
 });
 
 export const TokenInfoSchema = z.object({
-  exp: z.string().optional(), // Expiration time
-  azp: z.string().optional(),
-  aud: z.string().optional(),
-  scope: z.string().optional(),
-  email: z.string().optional(),
-  error_description: z.string().optional(),
+  exp: z.string().optional().describe('Expiration time of the token'),
+  azp: z
+    .string()
+    .optional()
+    .describe('Authorized party - the client ID the token was issued to'),
+  aud: z
+    .string()
+    .optional()
+    .describe('Audience - the client ID the token is intended for'),
+  scope: z
+    .string()
+    .optional()
+    .describe('Space-delimited list of scopes granted to this token'),
+  email: z
+    .string()
+    .optional()
+    .describe('User email if the scope includes email permission'),
+  error_description: z
+    .string()
+    .optional()
+    .describe('Description of any error that occurred'),
 });
 
 export const TokensSchema = z.object({
-  accessToken: z.string(),
-  refreshToken: z.string().optional(),
-  expiresAt: z.number().optional(), // Timestamp when the token expires
-  tokenType: z.string().optional(),
-  isValid: z.boolean(), // Whether the token is valid
-  accessTokenStatus: z.enum(['valid', 'expired', 'invalid']),
+  accessToken: z.string().describe('The current access token'),
+  refreshToken: z
+    .string()
+    .optional()
+    .describe('The refresh token, if available'),
+  expiresAt: z
+    .number()
+    .optional()
+    .describe('Timestamp when the access token expires'),
+  tokenType: z
+    .string()
+    .optional()
+    .describe('The type of token, typically "Bearer"'),
+  isValid: z.boolean().describe('Whether the token is currently valid'),
+  accessTokenStatus: z
+    .enum(['valid', 'expired', 'invalid'])
+    .describe('Current status of the access token'),
   refreshTokenStatus: z
     .enum(['valid', 'expired', 'invalid', 'not_provided'])
-    .optional(),
-  errorMessage: z.string().optional(),
+    .optional()
+    .describe('Current status of the refresh token'),
+  errorMessage: z
+    .string()
+    .optional()
+    .describe('Error message if token validation failed'),
 });
 
 // Types derived from Zod schemas
@@ -41,31 +84,57 @@ export type TokenInfo = z.infer<typeof TokenInfoSchema>;
 export type Tokens = z.infer<typeof TokensSchema>;
 
 export const GoogleOAuthOptionsSchema = z.object({
-  accessToken: z.string(),
-  refreshToken: z.string().optional(),
-  clientId: z.string().optional(),
-  clientSecret: z.string().optional(),
-  scopes: z.array(z.string()).optional(),
+  accessToken: z
+    .string()
+    .describe('The access token for Google API authentication'),
+  refreshToken: z
+    .string()
+    .optional()
+    .describe('The refresh token for renewing access tokens'),
+  clientId: z
+    .string()
+    .optional()
+    .describe('Google API client ID for the application'),
+  clientSecret: z
+    .string()
+    .optional()
+    .describe('Google API client secret for the application'),
+  scopes: z
+    .array(z.string())
+    .optional()
+    .describe('List of OAuth scopes to request'),
 });
 
 export type GoogleOAuthOptions = z.infer<typeof GoogleOAuthOptionsSchema>;
 
 export const AuthUrlOptionsSchema = z.object({
-  clientId: z.string(),
-  redirectUri: z.string(),
-  scopes: z.array(z.string()),
-  accessType: z.enum(['online', 'offline']).optional(),
-  prompt: z.enum(['none', 'consent', 'select_account']).optional(),
-  state: z.string().optional(),
+  clientId: z.string().describe('Google API client ID for the application'),
+  redirectUri: z.string().describe('URI to redirect after authentication'),
+  scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
+  accessType: z
+    .enum(['online', 'offline'])
+    .optional()
+    .describe('Whether to issue a refresh token'),
+  prompt: z
+    .enum(['none', 'consent', 'select_account'])
+    .optional()
+    .describe('Type of authentication prompt to display'),
+  state: z.string().optional().describe('Random string for CSRF protection'),
 });
 
 export type AuthUrlOptions = z.infer<typeof AuthUrlOptionsSchema>;
 
 export const CodeExchangeOptionsSchema = z.object({
-  code: z.string(),
-  clientId: z.string(),
-  clientSecret: z.string(),
-  redirectUri: z.string(),
+  code: z
+    .string()
+    .describe('Authorization code returned from OAuth consent flow'),
+  clientId: z.string().describe('Google API client ID for the application'),
+  clientSecret: z
+    .string()
+    .describe('Google API client secret for the application'),
+  redirectUri: z
+    .string()
+    .describe('URI that was used in the initial authorization request'),
 });
 
 export type CodeExchangeOptions = z.infer<typeof CodeExchangeOptionsSchema>;

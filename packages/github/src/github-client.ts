@@ -1,41 +1,43 @@
 import { AIFunctionsProvider, assert, getEnv } from '@microfox/core';
 import { Octokit } from 'octokit';
+import { z } from 'zod';
 
 export namespace github {
-  export interface User {
-    id: number;
-    login: string;
-    name: string;
-    bio: string;
-    node_id: string;
-    gravatar_id: string;
-    type: string;
-    site_admin: boolean;
-    company: string;
-    blog?: string;
-    location?: string;
-    hireable?: boolean;
-    twitter_username?: string;
-    email?: string;
-    public_repos: number;
-    public_gists: number;
-    followers: number;
-    following: number;
-    avatar_url: string;
-    url: string;
-    html_url: string;
-    followers_url: string;
-    following_url: string;
-    gists_url: string;
-    starred_url: string;
-    subscriptions_url: string;
-    organizations_url: string;
-    repos_url: string;
-    events_url: string;
-    received_events_url: string;
-    created_at: string;
-    updated_at: string;
-  }
+  export const UserSchema = z.object({
+    id: z.number().describe('Unique identifier of the user'),
+    login: z.string().describe('Username of the user'),
+    name: z.string().describe('Full name of the user'),
+    bio: z.string().describe('User bio/description'),
+    node_id: z.string().describe('Node ID in GitHub's GraphQL API'),
+    gravatar_id: z.string().describe('Gravatar ID for the user'),
+    type: z.string().describe('Type of account, typically "User"'),
+    site_admin: z.boolean().describe('Whether the user is a GitHub site admin'),
+    company: z.string().describe('Company the user works for'),
+    blog: z.string().optional().describe('URL to the user's blog or website'),
+    location: z.string().optional().describe('User's physical location'),
+    hireable: z.boolean().optional().describe('Whether the user is available for hire'),
+    twitter_username: z.string().optional().describe('User's Twitter username'),
+    email: z.string().optional().describe('User's public email address'),
+    public_repos: z.number().describe('Number of public repositories the user owns'),
+    public_gists: z.number().describe('Number of public gists the user owns'),
+    followers: z.number().describe('Number of followers the user has'),
+    following: z.number().describe('Number of users the user follows'),
+    avatar_url: z.string().describe('URL to the user's profile image'),
+    url: z.string().describe('API URL for this user'),
+    html_url: z.string().describe('URL to the user's GitHub profile'),
+    followers_url: z.string().describe('API URL for user's followers'),
+    following_url: z.string().describe('API URL for users this user follows'),
+    gists_url: z.string().describe('API URL for user's gists'),
+    starred_url: z.string().describe('API URL for user's starred repositories'),
+    subscriptions_url: z.string().describe('API URL for user's subscriptions'),
+    organizations_url: z.string().describe('API URL for user's organizations'),
+    repos_url: z.string().describe('API URL for user's repositories'),
+    events_url: z.string().describe('API URL for user's events'),
+    received_events_url: z.string().describe('API URL for events received by user'),
+    created_at: z.string().describe('Timestamp when the user account was created'),
+    updated_at: z.string().describe('Timestamp when the user account was last updated')
+  });
+  export type User = z.infer<typeof UserSchema>;
 }
 
 /**

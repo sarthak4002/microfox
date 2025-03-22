@@ -1,0 +1,1 @@
+{"name": "@microfox/twilio","title": "Microfox Twilio","description": "Microfox SDK for Twilio","path": "packages/twilio","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

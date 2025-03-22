@@ -36,10 +36,8 @@
     "openai-zod-to-json-schema": "^1.0.3",
     "p-throttle": "^6.2.0",
     "type-fest": "^4.37.0",
+    "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"
-  },
-  "peerDependencies": {
-    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@microfox/tsconfig": "*",

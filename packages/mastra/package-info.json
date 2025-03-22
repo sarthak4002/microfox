@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/mastra",
+  "title": "Microfox Mastra",
+  "description": "Microfox adapter for the Mastra AI Agent SDK",
+  "path": "packages/mastra",
+  "dependencies": ["@microfox/core"],
+  "status": "stable"
+} 

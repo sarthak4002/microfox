@@ -1,0 +1,1 @@
+{"name": "@microfox/x-sdk","title": "Microfox X SDK","description": "Twitter/X V2 SDK for Microfox","path": "packages/x-sdk","dependencies": ["zod"],"status": "partial"} 

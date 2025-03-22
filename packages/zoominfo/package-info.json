@@ -1,0 +1,14 @@
+{
+  "name": "@microfox/zoominfo",
+  "title": "Microfox ZoomInfo",
+  "description": "Microfox SDK for ZoomInfo",
+  "path": "packages/zoominfo",
+  "dependencies": [
+    "@microfox/core",
+    "jsrsasign",
+    "ky",
+    "p-throttle",
+    "zod"
+  ],
+  "status": "partial"
+} 

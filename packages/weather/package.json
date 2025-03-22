@@ -31,9 +31,7 @@
   },
   "dependencies": {
     "@microfox/core": "*",
-    "ky": "^1.7.5"
-  },
-  "peerDependencies": {
+    "ky": "^1.7.5",
     "zod": "^3.24.2"
   },
   "devDependencies": {

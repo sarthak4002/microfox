@@ -1,0 +1,1 @@
+{"name": "@microfox/slack","title": "Microfox Slack","description": "Microfox SDK for Slack","path": "packages/slack","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

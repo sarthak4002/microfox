@@ -64,40 +64,54 @@ export namespace jina {
   });
   export type SearchOptions = z.infer<typeof SearchOptionsSchema>;
 
-  export interface JinaResponse {
-    code: number;
-    status: number;
-    data: unknown;
-  }
+  export const ReaderDataSchema = z.object({
+    url: z.string().describe('The URL of the content'),
+    title: z.string().describe('The title of the content'),
+    content: z.string().describe('The extracted content'),
+    description: z
+      .string()
+      .optional()
+      .describe('Brief description of the content'),
+    publishedTime: z
+      .string()
+      .optional()
+      .describe('When the content was published'),
+    favicon: z.string().optional().describe('URL to the website favicon'),
+  });
+  export type ReaderData = z.infer<typeof ReaderDataSchema>;
 
-  export interface ReaderResponse extends JinaResponse {
-    data: ReaderData;
-  }
+  export const JinaResponseSchema = z.object({
+    code: z.number().describe('Response code'),
+    status: z.number().describe('HTTP status code'),
+    data: z.unknown().describe('Response data'),
+  });
+  export type JinaResponse = z.infer<typeof JinaResponseSchema>;
 
-  export interface ReaderResponseScreenshot extends JinaResponse {
-    data: {
-      screenshotUrl: string;
-    };
-  }
+  export const ReaderResponseSchema = JinaResponseSchema.extend({
+    data: ReaderDataSchema,
+  });
+  export type ReaderResponse = z.infer<typeof ReaderResponseSchema>;
 
-  export interface ReaderResponseHtml extends JinaResponse {
-    data: {
-      html: string;
-    };
-  }
+  export const ReaderResponseScreenshotSchema = JinaResponseSchema.extend({
+    data: z.object({
+      screenshotUrl: z.string().describe('URL to the screenshot image'),
+    }),
+  });
+  export type ReaderResponseScreenshot = z.infer<
+    typeof ReaderResponseScreenshotSchema
+  >;
 
-  export interface SearchResponse extends JinaResponse {
-    data: ReaderData[];
-  }
+  export const ReaderResponseHtmlSchema = JinaResponseSchema.extend({
+    data: z.object({
+      html: z.string().describe('HTML content of the page'),
+    }),
+  });
+  export type ReaderResponseHtml = z.infer<typeof ReaderResponseHtmlSchema>;
 
-  export interface ReaderData {
-    url: string;
-    title: string;
-    content: string;
-    description?: string;
-    publishedTime?: string;
-    favicon?: string;
-  }
+  export const SearchResponseSchema = JinaResponseSchema.extend({
+    data: z.array(ReaderDataSchema),
+  });
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 }
 
 /**

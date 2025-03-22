@@ -463,6 +463,48 @@ export class FirecrawlClient extends AIFunctionsProvider {
     description: 'Scrape the contents of a URL.',
     inputSchema: z.object({
       url: z.string().url().describe('The URL to scrape.'),
+      formats: z
+        .array(
+          z.enum([
+            'markdown',
+            'html',
+            'rawHtml',
+            'content',
+            'links',
+            'screenshot',
+            'screenshot@fullPage',
+            'extract',
+            'json',
+          ]),
+        )
+        .optional()
+        .describe(
+          'The output formats to return. For example, "markdown" will return the page content in Markdown format.',
+        ),
+      onlyMainContent: z
+        .boolean()
+        .optional()
+        .describe(
+          'Whether to extract only the main content of the page, ignoring navigation, headers, footers, etc.',
+        ),
+      mobile: z
+        .boolean()
+        .optional()
+        .describe('Whether to emulate a mobile device when scraping.'),
+      blockAds: z
+        .boolean()
+        .optional()
+        .describe('Whether to block ads when scraping.'),
+      timeout: z
+        .number()
+        .optional()
+        .describe('Timeout in milliseconds for the scraping operation.'),
+      proxy: z
+        .enum(['basic', 'stealth'])
+        .optional()
+        .describe(
+          'The type of proxy to use when scraping. "stealth" is more difficult to detect.',
+        ),
     }),
   })
   async scrapeUrl<
@@ -534,7 +576,29 @@ export class FirecrawlClient extends AIFunctionsProvider {
     name: 'firecrawl_search',
     description: 'Searches the internet for the given query.',
     inputSchema: z.object({
-      query: z.string().describe('Search query.'),
+      query: z
+        .string()
+        .describe('Search query to find information on the web.'),
+      limit: z
+        .number()
+        .optional()
+        .describe('Maximum number of search results to return. Default is 5.'),
+      lang: z
+        .string()
+        .optional()
+        .describe(
+          'Language code for search results. Default is "en" for English.',
+        ),
+      country: z
+        .string()
+        .optional()
+        .describe(
+          'Country code for search results. Default is "us" for United States.',
+        ),
+      timeout: z
+        .number()
+        .optional()
+        .describe('Timeout in milliseconds for the search operation.'),
     }),
   })
   async search(
@@ -591,6 +655,34 @@ export class FirecrawlClient extends AIFunctionsProvider {
     description: 'Initiates a crawl job for a URL.',
     inputSchema: z.object({
       url: z.string().url().describe('The URL to crawl.'),
+      maxDepth: z
+        .number()
+        .optional()
+        .describe(
+          'Maximum depth for the crawler to follow links. Default is 1.',
+        ),
+      limit: z
+        .number()
+        .optional()
+        .describe('Maximum number of pages to crawl.'),
+      allowExternalLinks: z
+        .boolean()
+        .optional()
+        .describe('Whether to follow links that point to different domains.'),
+      includePaths: z
+        .array(z.string())
+        .optional()
+        .describe('List of URL patterns to include in the crawl.'),
+      excludePaths: z
+        .array(z.string())
+        .optional()
+        .describe('List of URL patterns to exclude from the crawl.'),
+      ignoreQueryParameters: z
+        .boolean()
+        .optional()
+        .describe(
+          'Whether to ignore query parameters when deduplicating URLs.',
+        ),
     }),
   })
   async crawlUrl(

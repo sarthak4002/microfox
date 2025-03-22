@@ -1,0 +1,1 @@
+{"name": "@microfox/weather","title": "Microfox Weather","description": "Microfox SDK for weatherapi.com","path": "packages/weather","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

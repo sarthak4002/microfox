@@ -18,30 +18,48 @@ export namespace scraper {
     strict: true,
   });
 
-  export type ScrapeResult = Partial<{
-    title: string;
-    siteName: string;
-    description: string;
-    author: string;
-    byline: string;
-    imageUrl: string;
-    logoUrl: string;
-    lang: string;
-    length: number;
-    publishedTime: string;
+  export const ScrapeResultSchema = z.object({
+    title: z.string().optional().describe('The title of the web page'),
+    siteName: z.string().optional().describe('The name of the website'),
+    description: z
+      .string()
+      .optional()
+      .describe('The meta description of the web page'),
+    author: z.string().optional().describe('The author of the content'),
+    byline: z.string().optional().describe('The byline of the content'),
+    imageUrl: z
+      .string()
+      .optional()
+      .describe('URL of the main image on the page'),
+    logoUrl: z.string().optional().describe('URL of the website logo'),
+    lang: z.string().optional().describe('The language of the content'),
+    length: z
+      .number()
+      .optional()
+      .describe('The length of the content in characters'),
+    publishedTime: z
+      .string()
+      .optional()
+      .describe('When the content was published'),
+    content: z
+      .string()
+      .optional()
+      .describe('The HTML for the main content of the page'),
+    rawHtml: z
+      .string()
+      .optional()
+      .describe('The raw HTML response from the server'),
+    markdownContent: z
+      .string()
+      .optional()
+      .describe('The text for the main content of the page in markdown format'),
+    textContent: z
+      .string()
+      .optional()
+      .describe('The text for the main content of the page'),
+  });
 
-    /** The HTML for the main content of the page. */
-    content: string;
-
-    /** The raw HTML response from the server. */
-    rawHtml: string;
-
-    /** The text for the main content of the page in markdown format. */
-    markdownContent: string;
-
-    /** The text for the main content of the page. */
-    textContent: string;
-  }>;
+  export type ScrapeResult = z.infer<typeof ScrapeResultSchema>;
 }
 
 /**

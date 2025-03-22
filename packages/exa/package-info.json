@@ -1,0 +1,1 @@
+{"name": "@microfox/exa","title": "Microfox Exa","description": "Microfox SDK for the Exa search engine","path": "packages/exa","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 

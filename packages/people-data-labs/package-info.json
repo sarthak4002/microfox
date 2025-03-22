@@ -1,0 +1,1 @@
+{"name": "@microfox/people-data-labs","title": "Microfox People Data Labs","description": "Microfox SDK for People Data Labs","path": "packages/people-data-labs","dependencies": ["@microfox/core","ky","p-throttle","zod"],"status": "partial"} 

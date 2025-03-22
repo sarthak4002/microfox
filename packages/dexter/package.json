@@ -31,9 +31,6 @@
   "dependencies": {
     "@microfox/core": "*"
   },
-  "peerDependencies": {
-    "@dexaai/dexter": "^4.1.1"
-  },
   "devDependencies": {
     "@microfox/tsconfig": "*",
     "@dexaai/dexter": "^4.1.1"

@@ -1,0 +1,1 @@
+{"name": "@microfox/perigon","title": "Microfox Perigon","description": "Microfox SDK for the Perigon News API","path": "packages/perigon","dependencies": ["@microfox/core","ky","p-throttle","zod"],"status": "partial"} 

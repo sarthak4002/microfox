@@ -30,29 +30,29 @@ export namespace gravatar {
   };
 
   export interface Profile {
-    /** The SHA256 hash of the user’s primary email address. */
+    /** The SHA256 hash of the user's primary email address. */
     hash: string;
-    /** The user’s display name that appears on their profile. */
+    /** The user's display name that appears on their profile. */
     display_name: string;
     first_name?: string;
     last_name?: string;
-    /** The full URL to the user’s Gravatar profile. */
+    /** The full URL to the user's Gravatar profile. */
     profile_url: string;
-    /** The URL to the user’s avatar image, if set. */
+    /** The URL to the user's avatar image, if set. */
     avatar_url: string;
-    /** Alternative text describing the user’s avatar. */
+    /** Alternative text describing the user's avatar. */
     avatar_alt_text: string;
-    /** The user’s geographical location. */
+    /** The user's geographical location. */
     location: string;
     /** A short biography or description about the user found on their profile. */
     description: string;
-    /** The user’s current job title. */
+    /** The user's current job title. */
     job_title: string;
     /** The name of the company where the user is employed. */
     company: string;
     /** An array of verified accounts the user has added to their profile. The number of verified accounts displayed is limited to a maximum of 4 in unauthenticated requests. */
     verified_accounts: VerifiedAccount[];
-    /** A phonetic guide to pronouncing the user’s name. */
+    /** A phonetic guide to pronouncing the user's name. */
     pronunciation: string;
     /** The pronouns the user prefers to use. */
     pronouns: string;
@@ -168,7 +168,11 @@ export class GravatarClient extends AIFunctionsProvider {
     description:
       'Get Gravatar profile by email. Returns a profile object or `undefined` if not found.',
     inputSchema: z.object({
-      email: z.string(),
+      email: z
+        .string()
+        .describe(
+          'The email address associated with the Gravatar profile you want to retrieve.',
+        ),
     }),
   })
   async getProfileByIdentifier(
@@ -194,6 +198,16 @@ export class GravatarClient extends AIFunctionsProvider {
     }
   }
 
+  /**
+   * Get Gravatar avatar URL for an email address
+   */
+  @aiFunction({
+    name: 'gravatar_get_avatar_url',
+    description: 'Get the URL to a Gravatar avatar image for an email address.',
+    inputSchema: z.object({
+      email: z.string().describe('The email address to get the avatar for.'),
+    }),
+  })
   async getAvatarForIdentifier(
     emailOrOpts: string | gravatar.GetProfileByIdentifierOptions,
   ): Promise<string> {

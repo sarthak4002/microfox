@@ -1,0 +1,11 @@
+{
+  "name": "@microfox/llamaindex",
+  "title": "Microfox LlamaIndex",
+  "description": "Microfox adapter for the LlamaIndex AI SDK",
+  "path": "packages/llamaindex",
+  "dependencies": [
+    "@microfox/core",
+    "llamaindex"
+  ],
+  "status": "partial"
+} 

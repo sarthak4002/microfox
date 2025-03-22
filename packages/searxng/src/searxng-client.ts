@@ -23,7 +23,6 @@ export namespace searxng {
     'files',
     'social media',
   ]);
-  export type SearchCategory = z.infer<typeof SearchCategorySchema>;
 
   export const SearchEngineSchema = z.enum([
     '9gag',
@@ -139,87 +138,75 @@ export namespace searxng {
     'presearch images',
     'presearch videos',
     'presearch news',
-    'pub.dev',
     'pubmed',
     'pypi',
     'qwant',
-    'qwant news',
     'qwant images',
-    'qwant videos',
-    'radio browser',
+    'qwant news',
     'reddit',
-    'rottentomatoes',
-    'sepiasearch',
+    'reddit images',
+    'reddit videos',
+    'rumble',
+    'rubygems',
+    'sciencehuberlin',
+    'scryfall',
     'soundcloud',
+    'sourceforge',
     'stackoverflow',
-    'askubuntu',
-    'internetarchivescholar',
-    'superuser',
-    'searchcode code',
-    'semantic scholar',
     'startpage',
-    'tokyotoshokan',
-    'solidtorrents',
-    'tagesschau',
-    'tmdb',
-    'torch',
-    'unsplash',
-    'yandex music',
-    'yahoo',
-    'yahoo news',
-    'youtube',
-    'dailymotion',
-    'vimeo',
+    'startpage images',
+    'steam',
+    'teddit',
+    'teampyqa',
+    'tvmaze',
+    'technorati',
+    'thefreedictionary',
+    'threat dragon',
+    'tib',
+    'bing translator',
+    'google translate',
+    'deepl',
+    'lingva',
+    'twitch',
+    'twitter',
+    'url',
+    'wallhaven',
     'wiby',
-    'alexandria',
+    'wordnik',
+    'wttr',
+    'wayback machine',
     'wikibooks',
     'wikinews',
     'wikiquote',
     'wikisource',
-    'wikispecies',
     'wiktionary',
-    'wikiversity',
-    'wikivoyage',
-    'wikicommons.images',
+    'wisdomdb',
     'wolframalpha',
-    'dictzone',
-    'mymemory translated',
-    '1337x',
-    'duden',
-    'seznam',
-    'mojeek',
-    'moviepilot',
-    'naver',
-    'rubygems',
-    'peertube',
-    'mediathekviewweb',
+    'world bank data',
+    'yahoo',
+    'yahoo news',
+    'yahoo images',
+    'youku',
+    'youtube',
+    'zackthebarber',
+    'acgsou',
     'yacy',
     'yacy images',
-    'rumble',
-    'livespace',
-    'wordnik',
-    'woxikon.de synonyme',
-    'seekr news',
-    'seekr images',
-    'seekr videos',
-    'sjp.pwn',
-    'stract',
-    'svgrepo',
-    'tootfinder',
-    'wallhaven',
-    'wikimini',
-    'wttr.in',
-    'yummly',
-    'brave',
-    'brave.images',
-    'brave.videos',
-    'brave.news',
-    'lib.rs',
-    'sourcehut',
-    'goo',
-    'bt4g',
-    'pkg.go.dev',
+    'ebay',
+    'etools',
+    'etools images',
+    'etools music',
+    'etools videos',
+    'etools science',
+    'etools news',
+    'etools map',
+    'etools it',
+    'etools files',
+    'etools social media',
+    'etools general',
   ]);
+
+  export type SearchCategory = z.infer<typeof SearchCategorySchema>;
   export type SearchEngine = z.infer<typeof SearchEngineSchema>;
 
   export const SearchOptionsSchema = z.object({
@@ -239,25 +226,37 @@ export namespace searxng {
   });
   export type SearchOptions = z.infer<typeof SearchOptionsSchema>;
 
-  export interface SearchResult {
-    title: string;
-    url: string;
-    img_src?: string;
-    thumbnail_src?: string;
-    thumbnail?: string;
-    content?: string;
-    author?: string;
-    iframe_src?: string;
-    category?: SearchCategory;
-    engine?: SearchEngine;
-    publishedDate?: string;
-  }
+  export const SearchResultSchema = z.object({
+    title: z.string().describe('Title of the search result'),
+    url: z.string().describe('URL of the search result'),
+    img_src: z.string().optional().describe('URL to the full-size image'),
+    thumbnail_src: z.string().optional().describe('URL to the thumbnail image'),
+    thumbnail: z.string().optional().describe('Legacy thumbnail URL'),
+    content: z
+      .string()
+      .optional()
+      .describe('Content snippet from the search result'),
+    author: z.string().optional().describe('Author of the content'),
+    iframe_src: z.string().optional().describe('URL for iframe embedding'),
+    category: SearchCategorySchema.optional().describe(
+      'Category of the search result',
+    ),
+    engine: SearchEngineSchema.optional().describe(
+      'Search engine that provided this result',
+    ),
+    publishedDate: z
+      .string()
+      .optional()
+      .describe('Publication date of the content'),
+  });
+  export type SearchResult = z.infer<typeof SearchResultSchema>;
 
-  export interface SearchResponse {
-    results: SearchResult[];
-    suggestions: string[];
-    query: string;
-  }
+  export const SearchResponseSchema = z.object({
+    results: z.array(SearchResultSchema).describe('List of search results'),
+    suggestions: z.array(z.string()).describe('Suggested search queries'),
+    query: z.string().describe('The original search query'),
+  });
+  export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 }
 
 /**

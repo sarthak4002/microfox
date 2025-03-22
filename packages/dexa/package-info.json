@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/dexa",
+  "title": "Microfox Dexa",
+  "description": "Microfox SDK for Dexa's API (access to trusted podcast knowledge)",
+  "path": "packages/dexa",
+  "dependencies": ["@microfox/core"],
+  "status": "stable"
+} 

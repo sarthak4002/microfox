@@ -1,0 +1,8 @@
+{
+  "name": "@microfox/novu",
+  "title": "Microfox Novu",
+  "description": "Microfox SDK for the Novu notifications API",
+  "path": "packages/novu",
+  "dependencies": ["@microfox/core"],
+  "status": "stable"
+} 

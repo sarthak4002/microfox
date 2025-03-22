@@ -1,0 +1,1 @@
+{"name": "@microfox/serper","title": "Microfox Serper","description": "Microfox SDK for Serper Google Search","path": "packages/serper","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 
