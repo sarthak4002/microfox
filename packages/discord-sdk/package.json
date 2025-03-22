@@ -1,0 +1,62 @@
+{
+  "name": "@microfox/discord-sdk",
+  "version": "1.0.1",
+  "description": "Discord SDK for Microfox",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint \"./**/*.ts*\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prettier-check": "prettier --check \"./**/*.ts*\""
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@microfox/rest-sdk": "1.0.4",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@microfox/tsconfig": "*",
+    "@types/node": "^18",
+    "tsup": "^8",
+    "typescript": "5.6.3"
+  },
+  "peerDependencies": {
+    "@microfox/rest-sdk": ">=1.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "homepage": "https://github.com/microfox-ai/microfox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/microfox-ai/microfox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/microfox-ai/microfox/issues"
+  },
+  "keywords": [
+    "microfox",
+    "discord",
+    "sdk",
+    "typescript"
+  ]
+}
