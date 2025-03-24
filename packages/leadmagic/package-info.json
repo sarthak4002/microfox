@@ -4,5 +4,7 @@
   "description": "Microfox SDK for LeadMagic lead generation and enrichment",
   "path": "packages/leadmagic",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["LEADMAGIC_API_KEY"],
+  "extraInfo": []
 } 

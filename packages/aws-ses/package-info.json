@@ -4,5 +4,41 @@
   "description": "AWS SES SDK for Microfox",
   "path": "packages/aws-ses",
   "dependencies": ["@microfox/rest-sdk", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "createSESClient",
+      "description": "Create a new SES client",
+      "zodSecretSchema": "SESConfigSchema",
+      "auth": "apiKey",
+      "requiredKeys": [
+        "AWS_SES_ACCESS_KEY_ID",
+        "AWS_SES_SECRET_ACCESS_KEY",
+        "AWS_SES_REGION"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "AWS_SES_ACCESS_KEY_ID",
+      "constructors": ["createSESClient"],
+      "description": "The access key ID for the AWS SES client",
+      "required": true
+    },
+    {
+      "key": "AWS_SES_SECRET_ACCESS_KEY",
+      "constructors": ["createSESClient"],
+      "description": "The secret access key for the AWS SES client",
+      "required": true
+    },
+    {
+      "key": "AWS_SES_REGION",
+      "constructors": ["createSESClient"],
+      "description": "The region for the AWS SES client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createSESClient` constructor to create a new SES client."
+  ]
 }

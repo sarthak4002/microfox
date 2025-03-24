@@ -4,5 +4,50 @@
   "description": "Google SDK for Microfox",
   "path": "packages/google-sdk",
   "dependencies": ["@microfox/rest-sdk", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "googleOAuthManager",
+      "description": "Create a new Google client",
+      "zodSecretSchema": "GoogleOAuthOptionsSchema",
+      "auth": "oauth2",
+      "requiredKeys": ["GOOGLE_ACCESS_TOKEN", "GOOGLE_REFRESH_TOKEN", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "SCOPES"]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": ["googleOAuthManager"],
+      "description": "The access token for the Google client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_REFRESH_TOKEN",
+      "constructors": ["googleOAuthManager"],
+      "description": "The refresh token for the Google client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": ["googleOAuthManager"],
+      "description": "The client ID for the Google client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": ["googleOAuthManager"],
+      "description": "The client secret for the Google client",
+      "required": true
+    },
+    {
+      "key": "SCOPES",
+      "constructors": ["googleOAuthManager"],
+      "description": "The scopes for the Google client",
+      "required": true
+    }
+
+  ],
+  "extraInfo": [
+    "Use the `createGoogleClient` constructor to create a new Google client."
+  ]
 }

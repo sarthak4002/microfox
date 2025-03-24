@@ -4,5 +4,7 @@
   "description": "REST SDK for Microfox",
   "path": "packages/rest-sdk",
   "dependencies": ["zod"],
-  "status": "stable"
+  "status": "stable",
+  "apiKeys": [],
+  "extraInfo": []
 }

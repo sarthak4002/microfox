@@ -8,5 +8,7 @@
     "ky",
     "zod"
   ],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["POLYGON_API_KEY"],
+  "extraInfo": []
 } 

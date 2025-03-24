@@ -4,5 +4,7 @@
     "description": "Proxycurl API client",
     "path": "packages/proxycurl",
     "dependencies": ["@microfox/core"],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": ["PROXYCURL_API_KEY"],
+    "extraInfo": []
 }

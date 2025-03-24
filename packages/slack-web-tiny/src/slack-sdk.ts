@@ -589,10 +589,11 @@ export type SlackMessageResponse = z.infer<typeof SlackMessageResponseSchema>;
 export type FileUploadResponse = z.infer<typeof FileUploadResponseSchema>;
 export type UpdateMessage = z.infer<typeof UpdateMessageSchema>;
 
-export interface SlackSDKConfig {
-  botToken: string;
-  baseUrl?: string;
-}
+export const SlackSDKConfigSchema = z.object({
+  botToken: z.string().min(1, 'Bot token cannot be empty'),
+  baseUrl: z.string().url().optional().default('https://slack.com/api'),
+});
+export type SlackSDKConfig = z.infer<typeof SlackSDKConfigSchema>;
 
 // Helper functions
 const createBlockText = (
@@ -627,11 +628,6 @@ const createButton = (
   ...options,
 });
 
-// Validate the SDK configuration
-const SlackSDKConfigSchema = z.object({
-  botToken: z.string().min(1, 'Bot token cannot be empty'),
-  baseUrl: z.string().url().optional().default('https://slack.com/api'),
-});
 
 // Main SDK implementation
 export interface SlackSDK {

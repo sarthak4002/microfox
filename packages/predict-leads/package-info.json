@@ -4,5 +4,7 @@
   "description": "Microfox SDK for Predict Leads company intelligence and signals",
   "path": "packages/predict-leads",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["PREDICT_LEADS_API_KEY"],
+  "extraInfo": []
 } 

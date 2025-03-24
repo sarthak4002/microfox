@@ -4,5 +4,7 @@
   "description": "Microfox SDK for the Novu notifications API",
   "path": "packages/novu",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["NOVU_API_KEY"],
+  "extraInfo": []
 } 

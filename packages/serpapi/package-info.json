@@ -1,1 +1,10 @@
-{"name": "@microfox/serpapi","title": "Microfox SerpAPI","description": "Microfox SDK for SerpAPI Google Search","path": "packages/serpapi","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 
+{
+  "name": "@microfox/serpapi",
+  "title": "Microfox SerpAPI",
+  "description": "Microfox SDK for SerpAPI Google Search",
+  "path": "packages/serpapi",
+  "dependencies": ["@microfox/core", "ky", "zod"],
+  "status": "partial",
+  "apiKeys": ["SERPAPI_API_KEY"],
+  "extraInfo": []
+}
