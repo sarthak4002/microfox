@@ -1,5 +1,11 @@
 # @microfox/aws-ses
 
+## 1.0.4
+
+### Patch Changes
+
+- 0de57cc: export zod configs
+
 ## 1.0.3
 
 ### Patch Changes
