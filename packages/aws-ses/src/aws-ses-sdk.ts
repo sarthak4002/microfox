@@ -30,7 +30,7 @@ const SendEmailResponseSchema = z
   .describe('Response from AWS SES SendEmail API');
 
 // AWS SES configuration schema
-const SESConfigSchema = z
+export const SESConfigSchema = z
   .object({
     accessKeyId: z
       .string()

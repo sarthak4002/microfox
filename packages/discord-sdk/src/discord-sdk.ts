@@ -16,9 +16,15 @@ const MessageSchema = z.object({
     .optional(),
 });
 
-export const createDiscordSdk = (token?: string) => {
+export const DiscordConfigSchema = z.object({
+  token: z.string().min(1, 'Discord bot token cannot be empty'),
+});
+
+export type DiscordConfig = z.infer<typeof DiscordConfigSchema>;
+
+export const createDiscordSdk = (config: DiscordConfig) => {
   const BASE_URL = 'https://discord.com/api/v10';
-  const botToken = token || process.env.DISCORD_BOT_TOKEN;
+  const botToken = config.token || process.env.DISCORD_BOT_TOKEN;
 
   if (!botToken) throw new Error('Discord bot token is required');
 

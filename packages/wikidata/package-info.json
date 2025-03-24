@@ -1,1 +1,10 @@
-{"name": "@microfox/wikidata","title": "Microfox Wikidata","description": "Microfox SDK for Wikidata","path": "packages/wikidata","dependencies": ["@microfox/core","ky","p-throttle","wikibase-sdk","zod"],"status": "partial"} 
+{
+  "name": "@microfox/wikidata",
+  "title": "Microfox Wikidata",
+  "description": "Microfox SDK for Wikidata",
+  "path": "packages/wikidata",
+  "dependencies": ["@microfox/core", "ky", "p-throttle", "wikibase-sdk", "zod"],
+  "status": "partial",
+  "apiKeys": [],
+  "extraInfo": []
+}

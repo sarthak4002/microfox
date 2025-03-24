@@ -4,5 +4,7 @@
   "description": "Microfox SDK for Dexa's API (access to trusted podcast knowledge)",
   "path": "packages/dexa",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["DEXA_API_KEY"],
+  "extraInfo": []
 } 

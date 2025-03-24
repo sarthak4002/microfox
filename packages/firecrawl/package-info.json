@@ -4,5 +4,7 @@
   "description": "Microfox SDK for Firecrawl web scraping and crawling",
   "path": "packages/firecrawl",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["FIRECRAWL_API_KEY"],
+  "extraInfo": []
 } 

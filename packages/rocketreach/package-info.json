@@ -4,5 +4,7 @@
   "description": "Microfox SDK for RocketReach contact enrichment and B2B intelligence",
   "path": "packages/rocketreach",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["ROCKETREACH_API_KEY"],
+  "extraInfo": []
 } 

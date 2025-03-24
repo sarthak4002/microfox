@@ -4,5 +4,49 @@
   "description": "YouTube SDK for Microfox",
   "path": "packages/youtube-sdk",
   "dependencies": ["@microfox/google-sdk", "@microfox/rest-sdk", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "createYouTubeSDKWithTokens",
+      "description": "Create a new YouTube client",
+      "zodSecretSchema": "YouTubeSDKOptionsSchema",
+      "auth": "oauth2",
+      "requiredKeys": ["GOOGLE_ACCESS_TOKEN", "GOOGLE_REFRESH_TOKEN", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "SCOPES"]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": ["createYouTubeSDKWithTokens"],
+      "description": "The access token for the YouTube client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_REFRESH_TOKEN",
+      "constructors": ["createYouTubeSDKWithTokens"],
+      "description": "The refresh token for the YouTube client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": ["createYouTubeSDKWithTokens"],
+      "description": "The client ID for the YouTube client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": ["createYouTubeSDKWithTokens"],
+      "description": "The client secret for the YouTube client",
+      "required": true
+    },
+    {
+      "key": "SCOPES",
+      "constructors": ["createYouTubeSDKWithTokens"],
+      "description": "The scopes for the YouTube client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createYouTubeSDKWithTokens` constructor to create a new YouTube client."
+  ]
 }

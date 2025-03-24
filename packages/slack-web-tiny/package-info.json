@@ -4,5 +4,25 @@
   "description": "Slack Web Tiny SDK for Microfox",
   "path": "packages/slack-web-tiny",
   "dependencies": ["@microfox/rest-sdk", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "createSlackSDK",
+      "description": "Create a new Slack Web Tiny client",
+      "zodSecretSchema": "SlackSDKConfigSchema",
+      "auth": "apiKey",
+      "requiredKeys": ["SLACK_BOT_TOKEN"]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "SLACK_BOT_TOKEN",
+      "constructors": ["createSlackSDK"],
+      "description": "The token for the Slack Web Tiny client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client."
+  ]
 }

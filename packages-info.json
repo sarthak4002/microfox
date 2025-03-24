@@ -9,7 +9,11 @@
       "zod",
       "ai"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "OPENAI_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/apollo",
@@ -22,7 +26,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "APOLLO_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/aws-ses",
@@ -33,7 +41,49 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createSESClient",
+        "description": "Create a new SES client",
+        "zodSecretSchema": "SESConfigSchema",
+        "auth": "apiKey",
+        "requiredKeys": [
+          "AWS_SES_ACCESS_KEY_ID",
+          "AWS_SES_SECRET_ACCESS_KEY",
+          "AWS_SES_REGION"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "AWS_SES_ACCESS_KEY_ID",
+        "constructors": [
+          "createSESClient"
+        ],
+        "description": "The access key ID for the AWS SES client",
+        "required": true
+      },
+      {
+        "key": "AWS_SES_SECRET_ACCESS_KEY",
+        "constructors": [
+          "createSESClient"
+        ],
+        "description": "The secret access key for the AWS SES client",
+        "required": true
+      },
+      {
+        "key": "AWS_SES_REGION",
+        "constructors": [
+          "createSESClient"
+        ],
+        "description": "The region for the AWS SES client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createSESClient` constructor to create a new SES client."
+    ]
   },
   {
     "name": "@microfox/bing",
@@ -45,7 +95,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "BING_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/calculator",
@@ -57,7 +111,11 @@
       "mathjs",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "MATHJS_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/clearbit",
@@ -70,7 +128,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "CLEARBIT_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/core",
@@ -88,7 +150,11 @@
       "zod",
       "zod-validation-error"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "OPENAI_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/dexa",
@@ -98,7 +164,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "DEXA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/dexter",
@@ -109,7 +179,11 @@
       "@microfox/core",
       "@dexaai/dexter"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "DEXTER_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/diffbot",
@@ -122,7 +196,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "DIFFBOT_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/discord-sdk",
@@ -133,7 +211,31 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createDiscordSdk",
+        "description": "Create a new Discord client",
+        "zodSecretSchema": "DiscordConfigSchema",
+        "auth": "apiKey",
+        "requiredKeys": [
+          "DISCORD_TOKEN"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "DISCORD_TOKEN",
+        "constructors": [
+          "createDiscordSdk"
+        ],
+        "description": "The token for the Discord bot",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createDiscordSdk` constructor to create a new Discord client."
+    ]
   },
   {
     "name": "@microfox/drive-sdk",
@@ -145,7 +247,67 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createDriveSDKWithTokens",
+        "description": "Create a new Drive client",
+        "zodSecretSchema": "DriveSDKOptionsSchema",
+        "auth": "oauth2",
+        "requiredKeys": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GOOGLE_REFRESH_TOKEN",
+          "GOOGLE_CLIENT_ID",
+          "GOOGLE_CLIENT_SECRET",
+          "SCOPES"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "GOOGLE_ACCESS_TOKEN",
+        "constructors": [
+          "createDriveSDKWithTokens"
+        ],
+        "description": "The access token for the Google Drive client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_REFRESH_TOKEN",
+        "constructors": [
+          "createDriveSDKWithTokens"
+        ],
+        "description": "The refresh token for the Google Drive client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_ID",
+        "constructors": [
+          "createDriveSDKWithTokens"
+        ],
+        "description": "The client ID for the Google Drive client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_SECRET",
+        "constructors": [
+          "createDriveSDKWithTokens"
+        ],
+        "description": "The client secret for the Google Drive client",
+        "required": true
+      },
+      {
+        "key": "SCOPES",
+        "constructors": [
+          "createDriveSDKWithTokens"
+        ],
+        "description": "The scopes for the Google Drive client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createDriveSDKWithTokens` constructor to create a new Drive client."
+    ]
   },
   {
     "name": "@microfox/e2b",
@@ -156,7 +318,11 @@
       "@microfox/core",
       "@e2b/code-interpreter"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "E2B_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/exa",
@@ -168,7 +334,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "EXA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/firecrawl",
@@ -178,7 +348,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "FIRECRAWL_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/genkit",
@@ -190,7 +364,11 @@
       "zod",
       "genkit"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "GENKIT_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/github",
@@ -204,7 +382,49 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createGithubSdk",
+        "description": "Create a new GitHub client",
+        "zodSecretSchema": "GithubSdkConfigSchema",
+        "auth": "apiKey",
+        "requiredKeys": [
+          "OWNER",
+          "REPO",
+          "GITHUB_TOKEN"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "OWNER",
+        "constructors": [
+          "createGithubSdk"
+        ],
+        "description": "The owner of the repository",
+        "required": true
+      },
+      {
+        "key": "REPO",
+        "constructors": [
+          "createGithubSdk"
+        ],
+        "description": "The name of the repository",
+        "required": true
+      },
+      {
+        "key": "GITHUB_TOKEN",
+        "constructors": [
+          "createGithubSdk"
+        ],
+        "description": "The token for the GitHub client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createGithubSdk` constructor to create a new GitHub client."
+    ]
   },
   {
     "name": "@microfox/google-sdk",
@@ -215,7 +435,67 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "googleOAuthManager",
+        "description": "Create a new Google client",
+        "zodSecretSchema": "GoogleOAuthOptionsSchema",
+        "auth": "oauth2",
+        "requiredKeys": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GOOGLE_REFRESH_TOKEN",
+          "GOOGLE_CLIENT_ID",
+          "GOOGLE_CLIENT_SECRET",
+          "SCOPES"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "GOOGLE_ACCESS_TOKEN",
+        "constructors": [
+          "googleOAuthManager"
+        ],
+        "description": "The access token for the Google client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_REFRESH_TOKEN",
+        "constructors": [
+          "googleOAuthManager"
+        ],
+        "description": "The refresh token for the Google client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_ID",
+        "constructors": [
+          "googleOAuthManager"
+        ],
+        "description": "The client ID for the Google client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_SECRET",
+        "constructors": [
+          "googleOAuthManager"
+        ],
+        "description": "The client secret for the Google client",
+        "required": true
+      },
+      {
+        "key": "SCOPES",
+        "constructors": [
+          "googleOAuthManager"
+        ],
+        "description": "The scopes for the Google client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createGoogleClient` constructor to create a new Google client."
+    ]
   },
   {
     "name": "@microfox/gravatar",
@@ -225,7 +505,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "GRAVATAR_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/hacker-news",
@@ -237,7 +521,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "HACKER_NEWS_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/hunter",
@@ -247,7 +535,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "HUNTER_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/jigsawstack",
@@ -257,7 +549,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "JIGSAWSTACK_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/jina",
@@ -270,7 +566,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "JINA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/langchain",
@@ -281,7 +581,9 @@
       "@microfox/core",
       "@langchain/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/leadmagic",
@@ -291,7 +593,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "LEADMAGIC_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/llamaindex",
@@ -302,7 +608,9 @@
       "@microfox/core",
       "llamaindex"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/mastra",
@@ -312,7 +620,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "MASTRA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/midjourney",
@@ -322,7 +634,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "MIDJOURNEY_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/novu",
@@ -332,7 +648,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "NOVU_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/people-data-labs",
@@ -345,7 +665,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "PEOPLE_DATA_LABS_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/perigon",
@@ -358,7 +682,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "PERIGON_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/polygon",
@@ -370,7 +698,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "POLYGON_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/predict-leads",
@@ -380,7 +712,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "PREDICT_LEADS_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/proxycurl",
@@ -390,7 +726,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "PROXYCURL_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/rest-sdk",
@@ -400,7 +740,9 @@
     "dependencies": [
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/rocketreach",
@@ -410,7 +752,11 @@
     "dependencies": [
       "@microfox/core"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "ROCKETREACH_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/searxng",
@@ -422,7 +768,9 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/serpapi",
@@ -434,7 +782,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "SERPAPI_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/serper",
@@ -446,7 +798,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "SERPER_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/slack",
@@ -458,7 +814,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "SLACK_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/slack-web-tiny",
@@ -469,7 +829,31 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createSlackSDK",
+        "description": "Create a new Slack Web Tiny client",
+        "zodSecretSchema": "SlackSDKConfigSchema",
+        "auth": "apiKey",
+        "requiredKeys": [
+          "SLACK_BOT_TOKEN"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "SLACK_BOT_TOKEN",
+        "constructors": [
+          "createSlackSDK"
+        ],
+        "description": "The token for the Slack Web Tiny client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client."
+    ]
   },
   {
     "name": "@microfox/social-data",
@@ -482,7 +866,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "SOCIAL_DATA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/stdlib",
@@ -529,7 +917,9 @@
       "@e2b/code-interpreter",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/tavily",
@@ -542,7 +932,11 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "TAVILY_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/twilio",
@@ -554,7 +948,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "TWILIO_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/weather",
@@ -566,7 +964,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "WEATHER_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/wikidata",
@@ -580,7 +982,9 @@
       "wikibase-sdk",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/wikipedia",
@@ -593,7 +997,9 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   },
   {
     "name": "@microfox/wolfram-alpha",
@@ -605,7 +1011,11 @@
       "ky",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [
+      "WOLFRAM_ALPHA_API_KEY"
+    ],
+    "extraInfo": []
   },
   {
     "name": "@microfox/x-sdk",
@@ -627,7 +1037,67 @@
       "@microfox/rest-sdk",
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "constructors": [
+      {
+        "name": "createYouTubeSDKWithTokens",
+        "description": "Create a new YouTube client",
+        "zodSecretSchema": "YouTubeSDKOptionsSchema",
+        "auth": "oauth2",
+        "requiredKeys": [
+          "GOOGLE_ACCESS_TOKEN",
+          "GOOGLE_REFRESH_TOKEN",
+          "GOOGLE_CLIENT_ID",
+          "GOOGLE_CLIENT_SECRET",
+          "SCOPES"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "GOOGLE_ACCESS_TOKEN",
+        "constructors": [
+          "createYouTubeSDKWithTokens"
+        ],
+        "description": "The access token for the YouTube client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_REFRESH_TOKEN",
+        "constructors": [
+          "createYouTubeSDKWithTokens"
+        ],
+        "description": "The refresh token for the YouTube client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_ID",
+        "constructors": [
+          "createYouTubeSDKWithTokens"
+        ],
+        "description": "The client ID for the YouTube client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_SECRET",
+        "constructors": [
+          "createYouTubeSDKWithTokens"
+        ],
+        "description": "The client secret for the YouTube client",
+        "required": true
+      },
+      {
+        "key": "SCOPES",
+        "constructors": [
+          "createYouTubeSDKWithTokens"
+        ],
+        "description": "The scopes for the YouTube client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createYouTubeSDKWithTokens` constructor to create a new YouTube client."
+    ]
   },
   {
     "name": "@microfox/zoominfo",
@@ -641,6 +1111,8 @@
       "p-throttle",
       "zod"
     ],
-    "status": "partial"
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
   }
 ]

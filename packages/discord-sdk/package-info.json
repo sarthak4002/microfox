@@ -4,5 +4,25 @@
   "description": "Discord SDK for Microfox",
   "path": "packages/discord-sdk",
   "dependencies": ["@microfox/rest-sdk", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "createDiscordSdk",
+      "description": "Create a new Discord client",
+      "zodSecretSchema": "DiscordConfigSchema",
+      "auth": "apiKey",
+      "requiredKeys": ["DISCORD_TOKEN"]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "DISCORD_TOKEN",
+      "constructors": ["createDiscordSdk"],
+      "description": "The token for the Discord bot",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createDiscordSdk` constructor to create a new Discord client."
+  ]
 }

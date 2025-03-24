@@ -4,5 +4,7 @@
   "description": "Microfox adapter for the Jigsawstack AI SDK",
   "path": "packages/jigsawstack",
   "dependencies": ["@microfox/core"],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": ["JIGSAWSTACK_API_KEY"],
+  "extraInfo": []
 } 

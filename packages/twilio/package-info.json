@@ -1,1 +1,10 @@
-{"name": "@microfox/twilio","title": "Microfox Twilio","description": "Microfox SDK for Twilio","path": "packages/twilio","dependencies": ["@microfox/core","ky","zod"],"status": "partial"} 
+{
+  "name": "@microfox/twilio",
+  "title": "Microfox Twilio",
+  "description": "Microfox SDK for Twilio",
+  "path": "packages/twilio",
+  "dependencies": ["@microfox/core", "ky", "zod"],
+  "status": "partial",
+  "apiKeys": ["TWILIO_API_KEY"],
+  "extraInfo": []
+}

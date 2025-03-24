@@ -4,5 +4,37 @@
   "description": "Microfox SDK for GitHub",
   "path": "packages/github",
   "dependencies": ["@microfox/core", "ky", "octokit", "p-throttle", "zod"],
-  "status": "stable"
+  "status": "stable",
+  "constructors": [
+    {
+      "name": "createGithubSdk",
+      "description": "Create a new GitHub client",
+      "zodSecretSchema": "GithubSdkConfigSchema",
+      "auth": "apiKey",
+      "requiredKeys": ["OWNER", "REPO", "GITHUB_TOKEN"]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "OWNER",
+      "constructors": ["createGithubSdk"],
+      "description": "The owner of the repository",
+      "required": true
+    },
+    {
+      "key": "REPO",
+      "constructors": ["createGithubSdk"],
+      "description": "The name of the repository",
+      "required": true
+    },
+    {
+      "key": "GITHUB_TOKEN",
+      "constructors": ["createGithubSdk"],
+      "description": "The token for the GitHub client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createGithubSdk` constructor to create a new GitHub client."
+  ]
 }

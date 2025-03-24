@@ -7,5 +7,7 @@
     "@microfox/core",
     "llamaindex"
   ],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": [],
+  "extraInfo": []
 } 

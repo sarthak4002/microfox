@@ -1,1 +1,10 @@
-{"name": "@microfox/calculator","title": "Microfox Calculator","description": "Microfox calculator tool wrapping mathjs","path": "packages/calculator","dependencies": ["@microfox/core","mathjs","zod"],"status": "partial"} 
+{
+  "name": "@microfox/calculator",
+  "title": "Microfox Calculator",
+  "description": "Microfox calculator tool wrapping mathjs",
+  "path": "packages/calculator",
+  "dependencies": ["@microfox/core", "mathjs", "zod"],
+  "status": "partial",
+  "apiKeys": ["MATHJS_API_KEY"],
+  "extraInfo": []
+}

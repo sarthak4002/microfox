@@ -10,5 +10,7 @@
     "p-throttle",
     "zod"
   ],
-  "status": "partial"
+  "status": "partial",
+  "apiKeys": [],
+  "extraInfo": []
 } 
