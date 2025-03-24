@@ -628,7 +628,6 @@ const createButton = (
   ...options,
 });
 
-
 // Main SDK implementation
 export interface SlackSDK {
   sendMessage: (message: SlackMessage) => Promise<SlackMessageResponse>;
