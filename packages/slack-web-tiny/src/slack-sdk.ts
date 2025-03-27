@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { createRestSDK } from '@microfox/rest-sdk';
 
 // Block Kit schemas
 const BlockTextSchema = z
@@ -591,7 +590,6 @@ export type UpdateMessage = z.infer<typeof UpdateMessageSchema>;
 
 export const SlackSDKConfigSchema = z.object({
   botToken: z.string().min(1, 'Bot token cannot be empty'),
-  baseUrl: z.string().url().optional().default('https://slack.com/api'),
 });
 export type SlackSDKConfig = z.infer<typeof SlackSDKConfigSchema>;
 
@@ -644,15 +642,15 @@ export interface SlackSDK {
 export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
   // Validate the config
   const validatedConfig = SlackSDKConfigSchema.parse(config);
-  const { botToken, baseUrl } = validatedConfig;
+  const { botToken } = validatedConfig;
 
-  const restSDK = createRestSDK({
-    baseUrl: baseUrl,
-    headers: {
-      Authorization: `Bearer ${botToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
+  // Global headers and base URL
+  const headers = {
+    'Authorization': `Bearer ${botToken}`,
+    'Content-Type': 'application/json',
+  };
+
+  const apiUrl = 'https://slack.com/api';
 
   return {
     /**
@@ -666,11 +664,14 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       const validatedMessage = SlackMessageSchema.parse(message);
 
       try {
-        const response = await restSDK
-          .post('chat.postMessage', validatedMessage)
-          .json();
+        const response = await fetch(`${apiUrl}/chat.postMessage`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(validatedMessage),
+        });
 
-        return SlackMessageResponseSchema.parse(response);
+        const data = await response.json();
+        return SlackMessageResponseSchema.parse(data);
       } catch (error) {
         throw new Error(
           `Failed to send Slack message: ${error instanceof Error ? error.message : String(error)}`,
@@ -689,11 +690,14 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       const validatedMessage = UpdateMessageSchema.parse(message);
 
       try {
-        const response = await restSDK
-          .post('chat.update', validatedMessage)
-          .json();
+        const response = await fetch(`${apiUrl}/chat.update`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(validatedMessage),
+        });
 
-        return SlackMessageResponseSchema.parse(response);
+        const data = await response.json();
+        return SlackMessageResponseSchema.parse(data);
       } catch (error) {
         throw new Error(
           `Failed to update Slack message: ${error instanceof Error ? error.message : String(error)}`,
@@ -716,15 +720,16 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       });
 
       try {
-        const response = await restSDK
-          .post('files.upload', formData, {
-            headers: {
-              Authorization: `Bearer ${botToken}`,
-            },
-          })
-          .json();
+        const response = await fetch(`${apiUrl}/files.upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${botToken}`,
+          },
+          body: formData,
+        });
 
-        return FileUploadResponseSchema.parse(response);
+        const data = await response.json();
+        return FileUploadResponseSchema.parse(data);
       } catch (error) {
         throw new Error(
           `Failed to upload file to Slack: ${error instanceof Error ? error.message : String(error)}`,
