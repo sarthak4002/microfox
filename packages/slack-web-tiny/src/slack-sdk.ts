@@ -647,7 +647,7 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
 
   // Global headers and base URL
   const headers = {
-    'Authorization': `Bearer ${botToken}`,
+    Authorization: `Bearer ${botToken}`,
     'Content-Type': 'application/json',
   };
 
@@ -724,7 +724,7 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
         const response = await fetch(`${apiUrl}/files.upload`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${botToken}`,
+            Authorization: `Bearer ${botToken}`,
           },
           body: formData,
         });
