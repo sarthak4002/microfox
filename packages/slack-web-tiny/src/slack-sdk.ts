@@ -756,7 +756,7 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
         const response = await fetch(`${apiUrl}/files.upload`, {
           method: 'POST',
           headers: {
-            "content-type": "multipart/form-data",
+            'content-type': 'multipart/form-data',
           },
           body: formData,
         });
