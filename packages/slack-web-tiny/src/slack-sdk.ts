@@ -591,6 +591,7 @@ export type UpdateMessage = z.infer<typeof UpdateMessageSchema>;
 export const SlackSDKConfigSchema = z.object({
   botToken: z.string().min(1, 'Bot token cannot be empty'),
   baseUrl: z.string().url().optional().default('https://slack.com/api'),
+  authType: z.enum(['header', 'query']).default('header'),
 });
 export type SlackSDKConfig = z.infer<typeof SlackSDKConfigSchema>;
 
@@ -643,15 +644,43 @@ export interface SlackSDK {
 export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
   // Validate the config
   const validatedConfig = SlackSDKConfigSchema.parse(config);
-  const { botToken, baseUrl } = validatedConfig;
-
-  // Global headers and base URL
-  const headers = {
-    Authorization: `Bearer ${botToken}`,
-    'Content-Type': 'application/json',
-  };
+  const { botToken, baseUrl, authType } = validatedConfig;
 
   const apiUrl = baseUrl || 'https://slack.com/api';
+
+  // Helper to construct URL with query params if needed
+  const constructUrl = (endpoint: string, params?: Record<string, any>) => {
+    const url = new URL(`${apiUrl}/${endpoint}`);
+    
+    // Add token to query params if authType is query
+    if (authType === 'query') {
+      url.searchParams.append('token', botToken);
+    }
+    
+    // Add any additional query params
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          url.searchParams.append(key, String(value));
+        }
+      });
+    }
+    
+    return url.toString();
+  };
+
+  // Get headers based on authType
+  const getHeaders = (contentType: string = 'application/json') => {
+    const headers: Record<string, string> = {
+      'Content-Type': contentType,
+    };
+
+    if (authType === 'header') {
+      headers['Authorization'] = `Bearer ${botToken}`;
+    }
+
+    return headers;
+  };
 
   return {
     /**
@@ -661,13 +690,12 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
     sendMessage: async (
       message: SlackMessage,
     ): Promise<SlackMessageResponse> => {
-      // Validate message before making API call
       const validatedMessage = SlackMessageSchema.parse(message);
 
       try {
-        const response = await fetch(`${apiUrl}/chat.postMessage`, {
+        const response = await fetch(constructUrl('chat.postMessage'), {
           method: 'POST',
-          headers,
+          headers: getHeaders(),
           body: JSON.stringify(validatedMessage),
         });
 
@@ -687,13 +715,12 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
     updateMessage: async (
       message: UpdateMessage,
     ): Promise<SlackMessageResponse> => {
-      // Validate update before making API call
       const validatedMessage = UpdateMessageSchema.parse(message);
 
       try {
-        const response = await fetch(`${apiUrl}/chat.update`, {
+        const response = await fetch(constructUrl('chat.update'), {
           method: 'POST',
-          headers,
+          headers: getHeaders(),
           body: JSON.stringify(validatedMessage),
         });
 
@@ -721,11 +748,9 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       });
 
       try {
-        const response = await fetch(`${apiUrl}/files.upload`, {
+        const response = await fetch(constructUrl('files.upload'), {
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${botToken}`,
-          },
+          headers: getHeaders('multipart/form-data'),
           body: formData,
         });
 
