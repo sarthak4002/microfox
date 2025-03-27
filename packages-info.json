@@ -805,22 +805,6 @@
     "extraInfo": []
   },
   {
-    "name": "@microfox/slack",
-    "title": "Microfox Slack",
-    "description": "Microfox SDK for Slack",
-    "path": "packages/slack",
-    "dependencies": [
-      "@microfox/core",
-      "ky",
-      "zod"
-    ],
-    "status": "partial",
-    "apiKeys": [
-      "SLACK_API_KEY"
-    ],
-    "extraInfo": []
-  },
-  {
     "name": "@microfox/slack-web-tiny",
     "title": "Microfox Slack Web Tiny",
     "description": "Slack Web Tiny SDK for Microfox",
