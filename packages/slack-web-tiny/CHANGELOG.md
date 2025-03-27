@@ -1,5 +1,11 @@
 # @microfox/slack-web-tiny
 
+## 1.0.4
+
+### Patch Changes
+
+- aff8353: rest-sdk to fetch
+
 ## 1.0.3
 
 ### Patch Changes
