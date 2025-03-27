@@ -648,35 +648,40 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
 
   const apiUrl = baseUrl || 'https://slack.com/api';
 
-  // Helper to construct URL with query params if needed
-  const constructUrl = (endpoint: string, params?: Record<string, any>) => {
-    const url = new URL(`${apiUrl}/${endpoint}`);
-    
-    // Add token to query params if authType is query
+  // Helper to construct request body based on authType
+  const constructBody = (data: Record<string, any>) => {
     if (authType === 'query') {
-      url.searchParams.append('token', botToken);
-    }
-    
-    // Add any additional query params
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
+      // Always use FormData for query auth
+      const formData = new URLSearchParams();
+      formData.append('token', botToken);
+
+      Object.entries(data).forEach(([key, value]) => {
         if (value !== undefined) {
-          url.searchParams.append(key, String(value));
+          // Handle arrays and objects by stringifying them
+          if (typeof value === 'object') {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            formData.append(key, String(value));
+          }
         }
       });
+
+      return formData;
+    } else {
+      // For header auth, use JSON
+      return JSON.stringify(data);
     }
-    
-    return url.toString();
   };
 
   // Get headers based on authType
-  const getHeaders = (contentType: string = 'application/json') => {
-    const headers: Record<string, string> = {
-      'Content-Type': contentType,
-    };
+  const getHeaders = () => {
+    const headers: Record<string, string> = {};
 
     if (authType === 'header') {
       headers['Authorization'] = `Bearer ${botToken}`;
+      headers['Content-Type'] = 'application/json';
+    } else {
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
     return headers;
@@ -693,10 +698,10 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       const validatedMessage = SlackMessageSchema.parse(message);
 
       try {
-        const response = await fetch(constructUrl('chat.postMessage'), {
+        const response = await fetch(`${apiUrl}/chat.postMessage`, {
           method: 'POST',
           headers: getHeaders(),
-          body: JSON.stringify(validatedMessage),
+          body: constructBody(validatedMessage),
         });
 
         const data = await response.json();
@@ -718,10 +723,10 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       const validatedMessage = UpdateMessageSchema.parse(message);
 
       try {
-        const response = await fetch(constructUrl('chat.update'), {
+        const response = await fetch(`${apiUrl}/chat.update`, {
           method: 'POST',
           headers: getHeaders(),
-          body: JSON.stringify(validatedMessage),
+          body: constructBody(validatedMessage),
         });
 
         const data = await response.json();
@@ -748,9 +753,11 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
       });
 
       try {
-        const response = await fetch(constructUrl('files.upload'), {
+        const response = await fetch(`${apiUrl}/files.upload`, {
           method: 'POST',
-          headers: getHeaders('multipart/form-data'),
+          headers: {
+            "content-type": "multipart/form-data",
+          },
           body: formData,
         });
 
