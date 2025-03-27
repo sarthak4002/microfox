@@ -590,6 +590,7 @@ export type UpdateMessage = z.infer<typeof UpdateMessageSchema>;
 
 export const SlackSDKConfigSchema = z.object({
   botToken: z.string().min(1, 'Bot token cannot be empty'),
+  baseUrl: z.string().url().optional().default('https://slack.com/api'),
 });
 export type SlackSDKConfig = z.infer<typeof SlackSDKConfigSchema>;
 
@@ -642,15 +643,15 @@ export interface SlackSDK {
 export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
   // Validate the config
   const validatedConfig = SlackSDKConfigSchema.parse(config);
-  const { botToken } = validatedConfig;
+  const { botToken, baseUrl } = validatedConfig;
 
   // Global headers and base URL
   const headers = {
-    'Authorization': `Bearer ${botToken}`,
+    Authorization: `Bearer ${botToken}`,
     'Content-Type': 'application/json',
   };
 
-  const apiUrl = 'https://slack.com/api';
+  const apiUrl = baseUrl || 'https://slack.com/api';
 
   return {
     /**
@@ -723,7 +724,7 @@ export const createSlackSDK = (config: SlackSDKConfig): SlackSDK => {
         const response = await fetch(`${apiUrl}/files.upload`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${botToken}`,
+            Authorization: `Bearer ${botToken}`,
           },
           body: formData,
         });
