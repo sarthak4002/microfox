@@ -1,5 +1,11 @@
 # @microfox/slack-web-tiny
 
+## 1.0.7
+
+### Patch Changes
+
+- e23a577: fix query auth
+
 ## 1.0.6
 
 ### Patch Changes
