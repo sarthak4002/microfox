@@ -1,5 +1,11 @@
 # @microfox/slack-web-tiny
 
+## 1.0.5
+
+### Patch Changes
+
+- e8b6644: minor fix
+
 ## 1.0.4
 
 ### Patch Changes
