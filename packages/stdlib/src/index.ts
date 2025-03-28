@@ -24,7 +24,6 @@ export * from '@microfox/rocketreach';
 export * from '@microfox/searxng';
 export * from '@microfox/serpapi';
 export * from '@microfox/serper';
-export * from '@microfox/slack';
 export * from '@microfox/social-data';
 export * from '@microfox/tavily';
 export * from '@microfox/twilio';

@@ -28,6 +28,8 @@ describe('Slack SDK Integration Tests', () => {
       // Initialize SDK only if we have a real token
       slackSDK = createSlackSDK({
         botToken: process.env.SLACK_BOT_TOKEN as string,
+        baseUrl: 'https://slack.com/api',
+        authType: 'header',
       });
     }
   });
@@ -181,6 +183,8 @@ describe('Slack SDK Integration Tests', () => {
         // Use mock token for testing when real token isn't available
         const testSDK = createSlackSDK({
           botToken: MOCK_TOKEN,
+          baseUrl: 'https://slack.com/api',
+          authType: 'header',
         });
 
         try {
@@ -200,6 +204,8 @@ describe('Slack SDK Integration Tests', () => {
 
       const testSDK = createSlackSDK({
         botToken: process.env.SLACK_BOT_TOKEN,
+        baseUrl: 'https://slack.com/api',
+        authType: 'header',
       });
 
       try {
@@ -218,7 +224,11 @@ describe('Slack SDK Integration Tests', () => {
     });
 
     it('should handle invalid token errors', async () => {
-      const invalidSDK = createSlackSDK({ botToken: INVALID_TOKEN });
+      const invalidSDK = createSlackSDK({
+        botToken: INVALID_TOKEN,
+        baseUrl: 'https://slack.com/api',
+        authType: 'header',
+      });
 
       try {
         const response = await invalidSDK.sendMessage({
