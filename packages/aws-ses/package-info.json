@@ -3,8 +3,10 @@
   "title": "Microfox AWS SES",
   "description": "AWS SES SDK for Microfox",
   "path": "packages/aws-ses",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/aws-ses/icon.svg",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
+  "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
   "constructors": [
     {
       "name": "createSESClient",
@@ -12,10 +14,23 @@
       "zodSecretSchema": "SESConfigSchema",
       "auth": "apiKey",
       "requiredKeys": [
-        "AWS_SES_ACCESS_KEY_ID",
-        "AWS_SES_SECRET_ACCESS_KEY",
-        "AWS_SES_REGION"
-      ]
+        {
+          "key": "AWS_SES_ACCESS_KEY_ID",
+          "displayName": "Access Key ID",
+          "description": "The access key ID for the AWS SES client"
+        },
+        {
+          "key": "AWS_SES_SECRET_ACCESS_KEY",
+          "displayName": "Secret Access Key",
+          "description": "The secret access key for the AWS SES client"
+        },
+        {
+          "key": "AWS_SES_REGION",
+          "displayName": "Region",
+          "description": "The region for the AWS SES client"
+        }
+      ],
+      "internalKeys": []
     }
   ],
   "keysInfo": [

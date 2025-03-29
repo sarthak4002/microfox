@@ -5,13 +5,42 @@
   "path": "packages/youtube-sdk",
   "dependencies": ["@microfox/google-sdk", "@microfox/rest-sdk", "zod"],
   "status": "stable",
+  "documentation": "https://www.npmjs.com/package/@microfox/youtube-sdk",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/youtube-sdk/icon.svg",
   "constructors": [
     {
       "name": "createYouTubeSDKWithTokens",
       "description": "Create a new YouTube client",
       "zodSecretSchema": "YouTubeSDKOptionsSchema",
       "auth": "oauth2",
-      "requiredKeys": ["GOOGLE_ACCESS_TOKEN", "GOOGLE_REFRESH_TOKEN", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "SCOPES"]
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_ACCESS_TOKEN",
+          "displayName": "Access Token",
+          "description": "The access token for the YouTube client"
+        },
+        {
+          "key": "GOOGLE_REFRESH_TOKEN",
+          "displayName": "Refresh Token",
+          "description": "The refresh token for the YouTube client"
+        },
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "displayName": "Client ID",
+          "description": "The client ID for the YouTube client"
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "displayName": "Client Secret",
+          "description": "The client secret for the YouTube client"
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Scopes",
+          "description": "The scopes for the YouTube client"
+        }
+      ]
     }
   ],
   "keysInfo": [

@@ -4,5 +4,10 @@
   "description": "Twitter/X V2 SDK for Microfox",
   "path": "packages/x-sdk",
   "dependencies": ["zod"],
-  "status": "stable"
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/x-sdk/icon.svg",
+  "documentation": "https://www.npmjs.com/package/@microfox/x-sdk",
+  "status": "stable",
+  "constructors": [],
+  "keysInfo": [],
+  "extraInfo": []
 }

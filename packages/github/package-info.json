@@ -5,13 +5,32 @@
   "path": "packages/github",
   "dependencies": ["@microfox/core", "ky", "octokit", "p-throttle", "zod"],
   "status": "stable",
+  "documentation": "https://www.npmjs.com/package/@microfox/github",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/github/icon.svg",
   "constructors": [
     {
       "name": "createGithubSdk",
       "description": "Create a new GitHub client",
       "zodSecretSchema": "GithubSdkConfigSchema",
       "auth": "apiKey",
-      "requiredKeys": ["OWNER", "REPO", "GITHUB_TOKEN"]
+      "requiredKeys": [
+        {
+          "key": "OWNER",
+          "displayName": "Owner",
+          "description": "The owner of the repository"
+        },
+        {
+          "key": "REPO",
+          "displayName": "Repo",
+          "description": "The name of the repository"
+        },
+        {
+          "key": "GITHUB_TOKEN",
+          "displayName": "GitHub Token",
+          "description": "The token for the GitHub client"
+        }
+      ],
+      "internalKeys": []
     }
   ],
   "keysInfo": [
