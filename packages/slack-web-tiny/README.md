@@ -16,6 +16,8 @@ import { createSlackSDK } from '@microfox/slack-web-tiny';
 // Initialize the SDK with your Slack bot token
 const slackSDK = createSlackSDK({
   botToken: 'xoxb-your-bot-token',
+  authType: 'header',
+  baseUrl: 'https://slack.com/api',
 });
 
 // Send a simple message
@@ -60,6 +62,17 @@ const blockMessage = await slackSDK.sendMessage({
     },
     {
       type: 'divider',
+    },
+    {
+      type: 'section',
+      accessory: {
+        type: 'button',
+        text: { type: 'plain_text', text: 'Click me' },
+        // unique action_id
+        action_id: 'click_me',
+        // url to open (optional)
+        url: 'https://example.com',
+      },
     },
   ],
 });

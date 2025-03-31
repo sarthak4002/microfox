@@ -7,53 +7,46 @@
   "status": "stable",
   "documentation": "https://www.npmjs.com/package/@microfox/github",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/github/icon.svg",
+  "readme_map": {
+    "path": "https://raw.githubusercontent.com/octokit/plugin-rest-endpoint-methods.js/refs/heads/main/docs/${scope}/${method}.md",
+    "title": "GitHub SDK for Microfox",
+    "functionalities": ["restApi"],
+    "dynamic_setters": [
+      {
+        "key": "scope",
+        "list": "/docs/scopes.json"
+      },
+      {
+        "key": "method",
+        "list": "/docs/${scope}.json"
+      }
+    ],
+    "type": "dynamic_path",
+    "description": "The docs for all rest api methods"
+  },
   "constructors": [
     {
-      "name": "createGithubSdk",
-      "description": "Create a new GitHub client",
-      "zodSecretSchema": "GithubSdkConfigSchema",
+      "name": "Octokit",
+      "description": "Create a new Octokit client",
       "auth": "apiKey",
       "requiredKeys": [
         {
-          "key": "OWNER",
-          "displayName": "Owner",
-          "description": "The owner of the repository"
-        },
-        {
-          "key": "REPO",
-          "displayName": "Repo",
-          "description": "The name of the repository"
-        },
-        {
           "key": "GITHUB_TOKEN",
-          "displayName": "GitHub Token",
-          "description": "The token for the GitHub client"
+          "displayName": "GitHub Personal Access Token",
+          "description": "The token for the GitHub user's account. You can create one at https://github.com/settings/tokens"
         }
       ],
+      "functionalities": ["restApi"],
       "internalKeys": []
     }
   ],
   "keysInfo": [
     {
-      "key": "OWNER",
-      "constructors": ["createGithubSdk"],
-      "description": "The owner of the repository",
-      "required": true
-    },
-    {
-      "key": "REPO",
-      "constructors": ["createGithubSdk"],
-      "description": "The name of the repository",
-      "required": true
-    },
-    {
       "key": "GITHUB_TOKEN",
-      "constructors": ["createGithubSdk"],
-      "description": "The token for the GitHub client",
+      "constructors": ["Octokit"],
+      "description": "The token for the GitHub user's account. You can create one at https://github.com/settings/tokens",
       "required": true
     }
   ],
-  "extraInfo": [
-    "Use the `createGithubSdk` constructor to create a new GitHub client."
-  ]
+  "extraInfo": ["Use the `Octokit` constructor to create a new Octokit client."]
 }

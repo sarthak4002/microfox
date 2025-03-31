@@ -1,0 +1,22 @@
+[
+  "checkIsStarred",
+  "create",
+  "createComment",
+  "delete",
+  "deleteComment",
+  "fork",
+  "get",
+  "getComment",
+  "getRevision",
+  "list",
+  "listComments",
+  "listCommits",
+  "listForUser",
+  "listForks",
+  "listPublic",
+  "listStarred",
+  "star",
+  "unstar",
+  "update",
+  "updateComment"
+]
