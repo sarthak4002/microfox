@@ -5,6 +5,7 @@
   "path": "packages/drive-sdk",
   "dependencies": ["@microfox/google-sdk", "@microfox/rest-sdk", "zod"],
   "status": "stable",
+  "authEndpoint": "/connect/google",
   "documentation": "https://www.npmjs.com/package/@microfox/drive-sdk",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/drive-sdk/icon.svg",
   "constructors": [
