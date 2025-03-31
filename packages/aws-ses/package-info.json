@@ -6,6 +6,7 @@
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/aws-ses/icon.svg",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
+  "authEndpoint": "/connect/aws",
   "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
   "constructors": [
     {
