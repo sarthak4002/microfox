@@ -44,6 +44,18 @@ describe('Slack SDK Validation and Error Handling', () => {
   const mockMessage: SlackMessage = {
     channel: 'C12345678',
     text: 'Hello, world!',
+    blocks: [
+      {
+        type: 'section',
+        text: { type: 'plain_text', text: 'Hello, world!' },
+        accessory: {
+          type: 'button',
+          text: { type: 'plain_text', text: 'Click me' },
+          action_id: 'click_me',
+          url: 'https://example.com',
+        },
+      },
+    ],
   };
 
   const mockUpdateMessage: UpdateMessage = {

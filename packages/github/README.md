@@ -1,154 +1,49 @@
 # @microfox/github
 
-A modern, type-safe GitHub SDK built with TypeScript and Zod for making GitHub API requests.
+octokit.js
+The all-batteries-included GitHub SDK for Browsers, Node.js, and Deno.
 
-## Features
+The octokit package integrates the three main Octokit libraries
 
-- 🔒 Type-safe API with Zod validation
-- 🚀 Modern functional approach
-- 📦 Repository management
-- 🔄 Pull request operations
-- 🌳 Branch management
-- 📝 File operations
-- ⚡ GitHub Actions integration
+API client (REST API requests, GraphQL API queries, Authentication)
+App client (GitHub App & installations, Webhooks, OAuth)
+Action client (Pre-authenticated API client for single repository)
 
-## Installation
+Node
+Install with npm/pnpm install octokit, or yarn add octokit
 
-```bash
-npm install @microfox/github
-# or
-yarn add @microfox/github
-# or
-pnpm add @microfox/github
+```ts
+import { Octokit } from 'octokit';
 ```
 
-## Usage
+standalone minimal Octokit: @octokit/core.
 
-### Initialize the SDK
+The Octokit client can be used to send requests to GitHub's REST API and queries to GitHub's GraphQL API.
 
-```typescript
-import { createGithubSdk } from '@microfox/github';
+Example: Get the username for the authenticated user.
 
-const githubSdk = createGithubSdk({
-  owner: 'your-organization',
-  repo: 'your-repository',
-  token: 'your-github-token', // or process.env.GITHUB_TOKEN
+```ts
+// Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+// Compare: https://docs.github.com/en/rest/reference/users#get-the-authenticated-user
+const {
+  data: { login },
+} = await octokit.rest.users.getAuthenticated();
+console.log('Hello, %s', login);
+```
+
+## REST API
+
+There are two ways of using the GitHub REST API, the octokit.rest._ endpoint methods and octokit.request. Both act the same way, the octokit.rest._ methods are just added for convenience, they use octokit.request internally.
+
+For example
+
+```ts
+await octokit.rest.issues.create({
+  owner: 'octocat',
+  repo: 'hello-world',
+  title: 'Hello, world!',
+  body: 'I created this issue using Octokit!',
 });
-```
-
-### Examples
-
-#### Create a Pull Request
-
-```typescript
-const pr = await githubSdk.createPullRequest({
-  title: 'Feature: Add new functionality',
-  head: 'feature-branch',
-  base: 'main',
-  body: 'This PR adds exciting new features!',
-});
-```
-
-#### Create a New Branch
-
-```typescript
-const branch = await githubSdk.createBranch({
-  branchName: 'feature/new-feature',
-  baseBranch: 'main',
-});
-```
-
-#### Update a File
-
-```typescript
-const updatedFile = await githubSdk.updateFile({
-  path: 'src/config.json',
-  content: JSON.stringify({ version: '2.0.0' }),
-  commitMessage: 'Update config version',
-  branch: 'main',
-});
-```
-
-#### Get Pull Request Events
-
-```typescript
-const events = await githubSdk.getPrEvents(123);
-```
-
-## API Reference
-
-### Repository Management
-
-- `createRepositoryFromTemplate(params: RepoParams)`: Create a new repository from a template
-- `getRepoDetails()`: Get repository information
-
-### Pull Requests
-
-- `createPullRequest(params: PRParams)`: Create a new pull request
-- `createCommentOnPr(prNumber: number, comment: string)`: Add a comment to a PR
-- `getAllPullRequests()`: Get all repository pull requests
-- `getPrDetails(prNumber: number)`: Get specific pull request details
-- `getPrEvents(prNumber: number, per_page?: number, page?: number)`: Get PR events timeline
-
-### Branch Management
-
-- `createBranch(params: BranchParams)`: Create a new branch
-- `getBranches()`: List all repository branches
-
-### File Operations
-
-- `getFileContent(path: string, branch?: string)`: Get file contents
-- `updateFile(params: UpdateFileParams)`: Create or update a file
-- `getReadme(branch?: string)`: Get repository README
-- `updateReadme(content: string, commitMessage: string, branch?: string)`: Update README
-
-### GitHub Actions
-
-- `triggerWorkflow(workflowFileName: string, inputs: Record<string, string>, inputRef?: string)`: Trigger a GitHub Actions workflow
-
-## Types
-
-All main interfaces are Zod-validated:
-
-```typescript
-interface GithubSdkConfig {
-  owner: string; // Repository owner
-  repo: string; // Repository name
-  token: string; // GitHub personal access token
-}
-
-interface PRParams {
-  title: string; // Pull request title
-  head: string; // Source branch
-  base: string; // Target branch
-  body?: string; // Pull request description
-}
-
-interface BranchParams {
-  branchName: string; // New branch name
-  baseBranch: string; // Base branch to create from
-}
-
-interface UpdateFileParams {
-  path: string; // File path in repository
-  content: string; // New file content
-  commitMessage: string; // Commit message
-  branch: string; // Target branch
-}
-```
-
-## Error Handling
-
-The SDK throws errors for invalid configurations and failed API requests. Always wrap API calls in try-catch blocks:
-
-```typescript
-try {
-  const pr = await githubSdk.createPullRequest({
-    title: 'My PR',
-    head: 'feature',
-    base: 'main',
-  });
-} catch (error) {
-  console.error('Failed to create PR:', error);
-}
 ```

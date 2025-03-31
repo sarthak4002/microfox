@@ -1,0 +1,15 @@
+[
+  "createBlob",
+  "createCommit",
+  "createRef",
+  "createTag",
+  "createTree",
+  "deleteRef",
+  "getBlob",
+  "getCommit",
+  "getRef",
+  "getTag",
+  "getTree",
+  "listMatchingRefs",
+  "updateRef"
+]

@@ -590,8 +590,8 @@ export type UpdateMessage = z.infer<typeof UpdateMessageSchema>;
 
 export const SlackSDKConfigSchema = z.object({
   botToken: z.string().min(1, 'Bot token cannot be empty'),
-  baseUrl: z.string().url().optional().default('https://slack.com/api'),
   authType: z.enum(['header', 'query']).default('header'),
+  baseUrl: z.string().url().default('https://slack.com/api').optional(),
 });
 export type SlackSDKConfig = z.infer<typeof SlackSDKConfigSchema>;
 
