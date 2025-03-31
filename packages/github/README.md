@@ -13,7 +13,7 @@ Node
 Install with npm/pnpm install octokit, or yarn add octokit
 
 ```ts
-import { Octokit } from 'octokit';
+import { Octokit } from '@microfox/github';
 ```
 
 standalone minimal Octokit: @octokit/core.
