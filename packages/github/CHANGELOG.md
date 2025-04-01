@@ -1,5 +1,15 @@
 # @microfox/github
 
+## 2.0.0
+
+### Major Changes
+
+- 6e73c2c: github defaulted to octokit repo
+
+### Minor Changes
+
+- 7b0bbd8: github defaulted to octokit
+
 ## 1.0.1
 
 ### Patch Changes
