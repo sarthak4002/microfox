@@ -15,7 +15,7 @@ import { createSlackSDK } from '@microfox/slack-web-tiny';
 
 // Initialize the SDK with your Slack bot token
 const slackSDK = createSlackSDK({
-  botToken: 'xoxb-your-bot-token',
+  botToken: process.env.SLACK_BOT_TOKEN ?? 'xoxb-your-bot-token',
   authType: 'header',
   baseUrl: 'https://slack.com/api',
 });
