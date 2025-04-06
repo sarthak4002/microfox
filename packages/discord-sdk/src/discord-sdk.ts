@@ -48,7 +48,10 @@ export const createDiscordSdk = (config: DiscordConfig) => {
   });
 
   // Store command handlers
-  const commandHandlers = new Map<string, z.infer<typeof DiscordCommandHandlerSchema>>();
+  const commandHandlers = new Map<
+    string,
+    z.infer<typeof DiscordCommandHandlerSchema>
+  >();
 
   const request = async (
     endpoint: string,
@@ -89,7 +92,10 @@ export const createDiscordSdk = (config: DiscordConfig) => {
   /**
    * Defer a slash command response
    */
-  const deferInteraction = async (interactionToken: string, ephemeral: boolean = false) => {
+  const deferInteraction = async (
+    interactionToken: string,
+    ephemeral: boolean = false,
+  ) => {
     return request(`/interactions/${interactionToken}/callback`, 'POST', {
       type: 5, // DEFERRED_UPDATE_MESSAGE
       data: { flags: ephemeral ? 64 : 0 }, // 64 is the ephemeral flag
@@ -108,7 +114,11 @@ export const createDiscordSdk = (config: DiscordConfig) => {
       ephemeral?: boolean;
     },
   ) => {
-    return request(`/webhooks/@me/${interactionToken}/messages/@original`, 'PATCH', response);
+    return request(
+      `/webhooks/@me/${interactionToken}/messages/@original`,
+      'PATCH',
+      response,
+    );
   };
 
   return {
@@ -231,13 +241,19 @@ export const createDiscordSdk = (config: DiscordConfig) => {
       guildId: string,
       command: z.infer<typeof DiscordSlashCommandSchema>,
     ) => {
-      return request(`/applications/@me/guilds/${guildId}/commands`, 'POST', command);
+      return request(
+        `/applications/@me/guilds/${guildId}/commands`,
+        'POST',
+        command,
+      );
     },
 
     /**
      * Register global slash commands for the bot.
      */
-    registerGlobalSlashCommand: async (command: z.infer<typeof DiscordSlashCommandSchema>) => {
+    registerGlobalSlashCommand: async (
+      command: z.infer<typeof DiscordSlashCommandSchema>,
+    ) => {
       return request('/applications/@me/commands', 'POST', command);
     },
 
@@ -245,7 +261,10 @@ export const createDiscordSdk = (config: DiscordConfig) => {
      * Delete a slash command.
      */
     deleteSlashCommand: async (guildId: string, commandId: string) => {
-      return request(`/applications/@me/guilds/${guildId}/commands/${commandId}`, 'DELETE');
+      return request(
+        `/applications/@me/guilds/${guildId}/commands/${commandId}`,
+        'DELETE',
+      );
     },
 
     /**
@@ -272,10 +291,14 @@ export const createDiscordSdk = (config: DiscordConfig) => {
             reason,
           });
         case 'kick':
-          return request(`/guilds/${guildId}/members/${userId}`, 'DELETE', { reason });
+          return request(`/guilds/${guildId}/members/${userId}`, 'DELETE', {
+            reason,
+          });
         case 'timeout':
           return request(`/guilds/${guildId}/members/${userId}`, 'PATCH', {
-            communication_disabled_until: duration ? new Date(Date.now() + duration).toISOString() : null,
+            communication_disabled_until: duration
+              ? new Date(Date.now() + duration).toISOString()
+              : null,
             reason,
           });
         default:
@@ -347,7 +370,11 @@ export const createDiscordSdk = (config: DiscordConfig) => {
       roleId: string,
       reason?: string,
     ) => {
-      return request(`/guilds/${guildId}/members/${userId}/roles/${roleId}`, 'PUT', { reason });
+      return request(
+        `/guilds/${guildId}/members/${userId}/roles/${roleId}`,
+        'PUT',
+        { reason },
+      );
     },
 
     /**
@@ -359,7 +386,11 @@ export const createDiscordSdk = (config: DiscordConfig) => {
       roleId: string,
       reason?: string,
     ) => {
-      return request(`/guilds/${guildId}/members/${userId}/roles/${roleId}`, 'DELETE', { reason });
+      return request(
+        `/guilds/${guildId}/members/${userId}/roles/${roleId}`,
+        'DELETE',
+        { reason },
+      );
     },
 
     /**
@@ -393,7 +424,7 @@ export const createDiscordSdk = (config: DiscordConfig) => {
     /**
      * Register a command handler
      */
-    registerCommand: async function(
+    registerCommand: async function (
       guildId: string,
       command: z.infer<typeof DiscordCommandHandlerSchema>,
     ) {
@@ -406,7 +437,8 @@ export const createDiscordSdk = (config: DiscordConfig) => {
         name: command.name,
         description: command.description,
         options: command.options ?? [],
-        default_member_permissions: command.default_member_permissions ?? undefined,
+        default_member_permissions:
+          command.default_member_permissions ?? undefined,
         dm_permission: command.dm_permission ?? undefined,
       });
     },
@@ -414,7 +446,9 @@ export const createDiscordSdk = (config: DiscordConfig) => {
     /**
      * Register a global command handler
      */
-    registerGlobalCommand: async function(command: z.infer<typeof DiscordCommandHandlerSchema>) {
+    registerGlobalCommand: async function (
+      command: z.infer<typeof DiscordCommandHandlerSchema>,
+    ) {
       // Store the handler
       commandHandlers.set(command.name, command);
 
@@ -423,7 +457,8 @@ export const createDiscordSdk = (config: DiscordConfig) => {
         name: command.name,
         description: command.description,
         options: command.options ?? [],
-        default_member_permissions: command.default_member_permissions ?? undefined,
+        default_member_permissions:
+          command.default_member_permissions ?? undefined,
         dm_permission: command.dm_permission ?? undefined,
       });
     },
@@ -432,7 +467,8 @@ export const createDiscordSdk = (config: DiscordConfig) => {
      * Handle a slash command interaction
      */
     handleInteraction: async (interaction: any) => {
-      const parsedInteraction = DiscordSlashCommandInteractionSchema.parse(interaction);
+      const parsedInteraction =
+        DiscordSlashCommandInteractionSchema.parse(interaction);
 
       if (!parsedInteraction.data) {
         throw new Error('No command data in interaction');

@@ -182,11 +182,19 @@ export const DiscordSlashCommandOptionSchema: z.ZodType<any> = z.object({
   description: z.string().describe('Description of the option'),
   type: z.number().describe('Type of the option (1-10)'),
   required: z.boolean().optional().describe('Whether the option is required'),
-  choices: z.array(z.object({
-    name: z.string(),
-    value: z.union([z.string(), z.number()])
-  })).optional().describe('Predefined choices for the option'),
-  options: z.lazy(() => z.array(DiscordSlashCommandOptionSchema)).optional().describe('Sub-options for subcommands'),
+  choices: z
+    .array(
+      z.object({
+        name: z.string(),
+        value: z.union([z.string(), z.number()]),
+      }),
+    )
+    .optional()
+    .describe('Predefined choices for the option'),
+  options: z
+    .lazy(() => z.array(DiscordSlashCommandOptionSchema))
+    .optional()
+    .describe('Sub-options for subcommands'),
 });
 
 /**
@@ -195,19 +203,36 @@ export const DiscordSlashCommandOptionSchema: z.ZodType<any> = z.object({
 export const DiscordSlashCommandSchema = z.object({
   name: z.string().describe('Name of the command'),
   description: z.string().describe('Description of the command'),
-  options: z.array(DiscordSlashCommandOptionSchema).optional().describe('Command options'),
-  default_member_permissions: z.string().optional().describe('Default permissions required to use the command'),
-  dm_permission: z.boolean().optional().describe('Whether the command can be used in DMs'),
+  options: z
+    .array(DiscordSlashCommandOptionSchema)
+    .optional()
+    .describe('Command options'),
+  default_member_permissions: z
+    .string()
+    .optional()
+    .describe('Default permissions required to use the command'),
+  dm_permission: z
+    .boolean()
+    .optional()
+    .describe('Whether the command can be used in DMs'),
 });
 
 /**
  * Moderation Action Schema
  */
 export const DiscordModerationActionSchema = z.object({
-  type: z.enum(['ban', 'kick', 'timeout', 'warn']).describe('Type of moderation action'),
+  type: z
+    .enum(['ban', 'kick', 'timeout', 'warn'])
+    .describe('Type of moderation action'),
   reason: z.string().optional().describe('Reason for the action'),
-  duration: z.number().optional().describe('Duration in milliseconds (for timeout)'),
-  delete_message_days: z.number().optional().describe('Number of days of messages to delete (for ban)'),
+  duration: z
+    .number()
+    .optional()
+    .describe('Duration in milliseconds (for timeout)'),
+  delete_message_days: z
+    .number()
+    .optional()
+    .describe('Number of days of messages to delete (for ban)'),
 });
 
 /**
@@ -230,7 +255,10 @@ export const DiscordChannelSchema = z.object({
   topic: z.string().nullable().describe('Channel topic'),
   nsfw: z.boolean().optional().describe('Whether the channel is NSFW'),
   parent_id: z.string().nullable().describe('Parent category ID'),
-  permission_overwrites: z.array(DiscordPermissionOverwriteSchema).optional().describe('Permission overwrites'),
+  permission_overwrites: z
+    .array(DiscordPermissionOverwriteSchema)
+    .optional()
+    .describe('Permission overwrites'),
   rate_limit_per_user: z.number().optional().describe('Slowmode rate limit'),
   position: z.number().optional().describe('Channel position'),
 });
@@ -257,12 +285,17 @@ export const DiscordSlashCommandInteractionDataSchema = z.object({
   id: z.string().describe('Interaction ID'),
   name: z.string().describe('Command name'),
   type: z.number().describe('Interaction type'),
-  options: z.array(z.object({
-    name: z.string(),
-    type: z.number(),
-    value: z.union([z.string(), z.number(), z.boolean()]).optional(),
-    options: z.array(z.any()).optional(),
-  })).optional().describe('Command options'),
+  options: z
+    .array(
+      z.object({
+        name: z.string(),
+        type: z.number(),
+        value: z.union([z.string(), z.number(), z.boolean()]).optional(),
+        options: z.array(z.any()).optional(),
+      }),
+    )
+    .optional()
+    .describe('Command options'),
   resolved: z.record(z.any()).optional().describe('Resolved data for mentions'),
 });
 
@@ -273,9 +306,17 @@ export const DiscordSlashCommandInteractionSchema = z.object({
   id: z.string().describe('Interaction ID'),
   application_id: z.string().describe('Application ID'),
   type: z.number().describe('Interaction type'),
-  data: DiscordSlashCommandInteractionDataSchema.optional().describe('Command data'),
-  guild_id: z.string().optional().describe('Guild ID where the command was used'),
-  channel_id: z.string().optional().describe('Channel ID where the command was used'),
+  data: DiscordSlashCommandInteractionDataSchema.optional().describe(
+    'Command data',
+  ),
+  guild_id: z
+    .string()
+    .optional()
+    .describe('Guild ID where the command was used'),
+  channel_id: z
+    .string()
+    .optional()
+    .describe('Channel ID where the command was used'),
   member: z.any().optional().describe('Member who used the command'),
   user: z.any().optional().describe('User who used the command'),
   token: z.string().describe('Interaction token'),
@@ -296,10 +337,19 @@ export type DiscordCommandHandler = (
 export const DiscordCommandHandlerSchema = z.object({
   name: z.string().describe('Command name'),
   description: z.string().describe('Command description'),
-  options: z.array(DiscordSlashCommandOptionSchema).optional().describe('Command options'),
+  options: z
+    .array(DiscordSlashCommandOptionSchema)
+    .optional()
+    .describe('Command options'),
   handler: z.function().describe('Command handler function'),
-  default_member_permissions: z.string().optional().describe('Default permissions required'),
-  dm_permission: z.boolean().optional().describe('Whether command can be used in DMs'),
+  default_member_permissions: z
+    .string()
+    .optional()
+    .describe('Default permissions required'),
+  dm_permission: z
+    .boolean()
+    .optional()
+    .describe('Whether command can be used in DMs'),
 });
 
 /**
