@@ -175,10 +175,142 @@ export const DiscordGuildSchema = z.object({
 });
 
 /**
+ * Slash Command Option Schema
+ */
+export const DiscordSlashCommandOptionSchema: z.ZodType<any> = z.object({
+  name: z.string().describe('Name of the option'),
+  description: z.string().describe('Description of the option'),
+  type: z.number().describe('Type of the option (1-10)'),
+  required: z.boolean().optional().describe('Whether the option is required'),
+  choices: z.array(z.object({
+    name: z.string(),
+    value: z.union([z.string(), z.number()])
+  })).optional().describe('Predefined choices for the option'),
+  options: z.lazy(() => z.array(DiscordSlashCommandOptionSchema)).optional().describe('Sub-options for subcommands'),
+});
+
+/**
+ * Slash Command Schema
+ */
+export const DiscordSlashCommandSchema = z.object({
+  name: z.string().describe('Name of the command'),
+  description: z.string().describe('Description of the command'),
+  options: z.array(DiscordSlashCommandOptionSchema).optional().describe('Command options'),
+  default_member_permissions: z.string().optional().describe('Default permissions required to use the command'),
+  dm_permission: z.boolean().optional().describe('Whether the command can be used in DMs'),
+});
+
+/**
+ * Moderation Action Schema
+ */
+export const DiscordModerationActionSchema = z.object({
+  type: z.enum(['ban', 'kick', 'timeout', 'warn']).describe('Type of moderation action'),
+  reason: z.string().optional().describe('Reason for the action'),
+  duration: z.number().optional().describe('Duration in milliseconds (for timeout)'),
+  delete_message_days: z.number().optional().describe('Number of days of messages to delete (for ban)'),
+});
+
+/**
+ * Channel Permission Overwrite Schema
+ */
+export const DiscordPermissionOverwriteSchema = z.object({
+  id: z.string().describe('Role or user ID'),
+  type: z.number().describe('Type (0 for role, 1 for user)'),
+  allow: z.string().optional().describe('Allowed permissions'),
+  deny: z.string().optional().describe('Denied permissions'),
+});
+
+/**
+ * Channel Schema
+ */
+export const DiscordChannelSchema = z.object({
+  id: z.string().describe('Channel ID'),
+  type: z.number().describe('Channel type'),
+  name: z.string().describe('Channel name'),
+  topic: z.string().nullable().describe('Channel topic'),
+  nsfw: z.boolean().optional().describe('Whether the channel is NSFW'),
+  parent_id: z.string().nullable().describe('Parent category ID'),
+  permission_overwrites: z.array(DiscordPermissionOverwriteSchema).optional().describe('Permission overwrites'),
+  rate_limit_per_user: z.number().optional().describe('Slowmode rate limit'),
+  position: z.number().optional().describe('Channel position'),
+});
+
+/**
+ * Role Schema
+ */
+export const DiscordRoleSchema = z.object({
+  id: z.string().describe('Role ID'),
+  name: z.string().describe('Role name'),
+  color: z.number().describe('Role color'),
+  hoist: z.boolean().describe('Whether the role is hoisted'),
+  position: z.number().describe('Role position'),
+  permissions: z.string().describe('Role permissions'),
+  mentionable: z.boolean().describe('Whether the role is mentionable'),
+  managed: z.boolean().describe('Whether the role is managed'),
+  description: z.string().nullable().describe('Role description'),
+});
+
+/**
+ * Slash Command Interaction Data Schema
+ */
+export const DiscordSlashCommandInteractionDataSchema = z.object({
+  id: z.string().describe('Interaction ID'),
+  name: z.string().describe('Command name'),
+  type: z.number().describe('Interaction type'),
+  options: z.array(z.object({
+    name: z.string(),
+    type: z.number(),
+    value: z.union([z.string(), z.number(), z.boolean()]).optional(),
+    options: z.array(z.any()).optional(),
+  })).optional().describe('Command options'),
+  resolved: z.record(z.any()).optional().describe('Resolved data for mentions'),
+});
+
+/**
+ * Slash Command Interaction Schema
+ */
+export const DiscordSlashCommandInteractionSchema = z.object({
+  id: z.string().describe('Interaction ID'),
+  application_id: z.string().describe('Application ID'),
+  type: z.number().describe('Interaction type'),
+  data: DiscordSlashCommandInteractionDataSchema.optional().describe('Command data'),
+  guild_id: z.string().optional().describe('Guild ID where the command was used'),
+  channel_id: z.string().optional().describe('Channel ID where the command was used'),
+  member: z.any().optional().describe('Member who used the command'),
+  user: z.any().optional().describe('User who used the command'),
+  token: z.string().describe('Interaction token'),
+  version: z.number().describe('Interaction version'),
+});
+
+/**
+ * Command Handler Function Type
+ */
+export type DiscordCommandHandler = (
+  interaction: z.infer<typeof DiscordSlashCommandInteractionSchema>,
+  options: Record<string, any>,
+) => Promise<void>;
+
+/**
+ * Command Handler Schema
+ */
+export const DiscordCommandHandlerSchema = z.object({
+  name: z.string().describe('Command name'),
+  description: z.string().describe('Command description'),
+  options: z.array(DiscordSlashCommandOptionSchema).optional().describe('Command options'),
+  handler: z.function().describe('Command handler function'),
+  default_member_permissions: z.string().optional().describe('Default permissions required'),
+  dm_permission: z.boolean().optional().describe('Whether command can be used in DMs'),
+});
+
+/**
  * Combined response types.
  */
 export const DiscordResponses = {
   MessageResponse: DiscordMessageSchema,
   UserResponse: DiscordUserSchema,
   GuildResponse: DiscordGuildSchema,
+  ChannelResponse: DiscordChannelSchema,
+  RoleResponse: DiscordRoleSchema,
+  SlashCommandResponse: DiscordSlashCommandSchema,
+  SlashCommandInteractionResponse: DiscordSlashCommandInteractionSchema,
 };

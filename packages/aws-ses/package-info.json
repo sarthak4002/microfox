@@ -1,17 +1,26 @@
 {
   "name": "@microfox/aws-ses",
   "title": "Microfox AWS SES",
-  "description": "AWS SES SDK for Microfox",
+  "description": "A lightweight, type-safe SDK for interacting with AWS Simple Email Service (SES)",
   "path": "packages/aws-ses",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/aws-ses/icon.svg",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
   "authEndpoint": "/connect/aws",
   "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/aws-ses/icon.svg",
+  "readme_map": {
+    "path": "/README.md",
+    "title": "createSESClient Microfox",
+    "functionalities": [
+      "sendEmail",
+      "sendBulkEmails"
+    ],
+    "description": "The full README for the AWS SES SDK"
+  },
   "constructors": [
     {
       "name": "createSESClient",
-      "description": "Create a new SES client",
+      "description": "Create a new AWS SES client through which you can send emails",
       "zodSecretSchema": "SESConfigSchema",
       "auth": "apiKey",
       "requiredKeys": [
@@ -31,7 +40,11 @@
           "description": "The region for the AWS SES client"
         }
       ],
-      "internalKeys": []
+      "internalKeys": [],
+      "functionalities": [
+        "sendEmail",
+        "sendBulkEmails"
+      ]
     }
   ],
   "keysInfo": [
@@ -55,6 +68,7 @@
     }
   ],
   "extraInfo": [
-    "Use the `createSESClient` constructor to create a new SES client."
+    "Use the `createSESClient` constructor to create a new AWS SES client.",
+    "All email addresses must be verified in AWS SES before sending."
   ]
 }
