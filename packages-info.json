@@ -35,24 +35,48 @@
   {
     "name": "@microfox/aws-ses",
     "title": "Microfox AWS SES",
-    "description": "AWS SES SDK for Microfox",
+    "description": "A lightweight, type-safe SDK for interacting with AWS Simple Email Service (SES)",
     "path": "packages/aws-ses",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/aws",
+    "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/aws-ses.svg",
+    "readme_map": {
+      "path": "/README.md",
+      "title": "createSESClient Microfox",
+      "functionalities": [
+        "sendEmail",
+        "sendBulkEmails"
+      ],
+      "description": "The full README for the AWS SES SDK"
+    },
     "constructors": [
       {
         "name": "createSESClient",
-        "description": "Create a new SES client",
-        "zodSecretSchema": "SESConfigSchema",
+        "description": "Create a new AWS SES client through which you can send emails",
         "auth": "apiKey",
         "requiredKeys": [
-          "AWS_SES_ACCESS_KEY_ID",
-          "AWS_SES_SECRET_ACCESS_KEY",
-          "AWS_SES_REGION"
-        ]
+          {
+            "key": "AWS_SES_ACCESS_KEY_ID",
+            "displayName": "Access Key ID",
+            "description": "The access key ID for the AWS SES client"
+          },
+          {
+            "key": "AWS_SES_SECRET_ACCESS_KEY",
+            "displayName": "Secret Access Key",
+            "description": "The secret access key for the AWS SES client"
+          },
+          {
+            "key": "AWS_SES_REGION",
+            "displayName": "Region",
+            "description": "The region for the AWS SES client"
+          }
+        ],
+        "internalKeys": []
       }
     ],
     "keysInfo": [
@@ -82,7 +106,8 @@
       }
     ],
     "extraInfo": [
-      "Use the `createSESClient` constructor to create a new SES client."
+      "Use the `createSESClient` constructor to create a new AWS SES client.",
+      "All email addresses must be verified in AWS SES before sending."
     ]
   },
   {
@@ -205,22 +230,67 @@
   {
     "name": "@microfox/discord-sdk",
     "title": "Microfox Discord SDK",
-    "description": "Discord SDK for Microfox",
+    "description": "A lightweight, type-safe SDK for interacting with the Discord API v10",
     "path": "packages/discord-sdk",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/discord",
+    "documentation": "https://www.npmjs.com/package/@microfox/discord-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/discord-icon.svg",
+    "readme_map": {
+      "path": "/README.md",
+      "title": "createDiscordSdk Microfox",
+      "functionalities": [
+        "sendMessage",
+        "editMessage",
+        "deleteMessage",
+        "fetchMessages",
+        "reactToMessage",
+        "createThread",
+        "fetchGuildInfo",
+        "fetchUserInfo",
+        "registerSlashCommand",
+        "registerGlobalSlashCommand",
+        "deleteSlashCommand",
+        "deleteGlobalSlashCommand",
+        "moderateUser",
+        "createChannel",
+        "updateChannel",
+        "deleteChannel",
+        "createRole",
+        "updateRole",
+        "deleteRole",
+        "addRoleToUser",
+        "removeRoleFromUser",
+        "fetchChannels",
+        "fetchRoles",
+        "fetchSlashCommands",
+        "fetchGlobalSlashCommands",
+        "registerCommand",
+        "registerGlobalCommand",
+        "handleInteraction",
+        "respondToInteraction",
+        "deferInteraction",
+        "followUpInteraction"
+      ],
+      "description": "The full README for the Discord SDK"
+    },
     "constructors": [
       {
         "name": "createDiscordSdk",
-        "description": "Create a new Discord client",
-        "zodSecretSchema": "DiscordConfigSchema",
+        "description": "Create a new Discord SDK client through which you can interact with Discord API",
         "auth": "apiKey",
         "requiredKeys": [
-          "DISCORD_TOKEN"
-        ]
+          {
+            "key": "DISCORD_TOKEN",
+            "displayName": "Discord Token",
+            "description": "The bot token for the Discord client"
+          }
+        ],
+        "internalKeys": []
       }
     ],
     "keysInfo": [
@@ -229,12 +299,15 @@
         "constructors": [
           "createDiscordSdk"
         ],
-        "description": "The token for the Discord bot",
+        "description": "The bot token for the Discord client",
         "required": true
       }
     ],
     "extraInfo": [
-      "Use the `createDiscordSdk` constructor to create a new Discord client."
+      "Use the `createDiscordSdk` constructor to create a new Discord client.",
+      "The SDK supports Discord API v10 with comprehensive type safety.",
+      "Supports both guild-specific and global slash commands.",
+      "Includes full moderation, channel, and role management capabilities."
     ]
   },
   {
@@ -248,18 +321,42 @@
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/google",
+    "documentation": "https://www.npmjs.com/package/@microfox/drive-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/drive-icon.svg",
     "constructors": [
       {
         "name": "createDriveSDKWithTokens",
         "description": "Create a new Drive client",
         "zodSecretSchema": "DriveSDKOptionsSchema",
         "auth": "oauth2",
-        "requiredKeys": [
-          "GOOGLE_ACCESS_TOKEN",
-          "GOOGLE_REFRESH_TOKEN",
-          "GOOGLE_CLIENT_ID",
-          "GOOGLE_CLIENT_SECRET",
-          "SCOPES"
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "SCOPES",
+            "displayName": "Scopes",
+            "description": "The scopes for the Google Drive client"
+          },
+          {
+            "key": "GOOGLE_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the Google Drive client"
+          },
+          {
+            "key": "GOOGLE_REFRESH_TOKEN",
+            "displayName": "Refresh Token",
+            "description": "The refresh token for the Google Drive client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_ID",
+            "displayName": "Client ID",
+            "description": "The client ID for the Google Drive client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_SECRET",
+            "displayName": "Client Secret",
+            "description": "The client secret for the Google Drive client"
+          }
         ]
       }
     ],
@@ -383,47 +480,58 @@
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/github",
+    "documentation": "https://www.npmjs.com/package/@microfox/github",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/github-icon.svg",
+    "readme_map": {
+      "path": "https://raw.githubusercontent.com/octokit/plugin-rest-endpoint-methods.js/refs/heads/main/docs/${scope}/${method}.md",
+      "title": "GitHub SDK for Microfox",
+      "functionalities": [
+        "restApi"
+      ],
+      "dynamic_setters": [
+        {
+          "key": "scope",
+          "list": "/docs/scopes.json"
+        },
+        {
+          "key": "method",
+          "list": "/docs/${scope}.json"
+        }
+      ],
+      "type": "dynamic_path",
+      "description": "The docs for all rest api methods"
+    },
     "constructors": [
       {
-        "name": "createGithubSdk",
-        "description": "Create a new GitHub client",
-        "zodSecretSchema": "GithubSdkConfigSchema",
+        "name": "Octokit",
+        "description": "Create a new Octokit client",
         "auth": "apiKey",
         "requiredKeys": [
-          "OWNER",
-          "REPO",
-          "GITHUB_TOKEN"
-        ]
+          {
+            "key": "GITHUB_TOKEN",
+            "displayName": "GitHub Personal Access Token",
+            "description": "The token for the GitHub user's account. You can create one at https://github.com/settings/tokens"
+          }
+        ],
+        "functionalities": [
+          "restApi"
+        ],
+        "internalKeys": []
       }
     ],
     "keysInfo": [
       {
-        "key": "OWNER",
-        "constructors": [
-          "createGithubSdk"
-        ],
-        "description": "The owner of the repository",
-        "required": true
-      },
-      {
-        "key": "REPO",
-        "constructors": [
-          "createGithubSdk"
-        ],
-        "description": "The name of the repository",
-        "required": true
-      },
-      {
         "key": "GITHUB_TOKEN",
         "constructors": [
-          "createGithubSdk"
+          "Octokit"
         ],
-        "description": "The token for the GitHub client",
+        "description": "The token for the GitHub user's account. You can create one at https://github.com/settings/tokens",
         "required": true
       }
     ],
     "extraInfo": [
-      "Use the `createGithubSdk` constructor to create a new GitHub client."
+      "Use the `Octokit` constructor to create a new Octokit client."
     ]
   },
   {
@@ -436,18 +544,42 @@
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/google",
+    "documentation": "https://www.npmjs.com/package/@microfox/google-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google.svg",
     "constructors": [
       {
         "name": "googleOAuthManager",
         "description": "Create a new Google client",
         "zodSecretSchema": "GoogleOAuthOptionsSchema",
         "auth": "oauth2",
-        "requiredKeys": [
-          "GOOGLE_ACCESS_TOKEN",
-          "GOOGLE_REFRESH_TOKEN",
-          "GOOGLE_CLIENT_ID",
-          "GOOGLE_CLIENT_SECRET",
-          "SCOPES"
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "GOOGLE_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the Google client"
+          },
+          {
+            "key": "GOOGLE_REFRESH_TOKEN",
+            "displayName": "Refresh Token",
+            "description": "The refresh token for the Google client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_ID",
+            "displayName": "Client ID",
+            "description": "The client ID for the Google client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_SECRET",
+            "displayName": "Client Secret",
+            "description": "The client secret for the Google client"
+          },
+          {
+            "key": "SCOPES",
+            "displayName": "Scopes",
+            "description": "The scopes for the Google client"
+          }
         ]
       }
     ],
@@ -600,6 +732,131 @@
     "extraInfo": []
   },
   {
+    "name": "@microfox/linkedin-oauth-sdk",
+    "title": "Microfox LinkedIn OAuth SDK",
+    "description": "LinkedIn OAuth SDK for Microfox",
+    "path": "packages/linkedin-oauth-sdk",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable",
+    "authEndpoint": "/connect/linkedin",
+    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-oauth-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-oauth-sdk/icon.svg",
+    "constructors": [
+      {
+        "name": "linkedinOAuthManager",
+        "description": "Create a new LinkedIn OAuth client",
+        "zodSecretSchema": "LinkedInOAuthOptionsSchema",
+        "auth": "oauth2",
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "LINKEDIN_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the LinkedIn client"
+          },
+          {
+            "key": "LINKEDIN_CLIENT_ID",
+            "displayName": "Client ID",
+            "description": "The client ID for the LinkedIn application"
+          },
+          {
+            "key": "LINKEDIN_CLIENT_SECRET",
+            "displayName": "Client Secret",
+            "description": "The client secret for the LinkedIn application"
+          },
+          {
+            "key": "SCOPES",
+            "displayName": "Scopes",
+            "description": "The scopes for the LinkedIn client"
+          }
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "LINKEDIN_ACCESS_TOKEN",
+        "constructors": [
+          "linkedinOAuthManager"
+        ],
+        "description": "The access token for the LinkedIn client",
+        "required": true
+      },
+      {
+        "key": "LINKEDIN_CLIENT_ID",
+        "constructors": [
+          "linkedinOAuthManager"
+        ],
+        "description": "The client ID for the LinkedIn application",
+        "required": true
+      },
+      {
+        "key": "LINKEDIN_CLIENT_SECRET",
+        "constructors": [
+          "linkedinOAuthManager"
+        ],
+        "description": "The client secret for the LinkedIn application",
+        "required": true
+      },
+      {
+        "key": "SCOPES",
+        "constructors": [
+          "linkedinOAuthManager"
+        ],
+        "description": "The scopes for the LinkedIn client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createLinkedInClient` constructor to create a new LinkedIn OAuth client."
+    ]
+  },
+  {
+    "name": "@microfox/linkedin-share-sdk",
+    "title": "Microfox LinkedIn Share SDK",
+    "description": "LinkedIn Share SDK for Microfox",
+    "path": "packages/linkedin-share-sdk",
+    "dependencies": [
+      "@microfox/rest-sdk",
+      "zod"
+    ],
+    "status": "stable",
+    "authEndpoint": "/connect/linkedin",
+    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-share-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-share-sdk/icon.svg",
+    "constructors": [
+      {
+        "name": "linkedinShareManager",
+        "description": "Create a new LinkedIn Share client",
+        "zodSecretSchema": "LinkedInShareOptionsSchema",
+        "auth": "oauth2",
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "LINKEDIN_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the LinkedIn client"
+          }
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "LINKEDIN_ACCESS_TOKEN",
+        "constructors": [
+          "linkedinShareManager"
+        ],
+        "description": "The access token for the LinkedIn client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createLinkedInShareClient` constructor to create a new LinkedIn Share client for posting content to LinkedIn."
+    ]
+  },
+  {
     "name": "@microfox/llamaindex",
     "title": "Microfox LlamaIndex",
     "description": "Microfox adapter for the LlamaIndex AI SDK",
@@ -741,7 +998,10 @@
       "zod"
     ],
     "status": "stable",
-    "apiKeys": [],
+    "documentation": "https://www.npmjs.com/package/@microfox/rest-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/rest-api.svg",
+    "constructors": [],
+    "keysInfo": [],
     "extraInfo": []
   },
   {
@@ -807,22 +1067,39 @@
   {
     "name": "@microfox/slack-web-tiny",
     "title": "Microfox Slack Web Tiny",
-    "description": "Slack Web Tiny SDK for Microfox",
+    "description": "A lightweight, type-safe SDK for interacting with the Slack Web API",
     "path": "packages/slack-web-tiny",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/slack",
+    "documentation": "https://www.npmjs.com/package/@microfox/slack-web-tiny",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/slack-icon.svg",
+    "readme_map": {
+      "path": "/README.md",
+      "title": "createSlackSDK Microfox",
+      "functionalities": [
+        "sendMessage",
+        "updateMessage",
+        "uploadFile"
+      ],
+      "description": "The full README for the Slack Web Tiny SDK"
+    },
     "constructors": [
       {
         "name": "createSlackSDK",
-        "description": "Create a new Slack Web Tiny client",
-        "zodSecretSchema": "SlackSDKConfigSchema",
+        "description": "Create a new Slack SDK through which you can operate bots on Slack",
         "auth": "apiKey",
         "requiredKeys": [
-          "SLACK_BOT_TOKEN"
-        ]
+          {
+            "key": "SLACK_BOT_TOKEN",
+            "displayName": "Slack Bot Token",
+            "description": "The token for the Slack Web Tiny client"
+          }
+        ],
+        "internalKeys": []
       }
     ],
     "keysInfo": [
@@ -831,12 +1108,13 @@
         "constructors": [
           "createSlackSDK"
         ],
-        "description": "The token for the Slack Web Tiny client",
+        "description": "The token for the createSlackSDK constructor",
         "required": true
       }
     ],
     "extraInfo": [
-      "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client."
+      "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client.",
+      "The SDK supports both header and query-based authentication methods."
     ]
   },
   {
@@ -1004,12 +1282,113 @@
   {
     "name": "@microfox/x-sdk",
     "title": "Microfox X SDK",
-    "description": "Twitter/X V2 SDK for Microfox",
+    "description": "A lightweight, type-safe SDK for interacting with the X (Twitter) API v2",
     "path": "packages/x-sdk",
     "dependencies": [
       "zod"
     ],
-    "status": "stable"
+    "status": "stable",
+    "authEndpoint": "/connect/x",
+    "documentation": "https://www.npmjs.com/package/@microfox/x-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/x.svg",
+    "readme_map": {
+      "path": "/README.md",
+      "title": "createXSDK Microfox",
+      "functionalities": [
+        "tweets.create",
+        "tweets.get",
+        "tweets.getMultiple",
+        "tweets.delete",
+        "users.getByUsername",
+        "users.getByUsernames",
+        "users.getById",
+        "users.getByIds",
+        "users.getMe",
+        "media.upload"
+      ],
+      "description": "The full README for the X SDK"
+    },
+    "constructors": [
+      {
+        "name": "createXSDK",
+        "description": "Create a new X SDK client through which you can interact with X (Twitter) API",
+        "auth": "apiKey",
+        "requiredKeys": [
+          {
+            "key": "X_API_KEY",
+            "displayName": "API Key",
+            "description": "The API key for the X client"
+          },
+          {
+            "key": "X_API_SECRET",
+            "displayName": "API Secret",
+            "description": "The API secret for the X client"
+          },
+          {
+            "key": "X_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the X client"
+          },
+          {
+            "key": "X_ACCESS_SECRET",
+            "displayName": "Access Secret",
+            "description": "The access secret for the X client"
+          }
+        ],
+        "internalKeys": [],
+        "functionalities": [
+          "tweets.create",
+          "tweets.get",
+          "tweets.getMultiple",
+          "tweets.delete",
+          "users.getByUsername",
+          "users.getByUsernames",
+          "users.getById",
+          "users.getByIds",
+          "users.getMe",
+          "media.upload"
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "X_API_KEY",
+        "constructors": [
+          "createXSDK"
+        ],
+        "description": "The API key for the X client",
+        "required": true
+      },
+      {
+        "key": "X_API_SECRET",
+        "constructors": [
+          "createXSDK"
+        ],
+        "description": "The API secret for the X client",
+        "required": true
+      },
+      {
+        "key": "X_ACCESS_TOKEN",
+        "constructors": [
+          "createXSDK"
+        ],
+        "description": "The access token for the X client",
+        "required": true
+      },
+      {
+        "key": "X_ACCESS_SECRET",
+        "constructors": [
+          "createXSDK"
+        ],
+        "description": "The access secret for the X client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `createXSDK` constructor to create a new X client.",
+      "The SDK supports both v2 API endpoints for tweets and users.",
+      "Media uploads are supported through the v1.1 API endpoint."
+    ]
   },
   {
     "name": "@microfox/youtube-sdk",
@@ -1022,18 +1401,42 @@
       "zod"
     ],
     "status": "stable",
+    "authEndpoint": "/connect/google",
+    "documentation": "https://www.npmjs.com/package/@microfox/youtube-sdk",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube-icon.svg",
     "constructors": [
       {
         "name": "createYouTubeSDKWithTokens",
         "description": "Create a new YouTube client",
         "zodSecretSchema": "YouTubeSDKOptionsSchema",
         "auth": "oauth2",
-        "requiredKeys": [
-          "GOOGLE_ACCESS_TOKEN",
-          "GOOGLE_REFRESH_TOKEN",
-          "GOOGLE_CLIENT_ID",
-          "GOOGLE_CLIENT_SECRET",
-          "SCOPES"
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "GOOGLE_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the YouTube client"
+          },
+          {
+            "key": "GOOGLE_REFRESH_TOKEN",
+            "displayName": "Refresh Token",
+            "description": "The refresh token for the YouTube client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_ID",
+            "displayName": "Client ID",
+            "description": "The client ID for the YouTube client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_SECRET",
+            "displayName": "Client Secret",
+            "description": "The client secret for the YouTube client"
+          },
+          {
+            "key": "SCOPES",
+            "displayName": "Scopes",
+            "description": "The scopes for the YouTube client"
+          }
         ]
       }
     ],

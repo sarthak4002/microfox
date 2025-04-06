@@ -30,12 +30,7 @@
           "description": "The token for the Slack Web Tiny client"
         }
       ],
-      "internalKeys": [],
-      "functionalities": [
-        "sendMessage",
-        "updateMessage",
-        "uploadFile"
-      ]
+      "internalKeys": []
     }
   ],
   "keysInfo": [

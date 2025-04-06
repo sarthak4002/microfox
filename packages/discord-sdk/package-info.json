@@ -58,40 +58,7 @@
           "description": "The bot token for the Discord client"
         }
       ],
-      "internalKeys": [],
-      "functionalities": [
-        "sendMessage",
-        "editMessage",
-        "deleteMessage",
-        "fetchMessages",
-        "reactToMessage",
-        "createThread",
-        "fetchGuildInfo",
-        "fetchUserInfo",
-        "registerSlashCommand",
-        "registerGlobalSlashCommand",
-        "deleteSlashCommand",
-        "deleteGlobalSlashCommand",
-        "moderateUser",
-        "createChannel",
-        "updateChannel",
-        "deleteChannel",
-        "createRole",
-        "updateRole",
-        "deleteRole",
-        "addRoleToUser",
-        "removeRoleFromUser",
-        "fetchChannels",
-        "fetchRoles",
-        "fetchSlashCommands",
-        "fetchGlobalSlashCommands",
-        "registerCommand",
-        "registerGlobalCommand",
-        "handleInteraction",
-        "respondToInteraction",
-        "deferInteraction",
-        "followUpInteraction"
-      ]
+      "internalKeys": []
     }
   ],
   "keysInfo": [

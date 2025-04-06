@@ -21,7 +21,6 @@
     {
       "name": "createSESClient",
       "description": "Create a new AWS SES client through which you can send emails",
-      "zodSecretSchema": "SESConfigSchema",
       "auth": "apiKey",
       "requiredKeys": [
         {
@@ -40,11 +39,7 @@
           "description": "The region for the AWS SES client"
         }
       ],
-      "internalKeys": [],
-      "functionalities": [
-        "sendEmail",
-        "sendBulkEmails"
-      ]
+      "internalKeys": []
     }
   ],
   "keysInfo": [
