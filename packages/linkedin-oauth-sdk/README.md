@@ -13,7 +13,6 @@ A robust TypeScript SDK for LinkedIn OAuth 2.0 authentication.
   - `email`: Access to primary email address
   - `offline_access`: Enable refresh tokens for long-term access
 - 🛡️ Built-in CSRF protection with state parameter
-- 📱 Share functionality for posting content
 - ⚠️ Error handling with descriptive messages
 - 🔍 Zod schema validation for responses
 
@@ -59,20 +58,6 @@ const { accessToken, refreshToken } = await sdk.exchangeCodeForTokens(code);
 // Note: refreshToken will be null if OFFLINE_ACCESS scope was not requested
 ```
 
-3. Get user profile:
-
-```typescript
-const profile = await sdk.getProfile(accessToken);
-console.log(profile.localizedFirstName, profile.localizedLastName);
-```
-
-4. Get user email:
-
-```typescript
-const email = await sdk.getEmailAddress(accessToken);
-console.log(email);
-```
-
 ### Refresh Tokens
 
 To enable refresh tokens, include the `OFFLINE_ACCESS` scope when initializing the SDK:
@@ -82,56 +67,25 @@ const sdk = new LinkedInOAuthSdk({
   clientId: 'your_client_id',
   clientSecret: 'your_client_secret',
   redirectUri: 'your_redirect_uri',
-  scopes: [LinkedInScope.OFFLINE_ACCESS], // This includes necessary scopes for refresh tokens
+  scopes: [LinkedInScope.OFFLINE_ACCESS],
 });
-```
 
-When the access token expires, use the refresh token to get a new one:
-
-```typescript
+// When the access token expires, use the refresh token to get a new one:
 const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
   await sdk.refreshAccessToken(refreshToken);
 ```
 
-### Share Content
+### State Parameter
 
-The SDK provides a dedicated class for sharing content on LinkedIn:
+The SDK automatically generates and manages a state parameter for CSRF protection. You can access it if needed:
 
 ```typescript
-import { LinkedInShare } from '@microfox/linkedin-oauth-sdk';
-
-// Initialize with access token
-const share = new LinkedInShare(accessToken);
-
-// Share a text post
-await share.post({
-  text: 'Hello LinkedIn!',
-  visibility: 'PUBLIC', // 'PUBLIC' | 'CONNECTIONS' | 'LOGGED_IN'
-});
-
-// Share an article
-await share.post({
-  text: 'Check out this article!',
-  mediaCategory: 'ARTICLE',
-  media: [
-    {
-      url: 'https://example.com/article',
-      title: 'Amazing Article',
-      description: 'Must-read content',
-    },
-  ],
-});
-
-// Share with custom visibility
-await share.post({
-  text: 'For my connections only',
-  visibility: 'CONNECTIONS',
-});
+const state = await sdk.getState();
 ```
 
 ## Error Handling
 
-The SDK uses Zod for validation and throws descriptive errors that you can catch and handle:
+The SDK uses Zod for validation and throws descriptive errors:
 
 ```typescript
 try {
@@ -147,14 +101,10 @@ try {
 
 ## Types
 
-The SDK exports the following TypeScript types:
-
 ```typescript
 import type {
   LinkedInScope,
   LinkedInAuthConfig,
-  LinkedInProfile,
-  LinkedInError,
 } from '@microfox/linkedin-oauth-sdk';
 
 // Zod-inferred types
@@ -174,21 +124,16 @@ LinkedInScope.EMAIL; // Access email address
 LinkedInScope.OFFLINE_ACCESS; // Enable refresh tokens
 ```
 
-### Media Categories
+### Configuration
 
 ```typescript
-type LinkedInMediaCategory =
-  | 'NONE'
-  | 'ARTICLE'
-  | 'IMAGE'
-  | 'VIDEO'
-  | 'DOCUMENT';
-```
-
-### Visibility Options
-
-```typescript
-type LinkedInVisibility = 'PUBLIC' | 'CONNECTIONS' | 'LOGGED_IN';
+interface LinkedInAuthConfig {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  scopes?: LinkedInScope[];
+  state?: string;
+}
 ```
 
 ## License
