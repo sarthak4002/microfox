@@ -25,6 +25,8 @@
     "packages/jina",
     "packages/langchain",
     "packages/leadmagic",
+    "packages/linkedin-oauth-sdk",
+    "packages/linkedin-share-sdk",
     "packages/llamaindex",
     "packages/mastra",
     "packages/midjourney",
@@ -52,6 +54,6 @@
     "packages/youtube-sdk",
     "packages/zoominfo"
   ],
-  "total": 51,
-  "generatedAt": "2025-04-06T20:35:49.142Z"
+  "total": 53,
+  "generatedAt": "2025-04-06T20:43:03.064Z"
 }
