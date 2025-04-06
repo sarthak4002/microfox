@@ -44,9 +44,13 @@ const message = await discordSdk.fetchMessage('MESSAGE_ID', 'CHANNEL_ID');
 Edit an existing message.
 
 ```typescript
-const updatedMessage = await discordSdk.editMessage('MESSAGE_ID', 'CHANNEL_ID', {
-  content: 'Updated message content',
-});
+const updatedMessage = await discordSdk.editMessage(
+  'MESSAGE_ID',
+  'CHANNEL_ID',
+  {
+    content: 'Updated message content',
+  },
+);
 ```
 
 ### deleteMessage
@@ -168,7 +172,7 @@ Create a new role in the guild.
 ```typescript
 const role = await discordSdk.createRole('GUILD_ID', {
   name: 'New Role',
-  color: 0xFF0000,
+  color: 0xff0000,
   permissions: '0',
 });
 ```
@@ -180,7 +184,7 @@ Update a role's settings.
 ```typescript
 const updatedRole = await discordSdk.updateRole('GUILD_ID', 'ROLE_ID', {
   name: 'Updated Role Name',
-  color: 0x00FF00,
+  color: 0x00ff00,
 });
 ```
 
@@ -205,7 +209,12 @@ await discordSdk.addRoleToUser('GUILD_ID', 'USER_ID', 'ROLE_ID', 'Promotion');
 Remove a role from a user.
 
 ```typescript
-await discordSdk.removeRoleFromUser('GUILD_ID', 'USER_ID', 'ROLE_ID', 'Demotion');
+await discordSdk.removeRoleFromUser(
+  'GUILD_ID',
+  'USER_ID',
+  'ROLE_ID',
+  'Demotion',
+);
 ```
 
 ### fetchChannels
@@ -273,7 +282,7 @@ Register a command handler for a global slash command.
 await discordSdk.registerGlobalCommand({
   name: 'ping',
   description: 'Ping the bot',
-  handler: async (interaction) => {
+  handler: async interaction => {
     await discordSdk.respondToInteraction(interaction.token, {
       content: 'Pong!',
     });
