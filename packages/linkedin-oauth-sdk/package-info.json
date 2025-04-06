@@ -1,0 +1,71 @@
+{
+  "name": "@microfox/linkedin-oauth-sdk",
+  "title": "Microfox LinkedIn OAuth SDK",
+  "description": "LinkedIn OAuth SDK for Microfox",
+  "path": "packages/linkedin-oauth-sdk",
+  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "status": "stable",
+  "authEndpoint": "/connect/linkedin",
+  "documentation": "https://www.npmjs.com/package/@microfox/linkedin-oauth-sdk",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-oauth-sdk/icon.svg",
+  "constructors": [
+    {
+      "name": "linkedinOAuthManager",
+      "description": "Create a new LinkedIn OAuth client",
+      "zodSecretSchema": "LinkedInOAuthOptionsSchema",
+      "auth": "oauth2",
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "LINKEDIN_ACCESS_TOKEN",
+          "displayName": "Access Token",
+          "description": "The access token for the LinkedIn client"
+        },
+        {
+          "key": "LINKEDIN_CLIENT_ID",
+          "displayName": "Client ID",
+          "description": "The client ID for the LinkedIn application"
+        },
+        {
+          "key": "LINKEDIN_CLIENT_SECRET",
+          "displayName": "Client Secret",
+          "description": "The client secret for the LinkedIn application"
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Scopes",
+          "description": "The scopes for the LinkedIn client"
+        }
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "LINKEDIN_ACCESS_TOKEN",
+      "constructors": ["linkedinOAuthManager"],
+      "description": "The access token for the LinkedIn client",
+      "required": true
+    },
+    {
+      "key": "LINKEDIN_CLIENT_ID",
+      "constructors": ["linkedinOAuthManager"],
+      "description": "The client ID for the LinkedIn application",
+      "required": true
+    },
+    {
+      "key": "LINKEDIN_CLIENT_SECRET",
+      "constructors": ["linkedinOAuthManager"],
+      "description": "The client secret for the LinkedIn application",
+      "required": true
+    },
+    {
+      "key": "SCOPES",
+      "constructors": ["linkedinOAuthManager"],
+      "description": "The scopes for the LinkedIn client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `createLinkedInClient` constructor to create a new LinkedIn OAuth client."
+  ]
+}
