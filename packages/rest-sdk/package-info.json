@@ -6,7 +6,7 @@
   "dependencies": ["zod"],
   "status": "stable",
   "documentation": "https://www.npmjs.com/package/@microfox/rest-sdk",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/rest-sdk/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/rest-api.svg",
   "constructors": [],
   "keysInfo": [],
   "extraInfo": []

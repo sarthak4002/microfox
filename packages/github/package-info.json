@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/github",
   "documentation": "https://www.npmjs.com/package/@microfox/github",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/github/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/github-icon.svg",
   "readme_map": {
     "path": "https://raw.githubusercontent.com/octokit/plugin-rest-endpoint-methods.js/refs/heads/main/docs/${scope}/${method}.md",
     "title": "GitHub SDK for Microfox",

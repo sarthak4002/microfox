@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/x",
   "documentation": "https://www.npmjs.com/package/@microfox/x-sdk",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/x-sdk/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/x.svg",
   "readme_map": {
     "path": "/README.md",
     "title": "createXSDK Microfox",

@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/discord",
   "documentation": "https://www.npmjs.com/package/@microfox/discord-sdk",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/discord-sdk/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/discord-icon.svg",
   "readme_map": {
     "path": "/README.md",
     "title": "createDiscordSdk Microfox",
@@ -58,40 +58,7 @@
           "description": "The bot token for the Discord client"
         }
       ],
-      "internalKeys": [],
-      "functionalities": [
-        "sendMessage",
-        "editMessage",
-        "deleteMessage",
-        "fetchMessages",
-        "reactToMessage",
-        "createThread",
-        "fetchGuildInfo",
-        "fetchUserInfo",
-        "registerSlashCommand",
-        "registerGlobalSlashCommand",
-        "deleteSlashCommand",
-        "deleteGlobalSlashCommand",
-        "moderateUser",
-        "createChannel",
-        "updateChannel",
-        "deleteChannel",
-        "createRole",
-        "updateRole",
-        "deleteRole",
-        "addRoleToUser",
-        "removeRoleFromUser",
-        "fetchChannels",
-        "fetchRoles",
-        "fetchSlashCommands",
-        "fetchGlobalSlashCommands",
-        "registerCommand",
-        "registerGlobalCommand",
-        "handleInteraction",
-        "respondToInteraction",
-        "deferInteraction",
-        "followUpInteraction"
-      ]
+      "internalKeys": []
     }
   ],
   "keysInfo": [

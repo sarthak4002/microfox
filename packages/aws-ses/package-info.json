@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/aws",
   "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/aws-ses/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/aws-ses.svg",
   "readme_map": {
     "path": "/README.md",
     "title": "createSESClient Microfox",
@@ -21,7 +21,6 @@
     {
       "name": "createSESClient",
       "description": "Create a new AWS SES client through which you can send emails",
-      "zodSecretSchema": "SESConfigSchema",
       "auth": "apiKey",
       "requiredKeys": [
         {
@@ -40,11 +39,7 @@
           "description": "The region for the AWS SES client"
         }
       ],
-      "internalKeys": [],
-      "functionalities": [
-        "sendEmail",
-        "sendBulkEmails"
-      ]
+      "internalKeys": []
     }
   ],
   "keysInfo": [

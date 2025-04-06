@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/google",
   "documentation": "https://www.npmjs.com/package/@microfox/drive-sdk",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/drive-sdk/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/drive-icon.svg",
   "constructors": [
     {
       "name": "createDriveSDKWithTokens",
