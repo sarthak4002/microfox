@@ -7,7 +7,7 @@
   "status": "stable",
   "authEndpoint": "/connect/discord",
   "documentation": "https://www.npmjs.com/package/@microfox/discord-sdk",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/discord-sdk/icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/discord-icon.svg",
   "readme_map": {
     "path": "/README.md",
     "title": "createDiscordSdk Microfox",
