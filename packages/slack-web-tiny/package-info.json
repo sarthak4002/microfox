@@ -1,7 +1,7 @@
 {
   "name": "@microfox/slack-web-tiny",
   "title": "Microfox Slack Web Tiny",
-  "description": "Slack Web Tiny SDK for Microfox",
+  "description": "A lightweight, type-safe SDK for interacting with the Slack Web API",
   "path": "packages/slack-web-tiny",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
@@ -14,7 +14,6 @@
     "functionalities": [
       "sendMessage",
       "updateMessage",
-      "deleteMessage",
       "uploadFile"
     ],
     "description": "The full README for the Slack Web Tiny SDK"
@@ -22,8 +21,7 @@
   "constructors": [
     {
       "name": "createSlackSDK",
-      "description": "Create a new Slack Sdk through which you can operate bots on Slack",
-      "zodSecretSchema": "SlackSDKConfigSchema",
+      "description": "Create a new Slack SDK through which you can operate bots on Slack",
       "auth": "apiKey",
       "requiredKeys": [
         {
@@ -36,7 +34,6 @@
       "functionalities": [
         "sendMessage",
         "updateMessage",
-        "deleteMessage",
         "uploadFile"
       ]
     }
@@ -50,6 +47,7 @@
     }
   ],
   "extraInfo": [
-    "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client."
+    "Use the `createSlackSDK` constructor to create a new Slack Web Tiny client.",
+    "The SDK supports both header and query-based authentication methods."
   ]
 }

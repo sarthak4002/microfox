@@ -22,27 +22,27 @@ const slackSDK = createSlackSDK({
 
 // Send a simple message
 const response = await slackSDK.sendMessage({
-  channel: '#general',
+  channel: 'C1234567890', // Channel ID
   text: 'Hello from Slack SDK!',
 });
 
 // Send a message in a thread
 const threadResponse = await slackSDK.sendMessage({
-  channel: '#general',
+  channel: 'C1234567890', // Channel ID
   text: 'Reply in thread',
   thread_ts: '1234567890.123456', // Thread timestamp
 });
 
 // Update an existing message
 const updatedResponse = await slackSDK.updateMessage({
-  channel: '#general',
+  channel: 'C1234567890', // Channel ID
   ts: '1234567890.123456', // Message timestamp to update
   text: 'Updated message content',
 });
 
 // Upload a file
 const fileResponse = await slackSDK.uploadFile({
-  channels: '#general',
+  channels: 'C1234567890', // Channel ID
   content: 'File content as text',
   filename: 'example.txt',
   title: 'Example File',
@@ -50,7 +50,7 @@ const fileResponse = await slackSDK.uploadFile({
 
 // Use Block Kit components
 const blockMessage = await slackSDK.sendMessage({
-  channel: '#general',
+  channel: 'C1234567890', // Channel ID
   text: 'Fallback text for notifications',
   blocks: [
     {
@@ -68,9 +68,7 @@ const blockMessage = await slackSDK.sendMessage({
       accessory: {
         type: 'button',
         text: { type: 'plain_text', text: 'Click me' },
-        // unique action_id
         action_id: 'click_me',
-        // url to open (optional)
         url: 'https://example.com',
       },
     },
@@ -81,7 +79,7 @@ const blockMessage = await slackSDK.sendMessage({
 const { blocks } = slackSDK;
 
 const message = await slackSDK.sendMessage({
-  channel: '#general',
+  channel: 'C1234567890', // Channel ID
   text: 'Block Kit helpers example',
   blocks: [
     blocks.section('A section with *markdown*'),
@@ -102,6 +100,7 @@ Creates a new instance of the Slack SDK.
 #### Config Options
 
 - `botToken` (string, required): Your Slack bot user OAuth token
+- `authType` ('header' | 'query', optional): Authentication method (defaults to 'header')
 - `baseUrl` (string, optional): Override the default Slack API URL (defaults to 'https://slack.com/api')
 
 ### `sendMessage(message: SlackMessage)`
@@ -110,7 +109,7 @@ Sends a message to a Slack channel.
 
 #### Message Options
 
-- `channel` (string, required): Channel ID or name (e.g., '#general')
+- `channel` (string, required): Channel ID (e.g., 'C1234567890')
 - `text` (string, required): Message text or fallback for Block Kit messages
 - `blocks` (Block[], optional): Array of Block Kit blocks for rich layout
 - `attachments` (Attachment[], optional): Legacy attachments
@@ -145,7 +144,7 @@ Uploads a file to Slack.
 
 #### File Upload Options
 
-- `channels` (string, optional): Comma-separated list of channel IDs to share the file
+- `channels` (string, optional): Channel ID to share the file
 - `content` (string, optional): Text content of the file
 - `filename` (string, optional): Name of the file
 - `filetype` (string, optional): File type identifier (e.g., 'txt', 'pdf')
@@ -175,7 +174,7 @@ Example:
 ```typescript
 try {
   const response = await slackSDK.sendMessage({
-    channel: '#general',
+    channel: 'C1234567890', // Channel ID
     text: 'Hello world',
   });
   console.log('Message sent:', response);
