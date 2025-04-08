@@ -1,0 +1,32 @@
+{
+  "name": "microfox-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for Microfox package documentation updates",
+  "main": "dist/update-readme.js",
+  "scripts": {
+    "build": "tsc",
+    "dev:readme": "ts-node src/update-readme.ts",
+    "dev:sdk": "ts-node src/generate-sdk.ts",
+    "dev:package-list": "ts-node src/update-package-list.ts",
+    "dev:package-info": "ts-node src/update-package-info.ts",
+    "dev:package": "npm run dev:package-list && npm run dev:package-info"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.0.0",
+    "@ai-sdk/google": "^1.2.7",
+    "@microfox/tavily": "1.0.2",
+    "@microfox/serpapi": "1.0.2",
+    "ai": "^4.2.0",
+    "dedent": "^1.5.3",
+    "dotenv": "^16.4.5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
