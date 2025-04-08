@@ -1,14 +1,18 @@
-const fs = require('fs').promises;
-const path = require('path');
+import * as fs from 'fs/promises';
+import * as path from 'path';
 
-async function collectPackageInfo() {
+interface PackageInfo {
+  [key: string]: any;
+}
+
+async function updatePackageInfo(): Promise<void> {
   try {
     // Get all directories in the packages folder
-    const packagesDir = path.join(process.cwd(), 'packages');
+    const packagesDir = path.join(process.cwd(), '../packages');
     const packages = await fs.readdir(packagesDir);
 
     // Array to store all package info
-    const allPackageInfo = [];
+    const allPackageInfo: PackageInfo[] = [];
 
     // Iterate through each package directory
     for (const pkg of packages) {
@@ -28,7 +32,7 @@ async function collectPackageInfo() {
         } catch (err) {
           console.warn(
             `Warning: Could not read package-info.json from ${pkg}:`,
-            err.message,
+            (err as Error).message,
           );
         }
       }
@@ -36,7 +40,7 @@ async function collectPackageInfo() {
 
     // Write the combined data to packages-info.json in the root
     await fs.writeFile(
-      'packages-info.json',
+      '../packages-info.json',
       JSON.stringify(allPackageInfo, null, 2),
       'utf8',
     );
@@ -44,10 +48,14 @@ async function collectPackageInfo() {
     console.log('Successfully created packages-info.json');
     console.log(`Found ${allPackageInfo.length} package(s)`);
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error:', err as Error);
     process.exit(1);
   }
 }
 
 // Run the script
-collectPackageInfo();
+if (require.main === module) {
+  updatePackageInfo();
+}
+
+export { updatePackageInfo };

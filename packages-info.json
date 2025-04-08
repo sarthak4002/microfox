@@ -630,6 +630,59 @@
     ]
   },
   {
+    "name": "@microfox/google-sheets",
+    "title": "Microfox Google Sheets SDK",
+    "description": "A TypeScript SDK for interacting with Google Sheets API.",
+    "path": "packages/google-sheets",
+    "dependencies": [
+      "zod"
+    ],
+    "status": "stable",
+    "authEndpoint": "/connect/google-sheets",
+    "documentation": "https://www.npmjs.com/package/@microfox/google-sheets",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg",
+    "readme_map": {
+      "path": "/README.md",
+      "title": "createGoogleSheetsSDK Microfox",
+      "functionalities": [
+        "getValues",
+        "batchGetValues",
+        "updateValues",
+        "batchUpdateValues",
+        "appendValues",
+        "clearValues",
+        "batchClearValues",
+        "generateAuthUrl",
+        "exchangeCodeForTokens"
+      ],
+      "description": "The full README for the Microfox Google Sheets SDK"
+    },
+    "constructors": [
+      {
+        "name": "createGoogleSheetsSDK",
+        "description": "Create a new Microfox Google Sheets SDK client through which you can interact with the API",
+        "auth": "oauth2",
+        "requiredKeys": [],
+        "internalKeys": [],
+        "functionalities": [
+          "getValues",
+          "batchGetValues",
+          "updateValues",
+          "batchUpdateValues",
+          "appendValues",
+          "clearValues",
+          "batchClearValues",
+          "generateAuthUrl",
+          "exchangeCodeForTokens"
+        ]
+      }
+    ],
+    "keysInfo": [],
+    "extraInfo": [
+      "Use the `createGoogleSheetsSDK` constructor to create a new client."
+    ]
+  },
+  {
     "name": "@microfox/gravatar",
     "title": "Microfox Gravatar",
     "description": "Microfox SDK for Gravatar profile and avatar services",
