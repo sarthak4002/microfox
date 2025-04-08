@@ -6,7 +6,8 @@ import {
 } from './schemas/index';
 
 export class GoogleOAuthSdk {
-  private static readonly AUTH_BASE_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+  private static readonly AUTH_BASE_URL =
+    'https://accounts.google.com/o/oauth2/v2/auth';
   private static readonly TOKEN_URL = 'https://oauth2.googleapis.com/token';
   private readonly clientId: string;
   private readonly clientSecret: string;
@@ -28,7 +29,11 @@ export class GoogleOAuthSdk {
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
     this.redirectUri = config.redirectUri;
-    this.scopes = config.scopes || [GoogleScope.OPENID, GoogleScope.EMAIL, GoogleScope.PROFILE];
+    this.scopes = config.scopes || [
+      GoogleScope.OPENID,
+      GoogleScope.EMAIL,
+      GoogleScope.PROFILE,
+    ];
     this.state = config.state || this.generateState();
   }
 
@@ -107,7 +112,9 @@ export class GoogleOAuthSdk {
 
     if (!response.ok) {
       const error = errorResponseSchema.parse(data);
-      throw new Error(`${error.error}: ${error.error_description || 'Unknown error'}`);
+      throw new Error(
+        `${error.error}: ${error.error_description || 'Unknown error'}`,
+      );
     }
 
     const tokenResponse = tokenResponseSchema.parse(data);
@@ -124,7 +131,9 @@ export class GoogleOAuthSdk {
    * @param code The authorization code received from Google
    * @returns Google token response containing access token and optional refresh token
    */
-  private async getAccessAndRefreshTokens(code: string): Promise<TokenResponse> {
+  private async getAccessAndRefreshTokens(
+    code: string,
+  ): Promise<TokenResponse> {
     const params = new URLSearchParams({
       grant_type: 'authorization_code',
       code,
@@ -145,7 +154,9 @@ export class GoogleOAuthSdk {
 
     if (!response.ok) {
       const error = errorResponseSchema.parse(data);
-      throw new Error(`${error.error}: ${error.error_description || 'Unknown error'}`);
+      throw new Error(
+        `${error.error}: ${error.error_description || 'Unknown error'}`,
+      );
     }
 
     return tokenResponseSchema.parse(data);
