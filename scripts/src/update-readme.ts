@@ -201,19 +201,27 @@ async function generateContentWithAI(
 
         Documentation Context:
         - Current File: ${currentDocFile}
-        ${allDocFiles?.length > 1 ? `- Related Documentation Files:
+        ${
+          allDocFiles?.length > 1
+            ? `- Related Documentation Files:
         ${allDocFiles
           .filter(f => f !== currentDocFile)
           .map(f => `  - [${f}](./${f})`)
-          .join('\n')}` : ''}
+          .join('\n')}`
+            : ''
+        }
 
         Code Changes to Document:
-        ${fileInfos.map(file => dedent`
+        ${fileInfos
+          .map(
+            file => dedent`
         ## ${file.relativePath}
         \`\`\`diff
         ${file.diff}
         \`\`\`
-        `).join('\n\n')}
+        `,
+          )
+          .join('\n\n')}
 
         Documentation Requirements:
         1. CRITICALLY analyze each code change and its impact on documentation

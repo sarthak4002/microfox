@@ -48,7 +48,7 @@ async function updatePackageInfo(): Promise<void> {
     console.log('Successfully created packages-info.json');
     console.log(`Found ${allPackageInfo.length} package(s)`);
   } catch (err) {
-    console.error('Error:', (err as Error));
+    console.error('Error:', err as Error);
     process.exit(1);
   }
 }
@@ -58,4 +58,4 @@ if (require.main === module) {
   updatePackageInfo();
 }
 
-export { updatePackageInfo }; 
+export { updatePackageInfo };
