@@ -1,0 +1,71 @@
+{
+  "name": "@microfox/google-oauth-sdk",
+  "title": "Microfox Google OAuth SDK",
+  "description": "Google OAuth SDK for Microfox",
+  "path": "packages/google-oauth-sdk",
+  "dependencies": ["zod"],
+  "status": "stable",
+  "authEndpoint": "/connect/google",
+  "documentation": "https://www.npmjs.com/package/@microfox/google-oauth-sdk",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/google-oauth-sdk/icon.svg",
+  "constructors": [
+    {
+      "name": "GoogleOAuthSdk",
+      "description": "Create a new Google OAuth client",
+      "zodSecretSchema": "GoogleAuthConfigSchema",
+      "auth": "oauth2",
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_ACCESS_TOKEN",
+          "displayName": "Access Token",
+          "description": "The access token for the Google client"
+        },
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "displayName": "Client ID",
+          "description": "The client ID for the Google application"
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "displayName": "Client Secret",
+          "description": "The client secret for the Google application"
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Scopes",
+          "description": "The scopes for the Google client"
+        }
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": ["GoogleOAuthSdk"],
+      "description": "The access token for the Google client",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": ["GoogleOAuthSdk"],
+      "description": "The client ID for the Google application",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": ["GoogleOAuthSdk"],
+      "description": "The client secret for the Google application",
+      "required": true
+    },
+    {
+      "key": "SCOPES",
+      "constructors": ["GoogleOAuthSdk"],
+      "description": "The scopes for the Google client",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "Use the `GoogleOAuthSdk` class to create a new Google OAuth client."
+  ]
+}
