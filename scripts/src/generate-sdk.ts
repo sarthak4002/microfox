@@ -138,9 +138,6 @@ function createInitialPackageJson(
       'build:watch': 'tsup --watch',
       clean: 'rm -rf dist',
       lint: 'eslint "./**/*.ts*"',
-      test: 'vitest run',
-      'test:watch': 'vitest',
-      'test:coverage': 'vitest run --coverage',
       'prettier-check': 'prettier --check "./**/*.ts*"',
     },
     exports: {
