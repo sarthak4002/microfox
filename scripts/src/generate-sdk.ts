@@ -193,7 +193,7 @@ function createInitialPackageInfo(
     status: "stable",
     authEndpoint: `/connect/${packageName.replace('@microfox/', '')}`,
     documentation: `https://www.npmjs.com/package/${packageName}`,
-    icon: `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/${packageName.replace('@microfox/', 'packages/')}.svg`,
+    icon: `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${packageName.replace('@microfox/', '').replace('-', '-').replace('_', '-')}.svg`,
     readme_map: {
       path: "/README.md",
       title: `${constructorName || title} Microfox`,
