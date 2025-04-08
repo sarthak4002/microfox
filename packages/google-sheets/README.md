@@ -25,7 +25,10 @@ yarn add @microfox/google-sheets
 First, import the SDK:
 
 ```typescript
-import { createGoogleSheetsSDK, GoogleSheetsSDKOptions } from '@microfox/google-sheets';
+import {
+  createGoogleSheetsSDK,
+  GoogleSheetsSDKOptions,
+} from '@microfox/google-sheets';
 ```
 
 Then, create an instance of the SDK:
@@ -120,7 +123,7 @@ const spreadsheetId = 'YOUR_SPREADSHEET_ID';
 const range = 'Sheet1!A1:B2';
 const values = [
   ['New', 'Data'],
-  ['Goes', 'Here']
+  ['Goes', 'Here'],
 ];
 
 try {
@@ -138,7 +141,7 @@ const spreadsheetId = 'YOUR_SPREADSHEET_ID';
 const range = 'Sheet1!A:B';
 const values = [
   ['Appended', 'Row'],
-  ['Another', 'Row']
+  ['Another', 'Row'],
 ];
 
 try {

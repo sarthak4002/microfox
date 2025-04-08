@@ -9,11 +9,24 @@ const SHEETS_API_BASE_URL = 'https://sheets.googleapis.com/v4/spreadsheets';
 
 // Basic schemas for token handling
 const TokenResponseSchema = z.object({
-  access_token: z.string().describe('The access token issued by the authorization server'),
-  expires_in: z.number().describe('The lifetime of the access token in seconds'),
-  token_type: z.string().optional().describe('The type of the token, typically "Bearer"'),
-  scope: z.string().optional().describe('The scopes that the access token is valid for'),
-  refresh_token: z.string().optional().describe('The refresh token used to obtain new access tokens'),
+  access_token: z
+    .string()
+    .describe('The access token issued by the authorization server'),
+  expires_in: z
+    .number()
+    .describe('The lifetime of the access token in seconds'),
+  token_type: z
+    .string()
+    .optional()
+    .describe('The type of the token, typically "Bearer"'),
+  scope: z
+    .string()
+    .optional()
+    .describe('The scopes that the access token is valid for'),
+  refresh_token: z
+    .string()
+    .optional()
+    .describe('The refresh token used to obtain new access tokens'),
 });
 
 type TokenResponse = z.infer<typeof TokenResponseSchema>;
@@ -21,13 +34,27 @@ type TokenResponse = z.infer<typeof TokenResponseSchema>;
 // Base options for SDK constructor
 const GoogleSheetsSDKOptionsSchema = z.object({
   clientId: z.string().describe('Google API client ID for the application'),
-  clientSecret: z.string().describe('Google API client secret for the application'),
+  clientSecret: z
+    .string()
+    .describe('Google API client secret for the application'),
   redirectUri: z.string().describe('URI to redirect after authentication'),
   scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
-  accessToken: z.string().optional().describe('Existing access token if available'),
-  refreshToken: z.string().optional().describe('Existing refresh token if available'),
-  accessType: z.enum(['online', 'offline']).optional().describe('Whether to issue a refresh token'),
-  prompt: z.enum(['none', 'consent', 'select_account']).optional().describe('Type of authentication prompt to display')
+  accessToken: z
+    .string()
+    .optional()
+    .describe('Existing access token if available'),
+  refreshToken: z
+    .string()
+    .optional()
+    .describe('Existing refresh token if available'),
+  accessType: z
+    .enum(['online', 'offline'])
+    .optional()
+    .describe('Whether to issue a refresh token'),
+  prompt: z
+    .enum(['none', 'consent', 'select_account'])
+    .optional()
+    .describe('Type of authentication prompt to display'),
 });
 
 type GoogleSheetsSDKOptions = z.infer<typeof GoogleSheetsSDKOptionsSchema>;
@@ -35,45 +62,95 @@ type GoogleSheetsSDKOptions = z.infer<typeof GoogleSheetsSDKOptionsSchema>;
 // Schemas for API responses
 const ValueRangeSchema = z.object({
   range: z.string().describe('The range the values cover, in A1 notation'),
-  majorDimension: z.enum(['ROWS', 'COLUMNS']).describe('The major dimension of the values'),
-  values: z.array(z.array(z.any())).describe('The data that was read or to be written')
+  majorDimension: z
+    .enum(['ROWS', 'COLUMNS'])
+    .describe('The major dimension of the values'),
+  values: z
+    .array(z.array(z.any()))
+    .describe('The data that was read or to be written'),
 });
 
 const BatchGetValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The ID of the spreadsheet the data was retrieved from'),
-  valueRanges: z.array(ValueRangeSchema).describe('The requested ranges and values')
+  spreadsheetId: z
+    .string()
+    .describe('The ID of the spreadsheet the data was retrieved from'),
+  valueRanges: z
+    .array(ValueRangeSchema)
+    .describe('The requested ranges and values'),
 });
 
 const UpdateValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The spreadsheet the updates were applied to'),
-  updatedRange: z.string().describe('The range (in A1 notation) that was updated'),
-  updatedRows: z.number().describe('The number of rows where at least one cell in the row was updated'),
-  updatedColumns: z.number().describe('The number of columns where at least one cell in the column was updated'),
-  updatedCells: z.number().describe('The number of cells updated')
+  spreadsheetId: z
+    .string()
+    .describe('The spreadsheet the updates were applied to'),
+  updatedRange: z
+    .string()
+    .describe('The range (in A1 notation) that was updated'),
+  updatedRows: z
+    .number()
+    .describe(
+      'The number of rows where at least one cell in the row was updated',
+    ),
+  updatedColumns: z
+    .number()
+    .describe(
+      'The number of columns where at least one cell in the column was updated',
+    ),
+  updatedCells: z.number().describe('The number of cells updated'),
 });
 
 const BatchUpdateValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The spreadsheet the updates were applied to'),
-  totalUpdatedRows: z.number().describe('The total number of rows where at least one cell in the row was updated'),
-  totalUpdatedColumns: z.number().describe('The total number of columns where at least one cell in the column was updated'),
+  spreadsheetId: z
+    .string()
+    .describe('The spreadsheet the updates were applied to'),
+  totalUpdatedRows: z
+    .number()
+    .describe(
+      'The total number of rows where at least one cell in the row was updated',
+    ),
+  totalUpdatedColumns: z
+    .number()
+    .describe(
+      'The total number of columns where at least one cell in the column was updated',
+    ),
   totalUpdatedCells: z.number().describe('The total number of cells updated'),
-  responses: z.array(UpdateValuesResponseSchema).describe('One UpdateValuesResponse per requested range, in the same order as the requests appeared')
+  responses: z
+    .array(UpdateValuesResponseSchema)
+    .describe(
+      'One UpdateValuesResponse per requested range, in the same order as the requests appeared',
+    ),
 });
 
 const AppendValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The spreadsheet the updates were applied to'),
-  tableRange: z.string().describe('The range (in A1 notation) of the table that values are being appended to'),
-  updates: UpdateValuesResponseSchema.describe('Information about the updates that were applied')
+  spreadsheetId: z
+    .string()
+    .describe('The spreadsheet the updates were applied to'),
+  tableRange: z
+    .string()
+    .describe(
+      'The range (in A1 notation) of the table that values are being appended to',
+    ),
+  updates: UpdateValuesResponseSchema.describe(
+    'Information about the updates that were applied',
+  ),
 });
 
 const ClearValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The spreadsheet the updates were applied to'),
-  clearedRange: z.string().describe('The range (in A1 notation) that was cleared')
+  spreadsheetId: z
+    .string()
+    .describe('The spreadsheet the updates were applied to'),
+  clearedRange: z
+    .string()
+    .describe('The range (in A1 notation) that was cleared'),
 });
 
 const BatchClearValuesResponseSchema = z.object({
-  spreadsheetId: z.string().describe('The spreadsheet the updates were applied to'),
-  clearedRanges: z.array(z.string()).describe('The ranges that were cleared, in A1 notation')
+  spreadsheetId: z
+    .string()
+    .describe('The spreadsheet the updates were applied to'),
+  clearedRanges: z
+    .array(z.string())
+    .describe('The ranges that were cleared, in A1 notation'),
 });
 
 class GoogleSheetsSDK {
@@ -111,7 +188,9 @@ class GoogleSheetsSDK {
 
   private async checkTokenValidity(accessToken: string): Promise<boolean> {
     try {
-      const response = await fetch(`${TOKEN_INFO_URL}?access_token=${accessToken}`);
+      const response = await fetch(
+        `${TOKEN_INFO_URL}?access_token=${accessToken}`,
+      );
       return response.ok;
     } catch (error) {
       console.error('Error checking token validity:', error);
@@ -186,7 +265,9 @@ class GoogleSheetsSDK {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error_description || 'Failed to exchange code for tokens');
+        throw new Error(
+          errorData.error_description || 'Failed to exchange code for tokens',
+        );
       }
 
       const data = await response.json();
@@ -200,7 +281,11 @@ class GoogleSheetsSDK {
     }
   }
 
-  private async makeAuthorizedRequest(url: string, method: string, body?: any): Promise<any> {
+  private async makeAuthorizedRequest(
+    url: string,
+    method: string,
+    body?: any,
+  ): Promise<any> {
     if (!this.accessToken) {
       throw new Error('No access token available');
     }
@@ -209,7 +294,7 @@ class GoogleSheetsSDK {
       const response = await fetch(url, {
         method,
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${this.accessToken}`,
           'Content-Type': 'application/json',
         },
         body: body ? JSON.stringify(body) : undefined,
@@ -235,7 +320,10 @@ class GoogleSheetsSDK {
    * @param spreadsheetId The ID of the spreadsheet to retrieve data from
    * @param range The A1 notation of the range to retrieve values from
    */
-  public async getValues(spreadsheetId: string, range: string): Promise<z.infer<typeof ValueRangeSchema>> {
+  public async getValues(
+    spreadsheetId: string,
+    range: string,
+  ): Promise<z.infer<typeof ValueRangeSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values/${range}`;
     const response = await this.makeAuthorizedRequest(url, 'GET');
     return ValueRangeSchema.parse(response);
@@ -246,7 +334,10 @@ class GoogleSheetsSDK {
    * @param spreadsheetId The ID of the spreadsheet to retrieve data from
    * @param ranges An array of A1 notation ranges to retrieve
    */
-  public async batchGetValues(spreadsheetId: string, ranges: string[]): Promise<z.infer<typeof BatchGetValuesResponseSchema>> {
+  public async batchGetValues(
+    spreadsheetId: string,
+    ranges: string[],
+  ): Promise<z.infer<typeof BatchGetValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values:batchGet?ranges=${ranges.join('&ranges=')}`;
     const response = await this.makeAuthorizedRequest(url, 'GET');
     return BatchGetValuesResponseSchema.parse(response);
@@ -258,7 +349,11 @@ class GoogleSheetsSDK {
    * @param range The A1 notation of the range to update
    * @param values The data to be written
    */
-  public async updateValues(spreadsheetId: string, range: string, values: any[][]): Promise<z.infer<typeof UpdateValuesResponseSchema>> {
+  public async updateValues(
+    spreadsheetId: string,
+    range: string,
+    values: any[][],
+  ): Promise<z.infer<typeof UpdateValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values/${range}?valueInputOption=USER_ENTERED`;
     const body = {
       range,
@@ -273,7 +368,10 @@ class GoogleSheetsSDK {
    * @param spreadsheetId The ID of the spreadsheet to update
    * @param data An array of objects containing range and values to update
    */
-  public async batchUpdateValues(spreadsheetId: string, data: { range: string; values: any[][] }[]): Promise<z.infer<typeof BatchUpdateValuesResponseSchema>> {
+  public async batchUpdateValues(
+    spreadsheetId: string,
+    data: { range: string; values: any[][] }[],
+  ): Promise<z.infer<typeof BatchUpdateValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values:batchUpdate`;
     const body = {
       data: data.map(({ range, values }) => ({ range, values })),
@@ -289,7 +387,11 @@ class GoogleSheetsSDK {
    * @param range The A1 notation of the range to append after
    * @param values The data to be appended
    */
-  public async appendValues(spreadsheetId: string, range: string, values: any[][]): Promise<z.infer<typeof AppendValuesResponseSchema>> {
+  public async appendValues(
+    spreadsheetId: string,
+    range: string,
+    values: any[][],
+  ): Promise<z.infer<typeof AppendValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
     const body = {
       range,
@@ -304,7 +406,10 @@ class GoogleSheetsSDK {
    * @param spreadsheetId The ID of the spreadsheet to clear
    * @param range The A1 notation of the range to clear
    */
-  public async clearValues(spreadsheetId: string, range: string): Promise<z.infer<typeof ClearValuesResponseSchema>> {
+  public async clearValues(
+    spreadsheetId: string,
+    range: string,
+  ): Promise<z.infer<typeof ClearValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values/${range}:clear`;
     const response = await this.makeAuthorizedRequest(url, 'POST');
     return ClearValuesResponseSchema.parse(response);
@@ -315,7 +420,10 @@ class GoogleSheetsSDK {
    * @param spreadsheetId The ID of the spreadsheet to clear
    * @param ranges An array of A1 notation ranges to clear
    */
-  public async batchClearValues(spreadsheetId: string, ranges: string[]): Promise<z.infer<typeof BatchClearValuesResponseSchema>> {
+  public async batchClearValues(
+    spreadsheetId: string,
+    ranges: string[],
+  ): Promise<z.infer<typeof BatchClearValuesResponseSchema>> {
     const url = `${SHEETS_API_BASE_URL}/${spreadsheetId}/values:batchClear`;
     const body = { ranges };
     const response = await this.makeAuthorizedRequest(url, 'POST', body);
@@ -327,7 +435,9 @@ class GoogleSheetsSDK {
  * Create a new instance of the Google Sheets SDK
  * @param options Configuration options for the SDK
  */
-export function createGoogleSheetsSDK(options: GoogleSheetsSDKOptions): GoogleSheetsSDK {
+export function createGoogleSheetsSDK(
+  options: GoogleSheetsSDKOptions,
+): GoogleSheetsSDK {
   return new GoogleSheetsSDK(options);
 }
 
