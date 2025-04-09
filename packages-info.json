@@ -228,17 +228,17 @@
     "extraInfo": []
   },
   {
-    "name": "@microfox/discord-sdk",
+    "name": "@microfox/discord",
     "title": "Microfox Discord SDK",
     "description": "A lightweight, type-safe SDK for interacting with the Discord API v10",
-    "path": "packages/discord-sdk",
+    "path": "packages/discord",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/discord",
-    "documentation": "https://www.npmjs.com/package/@microfox/discord-sdk",
+    "documentation": "https://www.npmjs.com/package/@microfox/discord",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/discord-icon.svg",
     "readme_map": {
       "path": "/README.md",
@@ -311,18 +311,18 @@
     ]
   },
   {
-    "name": "@microfox/drive-sdk",
+    "name": "@microfox/drive",
     "title": "Microfox Drive SDK",
     "description": "Google Drive SDK for Microfox",
-    "path": "packages/drive-sdk",
+    "path": "packages/drive",
     "dependencies": [
-      "@microfox/google-sdk",
+      "@microfox/google",
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/google",
-    "documentation": "https://www.npmjs.com/package/@microfox/drive-sdk",
+    "documentation": "https://www.npmjs.com/package/@microfox/drive",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/drive-icon.svg",
     "constructors": [
       {
@@ -535,17 +535,17 @@
     ]
   },
   {
-    "name": "@microfox/google-sdk",
+    "name": "@microfox/google",
     "title": "Microfox Google SDK",
     "description": "Google SDK for Microfox",
-    "path": "packages/google-sdk",
+    "path": "packages/google",
     "dependencies": [
-      "@microfox/rest-sdk",
+      "@microfox/rest",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/google",
-    "documentation": "https://www.npmjs.com/package/@microfox/google-sdk",
+    "documentation": "https://www.npmjs.com/package/@microfox/google",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google.svg",
     "constructors": [
       {
@@ -630,15 +630,96 @@
     ]
   },
   {
+    "name": "@microfox/google-oauth",
+    "title": "Microfox Google OAuth SDK",
+    "description": "Google OAuth SDK for Microfox",
+    "path": "packages/google-oauth",
+    "dependencies": [
+      "zod"
+    ],
+    "status": "stable",
+    "authEndpoint": "/connect/google",
+    "documentation": "https://www.npmjs.com/package/@microfox/google-oauth",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/google-oauth/icon.svg",
+    "constructors": [
+      {
+        "name": "GoogleOAuthSdk",
+        "description": "Create a new Google OAuth client",
+        "zodSecretSchema": "GoogleAuthConfigSchema",
+        "auth": "oauth2",
+        "requiredKeys": [],
+        "internalKeys": [
+          {
+            "key": "GOOGLE_ACCESS_TOKEN",
+            "displayName": "Access Token",
+            "description": "The access token for the Google client"
+          },
+          {
+            "key": "GOOGLE_CLIENT_ID",
+            "displayName": "Client ID",
+            "description": "The client ID for the Google application"
+          },
+          {
+            "key": "GOOGLE_CLIENT_SECRET",
+            "displayName": "Client Secret",
+            "description": "The client secret for the Google application"
+          },
+          {
+            "key": "SCOPES",
+            "displayName": "Scopes",
+            "description": "The scopes for the Google client"
+          }
+        ]
+      }
+    ],
+    "keysInfo": [
+      {
+        "key": "GOOGLE_ACCESS_TOKEN",
+        "constructors": [
+          "GoogleOAuthSdk"
+        ],
+        "description": "The access token for the Google client",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_ID",
+        "constructors": [
+          "GoogleOAuthSdk"
+        ],
+        "description": "The client ID for the Google application",
+        "required": true
+      },
+      {
+        "key": "GOOGLE_CLIENT_SECRET",
+        "constructors": [
+          "GoogleOAuthSdk"
+        ],
+        "description": "The client secret for the Google application",
+        "required": true
+      },
+      {
+        "key": "SCOPES",
+        "constructors": [
+          "GoogleOAuthSdk"
+        ],
+        "description": "The scopes for the Google client",
+        "required": true
+      }
+    ],
+    "extraInfo": [
+      "Use the `GoogleOAuthSdk` class to create a new Google OAuth client."
+    ]
+  },
+  {
     "name": "@microfox/google-sheets",
     "title": "Microfox Google Sheets SDK",
-    "description": "A TypeScript SDK for interacting with Google Sheets API.",
+    "description": "TypeScript SDK for interacting with Google Sheets API.",
     "path": "packages/google-sheets",
     "dependencies": [
       "zod"
     ],
     "status": "stable",
-    "authEndpoint": "/connect/google-sheets",
+    "authEndpoint": "/connect/google-oauth",
     "documentation": "https://www.npmjs.com/package/@microfox/google-sheets",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg",
     "readme_map": {
@@ -651,9 +732,7 @@
         "batchUpdateValues",
         "appendValues",
         "clearValues",
-        "batchClearValues",
-        "generateAuthUrl",
-        "exchangeCodeForTokens"
+        "batchClearValues"
       ],
       "description": "The full README for the Microfox Google Sheets SDK"
     },
@@ -662,8 +741,15 @@
         "name": "createGoogleSheetsSDK",
         "description": "Create a new Microfox Google Sheets SDK client through which you can interact with the API",
         "auth": "oauth2",
+        "authSdk": "@microfox/google-oauth",
         "requiredKeys": [],
-        "internalKeys": [],
+        "internalKeys": [
+          {
+            "key": "GOOGLE_SHEETS_ACCESS_TOKEN",
+            "displayName": "Google Sheets Access Token",
+            "description": "OAuth2 access token for Google Sheets API"
+          }
+        ],
         "functionalities": [
           "getValues",
           "batchGetValues",
@@ -671,13 +757,20 @@
           "batchUpdateValues",
           "appendValues",
           "clearValues",
-          "batchClearValues",
-          "generateAuthUrl",
-          "exchangeCodeForTokens"
+          "batchClearValues"
         ]
       }
     ],
-    "keysInfo": [],
+    "keysInfo": [
+      {
+        "key": "GOOGLE_SHEETS_ACCESS_TOKEN",
+        "constructors": [
+          "createGoogleSheetsSDK"
+        ],
+        "description": "OAuth2 access token for Google Sheets API",
+        "required": true
+      }
+    ],
     "extraInfo": [
       "Use the `createGoogleSheetsSDK` constructor to create a new client."
     ]
@@ -785,18 +878,18 @@
     "extraInfo": []
   },
   {
-    "name": "@microfox/linkedin-oauth-sdk",
+    "name": "@microfox/linkedin-oauth",
     "title": "Microfox LinkedIn OAuth SDK",
     "description": "LinkedIn OAuth SDK for Microfox",
-    "path": "packages/linkedin-oauth-sdk",
+    "path": "packages/linkedin-oauth",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/linkedin",
-    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-oauth-sdk",
-    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-oauth-sdk/icon.svg",
+    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-oauth",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-oauth/icon.svg",
     "constructors": [
       {
         "name": "linkedinOAuthManager",
@@ -867,18 +960,18 @@
     ]
   },
   {
-    "name": "@microfox/linkedin-share-sdk",
+    "name": "@microfox/linkedin-share",
     "title": "Microfox LinkedIn Share SDK",
     "description": "LinkedIn Share SDK for Microfox",
-    "path": "packages/linkedin-share-sdk",
+    "path": "packages/linkedin-share",
     "dependencies": [
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/linkedin",
-    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-share-sdk",
-    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-share-sdk/icon.svg",
+    "documentation": "https://www.npmjs.com/package/@microfox/linkedin-share",
+    "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-share/icon.svg",
     "constructors": [
       {
         "name": "linkedinShareManager",
@@ -1270,79 +1363,16 @@
     "extraInfo": []
   },
   {
-    "name": "@microfox/weather",
-    "title": "Microfox Weather",
-    "description": "Microfox SDK for weatherapi.com",
-    "path": "packages/weather",
-    "dependencies": [
-      "@microfox/core",
-      "ky",
-      "zod"
-    ],
-    "status": "partial",
-    "apiKeys": [
-      "WEATHER_API_KEY"
-    ],
-    "extraInfo": []
-  },
-  {
-    "name": "@microfox/wikidata",
-    "title": "Microfox Wikidata",
-    "description": "Microfox SDK for Wikidata",
-    "path": "packages/wikidata",
-    "dependencies": [
-      "@microfox/core",
-      "ky",
-      "p-throttle",
-      "wikibase-sdk",
-      "zod"
-    ],
-    "status": "partial",
-    "apiKeys": [],
-    "extraInfo": []
-  },
-  {
-    "name": "@microfox/wikipedia",
-    "title": "Microfox Wikipedia",
-    "description": "Microfox SDK for Wikipedia",
-    "path": "packages/wikipedia",
-    "dependencies": [
-      "@microfox/core",
-      "ky",
-      "p-throttle",
-      "zod"
-    ],
-    "status": "partial",
-    "apiKeys": [],
-    "extraInfo": []
-  },
-  {
-    "name": "@microfox/wolfram-alpha",
-    "title": "Microfox Wolfram Alpha",
-    "description": "Microfox SDK for Wolfram Alpha",
-    "path": "packages/wolfram-alpha",
-    "dependencies": [
-      "@microfox/core",
-      "ky",
-      "zod"
-    ],
-    "status": "partial",
-    "apiKeys": [
-      "WOLFRAM_ALPHA_API_KEY"
-    ],
-    "extraInfo": []
-  },
-  {
-    "name": "@microfox/x-sdk",
+    "name": "@microfox/twitter",
     "title": "Microfox X SDK",
     "description": "A lightweight, type-safe SDK for interacting with the X (Twitter) API v2",
-    "path": "packages/x-sdk",
+    "path": "packages/twitter",
     "dependencies": [
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/x",
-    "documentation": "https://www.npmjs.com/package/@microfox/x-sdk",
+    "documentation": "https://www.npmjs.com/package/@microfox/twitter",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/x.svg",
     "readme_map": {
       "path": "/README.md",
@@ -1444,18 +1474,81 @@
     ]
   },
   {
-    "name": "@microfox/youtube-sdk",
+    "name": "@microfox/weather",
+    "title": "Microfox Weather",
+    "description": "Microfox SDK for weatherapi.com",
+    "path": "packages/weather",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial",
+    "apiKeys": [
+      "WEATHER_API_KEY"
+    ],
+    "extraInfo": []
+  },
+  {
+    "name": "@microfox/wikidata",
+    "title": "Microfox Wikidata",
+    "description": "Microfox SDK for Wikidata",
+    "path": "packages/wikidata",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "wikibase-sdk",
+      "zod"
+    ],
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
+  },
+  {
+    "name": "@microfox/wikipedia",
+    "title": "Microfox Wikipedia",
+    "description": "Microfox SDK for Wikipedia",
+    "path": "packages/wikipedia",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "p-throttle",
+      "zod"
+    ],
+    "status": "partial",
+    "apiKeys": [],
+    "extraInfo": []
+  },
+  {
+    "name": "@microfox/wolfram-alpha",
+    "title": "Microfox Wolfram Alpha",
+    "description": "Microfox SDK for Wolfram Alpha",
+    "path": "packages/wolfram-alpha",
+    "dependencies": [
+      "@microfox/core",
+      "ky",
+      "zod"
+    ],
+    "status": "partial",
+    "apiKeys": [
+      "WOLFRAM_ALPHA_API_KEY"
+    ],
+    "extraInfo": []
+  },
+  {
+    "name": "@microfox/youtube",
     "title": "Microfox YouTube SDK",
     "description": "YouTube SDK for Microfox",
-    "path": "packages/youtube-sdk",
+    "path": "packages/youtube",
     "dependencies": [
-      "@microfox/google-sdk",
+      "@microfox/google",
       "@microfox/rest-sdk",
       "zod"
     ],
     "status": "stable",
     "authEndpoint": "/connect/google",
-    "documentation": "https://www.npmjs.com/package/@microfox/youtube-sdk",
+    "documentation": "https://www.npmjs.com/package/@microfox/youtube",
     "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube-icon.svg",
     "constructors": [
       {
