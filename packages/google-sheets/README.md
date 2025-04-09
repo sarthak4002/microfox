@@ -46,11 +46,11 @@ const newValues = {
   range: 'Sheet1!A1:B2',
   values: [
     ['New', 'Data'],
-    ['More', 'Info']
-  ]
+    ['More', 'Info'],
+  ],
 };
 const updateResponse = await sdk.updateValues(spreadsheetId, range, newValues, {
-  valueInputOption: 'USER_ENTERED'
+  valueInputOption: 'USER_ENTERED',
 });
 console.log(updateResponse);
 ```
@@ -138,7 +138,10 @@ Clears values from multiple ranges in a spreadsheet.
 ### Reading and Writing Data
 
 ```typescript
-import { createGoogleSheetsSDK, ValueInputOption } from '@microfox/google-sheets';
+import {
+  createGoogleSheetsSDK,
+  ValueInputOption,
+} from '@microfox/google-sheets';
 
 const sdk = createGoogleSheetsSDK('your-access-token');
 const spreadsheetId = 'your-spreadsheet-id';
@@ -154,12 +157,17 @@ const writeValues = {
   range: writeRange,
   values: [
     ['Column C', 'Column D'],
-    ['Value 1', 'Value 2']
-  ]
+    ['Value 1', 'Value 2'],
+  ],
 };
-const writeResult = await sdk.updateValues(spreadsheetId, writeRange, writeValues, {
-  valueInputOption: ValueInputOption.enum.USER_ENTERED
-});
+const writeResult = await sdk.updateValues(
+  spreadsheetId,
+  writeRange,
+  writeValues,
+  {
+    valueInputOption: ValueInputOption.enum.USER_ENTERED,
+  },
+);
 console.log('Cells updated:', writeResult.updatedCells);
 
 // Append data
@@ -168,12 +176,17 @@ const appendValues = {
   range: appendRange,
   values: [
     ['Appended', 'Data'],
-    ['More', 'Rows']
-  ]
+    ['More', 'Rows'],
+  ],
 };
-const appendResult = await sdk.appendValues(spreadsheetId, appendRange, appendValues, {
-  valueInputOption: ValueInputOption.enum.USER_ENTERED
-});
+const appendResult = await sdk.appendValues(
+  spreadsheetId,
+  appendRange,
+  appendValues,
+  {
+    valueInputOption: ValueInputOption.enum.USER_ENTERED,
+  },
+);
 console.log('Appended range:', appendResult.updates.updatedRange);
 
 // Clear data
