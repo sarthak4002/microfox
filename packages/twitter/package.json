@@ -1,6 +1,6 @@
 {
   "name": "@microfox/twitter",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Twitter/X V2 SDK for Microfox",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

@@ -1,5 +1,11 @@
 # @microfox/linkedin-oauth
 
+## 1.0.3
+
+### Patch Changes
+
+- 9b02c01: fixed package name
+
 ## 1.0.2
 
 ### Patch Changes

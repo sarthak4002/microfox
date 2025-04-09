@@ -1,5 +1,13 @@
 # @microfox/drive
 
+## 1.0.3
+
+### Patch Changes
+
+- 9b02c01: fixed package name
+- Updated dependencies [9b02c01]
+  - @microfox/google@1.1.1
+
 ## 1.0.2
 
 ### Patch Changes
