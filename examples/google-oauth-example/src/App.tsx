@@ -1,6 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
-import { googleOAuth } from '@microfox/google-sdk';
+import { googleOAuth } from '@microfox/google';
 import OAuth from './components/OAuth';
 import Callback from './components/Callback';
 import Drive from './components/Drive';

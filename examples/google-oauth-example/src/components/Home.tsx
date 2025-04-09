@@ -44,15 +44,14 @@ const Home = ({ tokenState }: HomeProps) => {
           style={{ textAlign: 'left', listStyle: 'none', marginTop: '0.5rem' }}
         >
           <li>
-            📦 <strong>@microfox/google-sdk</strong> - OAuth authentication and
+            📦 <strong>@microfox/google</strong> - OAuth authentication and
             token management
           </li>
           <li>
-            📦 <strong>@microfox/drive-sdk</strong> - Google Drive API
-            integration
+            📦 <strong>@microfox/drive</strong> - Google Drive API integration
           </li>
           <li>
-            📦 <strong>@microfox/youtube-sdk</strong> - YouTube API integration
+            📦 <strong>@microfox/youtube</strong> - YouTube API integration
           </li>
           <li>
             📦 <strong>@microfox/rest-sdk</strong> - The foundation for all API

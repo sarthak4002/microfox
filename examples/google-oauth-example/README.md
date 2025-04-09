@@ -2,16 +2,16 @@
 
 This is a demonstration frontend application showing how to implement the Google OAuth flow using Microfox's suite of SDKs:
 
-- `@microfox/google-sdk` - For OAuth token management
-- `@microfox/drive-sdk` - For Google Drive API integration
-- `@microfox/youtube-sdk` - For YouTube API integration
+- `@microfox/google` - For OAuth token management
+- `@microfox/drive` - For Google Drive API integration
+- `@microfox/youtube` - For YouTube API integration
 
 ## Features
 
-- ✅ Complete OAuth authentication flow using `@microfox/google-sdk`
+- ✅ Complete OAuth authentication flow using `@microfox/google`
 - 🔑 Automatic token validation and refresh via the Microfox Google SDK
-- 💾 Google Drive operations using `@microfox/drive-sdk` (list, view, create files)
-- 📺 YouTube operations using `@microfox/youtube-sdk` (channel info, videos, comments)
+- 💾 Google Drive operations using `@microfox/drive` (list, view, create files)
+- 📺 YouTube operations using `@microfox/youtube` (channel info, videos, comments)
 
 ## Setup
 
@@ -44,7 +44,7 @@ To use this example, you'll need to:
 
 ## How It Works
 
-1. The application uses `@microfox/google-sdk` to handle OAuth authentication
+1. The application uses `@microfox/google` to handle OAuth authentication
 2. Users enter their Google OAuth credentials (Client ID and Secret)
 3. The app creates an OAuth authorization URL and redirects to Google's consent screen
 4. After consent, Google redirects back with an authorization code
@@ -55,10 +55,10 @@ To use this example, you'll need to:
 ## Components and SDKs Used
 
 - **Home**: Overview and authentication status display
-- **OAuth**: Uses `@microfox/google-sdk` for OAuth initialization
+- **OAuth**: Uses `@microfox/google` for OAuth initialization
 - **Callback**: Processes the OAuth response using the Google SDK
-- **Drive**: Demonstrates `@microfox/drive-sdk` operations
-- **YouTube**: Demonstrates `@microfox/youtube-sdk` operations
+- **Drive**: Demonstrates `@microfox/drive` operations
+- **YouTube**: Demonstrates `@microfox/youtube` operations
 
 ## Important Notes
 
@@ -68,7 +68,7 @@ To use this example, you'll need to:
 
 ## Related Microfox Packages
 
-- [`@microfox/google-sdk`](https://github.com/microfox/google-sdk) - Google OAuth token management
-- [`@microfox/drive-sdk`](https://github.com/microfox/drive-sdk) - Google Drive API integration
-- [`@microfox/youtube-sdk`](https://github.com/microfox/youtube-sdk) - YouTube API integration
+- [`@microfox/google`](https://github.com/microfox/google) - Google OAuth token management
+- [`@microfox/drive`](https://github.com/microfox/drive) - Google Drive API integration
+- [`@microfox/youtube`](https://github.com/microfox/youtube) - YouTube API integration
 - [`@microfox/rest-sdk`](https://github.com/microfox/rest-sdk) - The underlying REST client used by all SDKs
