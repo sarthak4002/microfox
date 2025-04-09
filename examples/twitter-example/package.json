@@ -1,5 +1,5 @@
 {
-  "name": "@microfox/discord-sdk-example",
+  "name": "@microfox/twitter-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,12 +8,12 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@microfox/discord-sdk": "*",
-    "zod": "^3.22.4"
+    "@microfox/twitter": "*",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0",
     "vitest": "^1.2.0"
   }
-}
+} 

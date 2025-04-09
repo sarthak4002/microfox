@@ -1,7 +1,7 @@
-import { createDiscordSdk } from '@microfox/discord-sdk';
+import { createDiscordSdk } from '@microfox/discord';
 
 // Initialize the SDK
-const discord = createDiscordSdk(process.env.DISCORD_BOT_TOKEN!);
+const discord = createDiscordSdk({ token: process.env.DISCORD_BOT_TOKEN! });
 
 export const discordSDKExamples = async () => {
   const channelId = process.env.CHANNEL_ID ?? '';
@@ -17,7 +17,7 @@ export const discordSDKExamples = async () => {
     console.log('\\n1. Sending plain text message...');
     const plainTextMessage = await discord.sendMessage({
       channelId,
-      content: 'Hello from @microfox/discord-sdk! 🎉',
+      content: 'Hello from @microfox/discord! 🎉',
     });
     console.log('✅ Plain text message sent!');
     console.log('Message ID:', plainTextMessage.id);

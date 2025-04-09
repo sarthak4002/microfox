@@ -1,6 +1,6 @@
 # X SDK Examples
 
-This directory contains example code demonstrating how to use the `@microfox/x-sdk` package.
+This directory contains example code demonstrating how to use the `@microfox/twitter` package.
 
 ## Setup
 
@@ -40,7 +40,7 @@ Note: Tests will automatically skip if required environment variables are not se
 ### Creating a Tweet
 
 ```typescript
-import { createXSDK } from '@microfox/x-sdk';
+import { createXSDK } from '@microfox/twitter';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -74,7 +74,7 @@ main();
 ### Uploading Media
 
 ```typescript
-import { createXSDK } from '@microfox/x-sdk';
+import { createXSDK } from '@microfox/twitter';
 import { readFileSync } from 'fs';
 import dotenv from 'dotenv';
 
@@ -113,7 +113,7 @@ main();
 ### User Operations
 
 ```typescript
-import { createXSDK } from '@microfox/x-sdk';
+import { createXSDK } from '@microfox/twitter';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -149,7 +149,7 @@ main();
 ## Error Handling
 
 ```typescript
-import { createXSDK, XError } from '@microfox/x-sdk';
+import { createXSDK, XError } from '@microfox/twitter';
 import dotenv from 'dotenv';
 
 dotenv.config();

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { createXSDK } from '@microfox/x-sdk';
+import { createXSDK } from '@microfox/twitter';
 
 // Check if required environment variables are available
 const hasRequiredEnvVars =

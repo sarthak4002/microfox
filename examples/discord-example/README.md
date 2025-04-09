@@ -1,6 +1,6 @@
 # Discord SDK Examples
 
-This folder contains example usage of the `@microfox/discord-sdk` package. These examples demonstrate how to interact with the Discord API using the SDK.
+This folder contains example usage of the `@microfox/discord` package. These examples demonstrate how to interact with the Discord API using the SDK.
 
 ---
 

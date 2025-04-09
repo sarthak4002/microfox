@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { createYouTubeSDKWithTokens } from '@microfox/youtube-sdk';
-import { googleOAuth } from '@microfox/google-sdk';
+import { createYouTubeSDKWithTokens } from '@microfox/youtube';
+import { googleOAuth } from '@microfox/google';
 
 // Types
 interface YouTubeProps {
@@ -495,7 +495,7 @@ export const YouTube = ({ tokens, updateTokens }: YouTubeProps) => {
     <div className="card">
       <h2>Microfox YouTube SDK</h2>
       <p>
-        This demonstrates how to use the @microfox/youtube-sdk to interact with
+        This demonstrates how to use the @microfox/youtube to interact with
         the YouTube API.
       </p>
 
@@ -872,7 +872,7 @@ export const YouTube = ({ tokens, updateTokens }: YouTubeProps) => {
           }}
         >
           {`// Import the SDK
-import { createYouTubeSDKWithTokens } from '@microfox/youtube-sdk';
+import { createYouTubeSDKWithTokens } from '@microfox/youtube';
 
 // Initialize with tokens
 const youtube = await createYouTubeSDKWithTokens({

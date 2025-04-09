@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, vi } from 'vitest';
-import { createDiscordSdk } from '@microfox/discord-sdk';
+import { createDiscordSdk } from '@microfox/discord';
 
 // Check for required environment variables
 const hasRequiredEnvVars =
@@ -11,7 +11,7 @@ describe('Discord SDK Integration Tests', () => {
 
   beforeAll(() => {
     if (hasRequiredEnvVars) {
-      discord = createDiscordSdk(process.env.DISCORD_BOT_TOKEN!);
+      discord = createDiscordSdk({ token: process.env.DISCORD_BOT_TOKEN! });
       console.log('Discord SDK initialized with token.');
     } else {
       console.warn(
@@ -97,7 +97,7 @@ describe('Discord SDK Integration Tests', () => {
     });
 
     itIfEnvVars('should reject invalid token', async () => {
-      const invalidDiscord = createDiscordSdk('INVALID_TOKEN');
+      const invalidDiscord = createDiscordSdk({ token: 'INVALID_TOKEN' });
 
       await expect(
         invalidDiscord.sendMessage({

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { googleOAuth } from '@microfox/google-sdk';
+import { googleOAuth } from '@microfox/google';
 
 interface CallbackProps {
   updateTokens: (tokens: {

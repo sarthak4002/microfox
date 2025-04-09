@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { createDriveSDKWithTokens } from '@microfox/drive-sdk';
-import { googleOAuth } from '@microfox/google-sdk';
+import { createDriveSDKWithTokens } from '@microfox/drive';
+import { googleOAuth } from '@microfox/google';
 
 // Types
 interface DriveProps {
@@ -338,7 +338,7 @@ export const Drive = ({ tokens, updateTokens }: DriveProps) => {
     <div className="card">
       <h2>Microfox Drive SDK</h2>
       <p>
-        This demonstrates how to use the @microfox/drive-sdk to interact with
+        This demonstrates how to use the @microfox/drive to interact with
         Google Drive.
       </p>
 
@@ -698,7 +698,7 @@ export const Drive = ({ tokens, updateTokens }: DriveProps) => {
           }}
         >
           {`// Import the SDK
-import { createDriveSDKWithTokens } from '@microfox/drive-sdk';
+import { createDriveSDKWithTokens } from '@microfox/drive';
 
 // Initialize with tokens
 const drive = await createDriveSDKWithTokens({
