@@ -1,13 +1,11 @@
 {
   "name": "@microfox/google-sheets",
   "title": "Microfox Google Sheets SDK",
-  "description": "A TypeScript SDK for interacting with Google Sheets API.",
+  "description": "TypeScript SDK for interacting with Google Sheets API.",
   "path": "packages/google-sheets",
-  "dependencies": [
-    "zod"
-  ],
+  "dependencies": ["zod"],
   "status": "stable",
-  "authEndpoint": "/connect/google-sheets",
+  "authEndpoint": "/connect/google-oauth",
   "documentation": "https://www.npmjs.com/package/@microfox/google-sheets",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg",
   "readme_map": {
@@ -20,9 +18,7 @@
       "batchUpdateValues",
       "appendValues",
       "clearValues",
-      "batchClearValues",
-      "generateAuthUrl",
-      "exchangeCodeForTokens"
+      "batchClearValues"
     ],
     "description": "The full README for the Microfox Google Sheets SDK"
   },
@@ -31,8 +27,15 @@
       "name": "createGoogleSheetsSDK",
       "description": "Create a new Microfox Google Sheets SDK client through which you can interact with the API",
       "auth": "oauth2",
+      "authSdk": "@microfox/google-oauth",
       "requiredKeys": [],
-      "internalKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_SHEETS_ACCESS_TOKEN",
+          "displayName": "Google Sheets Access Token",
+          "description": "OAuth2 access token for Google Sheets API"
+        }
+      ],
       "functionalities": [
         "getValues",
         "batchGetValues",
@@ -40,13 +43,18 @@
         "batchUpdateValues",
         "appendValues",
         "clearValues",
-        "batchClearValues",
-        "generateAuthUrl",
-        "exchangeCodeForTokens"
+        "batchClearValues"
       ]
     }
   ],
-  "keysInfo": [],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_SHEETS_ACCESS_TOKEN",
+      "constructors": ["createGoogleSheetsSDK"],
+      "description": "OAuth2 access token for Google Sheets API",
+      "required": true
+    }
+  ],
   "extraInfo": [
     "Use the `createGoogleSheetsSDK` constructor to create a new client."
   ]

@@ -1,10 +1,10 @@
 # @microfox/google-sheets
 
-A TypeScript SDK for interacting with Google Sheets API.
+TypeScript SDK for interacting with Google Sheets API.
 
 ## Project Overview
 
-@microfox/google-sheets is a powerful and type-safe SDK for interacting with the Google Sheets API. It provides a simple interface to perform operations such as reading, writing, and modifying data in Google Sheets.
+@microfox/google-sheets is a TypeScript SDK that provides a simple and type-safe way to interact with the Google Sheets API. It offers methods for reading, writing, and manipulating data in Google Sheets.
 
 ## Installation
 
@@ -22,153 +22,194 @@ yarn add @microfox/google-sheets
 
 ## Usage
 
-First, import the SDK:
+First, import the SDK and create an instance:
 
 ```typescript
-import {
-  createGoogleSheetsSDK,
-  GoogleSheetsSDKOptions,
-} from '@microfox/google-sheets';
+import { createGoogleSheetsSDK } from '@microfox/google-sheets';
+
+const accessToken = 'your-access-token';
+const sdk = createGoogleSheetsSDK(accessToken);
 ```
 
-Then, create an instance of the SDK:
+Now you can use the SDK to interact with Google Sheets:
 
 ```typescript
-const options: GoogleSheetsSDKOptions = {
-  clientId: 'YOUR_CLIENT_ID',
-  clientSecret: 'YOUR_CLIENT_SECRET',
-  redirectUri: 'YOUR_REDIRECT_URI',
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-};
+const spreadsheetId = 'your-spreadsheet-id';
+const range = 'Sheet1!A1:B2';
 
-const sheetsSDK = createGoogleSheetsSDK(options);
+// Get values from a range
+const values = await sdk.getValues(spreadsheetId, range);
+console.log(values);
+
+// Update values in a range
+const newValues = {
+  range: 'Sheet1!A1:B2',
+  values: [
+    ['New', 'Data'],
+    ['More', 'Info'],
+  ],
+};
+const updateResponse = await sdk.updateValues(spreadsheetId, range, newValues, {
+  valueInputOption: 'USER_ENTERED',
+});
+console.log(updateResponse);
 ```
 
 ## API Reference
 
-### `createGoogleSheetsSDK(options: GoogleSheetsSDKOptions): GoogleSheetsSDK`
+### `createGoogleSheetsSDK(accessToken: string): GoogleSheetsSDK`
 
 Creates a new instance of the Google Sheets SDK.
 
-#### Parameters:
+- `accessToken`: The OAuth2 access token for authentication.
 
-- `options`: Configuration options for the SDK
-  - `clientId`: Google API client ID for the application
-  - `clientSecret`: Google API client secret for the application
-  - `redirectUri`: URI to redirect after authentication
-  - `scopes`: List of OAuth scopes to request
-  - `accessToken` (optional): Existing access token if available
-  - `refreshToken` (optional): Existing refresh token if available
-  - `accessType` (optional): Whether to issue a refresh token ('online' or 'offline')
-  - `prompt` (optional): Type of authentication prompt to display ('none', 'consent', or 'select_account')
+### `GoogleSheetsSDK`
 
-### `GoogleSheetsSDK` Methods
+#### `getValues(spreadsheetId: string, range: string, options?: object): Promise<ValueRange>`
 
-#### `generateAuthUrl(): string`
+Gets values from a spreadsheet.
 
-Generates the OAuth 2.0 authorization URL.
+- `spreadsheetId`: The ID of the spreadsheet to retrieve data from.
+- `range`: The A1 notation of the range to retrieve values from.
+- `options`: Additional options for the request.
+  - `majorDimension?: 'ROWS' | 'COLUMNS'`
+  - `valueRenderOption?: 'FORMATTED_VALUE' | 'UNFORMATTED_VALUE' | 'FORMULA'`
+  - `dateTimeRenderOption?: 'SERIAL_NUMBER' | 'FORMATTED_STRING'`
 
-#### `exchangeCodeForTokens(code: string): Promise<TokenResponse>`
+#### `batchGetValues(spreadsheetId: string, ranges: string[], options?: object): Promise<BatchGetValuesResponse>`
 
-Exchanges an authorization code for access and refresh tokens.
+Gets values from multiple ranges in a spreadsheet.
 
-#### `getValues(spreadsheetId: string, range: string): Promise<ValueRange>`
+- `spreadsheetId`: The ID of the spreadsheet to retrieve data from.
+- `ranges`: An array of A1 notation ranges to retrieve values from.
+- `options`: Additional options for the request (same as `getValues`).
 
-Retrieves values from a specified range in a spreadsheet.
+#### `updateValues(spreadsheetId: string, range: string, values: ValueRange, options: object): Promise<UpdateValuesResponse>`
 
-#### `batchGetValues(spreadsheetId: string, ranges: string[]): Promise<BatchGetValuesResponse>`
+Updates values in a spreadsheet.
 
-Retrieves values from multiple ranges in a spreadsheet.
+- `spreadsheetId`: The ID of the spreadsheet to update.
+- `range`: The A1 notation of the values to update.
+- `values`: The values to update.
+- `options`: Additional options for the request.
+  - `valueInputOption: 'RAW' | 'USER_ENTERED'`
+  - `includeValuesInResponse?: boolean`
+  - `responseValueRenderOption?: 'FORMATTED_VALUE' | 'UNFORMATTED_VALUE' | 'FORMULA'`
+  - `responseDateTimeRenderOption?: 'SERIAL_NUMBER' | 'FORMATTED_STRING'`
 
-#### `updateValues(spreadsheetId: string, range: string, values: any[][]): Promise<UpdateValuesResponse>`
-
-Updates values in a specified range of a spreadsheet.
-
-#### `batchUpdateValues(spreadsheetId: string, data: { range: string; values: any[][] }[]): Promise<BatchUpdateValuesResponse>`
+#### `batchUpdateValues(spreadsheetId: string, data: ValueRange[], options: object): Promise<BatchUpdateValuesResponse>`
 
 Updates values in multiple ranges of a spreadsheet.
 
-#### `appendValues(spreadsheetId: string, range: string, values: any[][]): Promise<AppendValuesResponse>`
+- `spreadsheetId`: The ID of the spreadsheet to update.
+- `data`: An array of ValueRange objects containing the values to update.
+- `options`: Additional options for the request (same as `updateValues`).
 
-Appends values to a specified range in a spreadsheet.
+#### `appendValues(spreadsheetId: string, range: string, values: ValueRange, options: object): Promise<AppendValuesResponse>`
+
+Appends values to a spreadsheet.
+
+- `spreadsheetId`: The ID of the spreadsheet to update.
+- `range`: The A1 notation of the values to append.
+- `values`: The values to append.
+- `options`: Additional options for the request.
+  - `valueInputOption: 'RAW' | 'USER_ENTERED'`
+  - `insertDataOption?: 'OVERWRITE' | 'INSERT_ROWS'`
+  - `includeValuesInResponse?: boolean`
+  - `responseValueRenderOption?: 'FORMATTED_VALUE' | 'UNFORMATTED_VALUE' | 'FORMULA'`
+  - `responseDateTimeRenderOption?: 'SERIAL_NUMBER' | 'FORMATTED_STRING'`
 
 #### `clearValues(spreadsheetId: string, range: string): Promise<ClearValuesResponse>`
 
-Clears values from a specified range in a spreadsheet.
+Clears values from a spreadsheet.
+
+- `spreadsheetId`: The ID of the spreadsheet to update.
+- `range`: The A1 notation of the values to clear.
 
 #### `batchClearValues(spreadsheetId: string, ranges: string[]): Promise<BatchClearValuesResponse>`
 
 Clears values from multiple ranges in a spreadsheet.
 
+- `spreadsheetId`: The ID of the spreadsheet to update.
+- `ranges`: An array of A1 notation ranges to clear.
+
 ## Examples
 
-### Reading Values
+### Reading and Writing Data
 
 ```typescript
-const spreadsheetId = 'YOUR_SPREADSHEET_ID';
-const range = 'Sheet1!A1:B5';
+import {
+  createGoogleSheetsSDK,
+  ValueInputOption,
+} from '@microfox/google-sheets';
 
-try {
-  const result = await sheetsSDK.getValues(spreadsheetId, range);
-  console.log(result.values);
-} catch (error) {
-  console.error('Error reading values:', error);
-}
-```
+const sdk = createGoogleSheetsSDK('your-access-token');
+const spreadsheetId = 'your-spreadsheet-id';
 
-### Updating Values
+// Read data
+const readRange = 'Sheet1!A1:B5';
+const readResult = await sdk.getValues(spreadsheetId, readRange);
+console.log('Read data:', readResult.values);
 
-```typescript
-const spreadsheetId = 'YOUR_SPREADSHEET_ID';
-const range = 'Sheet1!A1:B2';
-const values = [
-  ['New', 'Data'],
-  ['Goes', 'Here'],
-];
+// Write data
+const writeRange = 'Sheet1!C1:D2';
+const writeValues = {
+  range: writeRange,
+  values: [
+    ['Column C', 'Column D'],
+    ['Value 1', 'Value 2'],
+  ],
+};
+const writeResult = await sdk.updateValues(
+  spreadsheetId,
+  writeRange,
+  writeValues,
+  {
+    valueInputOption: ValueInputOption.enum.USER_ENTERED,
+  },
+);
+console.log('Cells updated:', writeResult.updatedCells);
 
-try {
-  const result = await sheetsSDK.updateValues(spreadsheetId, range, values);
-  console.log(`Updated ${result.updatedCells} cells`);
-} catch (error) {
-  console.error('Error updating values:', error);
-}
-```
+// Append data
+const appendRange = 'Sheet1!A:B';
+const appendValues = {
+  range: appendRange,
+  values: [
+    ['Appended', 'Data'],
+    ['More', 'Rows'],
+  ],
+};
+const appendResult = await sdk.appendValues(
+  spreadsheetId,
+  appendRange,
+  appendValues,
+  {
+    valueInputOption: ValueInputOption.enum.USER_ENTERED,
+  },
+);
+console.log('Appended range:', appendResult.updates.updatedRange);
 
-### Appending Values
-
-```typescript
-const spreadsheetId = 'YOUR_SPREADSHEET_ID';
-const range = 'Sheet1!A:B';
-const values = [
-  ['Appended', 'Row'],
-  ['Another', 'Row'],
-];
-
-try {
-  const result = await sheetsSDK.appendValues(spreadsheetId, range, values);
-  console.log(`Appended to range: ${result.updates.updatedRange}`);
-} catch (error) {
-  console.error('Error appending values:', error);
-}
+// Clear data
+const clearRange = 'Sheet1!E1:F10';
+const clearResult = await sdk.clearValues(spreadsheetId, clearRange);
+console.log('Cleared range:', clearResult.clearedRange);
 ```
 
 ## Configuration
 
-The SDK uses the following configuration options:
-
-- `clientId`: Your Google API client ID
-- `clientSecret`: Your Google API client secret
-- `redirectUri`: The redirect URI for OAuth 2.0 flow
-- `scopes`: An array of OAuth 2.0 scopes to request
-- `accessToken` (optional): An existing access token
-- `refreshToken` (optional): An existing refresh token
-- `accessType` (optional): The access type for OAuth 2.0 flow ('online' or 'offline')
-- `prompt` (optional): The prompt type for OAuth 2.0 flow ('none', 'consent', or 'select_account')
+The SDK uses an access token for authentication. You need to obtain this token through OAuth2 authentication with the necessary scopes for Google Sheets API.
 
 ## Dependencies
 
-- `zod`: For runtime type checking and schema validation
+- `zod`: Used for runtime type checking and schema validation.
 
-## License
+## Breaking Changes
 
-[MIT License](LICENSE)
+Version 1.0.2 introduces several breaking changes:
+
+1. The SDK constructor now only requires an access token instead of full OAuth2 credentials.
+2. OAuth2 flow methods have been removed from the SDK. You now need to handle the OAuth2 flow externally.
+3. The API methods have been updated to use more consistent parameter structures and return types.
+4. New enums have been introduced for various option types (e.g., `ValueInputOption`, `ValueRenderOption`).
+
+Please refer to the updated API Reference and Examples sections for the new usage patterns.
