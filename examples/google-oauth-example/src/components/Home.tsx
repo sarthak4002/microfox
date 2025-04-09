@@ -48,8 +48,7 @@ const Home = ({ tokenState }: HomeProps) => {
             token management
           </li>
           <li>
-            📦 <strong>@microfox/drive</strong> - Google Drive API
-            integration
+            📦 <strong>@microfox/drive</strong> - Google Drive API integration
           </li>
           <li>
             📦 <strong>@microfox/youtube</strong> - YouTube API integration

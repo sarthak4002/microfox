@@ -338,8 +338,8 @@ export const Drive = ({ tokens, updateTokens }: DriveProps) => {
     <div className="card">
       <h2>Microfox Drive SDK</h2>
       <p>
-        This demonstrates how to use the @microfox/drive to interact with
-        Google Drive.
+        This demonstrates how to use the @microfox/drive to interact with Google
+        Drive.
       </p>
 
       {error && (

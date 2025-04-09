@@ -495,8 +495,8 @@ export const YouTube = ({ tokens, updateTokens }: YouTubeProps) => {
     <div className="card">
       <h2>Microfox YouTube SDK</h2>
       <p>
-        This demonstrates how to use the @microfox/youtube to interact with
-        the YouTube API.
+        This demonstrates how to use the @microfox/youtube to interact with the
+        YouTube API.
       </p>
 
       {error && (
