@@ -122,12 +122,11 @@ async function scrapeUrls(urls: string[]): Promise<string[]> {
 function createInitialPackageJson(
   packageName: string,
   description: string,
-  title: string,
   keywords: string[],
 ): any {
   return {
     name: packageName,
-    version: '0.0.1',
+    version: '1.0.0',
     description,
     main: './dist/index.js',
     module: './dist/index.mjs',
@@ -181,14 +180,6 @@ function createInitialPackageInfo(
   packageName: string,
   title: string,
   description: string,
-  constructorName: string = '',
-  requiredApiKeys: {
-    key: string;
-    displayName: string;
-    description: string;
-  }[] = [],
-  authType: string = 'apiKey',
-  functions: string[] = [],
 ): any {
   return {
     name: packageName,
@@ -197,48 +188,16 @@ function createInitialPackageInfo(
     path: `packages/${packageName.replace('@microfox/', '')}`,
     dependencies: ['zod'],
     status: 'stable',
-    authEndpoint: `/connect/${packageName.replace('@microfox/', '')}`,
+    authEndpoint: '',
     documentation: `https://www.npmjs.com/package/${packageName}`,
     icon: `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${packageName.replace('@microfox/', '').replace('-', '-').replace('_', '-')}.svg`,
     readme_map: {
       path: '/README.md',
-      title: `${constructorName || title} Microfox`,
-      functionalities: functions.length > 0 ? functions : [],
       description: `The full README for the ${title}`,
     },
-    constructors: constructorName
-      ? [
-          {
-            name: constructorName || ``,
-            description: `Create a new ${title} client through which you can interact with the API`,
-            auth: authType,
-            requiredKeys: requiredApiKeys.length > 0 ? requiredApiKeys : [],
-            internalKeys: [],
-            functionalities: functions.length > 0 ? functions : [],
-          },
-        ]
-      : [],
-    keysInfo:
-      requiredApiKeys?.length > 0
-        ? requiredApiKeys.map(key => ({
-            key: key.key,
-            constructors: [
-              constructorName ||
-                `create${packageName
-                  .replace('@microfox/', '')
-                  .split('-')
-                  .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-                  .join('')}SDK`,
-            ],
-            description: key.description,
-            required: true,
-          }))
-        : [],
-    extraInfo: [
-      constructorName
-        ? `Use the \`${constructorName}\` constructor to create a new client.`
-        : null,
-    ],
+    constructors: [],
+    keysInfo: [],
+    extraInfo: [],
   };
 }
 
@@ -292,474 +251,6 @@ export default defineConfig([
 }
 
 /**
- * Get OAuth template code based on API provider
- */
-function getOAuthTemplateCode(apiName: string): string | null {
-  // Normalize API name to lowercase for comparison
-  const normalizedApiName = apiName.toLowerCase();
-
-  // Google OAuth template
-  if (normalizedApiName.includes('google')) {
-    return dedent`
-      // Constants for Google OAuth endpoints
-      const TOKEN_INFO_URL = 'https://oauth2.googleapis.com/tokeninfo';
-      const TOKEN_REFRESH_URL = 'https://oauth2.googleapis.com/token';
-      const AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
-      const TOKEN_URL = 'https://oauth2.googleapis.com/token';
-      
-      // Basic schemas for token handling
-      export const TokenResponseSchema = z.object({
-        access_token: z.string().describe('The access token issued by the authorization server'),
-        expires_in: z.number().describe('The lifetime of the access token in seconds'),
-        token_type: z.string().optional().describe('The type of the token, typically "Bearer"'),
-        scope: z.string().optional().describe('The scopes that the access token is valid for'),
-        refresh_token: z.string().optional().describe('The refresh token used to obtain new access tokens'),
-      });
-      
-      export type TokenResponse = z.infer<typeof TokenResponseSchema>;
-      
-      // Base options for SDK constructor
-      export const GoogleSDKOptionsSchema = z.object({
-        clientId: z.string().describe('Google API client ID for the application'),
-        clientSecret: z.string().describe('Google API client secret for the application'),
-        redirectUri: z.string().describe('URI to redirect after authentication'),
-        scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
-        accessToken: z.string().optional().describe('Existing access token if available'),
-        refreshToken: z.string().optional().describe('Existing refresh token if available'),
-        accessType: z.enum(['online', 'offline']).optional().describe('Whether to issue a refresh token'),
-        prompt: z.enum(['none', 'consent', 'select_account']).optional().describe('Type of authentication prompt to display')
-      });
-      
-      export type GoogleSDKOptions = z.infer<typeof GoogleSDKOptionsSchema>;
-      
-      /**
-       * Check if an access token is valid
-       */
-      async function checkGoogleTokenValidity(accessToken: string): Promise<boolean> {
-        if (!accessToken) return false;
-        
-        try {
-          const response = await fetch(\`\${TOKEN_INFO_URL}?access_token=\${accessToken}\`);
-          return response.ok;
-        } catch (error) {
-          console.error('Error checking token validity:', error);
-          return false;
-        }
-      }
-      
-      /**
-       * Refresh an access token using a refresh token
-       */
-      async function refreshGoogleAccessToken(
-        refreshToken: string,
-        clientId: string,
-        clientSecret: string
-      ): Promise<TokenResponse | null> {
-        if (!refreshToken) return null;
-        
-        try {
-          const params = new URLSearchParams({
-            refresh_token: refreshToken,
-            client_id: clientId,
-            client_secret: clientSecret,
-            grant_type: 'refresh_token',
-          });
-          
-          const response = await fetch(TOKEN_REFRESH_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-          
-          if (!response.ok) return null;
-          
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error refreshing access token:', error);
-          return null;
-        }
-      }
-      
-      /**
-       * Exchange an authorization code for access and refresh tokens
-       */
-      export async function exchangeCodeForGoogleTokens(
-        code: string,
-        clientId: string,
-        clientSecret: string,
-        redirectUri: string
-      ): Promise<TokenResponse | null> {
-        try {
-          const params = new URLSearchParams({
-            code,
-            client_id: clientId,
-            client_secret: clientSecret,
-            redirect_uri: redirectUri,
-            grant_type: 'authorization_code',
-          });
-      
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error_description || 'Failed to exchange code for tokens');
-          }
-      
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error exchanging code for tokens:', error);
-          return null;
-        }
-      }
-    `;
-  }
-
-  // LinkedIn OAuth template
-  else if (normalizedApiName.includes('linkedin')) {
-    return dedent`
-      // Constants for LinkedIn OAuth endpoints
-      const AUTH_URL = 'https://www.linkedin.com/oauth/v2/authorization';
-      const TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken';
-      const TOKEN_INFO_URL = 'https://api.linkedin.com/v2/me'; // Used to verify token validity
-      
-      // Basic schemas for token handling
-      export const TokenResponseSchema = z.object({
-        access_token: z.string().describe('The access token issued by LinkedIn'),
-        expires_in: z.number().describe('The lifetime of the access token in seconds'),
-        refresh_token: z.string().optional().describe('The refresh token used to obtain new access tokens')
-      });
-      
-      export type TokenResponse = z.infer<typeof TokenResponseSchema>;
-      
-      // Base options for SDK constructor
-      export const LinkedInSDKOptionsSchema = z.object({
-        clientId: z.string().describe('LinkedIn API client ID for the application'),
-        clientSecret: z.string().describe('LinkedIn API client secret for the application'),
-        redirectUri: z.string().describe('URI to redirect after authentication'),
-        scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
-        accessToken: z.string().optional().describe('Existing access token if available'),
-        refreshToken: z.string().optional().describe('Existing refresh token if available')
-      });
-      
-      export type LinkedInSDKOptions = z.infer<typeof LinkedInSDKOptionsSchema>;
-      
-      /**
-       * Check if an access token is valid
-       */
-      async function checkLinkedInTokenValidity(accessToken: string): Promise<boolean> {
-        if (!accessToken) return false;
-        
-        try {
-          const response = await fetch(TOKEN_INFO_URL, {
-            headers: {
-              Authorization: \`Bearer \${accessToken}\`
-            }
-          });
-          return response.ok;
-        } catch (error) {
-          console.error('Error checking token validity:', error);
-          return false;
-        }
-      }
-      
-      /**
-       * Refresh an access token using a refresh token
-       */
-      async function refreshLinkedInAccessToken(
-        refreshToken: string,
-        clientId: string,
-        clientSecret: string
-      ): Promise<TokenResponse | null> {
-        if (!refreshToken) return null;
-        
-        try {
-          const params = new URLSearchParams({
-            refresh_token: refreshToken,
-            client_id: clientId,
-            client_secret: clientSecret,
-            grant_type: 'refresh_token',
-          });
-          
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-          
-          if (!response.ok) return null;
-          
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error refreshing access token:', error);
-          return null;
-        }
-      }
-      
-      /**
-       * Exchange an authorization code for access and refresh tokens
-       */
-      export async function exchangeCodeForLinkedInTokens(
-        code: string,
-        clientId: string,
-        clientSecret: string,
-        redirectUri: string
-      ): Promise<TokenResponse | null> {
-        try {
-          const params = new URLSearchParams({
-            code,
-            client_id: clientId,
-            client_secret: clientSecret,
-            redirect_uri: redirectUri,
-            grant_type: 'authorization_code',
-          });
-      
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-      
-          if (!response.ok) return null;
-      
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error exchanging code for tokens:', error);
-          return null;
-        }
-      }
-    `;
-  }
-
-  // GitHub OAuth template
-  else if (normalizedApiName.includes('github')) {
-    return dedent`
-      // Constants for GitHub OAuth endpoints
-      const AUTH_URL = 'https://github.com/login/oauth/authorize';
-      const TOKEN_URL = 'https://github.com/login/oauth/access_token';
-      const TOKEN_INFO_URL = 'https://api.github.com/user'; // Used to verify token validity
-      
-      // Basic schemas for token handling
-      export const TokenResponseSchema = z.object({
-        access_token: z.string().describe('The access token issued by GitHub'),
-        token_type: z.string().describe('The type of token, typically "bearer"'),
-        scope: z.string().describe('The scopes that were granted for the token'),
-        refresh_token: z.string().optional().describe('The refresh token used to obtain new access tokens'),
-        expires_in: z.number().optional().describe('The lifetime of the access token in seconds')
-      });
-      
-      export type TokenResponse = z.infer<typeof TokenResponseSchema>;
-      
-      // Base options for SDK constructor
-      export const GitHubSDKOptionsSchema = z.object({
-        clientId: z.string().describe('GitHub OAuth App client ID'),
-        clientSecret: z.string().describe('GitHub OAuth App client secret'),
-        redirectUri: z.string().describe('URI to redirect after authentication'),
-        scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
-        accessToken: z.string().optional().describe('Existing access token if available'),
-        allowSignup: z.boolean().optional().describe('Whether to allow users to sign up for GitHub during OAuth flow')
-      });
-      
-      export type GitHubSDKOptions = z.infer<typeof GitHubSDKOptionsSchema>;
-      
-      /**
-       * Check if an access token is valid
-       */
-      async function checkGitHubTokenValidity(accessToken: string): Promise<boolean> {
-        if (!accessToken) return false;
-        
-        try {
-          const response = await fetch(TOKEN_INFO_URL, {
-            headers: {
-              Authorization: \`Bearer \${accessToken}\`
-            }
-          });
-          return response.ok;
-        } catch (error) {
-          console.error('Error checking token validity:', error);
-          return false;
-        }
-      }
-      
-      /**
-       * Exchange an authorization code for access and refresh tokens
-       */
-      export async function exchangeCodeForGitHubToken(
-        code: string,
-        clientId: string,
-        clientSecret: string,
-        redirectUri?: string
-      ): Promise<TokenResponse | null> {
-        try {
-          const params: Record<string, string> = {
-            code,
-            client_id: clientId,
-            client_secret: clientSecret,
-          };
-          
-          if (redirectUri) {
-            params.redirect_uri = redirectUri;
-          }
-      
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(params),
-          });
-      
-          if (!response.ok) return null;
-      
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error exchanging code for token:', error);
-          return null;
-        }
-      }
-    `;
-  }
-
-  // Generic OAuth template for other services
-  else {
-    return dedent`
-      // Generic OAuth 2.0 endpoints (update these with the specific endpoints for your API)
-      const AUTH_URL = 'https://example.com/oauth/authorize';
-      const TOKEN_URL = 'https://example.com/oauth/token';
-      const TOKEN_INFO_URL = 'https://example.com/oauth/tokeninfo'; // Used to verify token validity
-      
-      // Basic schemas for token handling
-      export const TokenResponseSchema = z.object({
-        access_token: z.string().describe('The access token issued by the authorization server'),
-        expires_in: z.number().optional().describe('The lifetime of the access token in seconds'),
-        token_type: z.string().optional().describe('The type of the token, typically "Bearer"'),
-        scope: z.string().optional().describe('The scopes that the access token is valid for'),
-        refresh_token: z.string().optional().describe('The refresh token used to obtain new access tokens')
-      });
-      
-      export type TokenResponse = z.infer<typeof TokenResponseSchema>;
-      
-      // Base options for SDK constructor
-      export const SDKOptionsSchema = z.object({
-        clientId: z.string().describe('OAuth client ID for the application'),
-        clientSecret: z.string().describe('OAuth client secret for the application'),
-        redirectUri: z.string().describe('URI to redirect after authentication'),
-        scopes: z.array(z.string()).describe('List of OAuth scopes to request'),
-        accessToken: z.string().optional().describe('Existing access token if available'),
-        refreshToken: z.string().optional().describe('Existing refresh token if available')
-      });
-      
-      export type SDKOptions = z.infer<typeof SDKOptionsSchema>;
-      
-      /**
-       * Check if an access token is valid
-       */
-      async function checkGenericTokenValidity(accessToken: string): Promise<boolean> {
-        if (!accessToken) return false;
-        
-        try {
-          // This is a generic implementation - replace with specific endpoint for your API
-          const response = await fetch(\`\${TOKEN_INFO_URL}?access_token=\${accessToken}\`);
-          return response.ok;
-        } catch (error) {
-          console.error('Error checking token validity:', error);
-          return false;
-        }
-      }
-      
-      /**
-       * Refresh an access token using a refresh token
-       */
-      async function refreshGenericAccessToken(
-        refreshToken: string,
-        clientId: string,
-        clientSecret: string
-      ): Promise<TokenResponse | null> {
-        if (!refreshToken) return null;
-        
-        try {
-          const params = new URLSearchParams({
-            refresh_token: refreshToken,
-            client_id: clientId,
-            client_secret: clientSecret,
-            grant_type: 'refresh_token',
-          });
-          
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-          
-          if (!response.ok) return null;
-          
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error refreshing access token:', error);
-          return null;
-        }
-      }
-      
-      /**
-       * Exchange an authorization code for access and refresh tokens
-       */
-      export async function exchangeCodeForGenericTokens(
-        code: string,
-        clientId: string,
-        clientSecret: string,
-        redirectUri: string
-      ): Promise<TokenResponse | null> {
-        try {
-          const params = new URLSearchParams({
-            code,
-            client_id: clientId,
-            client_secret: clientSecret,
-            redirect_uri: redirectUri,
-            grant_type: 'authorization_code',
-          });
-      
-          const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-          });
-      
-          if (!response.ok) return null;
-      
-          const data = await response.json();
-          return data as TokenResponse;
-        } catch (error) {
-          console.error('Error exchanging code for tokens:', error);
-          return null;
-        }
-      }
-    `;
-  }
-}
-
-/**
  * Create initial package structure with empty files
  */
 async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
@@ -790,7 +281,6 @@ async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
   const packageJson = createInitialPackageJson(
     metadata.packageName,
     metadata.description,
-    metadata.title,
     metadata.keywords,
   );
   fs.writeFileSync(
@@ -803,14 +293,6 @@ async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
     metadata.packageName,
     metadata.title,
     metadata.description,
-    '', // constructor name will be updated later
-    [], // required API keys will be updated later
-    metadata.authType === 'oauth2'
-      ? 'oauth2'
-      : metadata.authType === 'apiKey'
-        ? 'apiKey'
-        : 'auto', // auth type
-    [], // functions will be updated later
   );
   fs.writeFileSync(
     path.join(packageDir, 'package-info.json'),
@@ -841,7 +323,7 @@ const WriteToFileSchema = z.object({
     .describe(
       'The name of the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").',
     ),
-  requiredApiKeys: z
+  envKeys: z
     .array(
       z.object({
         key: z
@@ -859,6 +341,7 @@ const WriteToFileSchema = z.object({
           .describe(
             'Detailed description explaining what this key is used for and how to obtain it',
           ),
+        required: z.boolean().describe('Whether this key is required'),
       }),
     )
     .describe(
@@ -868,6 +351,12 @@ const WriteToFileSchema = z.object({
     .enum(['apiKey', 'oauth2', 'none'])
     .describe(
       'Authentication type for this SDK: "apiKey" for API key auth, "oauth2" for OAuth2 flow, or "none" for no auth required',
+    ),
+  authSdk: z
+    .string()
+    .optional()
+    .describe(
+      'The name of the OAuth SDK to use (e.g., "@microfox/google-oauth", "@microfox/linkedin-oauth"). Required when authType is "oauth2".',
     ),
   functions: z
     .array(z.string())
@@ -957,6 +446,13 @@ export async function generateSDK(
     const scrapedContent = await scrapeUrls(urls);
     console.log(`✅ Scraped ${scrapedContent.length} URLs`);
 
+    let oauthPackages = fs
+      .readdirSync(path.join(__dirname, '../../packages'))
+      .filter(dir => dir.includes('-oauth'));
+    console.log(`✅ Found ${oauthPackages.length} OAuth packages`);
+    oauthPackages = oauthPackages.map(pkg => `@microfox/${pkg}`);
+    console.log(oauthPackages);
+
     // Create tool to handle file writing
     const writeToFileTool = tool({
       description: 'Write SDK code to sdk.ts file and update constructor info',
@@ -989,31 +485,56 @@ export async function generateSDK(
           fs.readFileSync(packageInfoPath, 'utf8'),
         );
 
-        // Update package-info with constructor info
+        // Add authEndpoint
+        packageInfo.authEndpoint =
+          data.authType === 'oauth2' && data?.authSdk
+            ? `/connect/${data?.authSdk.replace('@microfox/', '')}`
+            : '';
+
+        // Add readme_map
+        packageInfo.readme_map = {
+          path: '/README.md',
+          title: `${constructorName} Microfox`,
+          functionalities: functions,
+          description: `The full README for the ${metadata.title}`,
+        };
+
+        // Add constructor info
         packageInfo.constructors = [
           {
             name: constructorName,
             description: `Create a new ${metadata.title} client through which you can interact with the API`,
             auth: data.authType,
-            requiredKeys: data.requiredApiKeys,
-            internalKeys: [],
+            authSdk: data.authType === 'oauth2' ? data.authSdk || '' : '',
+            requiredKeys:
+              data.authType !== 'oauth2'
+                ? data.envKeys.map(key => ({
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  }))
+                : [],
+            internalKeys:
+              data.authType === 'oauth2'
+                ? data.envKeys.map(key => ({
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  }))
+                : [],
             functionalities: functions,
           },
         ];
 
-        // Update keysInfo
-        packageInfo.keysInfo = data.requiredApiKeys.map(key => ({
+        // Add keysInfo
+        packageInfo.keysInfo = data.envKeys.map(key => ({
           key: key.key,
           constructors: [constructorName],
           description: key.description,
-          required: true,
+          required: key.required,
         }));
 
-        // Update functionalities
-        packageInfo.readme_map.functionalities = functions;
-        packageInfo.readme_map.title = `${constructorName} Microfox`;
-
-        // Update extraInfo
+        // Add extraInfo
         packageInfo.extraInfo = [
           `Use the \`${constructorName}\` constructor to create a new client.`,
         ];
@@ -1125,28 +646,21 @@ export async function generateSDK(
       },
     });
 
-    // Get OAuth template code if needed
-    let oauthTemplateCode = '';
-    if (metadata.authType === 'oauth2' || metadata.authType === 'auto') {
-      oauthTemplateCode = getOAuthTemplateCode(metadata.apiName) || '';
-      if (metadata.authType === 'oauth2') {
-        console.log(`📝 Including OAuth template code for ${metadata.apiName}`);
-      } else {
-        console.log(
-          `📝 Preparing OAuth template code for ${metadata.apiName} in case it's needed`,
-        );
-      }
-    }
-
     // Create system prompt and generation prompt
     const systemPrompt = dedent`
       You are a TypeScript SDK generator. Your task is to create a TypeScript SDK for an API based on documentation.
       
-      You first carefully analyse the requirements, and then plan what needs to be done.
-      You then critisize your plan, and then refine it to this specific task & keep maximum code in a single file.
-      You then write the code for the task.
+      ## Process
+      1. First carefully analyze the requirements and API documentation
+      2. Plan what needs to be done, including:
+         - Determining the authentication method
+         - Identifying required API endpoints and their parameters
+         - Planning the SDK structure and methods
+      3. Criticize your plan and refine it to be specific to this task
+      4. Write complete, production-ready code with no TODOs or placeholders
+      5. Recheck your code for any linting or TypeScript errors
 
-      Requirements:
+      ## Core Requirements
       1. Use Zod for defining types with descriptive comments using .describe()
       2. DO NOT use Zod for validation of API responses
       3. The SDK should expose a constructor function or Class named "create${metadata.apiName.replace(/\s+/g, '')}SDK"
@@ -1155,58 +669,68 @@ export async function generateSDK(
       6. Include proper JSDoc comments
       7. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
 
+      ## Authentication Implementation
       ${
         metadata.authType === 'auto'
-          ? `For authentication, analyze the API documentation to determine the appropriate auth type:
-      - If the API mentions OAuth 2.0, client IDs, authorization codes, or redirect URIs, use "oauth2" auth type
-      - If the API mentions API keys, access tokens, or API tokens, use "apiKey" auth type
-      - If the API doesn't require authentication, use "none" auth type
+          ? `You must analyze the API documentation to determine the appropriate auth type:
+      - Use "oauth2" if the API uses OAuth 2.0 flows (client IDs, authorization codes, redirect URIs)
+      - Use "apiKey" if the API uses API keys, tokens, or headers for auth
+      - Use "none" if no auth is required
       
       You must explicitly decide which auth type to implement based on the documentation.`
-          : ''
+          : `The authentication type is set to "${metadata.authType}".`
       }
 
       ${
         metadata.authType === 'oauth2' || metadata.authType === 'auto'
           ? `
-      For OAuth 2.0 implementation:
-      - The OAuth credentials (clientId, clientSecret, etc.) should be required parameters in the constructor
-      - Include optional access/refresh token parameters in the constructor
-      - The constructor should check if the provided access token is valid
-      - If the access token is invalid but refresh token is provided, try to refresh the access token
-      - If no valid tokens are available, provide a method to generate an auth URL
-      - Include a method to exchange authorization code for tokens
-      - Bundle all OAuth functionality inside the SDK instance (not as separate exports)
+      ## OAuth 2.0 Implementation Guidelines
+      - Assume the OAuth flow is already implemented and tokens are extracted from the OAuth package outside of this SDK
+      - The SDK should ONLY accept accessToken as a parameter in the constructor
+      - DO NOT include OAuth credentials like clientId, clientSecret, or scopes in the constructor
+      - The constructor should check if the provided access token is valid and if not, throw an error
+      
+      ## OAuth Integration
+      - You must provide the appropriate envKeys for OAuth tokens in the write_to_file tool
+      - You must provide the appropriate authSdk value in the write_to_file tool
+      - Do not install the OAuth package in the project; assume it will be installed in the project where this SDK is used
+      - The user will provide tokens after completing the OAuth flow
+
+      Available OAuth packages: ${oauthPackages.join(', ')}
       `
           : ''
       }
 
-      Tool use:
+      ## Tool Usage
       - To write the SDK code, use the write_to_file tool
-        - You MUST provide a valid authType value from: "apiKey" (for API key authentication), "oauth2" (for OAuth flow), or "none" (for APIs that don't require auth)
-        - For requiredApiKeys, provide detailed information including key names in UPPERCASE format
+        - You MUST provide a valid authType value from: "apiKey", "oauth2", or "none"
+        - For envKeys, provide detailed information including key names in UPPERCASE format and whether they are required
+        - For OAuth2, you MUST provide the appropriate authSdk value (e.g., "google-oauth", "linkedin-oauth")
         - The sdkCode parameter should contain the complete TypeScript code for the SDK
       - To install dependencies, use the run_command tool
         - Only include dependencies that are actually needed beyond what's already installed
+        - If it can be done with REST APIs, do not install any external dependencies
     `;
 
     const generationPrompt = dedent`
       You are requested to generate a TypeScript SDK for ${metadata.apiName} based on the following documentation.
       
-      SDK Title: ${metadata.title}
-      SDK Description: ${metadata.description}
+      ## SDK Information
+      - Title: ${metadata.title}
+      - Description: ${metadata.description}
       ${
         metadata.authType !== 'auto'
-          ? `Auth Type: ${metadata.authType}`
-          : `Auth Type: auto - Please determine the appropriate auth type based on:
-        - Use "oauth2" if the API uses OAuth 2.0 flows
-        - Use "apiKey" if the API uses API keys, tokens, or headers for auth
-        - Use "none" if no auth is required`
+          ? `- Auth Type: ${metadata.authType}`
+          : `- Auth Type: auto - Please determine the appropriate auth type based on:
+            - Use "oauth2" if the API uses OAuth 2.0 flows
+            - Use "apiKey" if the API uses API keys, tokens, or headers for auth
+            - Use "none" if no auth is required`
       }
       
-      Documentation:
+      ## API Documentation
       ${scrapedContent.join('\n\n---\n\n').substring(0, 50000)}
       
+      ## Available Dependencies
       The following packages are already installed in the project:
 
       - Dev dependencies:
@@ -1218,43 +742,31 @@ export async function generateSDK(
       - Dependencies:
         - zod
       
-      ${
-        metadata.authType === 'oauth2'
-          ? `OAuth 2.0 Template Code for ${metadata.apiName}:
-      \`\`\`typescript
-      ${oauthTemplateCode}
-      \`\`\`
-      
-      Your SDK should integrate this OAuth template code into the constructor:
-      - Make the OAuth credentials (clientId, clientSecret, redirectUri, scopes) required parameters
-      - Accept optional access and refresh tokens in the constructor
-      - Validate tokens automatically in the constructor
-      - Refresh token if needed and possible
-      - Provide a generateAuthUrl method to start OAuth flow if no valid tokens are available
-      - Provide an exchangeCodeForTokens method to complete the OAuth flow
-      - Include token handling as internal methods of the SDK class/instance
-      `
-          : metadata.authType === 'auto'
-            ? `OAuth 2.0 Template Code (use only if you determine OAuth is needed):
-      \`\`\`typescript
-      ${oauthTemplateCode}
-      \`\`\`
-      
-      If you determine that this API uses OAuth 2.0 for authentication, integrate this OAuth template code into the constructor:
-      - Make the OAuth credentials (clientId, clientSecret, redirectUri, scopes) required parameters
-      - Accept optional access and refresh tokens in the constructor
-      - Validate tokens automatically in the constructor
-      - Refresh token if needed and possible
-      - Provide a generateAuthUrl method to start OAuth flow if no valid tokens are available
-      - Provide an exchangeCodeForTokens method to complete the OAuth flow
-      - Include token handling as internal methods of the SDK class/instance
-      `
-            : ''
-      }
-      
-      Process:
+      ## Implementation Steps
       1. First analyze what dependencies you'll need and use run_command to install them
       2. Then generate the SDK code and use write_to_file to save it
+      
+      ## SDK Requirements
+      - Create a complete, production-ready SDK with no TODOs or placeholders
+      - Ensure all types are properly defined with Zod
+      - Include comprehensive error handling
+      - Add detailed JSDoc comments for all functions and types
+      - Make sure the SDK is easy to use and follows best practices
+      
+      ${
+        metadata.authType === 'oauth2' || metadata.authType === 'auto'
+          ? `
+      ## OAuth Implementation Requirements
+      - The SDK should ONLY accept accessToken as a parameter in the constructor
+      - DO NOT include clientId, clientSecret, or other OAuth credentials in the constructor
+      - The constructor should check if the provided access token is valid
+      - If the access token is invalid, throw an error
+      - DO NOT implement token refresh functionality in this SDK as it requires client credentials
+      - You must provide the appropriate envKeys for OAuth tokens in the write_to_file tool
+      - You must provide the appropriate authSdk value in the write_to_file tool
+      `
+          : ''
+      }
     `;
 
     // Log prompts
