@@ -41,10 +41,7 @@ console.log(tokens.expiresAt); // Expiration timestamp
 This module is designed to be integrated with other Google API clients like Drive SDK, YouTube SDK, etc.
 
 ```typescript
-import {
-  createGoogleOAuthManager,
-  GoogleOAuthOptions,
-} from '@microfox/google';
+import { createGoogleOAuthManager, GoogleOAuthOptions } from '@microfox/google';
 import { createRestSDK } from '@microfox/rest-sdk';
 
 const createMyGoogleApiClient = async (options: GoogleOAuthOptions) => {

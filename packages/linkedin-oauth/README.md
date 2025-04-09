@@ -108,10 +108,7 @@ import type {
 } from '@microfox/linkedin-oauth';
 
 // Zod-inferred types
-import type {
-  TokenResponse,
-  ErrorResponse,
-} from '@microfox/linkedin-oauth';
+import type { TokenResponse, ErrorResponse } from '@microfox/linkedin-oauth';
 ```
 
 ### Available Scopes
