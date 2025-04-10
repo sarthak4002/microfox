@@ -9,13 +9,15 @@
     "dev:sdk": "ts-node src/generate-sdk.ts",
     "dev:package-list": "ts-node src/update-package-list.ts",
     "dev:package-info": "ts-node src/update-package-info.ts",
-    "dev:package": "npm run dev:package-list && npm run dev:package-info"
+    "dev:package": "npm run dev:package-list && npm run dev:package-info",
+    "dev:ext-sdk": "ts-node src/generate-ext-sdk.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",
     "@ai-sdk/google": "^1.2.7",
-    "@microfox/tavily": "1.0.2",
     "@microfox/serpapi": "1.0.2",
+    "@microfox/tavily": "1.0.2",
+    "@octokit/rest": "^21.1.1",
     "ai": "^4.2.0",
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
