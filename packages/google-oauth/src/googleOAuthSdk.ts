@@ -9,6 +9,7 @@ export class GoogleOAuthSdk {
   private static readonly AUTH_BASE_URL =
     'https://accounts.google.com/o/oauth2/v2/auth';
   private static readonly TOKEN_URL = 'https://oauth2.googleapis.com/token';
+  private static readonly TOKEN_INFO_URL = 'https://oauth2.googleapis.com/tokeninfo';
   private readonly clientId: string;
   private readonly clientSecret: string;
   private readonly redirectUri: string;
@@ -29,11 +30,14 @@ export class GoogleOAuthSdk {
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
     this.redirectUri = config.redirectUri;
-    this.scopes = config.scopes || [
-      GoogleScope.OPENID,
-      GoogleScope.EMAIL,
-      GoogleScope.PROFILE,
-    ];
+    this.scopes = Array.from(
+      new Set([
+        ...(config.scopes || []),
+        GoogleScope.OPENID,
+        GoogleScope.EMAIL,
+        GoogleScope.PROFILE,
+      ]),
+    );
     this.state = config.state || this.generateState();
   }
 
@@ -124,6 +128,50 @@ export class GoogleOAuthSdk {
       idToken: tokenResponse.id_token,
       expiresIn: tokenResponse.expires_in,
     };
+  }
+
+  /**
+   * Validate an access token by checking its validity and expiration
+   * @param accessToken The access token to validate
+   * @returns Object containing validation result and token information
+   */
+  public async validateAccessToken(accessToken: string): Promise<{
+    isValid: boolean;
+    expiresAt?: number;
+    scopes?: string[];
+    email?: string;
+    error?: string;
+  }> {
+    try {
+      const response = await fetch(
+        `${GoogleOAuthSdk.TOKEN_INFO_URL}?access_token=${accessToken}`
+      );
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        return {
+          isValid: false,
+          error: data.error_description || 'Token validation failed',
+        };
+      }
+      
+      // Check if token is expired
+      const expiresAt = data.exp ? parseInt(data.exp) * 1000 : undefined;
+      const isExpired = expiresAt ? Date.now() >= expiresAt : false;
+      
+      return {
+        isValid: !isExpired,
+        expiresAt,
+        scopes: data.scope ? data.scope.split(' ') : undefined,
+        email: data.email,
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        error: error instanceof Error ? error.message : 'Unknown error during token validation',
+      };
+    }
   }
 
   /**
