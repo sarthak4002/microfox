@@ -26,7 +26,7 @@ async function updatePackageList() {
 
     // Initialize status-based package arrays
     const statusPackages: Record<string, string[]> = {};
-
+    // Initialize external packages array
     // Process each package directory
     for (const dir of packageDirs) {
       const packageInfoPath = path.join(packagesDir, dir, 'package-info.json');
@@ -39,7 +39,7 @@ async function updatePackageList() {
           );
           const status = packageInfo.status || 'unknown';
           const index = `${status}Packages`;
-
+          
           // Initialize array for this index if it doesn't exist
           if (!statusPackages[index]) {
             statusPackages[index] = [];
@@ -75,6 +75,7 @@ async function updatePackageList() {
     Object.entries(statusPackages).forEach(([status, packages]) => {
       console.log(`📊 ${status}: ${packages.length} packages`);
     });
+    
   } catch (error) {
     console.error('❌ Error listing packages:', error);
     process.exit(1);
