@@ -1,5 +1,11 @@
 # @microfox/linkedin-oauth
 
+## 1.0.4
+
+### Patch Changes
+
+- 508dd63: added access token validation and scopes
+
 ## 1.0.3
 
 ### Patch Changes
