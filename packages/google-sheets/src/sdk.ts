@@ -6,9 +6,15 @@ import { GoogleOAuthSdk, GoogleScope } from '@microfox/google-oauth';
  */
 const GoogleSheetsSdkConfigSchema = z.object({
   clientId: z.string().min(1).describe('The client ID for Google OAuth'),
-  clientSecret: z.string().min(1).describe('The client secret for Google OAuth'),
+  clientSecret: z
+    .string()
+    .min(1)
+    .describe('The client secret for Google OAuth'),
   accessToken: z.string().min(1).describe('The access token for Google OAuth'),
-  refreshToken: z.string().min(1).describe('The refresh token for Google OAuth'),
+  refreshToken: z
+    .string()
+    .min(1)
+    .describe('The refresh token for Google OAuth'),
 });
 
 type GoogleSheetsSdkConfig = z.infer<typeof GoogleSheetsSdkConfigSchema>;
@@ -57,7 +63,10 @@ const ApiResponseSchema = z.object({
   spreadsheetId: z.string().describe('The ID of the spreadsheet'),
   updatedRange: z.string().optional().describe('The range that was updated'),
   updatedRows: z.number().optional().describe('The number of rows updated'),
-  updatedColumns: z.number().optional().describe('The number of columns updated'),
+  updatedColumns: z
+    .number()
+    .optional()
+    .describe('The number of columns updated'),
   updatedCells: z.number().optional().describe('The number of cells updated'),
   clearedRange: z.string().optional().describe('The range that was cleared'),
 });
@@ -85,21 +94,27 @@ export class GoogleSheetsSdk {
     });
   }
 
-  // /**
-  //  * Validates the access token and refreshes it if necessary.
-  //  * @private
-  //  */
-  // private async ensureValidAccessToken(): Promise<void> {
-  //   try {
-  //     const isValid = await this.oauthSdk.validateAccessToken(this.config.accessToken);
-  //     if (!isValid) {
-  //       const { accessToken } = await this.oauthSdk.refreshAccessToken(this.config.refreshToken);
-  //       this.config.accessToken = accessToken;
-  //     }
-  //   } catch (error) {
-  //     throw new Error(`Failed to validate or refresh access token: ${error instanceof Error ? error.message : String(error)}`);
-  //   }
-  // }
+  /**
+   * Validates the access token and refreshes it if necessary.
+   * @private
+   */
+  private async ensureValidAccessToken(): Promise<void> {
+    try {
+      const isValid = await this.oauthSdk.validateAccessToken(
+        this.config.accessToken,
+      );
+      if (!isValid) {
+        const { accessToken } = await this.oauthSdk.refreshAccessToken(
+          this.config.refreshToken,
+        );
+        this.config.accessToken = accessToken;
+      }
+    } catch (error) {
+      throw new Error(
+        `Failed to validate or refresh access token: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  }
 
   /**
    * Sends a request to the Google Sheets API.
@@ -109,12 +124,16 @@ export class GoogleSheetsSdk {
    * @param {object} [body] - The request body (optional).
    * @returns {Promise<any>} The API response.
    */
-  private async sendRequest(method: string, endpoint: string, body?: object): Promise<any> {
-    // await this.ensureValidAccessToken();
+  private async sendRequest(
+    method: string,
+    endpoint: string,
+    body?: object,
+  ): Promise<any> {
+    await this.ensureValidAccessToken();
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${endpoint}`;
     const headers = {
-      'Authorization': `Bearer ${this.config.accessToken}`,
+      Authorization: `Bearer ${this.config.accessToken}`,
       'Content-Type': 'application/json',
     };
 
@@ -125,24 +144,31 @@ export class GoogleSheetsSdk {
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText}`,
+      );
     }
 
     return await response.json();
   }
 
-  // /**
-  //  * Validates the access token and refreshes it if necessary.
-  //  */
-  // async validateAccessToken(): Promise<boolean> {
-  //   return await this.oauthSdk.validateAccessToken(this.config.accessToken);
-  // }
+  /**
+   * Validates the access token and refreshes it if necessary.
+   */
+  async validateAccessToken(): Promise<boolean> {
+    const result = await this.oauthSdk.validateAccessToken(
+      this.config.accessToken,
+    );
+    return result.isValid;
+  }
 
   /**
    * Refreshes the access token.
    */
   async refreshAccessToken(): Promise<void> {
-    const { accessToken } = await this.oauthSdk.refreshAccessToken(this.config.refreshToken);
+    const { accessToken } = await this.oauthSdk.refreshAccessToken(
+      this.config.refreshToken,
+    );
     this.config.accessToken = accessToken;
   }
 
@@ -153,7 +179,10 @@ export class GoogleSheetsSdk {
    */
   async getValues(range: Range): Promise<any[][]> {
     const validatedRange = RangeSchema.parse(range);
-    const response = await this.sendRequest('GET', `${validatedRange.sheetId}/values/${validatedRange.range}`);
+    const response = await this.sendRequest(
+      'GET',
+      `${validatedRange.sheetId}/values/${validatedRange.range}`,
+    );
     return response.values || [];
   }
 
@@ -164,10 +193,14 @@ export class GoogleSheetsSdk {
    */
   async updateValues(input: UpdateValuesInput): Promise<ApiResponse> {
     const validatedInput = UpdateValuesInputSchema.parse(input);
-    const response = await this.sendRequest('PUT', `${validatedInput.range.sheetId}/values/${validatedInput.range.range}`, {
-      values: validatedInput.values,
-      valueInputOption: 'USER_ENTERED',
-    });
+    const response = await this.sendRequest(
+      'PUT',
+      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}`,
+      {
+        values: validatedInput.values,
+        valueInputOption: 'USER_ENTERED',
+      },
+    );
     return ApiResponseSchema.parse(response);
   }
 
@@ -178,11 +211,15 @@ export class GoogleSheetsSdk {
    */
   async appendValues(input: AppendValuesInput): Promise<ApiResponse> {
     const validatedInput = AppendValuesInputSchema.parse(input);
-    const response = await this.sendRequest('POST', `${validatedInput.range.sheetId}/values/${validatedInput.range.range}:append`, {
-      values: validatedInput.values,
-      valueInputOption: 'USER_ENTERED',
-      insertDataOption: 'INSERT_ROWS',
-    });
+    const response = await this.sendRequest(
+      'POST',
+      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}:append`,
+      {
+        values: validatedInput.values,
+        valueInputOption: 'USER_ENTERED',
+        insertDataOption: 'INSERT_ROWS',
+      },
+    );
     return ApiResponseSchema.parse(response);
   }
 
@@ -193,7 +230,10 @@ export class GoogleSheetsSdk {
    */
   async clearValues(input: ClearValuesInput): Promise<ApiResponse> {
     const validatedInput = ClearValuesInputSchema.parse(input);
-    const response = await this.sendRequest('POST', `${validatedInput.sheetId}/values/${validatedInput.range}:clear`);
+    const response = await this.sendRequest(
+      'POST',
+      `${validatedInput.sheetId}/values/${validatedInput.range}:clear`,
+    );
     return ApiResponseSchema.parse(response);
   }
 
@@ -204,7 +244,10 @@ export class GoogleSheetsSdk {
    * @returns {Promise<any[][][]>} The values in the specified ranges.
    */
   async batchGetValues(sheetId: string, ranges: string[]): Promise<any[][][]> {
-    const response = await this.sendRequest('GET', `${sheetId}/values:batchGet?ranges=${ranges.join('&ranges=')}`);
+    const response = await this.sendRequest(
+      'GET',
+      `${sheetId}/values:batchGet?ranges=${ranges.join('&ranges=')}`,
+    );
     return response.valueRanges.map((vr: any) => vr.values || []);
   }
 
@@ -214,15 +257,24 @@ export class GoogleSheetsSdk {
    * @param {UpdateValuesInput[]} inputs - The inputs for updating values.
    * @returns {Promise<ApiResponse[]>} The API responses.
    */
-  async batchUpdateValues(sheetId: string, inputs: UpdateValuesInput[]): Promise<ApiResponse[]> {
-    const validatedInputs = inputs.map(input => UpdateValuesInputSchema.parse(input));
-    const response = await this.sendRequest('POST', `${sheetId}/values:batchUpdate`, {
-      data: validatedInputs.map(input => ({
-        range: input.range.range,
-        values: input.values,
-      })),
-      valueInputOption: 'USER_ENTERED',
-    });
+  async batchUpdateValues(
+    sheetId: string,
+    inputs: UpdateValuesInput[],
+  ): Promise<ApiResponse[]> {
+    const validatedInputs = inputs.map(input =>
+      UpdateValuesInputSchema.parse(input),
+    );
+    const response = await this.sendRequest(
+      'POST',
+      `${sheetId}/values:batchUpdate`,
+      {
+        data: validatedInputs.map(input => ({
+          range: input.range.range,
+          values: input.values,
+        })),
+        valueInputOption: 'USER_ENTERED',
+      },
+    );
     return response.responses.map((r: any) => ApiResponseSchema.parse(r));
   }
 
@@ -232,8 +284,15 @@ export class GoogleSheetsSdk {
    * @param {string[]} ranges - The ranges to clear.
    * @returns {Promise<ApiResponse>} The API response.
    */
-  async batchClearValues(sheetId: string, ranges: string[]): Promise<ApiResponse> {
-    const response = await this.sendRequest('POST', `${sheetId}/values:batchClear`, { ranges });
+  async batchClearValues(
+    sheetId: string,
+    ranges: string[],
+  ): Promise<ApiResponse> {
+    const response = await this.sendRequest(
+      'POST',
+      `${sheetId}/values:batchClear`,
+      { ranges },
+    );
     return ApiResponseSchema.parse(response);
   }
 }
@@ -243,7 +302,9 @@ export class GoogleSheetsSdk {
  * @param {GoogleSheetsSdkConfig} config - The configuration for the SDK.
  * @returns {GoogleSheetsSdk} An instance of the Google Sheets SDK.
  */
-export function createGoogleSheetsSdk(config: GoogleSheetsSdkConfig): GoogleSheetsSdk {
+export function createGoogleSheetsSdk(
+  config: GoogleSheetsSdkConfig,
+): GoogleSheetsSdk {
   return new GoogleSheetsSdk(config);
 }
 
