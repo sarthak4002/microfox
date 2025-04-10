@@ -107,103 +107,103 @@ The SDK provides a comprehensive set of Google API scopes through the `GoogleSco
 
 ### Default Scopes (Automatically Included)
 
-- `GoogleScope.OPENID` - OpenID Connect scope
-- `GoogleScope.PROFILE` - User's basic profile information
-- `GoogleScope.EMAIL` - User's email address
+- `GoogleScope.OPENID` (`openid`) - OpenID Connect scope
+- `GoogleScope.PROFILE` (`profile`) - User's basic profile information
+- `GoogleScope.EMAIL` (`email`) - User's email address
 
 ### Google Calendar API
 
-- `GoogleScope.CALENDAR` - Full access to Google Calendar
-- `GoogleScope.CALENDAR_READONLY` - Read-only access to calendars
-- `GoogleScope.CALENDAR_EVENTS` - Manage calendar events
-- `GoogleScope.CALENDAR_EVENTS_READONLY` - Read-only access to calendar events
+- `GoogleScope.CALENDAR` (`https://www.googleapis.com/auth/calendar`) - Full access to Google Calendar
+- `GoogleScope.CALENDAR_READONLY` (`https://www.googleapis.com/auth/calendar.readonly`) - Read-only access to calendars
+- `GoogleScope.CALENDAR_EVENTS` (`https://www.googleapis.com/auth/calendar.events`) - Manage calendar events
+- `GoogleScope.CALENDAR_EVENTS_READONLY` (`https://www.googleapis.com/auth/calendar.events.readonly`) - Read-only access to calendar events
 
 ### Google Drive API
 
-- `GoogleScope.DRIVE` - Full access to Google Drive
-- `GoogleScope.DRIVE_READONLY` - Read-only access to files
-- `GoogleScope.DRIVE_FILE` - Access to files created by the app
-- `GoogleScope.DRIVE_METADATA` - View and manage metadata
-- `GoogleScope.DRIVE_APPDATA` - Access to application data folder
-- `GoogleScope.DRIVE_SCRIPTS` - Modify and execute Google Apps Scripts
+- `GoogleScope.DRIVE` (`https://www.googleapis.com/auth/drive`) - Full access to Google Drive
+- `GoogleScope.DRIVE_READONLY` (`https://www.googleapis.com/auth/drive.readonly`) - Read-only access to files
+- `GoogleScope.DRIVE_FILE` (`https://www.googleapis.com/auth/drive.file`) - Access to files created by the app
+- `GoogleScope.DRIVE_METADATA` (`https://www.googleapis.com/auth/drive.metadata`) - View and manage metadata
+- `GoogleScope.DRIVE_APPDATA` (`https://www.googleapis.com/auth/drive.appdata`) - Access to application data folder
+- `GoogleScope.DRIVE_SCRIPTS` (`https://www.googleapis.com/auth/drive.scripts`) - Modify and execute Google Apps Scripts
 
 ### Gmail API
 
-- `GoogleScope.GMAIL` - Read-only access to Gmail
-- `GoogleScope.GMAIL_SEND` - Send emails only
-- `GoogleScope.GMAIL_COMPOSE` - Create and modify email drafts
-- `GoogleScope.GMAIL_MODIFY` - All read/write operations except delete
-- `GoogleScope.GMAIL_FULL` - Full access to Gmail account
+- `GoogleScope.GMAIL` (`https://www.googleapis.com/auth/gmail.readonly`) - Read-only access to Gmail
+- `GoogleScope.GMAIL_SEND` (`https://www.googleapis.com/auth/gmail.send`) - Send emails only
+- `GoogleScope.GMAIL_COMPOSE` (`https://www.googleapis.com/auth/gmail.compose`) - Create and modify email drafts
+- `GoogleScope.GMAIL_MODIFY` (`https://www.googleapis.com/auth/gmail.modify`) - All read/write operations except delete
+- `GoogleScope.GMAIL_FULL` (`https://www.googleapis.com/auth/gmail.full`) - Full access to Gmail account
 
 ### Google Contacts API
 
-- `GoogleScope.CONTACTS` - Manage contacts
-- `GoogleScope.CONTACTS_READONLY` - Read-only access to contacts
-- `GoogleScope.CONTACTS_OTHER_READONLY` - Read-only access to domain's contacts
+- `GoogleScope.CONTACTS` (`https://www.googleapis.com/auth/contacts`) - Manage contacts
+- `GoogleScope.CONTACTS_READONLY` (`https://www.googleapis.com/auth/contacts.readonly`) - Read-only access to contacts
+- `GoogleScope.CONTACTS_OTHER_READONLY` (`https://www.googleapis.com/auth/contacts.other.readonly`) - Read-only access to domain's contacts
 
 ### YouTube API
 
-- `GoogleScope.YOUTUBE` - Manage YouTube account
-- `GoogleScope.YOUTUBE_READONLY` - Read-only access to YouTube data
-- `GoogleScope.YOUTUBE_UPLOAD` - Upload YouTube videos
-- `GoogleScope.YOUTUBE_PARTNER` - Manage YouTube content and channel
+- `GoogleScope.YOUTUBE` (`https://www.googleapis.com/auth/youtube`) - Manage YouTube account
+- `GoogleScope.YOUTUBE_READONLY` (`https://www.googleapis.com/auth/youtube.readonly`) - Read-only access to YouTube data
+- `GoogleScope.YOUTUBE_UPLOAD` (`https://www.googleapis.com/auth/youtube.upload`) - Upload YouTube videos
+- `GoogleScope.YOUTUBE_PARTNER` (`https://www.googleapis.com/auth/youtubepartner`) - Manage YouTube content and channel
 
 ### Google Photos API
 
-- `GoogleScope.PHOTOS` - Access to Google Photos library
-- `GoogleScope.PHOTOS_READONLY` - Read-only access to photos
-- `GoogleScope.PHOTOS_SHARING` - Share photos and albums
+- `GoogleScope.PHOTOS` (`https://www.googleapis.com/auth/photoslibrary`) - Access to Google Photos library
+- `GoogleScope.PHOTOS_READONLY` (`https://www.googleapis.com/auth/photoslibrary.readonly`) - Read-only access to photos
+- `GoogleScope.PHOTOS_SHARING` (`https://www.googleapis.com/auth/photoslibrary.sharing`) - Share photos and albums
 
 ### Google Fitness API
 
-- `GoogleScope.FITNESS` - Read fitness activity data
-- `GoogleScope.FITNESS_ACTIVITY_WRITE` - Write fitness activity data
-- `GoogleScope.FITNESS_LOCATION_READ` - Read location data
-- `GoogleScope.FITNESS_LOCATION_WRITE` - Write location data
+- `GoogleScope.FITNESS` (`https://www.googleapis.com/auth/fitness.activity.read`) - Read fitness activity data
+- `GoogleScope.FITNESS_ACTIVITY_WRITE` (`https://www.googleapis.com/auth/fitness.activity.write`) - Write fitness activity data
+- `GoogleScope.FITNESS_LOCATION_READ` (`https://www.googleapis.com/auth/fitness.location.read`) - Read location data
+- `GoogleScope.FITNESS_LOCATION_WRITE` (`https://www.googleapis.com/auth/fitness.location.write`) - Write location data
 
 ### Google Tasks API
 
-- `GoogleScope.TASKS` - Manage tasks and task lists
-- `GoogleScope.TASKS_READONLY` - Read-only access to tasks
+- `GoogleScope.TASKS` (`https://www.googleapis.com/auth/tasks`) - Manage tasks and task lists
+- `GoogleScope.TASKS_READONLY` (`https://www.googleapis.com/auth/tasks.readonly`) - Read-only access to tasks
 
 ### Google Workspace APIs
 
-- `GoogleScope.SHEETS` - Full access to Google Sheets
-- `GoogleScope.SHEETS_READONLY` - Read-only access to Sheets
-- `GoogleScope.DOCS` - Full access to Google Docs
-- `GoogleScope.DOCS_READONLY` - Read-only access to Docs
+- `GoogleScope.SHEETS` (`https://www.googleapis.com/auth/spreadsheets`) - Full access to Google Sheets
+- `GoogleScope.SHEETS_READONLY` (`https://www.googleapis.com/auth/spreadsheets.readonly`) - Read-only access to Sheets
+- `GoogleScope.DOCS` (`https://www.googleapis.com/auth/documents`) - Full access to Google Docs
+- `GoogleScope.DOCS_READONLY` (`https://www.googleapis.com/auth/documents.readonly`) - Read-only access to Docs
 
 ### Google Cloud Platform
 
-- `GoogleScope.CLOUD_PLATFORM` - Full access to Google Cloud services
-- `GoogleScope.CLOUD_PLATFORM_READONLY` - Read-only access to Cloud services
+- `GoogleScope.CLOUD_PLATFORM` (`https://www.googleapis.com/auth/cloud-platform`) - Full access to Google Cloud services
+- `GoogleScope.CLOUD_PLATFORM_READONLY` (`https://www.googleapis.com/auth/cloud-platform.read-only`) - Read-only access to Cloud services
 
 ### Google Analytics
 
-- `GoogleScope.ANALYTICS` - Full access to Analytics data
-- `GoogleScope.ANALYTICS_READONLY` - Read-only access to Analytics
+- `GoogleScope.ANALYTICS` (`https://www.googleapis.com/auth/analytics`) - Full access to Analytics data
+- `GoogleScope.ANALYTICS_READONLY` (`https://www.googleapis.com/auth/analytics.readonly`) - Read-only access to Analytics
 
 ### Google Classroom
 
-- `GoogleScope.CLASSROOM_COURSES` - Manage Classroom courses
-- `GoogleScope.CLASSROOM_COURSES_READONLY` - View Classroom courses
-- `GoogleScope.CLASSROOM_ROSTERS` - Manage class rosters
-- `GoogleScope.CLASSROOM_PROFILE_EMAILS` - View student/teacher email addresses
+- `GoogleScope.CLASSROOM_COURSES` (`https://www.googleapis.com/auth/classroom.courses`) - Manage Classroom courses
+- `GoogleScope.CLASSROOM_COURSES_READONLY` (`https://www.googleapis.com/auth/classroom.courses.readonly`) - View Classroom courses
+- `GoogleScope.CLASSROOM_ROSTERS` (`https://www.googleapis.com/auth/classroom.rosters`) - Manage class rosters
+- `GoogleScope.CLASSROOM_PROFILE_EMAILS` (`https://www.googleapis.com/auth/classroom.profile.emails`) - View student/teacher email addresses
 
 ### Google Meet
 
-- `GoogleScope.MEET` - View Meet space information
-- `GoogleScope.MEET_ROOMS` - View Meet room information
+- `GoogleScope.MEET` (`https://www.googleapis.com/auth/meetings.space.readonly`) - View Meet space information
+- `GoogleScope.MEET_ROOMS` (`https://www.googleapis.com/auth/meetings.room.readonly`) - View Meet room information
 
 ### Google People API
 
-- `GoogleScope.PEOPLE` - Manage contacts and other people data
-- `GoogleScope.PEOPLE_READONLY` - Read-only access to people data
+- `GoogleScope.PEOPLE` (`https://www.googleapis.com/auth/people`) - Manage contacts and other people data
+- `GoogleScope.PEOPLE_READONLY` (`https://www.googleapis.com/auth/people.readonly`) - Read-only access to people data
 
 ### Google Chat API
 
-- `GoogleScope.CHAT` - Send and manage chat messages
-- `GoogleScope.CHAT_READONLY` - Read-only access to chat messages
+- `GoogleScope.CHAT` (`https://www.googleapis.com/auth/chat.messages`) - Send and manage chat messages
+- `GoogleScope.CHAT_READONLY` (`https://www.googleapis.com/auth/chat.messages.readonly`) - Read-only access to chat messages
 
 ## Error Handling
 

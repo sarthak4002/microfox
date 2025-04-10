@@ -7,6 +7,7 @@ import { promisify } from 'util';
 import { generateText, generateObject, tool } from 'ai';
 import { models } from './ai/models';
 import dedent from 'dedent';
+import { SDK_QUERY, API_DOCUMENTATION_URLS } from './constants';
 
 const execAsync = promisify(exec);
 
@@ -31,6 +32,10 @@ const SDKMetadataSchema = z.object({
     .describe(
       'Authentication type for this SDK: "oauth2" for OAuth 2.0 flow, "apiKey" for API key authentication, or "auto" to let the model decide',
     ),
+  authSdk: z
+    .string()
+    .optional()
+    .describe('The OAuth SDK to use (e.g., "@microfox/google-oauth")'),
 });
 
 type SDKMetadata = z.infer<typeof SDKMetadataSchema>;
@@ -52,6 +57,15 @@ function ensureRequiredKeywords(keywords: string[]): string[] {
 async function generateMetadata(query: string): Promise<SDKMetadata> {
   console.log('🧠 Generating SDK metadata from query...');
 
+  // Get available OAuth packages
+  let oauthPackages = fs
+    .readdirSync(path.join(__dirname, '../../packages'))
+    .filter(dir => dir.includes('-oauth'));
+  oauthPackages = oauthPackages.map(pkg => `@microfox/${pkg}`);
+  console.log(
+    `✅ Found ${oauthPackages.length} OAuth packages: ${oauthPackages.join(', ')}`,
+  );
+
   const { object: metadata } = await generateObject({
     model: models.googleGeminiFlash,
     schema: SDKMetadataSchema,
@@ -66,6 +80,12 @@ async function generateMetadata(query: string): Promise<SDKMetadata> {
       - Use "oauth2" if the API primarily uses OAuth 2.0 for authentication (like Google, GitHub, or LinkedIn APIs)
       - Use "apiKey" if the API primarily uses API keys or tokens for authentication
       - Use "auto" if you're not sure about the authentication mechanism
+      
+      For authSdk:
+      - If authType is "oauth2", provide the appropriate OAuth SDK from the available packages
+      - If authType is not "oauth2", leave this field empty
+      
+      Available OAuth packages: ${oauthPackages.join(', ')}
     `,
     temperature: 0.2,
   });
@@ -180,6 +200,8 @@ function createInitialPackageInfo(
   packageName: string,
   title: string,
   description: string,
+  authType: string,
+  authSdk?: string,
 ): any {
   return {
     name: packageName,
@@ -188,7 +210,11 @@ function createInitialPackageInfo(
     path: `packages/${packageName.replace('@microfox/', '')}`,
     dependencies: ['zod'],
     status: 'stable',
-    authEndpoint: '',
+    authEndpoint:
+      authType === 'oauth2' && authSdk
+        ? `/connect/${authSdk.replace('@microfox/', '')}`
+        : '',
+    oauth2Scopes: [],
     documentation: `https://www.npmjs.com/package/${packageName}`,
     icon: `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${packageName.replace('@microfox/', '').replace('-', '-').replace('_', '-')}.svg`,
     readme_map: {
@@ -293,6 +319,8 @@ async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
     metadata.packageName,
     metadata.title,
     metadata.description,
+    metadata.authType,
+    metadata.authSdk,
   );
   fs.writeFileSync(
     path.join(packageDir, 'package-info.json'),
@@ -329,12 +357,12 @@ const WriteToFileSchema = z.object({
         key: z
           .string()
           .describe(
-            'Environment variable key name in uppercase format (e.g., "GOOGLE_API_KEY")',
+            'Environment variable key name in uppercase format (e.g., "GOOGLE_ACCESS_TOKEN")',
           ),
         displayName: z
           .string()
           .describe(
-            'Human-readable name for this API key shown in the UI (e.g., "Google API Key")',
+            'Human-readable name for this API key shown in the UI (e.g., "Google Access Token")',
           ),
         description: z
           .string()
@@ -357,6 +385,12 @@ const WriteToFileSchema = z.object({
     .optional()
     .describe(
       'The name of the OAuth SDK to use (e.g., "@microfox/google-oauth", "@microfox/linkedin-oauth"). Required when authType is "oauth2".',
+    ),
+  oauth2Scopes: z
+    .array(z.string())
+    .optional()
+    .describe(
+      'Required OAuth2 scopes for this SDK (e.g., ["https://www.googleapis.com/auth/spreadsheets"]). Required Only when authType is "oauth2".',
     ),
   functions: z
     .array(z.string())
@@ -425,25 +459,17 @@ export async function generateSDK(
     console.log(`- Description: ${metadata.description}`);
     console.log(`- Keywords: ${metadata.keywords.join(', ')}`);
     console.log(`- Auth Type: ${metadata.authType}`);
+    if (metadata.authSdk) {
+      console.log(`- Auth SDK: ${metadata.authSdk}`);
+    }
 
     // Create initial package structure with empty files
     const packageDir = await createInitialPackage(metadata);
     console.log(`📁 Created initial package structure at ${packageDir}`);
 
-    // Predefined URLs for documentation (can be customized based on the API)
-    const urls = [
-      `https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get`,
-      `https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchGet`,
-      `https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update`,
-      `https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate`,
-      `https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append`,
-      `https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/clear`,
-      `https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchClear`,
-    ];
-
     // Scrape URLs for content
     console.log('🔍 Scraping URLs for API documentation...');
-    const scrapedContent = await scrapeUrls(urls);
+    const scrapedContent = await scrapeUrls(API_DOCUMENTATION_URLS);
     console.log(`✅ Scraped ${scrapedContent.length} URLs`);
 
     let oauthPackages = fs
@@ -452,6 +478,27 @@ export async function generateSDK(
     console.log(`✅ Found ${oauthPackages.length} OAuth packages`);
     oauthPackages = oauthPackages.map(pkg => `@microfox/${pkg}`);
     console.log(oauthPackages);
+
+    // Get OAuth package README if authType is oauth2
+    let oauthPackageReadme = '';
+    if (metadata.authType === 'oauth2' && metadata.authSdk) {
+      const oauthPackageName = metadata.authSdk.replace('@microfox/', '');
+      const oauthReadmePath = path.join(
+        __dirname,
+        '../../packages',
+        oauthPackageName,
+        'README.md',
+      );
+
+      if (fs.existsSync(oauthReadmePath)) {
+        oauthPackageReadme = fs.readFileSync(oauthReadmePath, 'utf8');
+        console.log(`✅ Found OAuth package README for ${metadata.authSdk}`);
+      } else {
+        console.warn(
+          `⚠️ OAuth package README not found for ${metadata.authSdk}`,
+        );
+      }
+    }
 
     // Create tool to handle file writing
     const writeToFileTool = tool({
@@ -490,6 +537,7 @@ export async function generateSDK(
           data.authType === 'oauth2' && data?.authSdk
             ? `/connect/${data?.authSdk.replace('@microfox/', '')}`
             : '';
+        packageInfo.oauth2Scopes = data.oauth2Scopes || [];
 
         // Add readme_map
         packageInfo.readme_map = {
@@ -506,6 +554,7 @@ export async function generateSDK(
             description: `Create a new ${metadata.title} client through which you can interact with the API`,
             auth: data.authType,
             authSdk: data.authType === 'oauth2' ? data.authSdk || '' : '',
+            outputKeys: [],
             requiredKeys:
               data.authType !== 'oauth2'
                 ? data.envKeys.map(key => ({
@@ -659,15 +708,17 @@ export async function generateSDK(
       3. Criticize your plan and refine it to be specific to this task
       4. Write complete, production-ready code with no TODOs or placeholders
       5. Recheck your code for any linting or TypeScript errors
-
+      6. Make sure the SDK is easy to use and follows best practices
+      
       ## Core Requirements
       1. Use Zod for defining types with descriptive comments using .describe()
       2. DO NOT use Zod for validation of API responses
       3. The SDK should expose a constructor function or Class named "create${metadata.apiName.replace(/\s+/g, '')}SDK"
-      4. Export all necessary types
-      5. Handle error cases properly
-      6. Include proper JSDoc comments
-      7. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
+      4. The SDK should have functions for all the endpoints mentioned in the documentation
+      5. Export all necessary types
+      6. Handle error cases properly
+      7. Include proper JSDoc comments
+      8. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
 
       ## Authentication Implementation
       ${
@@ -685,18 +736,16 @@ export async function generateSDK(
         metadata.authType === 'oauth2' || metadata.authType === 'auto'
           ? `
       ## OAuth 2.0 Implementation Guidelines
-      - Assume the OAuth flow is already implemented and tokens are extracted from the OAuth package outside of this SDK
-      - The SDK should ONLY accept accessToken as a parameter in the constructor
-      - DO NOT include OAuth credentials like clientId, clientSecret, or scopes in the constructor
-      - The constructor should check if the provided access token is valid and if not, throw an error
-      
+      - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
+      - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
+      - The SDK should check if the provided access token is valid and if not, throw an error
+
       ## OAuth Integration
       - You must provide the appropriate envKeys for OAuth tokens in the write_to_file tool
       - You must provide the appropriate authSdk value in the write_to_file tool
-      - Do not install the OAuth package in the project; assume it will be installed in the project where this SDK is used
-      - The user will provide tokens after completing the OAuth flow
-
-      Available OAuth packages: ${oauthPackages.join(', ')}
+      - You must provide the appropriate oauth2Scopes values which fully cover the scopes required by the functions in the sdk in the write_to_file tool
+      - You must install the OAuth package in the project
+      - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
           : ''
       }
@@ -706,10 +755,12 @@ export async function generateSDK(
         - You MUST provide a valid authType value from: "apiKey", "oauth2", or "none"
         - For envKeys, provide detailed information including key names in UPPERCASE format and whether they are required
         - For OAuth2, you MUST provide the appropriate authSdk value (e.g., "google-oauth", "linkedin-oauth")
+        - For OAuth2, you MUST provide the appropriate oauth2Scopes value
         - The sdkCode parameter should contain the complete TypeScript code for the SDK
       - To install dependencies, use the run_command tool
         - Only include dependencies that are actually needed beyond what's already installed
         - If it can be done with REST APIs, do not install any external dependencies
+        - For OAuth2, you MUST install the provided OAuth package
     `;
 
     const generationPrompt = dedent`
@@ -726,9 +777,19 @@ export async function generateSDK(
             - Use "apiKey" if the API uses API keys, tokens, or headers for auth
             - Use "none" if no auth is required`
       }
+      ${metadata.authSdk ? `- Auth SDK: ${metadata.authSdk}` : ''}
       
       ## API Documentation
       ${scrapedContent.join('\n\n---\n\n').substring(0, 50000)}
+      
+      ${
+        metadata.authType === 'oauth2' && oauthPackageReadme
+          ? `
+      ## OAuth Package Documentation
+      ${oauthPackageReadme}
+      `
+          : ''
+      }
       
       ## Available Dependencies
       The following packages are already installed in the project:
@@ -757,13 +818,10 @@ export async function generateSDK(
         metadata.authType === 'oauth2' || metadata.authType === 'auto'
           ? `
       ## OAuth Implementation Requirements
-      - The SDK should ONLY accept accessToken as a parameter in the constructor
-      - DO NOT include clientId, clientSecret, or other OAuth credentials in the constructor
-      - The constructor should check if the provided access token is valid
-      - If the access token is invalid, throw an error
-      - DO NOT implement token refresh functionality in this SDK as it requires client credentials
-      - You must provide the appropriate envKeys for OAuth tokens in the write_to_file tool
-      - You must provide the appropriate authSdk value in the write_to_file tool
+      - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
+      - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
+      - The SDK should check if the provided access token is valid and if not, throw an error
+      - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
           : ''
       }
@@ -781,7 +839,7 @@ export async function generateSDK(
       model: models.claude35Sonnet,
       system: systemPrompt,
       prompt: generationPrompt,
-      maxTokens: 5000,
+      maxTokens: 8000,
       tools: {
         write_to_file: writeToFileTool,
         run_command: runCommandTool,
@@ -830,15 +888,15 @@ export async function generateSDK(
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const query = args.join(' ') || 'Google Sheets package';
+  const queryArg = args.join(' ') || SDK_QUERY;
 
-  if (!query) {
+  if (!queryArg) {
     console.error('❌ Error: Query argument is required');
     console.log('Usage: node generate-sdk.js "API Name/Query"');
     process.exit(1);
   }
 
-  generateSDK({ query })
+  generateSDK({ query: queryArg })
     .then(result => {
       if (result) {
         console.log(`✅ SDK generation complete for ${result.packageName}`);
