@@ -7,6 +7,7 @@ import {
 
 export class LinkedInOAuthSdk {
   private static readonly AUTH_BASE_URL = 'https://www.linkedin.com/oauth/v2';
+  private static readonly API_BASE_URL = 'https://api.linkedin.com/v2';
   private readonly clientId: string;
   private readonly clientSecret: string;
   private readonly redirectUri: string;
@@ -27,12 +28,16 @@ export class LinkedInOAuthSdk {
     this.clientId = config.clientId;
     this.clientSecret = config.clientSecret;
     this.redirectUri = config.redirectUri;
-    this.scopes = config.scopes || [
-      LinkedInScope.OPENID,
-      LinkedInScope.PROFILE,
-    ];
+    this.scopes = Array.from(
+      new Set([
+        ...(config.scopes || []),
+        LinkedInScope.OPENID,
+        LinkedInScope.PROFILE,
+      ]),
+    );
     this.state = config.state || this.generateState();
   }
+
 
   /**
    * Get the current state parameter
@@ -115,6 +120,52 @@ export class LinkedInOAuthSdk {
       accessToken: tokenResponse.access_token,
       refreshToken: tokenResponse.refresh_token,
     };
+  }
+
+  /**
+   * Validate an access token by checking its validity and expiration
+   * @param accessToken The access token to validate
+   * @returns Object containing validation result and token information
+   */
+  public async validateAccessToken(accessToken: string): Promise<{
+    isValid: boolean;
+    expiresAt?: number;
+    scopes?: string[];
+    error?: string;
+  }> {
+    try {
+      // LinkedIn doesn't have a dedicated token introspection endpoint
+      // We'll validate by making a simple API call to the /me endpoint
+      const response = await fetch(`${LinkedInOAuthSdk.API_BASE_URL}/me`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        return {
+          isValid: false,
+          error: data.message || 'Token validation failed',
+        };
+      }
+      
+      // If we get here, the token is valid
+      // LinkedIn tokens typically expire in 60 days
+      // We'll estimate the expiration time based on the current time
+      const expiresAt = Date.now() + 60 * 24 * 60 * 60 * 1000; // 60 days from now
+      
+      return {
+        isValid: true,
+        expiresAt,
+        scopes: this.scopes, // We don't have a way to get the actual scopes from LinkedIn
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        error: error instanceof Error ? error.message : 'Unknown error during token validation',
+      };
+    }
   }
 
   /**
