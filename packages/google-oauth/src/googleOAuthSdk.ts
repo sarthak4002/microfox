@@ -9,7 +9,8 @@ export class GoogleOAuthSdk {
   private static readonly AUTH_BASE_URL =
     'https://accounts.google.com/o/oauth2/v2/auth';
   private static readonly TOKEN_URL = 'https://oauth2.googleapis.com/token';
-  private static readonly TOKEN_INFO_URL = 'https://oauth2.googleapis.com/tokeninfo';
+  private static readonly TOKEN_INFO_URL =
+    'https://oauth2.googleapis.com/tokeninfo';
   private readonly clientId: string;
   private readonly clientSecret: string;
   private readonly redirectUri: string;
@@ -144,22 +145,22 @@ export class GoogleOAuthSdk {
   }> {
     try {
       const response = await fetch(
-        `${GoogleOAuthSdk.TOKEN_INFO_URL}?access_token=${accessToken}`
+        `${GoogleOAuthSdk.TOKEN_INFO_URL}?access_token=${accessToken}`,
       );
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         return {
           isValid: false,
           error: data.error_description || 'Token validation failed',
         };
       }
-      
+
       // Check if token is expired
       const expiresAt = data.exp ? parseInt(data.exp) * 1000 : undefined;
       const isExpired = expiresAt ? Date.now() >= expiresAt : false;
-      
+
       return {
         isValid: !isExpired,
         expiresAt,
@@ -169,7 +170,10 @@ export class GoogleOAuthSdk {
     } catch (error) {
       return {
         isValid: false,
-        error: error instanceof Error ? error.message : 'Unknown error during token validation',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Unknown error during token validation',
       };
     }
   }

@@ -25,7 +25,10 @@ yarn add @microfox/google-sheets
 First, import the SDK and create an instance:
 
 ```typescript
-import { createGoogleSheetsSdk, GoogleSheetsSdkConfig } from '@microfox/google-sheets';
+import {
+  createGoogleSheetsSdk,
+  GoogleSheetsSdkConfig,
+} from '@microfox/google-sheets';
 
 const config: GoogleSheetsSdkConfig = {
   clientId: 'YOUR_CLIENT_ID',
@@ -96,7 +99,10 @@ console.log(values);
 ```typescript
 const updateInput = {
   range: { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A1:B2' },
-  values: [['New Value 1', 'New Value 2'], ['New Value 3', 'New Value 4']]
+  values: [
+    ['New Value 1', 'New Value 2'],
+    ['New Value 3', 'New Value 4'],
+  ],
 };
 const response = await sheetsSdk.updateValues(updateInput);
 console.log(response);
@@ -107,7 +113,7 @@ console.log(response);
 ```typescript
 const appendInput = {
   range: { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A:B' },
-  values: [['Appended Value 1', 'Appended Value 2']]
+  values: [['Appended Value 1', 'Appended Value 2']],
 };
 const response = await sheetsSdk.appendValues(appendInput);
 console.log(response);
