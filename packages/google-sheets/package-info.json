@@ -3,12 +3,10 @@
   "title": "Google Sheets SDK",
   "description": "A TypeScript SDK for interacting with Google Sheets.",
   "path": "packages/google-sheets",
-  "dependencies": [
-    "zod",
-    "@microfox/google-oauth"
-  ],
+  "dependencies": ["zod", "@microfox/google-oauth"],
   "status": "stable",
   "authEndpoint": "/connect/google-oauth",
+  "oauth2Scopes": ["https://www.googleapis.com/auth/spreadsheets"],
   "documentation": "https://www.npmjs.com/package/@microfox/google-sheets",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg",
   "readme_map": {
@@ -33,9 +31,6 @@
       "description": "Create a new Google Sheets SDK client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/google-oauth",
-      "oauth2Scopes": [
-        "https://www.googleapis.com/auth/spreadsheets"
-      ],
       "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
@@ -76,33 +71,25 @@
   "keysInfo": [
     {
       "key": "GOOGLE_CLIENT_ID",
-      "constructors": [
-        "createGoogleSheetsSdk"
-      ],
+      "constructors": ["createGoogleSheetsSdk"],
       "description": "The client ID for Google OAuth authentication. You can obtain this from the Google Cloud Console.",
       "required": true
     },
     {
       "key": "GOOGLE_CLIENT_SECRET",
-      "constructors": [
-        "createGoogleSheetsSdk"
-      ],
+      "constructors": ["createGoogleSheetsSdk"],
       "description": "The client secret for Google OAuth authentication. You can obtain this from the Google Cloud Console.",
       "required": true
     },
     {
       "key": "GOOGLE_ACCESS_TOKEN",
-      "constructors": [
-        "createGoogleSheetsSdk"
-      ],
+      "constructors": ["createGoogleSheetsSdk"],
       "description": "The access token for Google OAuth authentication. This is obtained after the OAuth flow and should be kept secure.",
       "required": true
     },
     {
       "key": "GOOGLE_REFRESH_TOKEN",
-      "constructors": [
-        "createGoogleSheetsSdk"
-      ],
+      "constructors": ["createGoogleSheetsSdk"],
       "description": "The refresh token for Google OAuth authentication. This is used to obtain new access tokens when they expire.",
       "required": true
     }
