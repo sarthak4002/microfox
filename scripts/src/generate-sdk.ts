@@ -62,7 +62,9 @@ async function generateMetadata(query: string): Promise<SDKMetadata> {
     .readdirSync(path.join(__dirname, '../../packages'))
     .filter(dir => dir.includes('-oauth'));
   oauthPackages = oauthPackages.map(pkg => `@microfox/${pkg}`);
-  console.log(`✅ Found ${oauthPackages.length} OAuth packages: ${oauthPackages.join(', ')}`);
+  console.log(
+    `✅ Found ${oauthPackages.length} OAuth packages: ${oauthPackages.join(', ')}`,
+  );
 
   const { object: metadata } = await generateObject({
     model: models.googleGeminiFlash,
@@ -201,7 +203,6 @@ function createInitialPackageInfo(
   authType: string,
   authSdk?: string,
 ): any {
-
   return {
     name: packageName,
     title,
@@ -209,7 +210,10 @@ function createInitialPackageInfo(
     path: `packages/${packageName.replace('@microfox/', '')}`,
     dependencies: ['zod'],
     status: 'stable',
-    authEndpoint: authType === 'oauth2' && authSdk ? `/connect/${authSdk.replace('@microfox/', '')}` : '',
+    authEndpoint:
+      authType === 'oauth2' && authSdk
+        ? `/connect/${authSdk.replace('@microfox/', '')}`
+        : '',
     oauth2Scopes: [],
     documentation: `https://www.npmjs.com/package/${packageName}`,
     icon: `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${packageName.replace('@microfox/', '').replace('-', '-').replace('_', '-')}.svg`,
@@ -490,7 +494,9 @@ export async function generateSDK(
         oauthPackageReadme = fs.readFileSync(oauthReadmePath, 'utf8');
         console.log(`✅ Found OAuth package README for ${metadata.authSdk}`);
       } else {
-        console.warn(`⚠️ OAuth package README not found for ${metadata.authSdk}`);
+        console.warn(
+          `⚠️ OAuth package README not found for ${metadata.authSdk}`,
+        );
       }
     }
 
@@ -552,18 +558,18 @@ export async function generateSDK(
             requiredKeys:
               data.authType !== 'oauth2'
                 ? data.envKeys.map(key => ({
-                  key: key.key,
-                  displayName: key.displayName,
-                  description: key.description,
-                }))
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  }))
                 : [],
             internalKeys:
               data.authType === 'oauth2'
                 ? data.envKeys.map(key => ({
-                  key: key.key,
-                  displayName: key.displayName,
-                  description: key.description,
-                }))
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  }))
                 : [],
             functionalities: functions,
           },
@@ -715,18 +721,20 @@ export async function generateSDK(
       8. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
 
       ## Authentication Implementation
-      ${metadata.authType === 'auto'
-        ? `You must analyze the API documentation to determine the appropriate auth type:
+      ${
+        metadata.authType === 'auto'
+          ? `You must analyze the API documentation to determine the appropriate auth type:
       - Use "oauth2" if the API uses OAuth 2.0 flows (client IDs, authorization codes, redirect URIs)
       - Use "apiKey" if the API uses API keys, tokens, or headers for auth
       - Use "none" if no auth is required
       
       You must explicitly decide which auth type to implement based on the documentation.`
-        : `The authentication type is set to "${metadata.authType}".`
+          : `The authentication type is set to "${metadata.authType}".`
       }
 
-      ${metadata.authType === 'oauth2' || metadata.authType === 'auto'
-        ? `
+      ${
+        metadata.authType === 'oauth2' || metadata.authType === 'auto'
+          ? `
       ## OAuth 2.0 Implementation Guidelines
       - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
       - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
@@ -739,7 +747,7 @@ export async function generateSDK(
       - You must install the OAuth package in the project
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
-        : ''
+          : ''
       }
 
       ## Tool Usage
@@ -761,27 +769,26 @@ export async function generateSDK(
       ## SDK Information
       - Title: ${metadata.title}
       - Description: ${metadata.description}
-      ${metadata.authType !== 'auto'
-        ? `- Auth Type: ${metadata.authType}`
-        : `- Auth Type: auto - Please determine the appropriate auth type based on:
+      ${
+        metadata.authType !== 'auto'
+          ? `- Auth Type: ${metadata.authType}`
+          : `- Auth Type: auto - Please determine the appropriate auth type based on:
             - Use "oauth2" if the API uses OAuth 2.0 flows
             - Use "apiKey" if the API uses API keys, tokens, or headers for auth
             - Use "none" if no auth is required`
       }
-      ${metadata.authSdk
-        ? `- Auth SDK: ${metadata.authSdk}`
-        : ''
-      }
+      ${metadata.authSdk ? `- Auth SDK: ${metadata.authSdk}` : ''}
       
       ## API Documentation
       ${scrapedContent.join('\n\n---\n\n').substring(0, 50000)}
       
-      ${metadata.authType === 'oauth2' && oauthPackageReadme
-        ? `
+      ${
+        metadata.authType === 'oauth2' && oauthPackageReadme
+          ? `
       ## OAuth Package Documentation
       ${oauthPackageReadme}
       `
-        : ''
+          : ''
       }
       
       ## Available Dependencies
@@ -807,15 +814,16 @@ export async function generateSDK(
       - Add detailed JSDoc comments for all functions and types
       - Make sure the SDK is easy to use and follows best practices
       
-      ${metadata.authType === 'oauth2' || metadata.authType === 'auto'
-        ? `
+      ${
+        metadata.authType === 'oauth2' || metadata.authType === 'auto'
+          ? `
       ## OAuth Implementation Requirements
       - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
       - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
       - The SDK should check if the provided access token is valid and if not, throw an error
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
-        : ''
+          : ''
       }
     `;
 

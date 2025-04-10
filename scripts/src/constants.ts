@@ -14,8 +14,7 @@ export const API_DOCUMENTATION_URLS = [
   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append',
   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/clear',
   'https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchClear',
-]; 
-
+];
 
 // /**
 //  * The query used to generate SDK
@@ -67,4 +66,4 @@ export const API_DOCUMENTATION_URLS = [
 //   'https://api-dashboard.search.brave.com/app/documentation/spellcheck/response-headers',
 //   'https://api-dashboard.search.brave.com/app/documentation/spellcheck/responses',
 //   'https://api-dashboard.search.brave.com/app/documentation/spellcheck/codes',
-// ]; 
+// ];

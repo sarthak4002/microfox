@@ -38,7 +38,6 @@ export class LinkedInOAuthSdk {
     this.state = config.state || this.generateState();
   }
 
-
   /**
    * Get the current state parameter
    */
@@ -141,7 +140,7 @@ export class LinkedInOAuthSdk {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       if (!response.ok) {
         const data = await response.json();
         return {
@@ -149,12 +148,12 @@ export class LinkedInOAuthSdk {
           error: data.message || 'Token validation failed',
         };
       }
-      
+
       // If we get here, the token is valid
       // LinkedIn tokens typically expire in 60 days
       // We'll estimate the expiration time based on the current time
       const expiresAt = Date.now() + 60 * 24 * 60 * 60 * 1000; // 60 days from now
-      
+
       return {
         isValid: true,
         expiresAt,
@@ -163,7 +162,10 @@ export class LinkedInOAuthSdk {
     } catch (error) {
       return {
         isValid: false,
-        error: error instanceof Error ? error.message : 'Unknown error during token validation',
+        error:
+          error instanceof Error
+            ? error.message
+            : 'Unknown error during token validation',
       };
     }
   }

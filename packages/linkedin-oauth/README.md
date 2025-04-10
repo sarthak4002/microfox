@@ -132,51 +132,63 @@ import type { TokenResponse, ErrorResponse } from '@microfox/linkedin-oauth';
 The SDK provides a comprehensive set of LinkedIn API scopes:
 
 #### OpenID Connect Scopes
+
 - `LinkedInScope.OPENID` (`openid`) - OpenID Connect authentication
 - `LinkedInScope.PROFILE` (`profile`) - Basic profile information
 - `LinkedInScope.EMAIL` (`email`) - Access email address
 
 #### Basic Profile Scopes
+
 - `LinkedInScope.BASIC_PROFILE` (`r_basicprofile`) - Read basic profile information
 - `LinkedInScope.FULL_PROFILE` (`r_fullprofile`) - Read full profile information
 
 #### Contact Scopes
+
 - `LinkedInScope.CONTACTS` (`r_contacts`) - Access to contacts
 - `LinkedInScope.CONTACTS_READONLY` (`r_contacts_readonly`) - Read-only access to contacts
 
 #### Email Scopes
+
 - `LinkedInScope.EMAIL_ADDRESS` (`r_emailaddress`) - Access to email address
 
 #### Organization Scopes
+
 - `LinkedInScope.ORGANIZATION` (`r_organization_social`) - Access to organization data
 - `LinkedInScope.ORGANIZATION_ADMIN` (`w_organization_social`) - Admin access to organization data
 
 #### Content Sharing Scopes
+
 - `LinkedInScope.SHARE` (`w_member_social`) - Share and interact with content
 - `LinkedInScope.SHARE_READONLY` (`r_member_social`) - Read-only access to shared content
 
 #### Job Posting Scopes
+
 - `LinkedInScope.JOBS` (`w_job_posting`) - Post and manage job listings
 - `LinkedInScope.JOBS_READONLY` (`r_job_posting`) - Read-only access to job listings
 
 #### Company Scopes
+
 - `LinkedInScope.COMPANY` (`r_company_admin`) - Admin access to company data
 - `LinkedInScope.COMPANY_READONLY` (`r_company_admin_readonly`) - Read-only access to company data
 
 #### Groups Scopes
+
 - `LinkedInScope.GROUPS` (`r_groups`) - Access to groups
 - `LinkedInScope.GROUPS_READONLY` (`r_groups_readonly`) - Read-only access to groups
 
 #### Ads Scopes
+
 - `LinkedInScope.ADS` (`r_ads`) - Access to ads
 - `LinkedInScope.ADS_READONLY` (`r_ads_readonly`) - Read-only access to ads
 - `LinkedInScope.ADS_REPORTING` (`r_ads_reporting`) - Access to ads reporting
 
 #### Marketing Developer Platform Scopes
+
 - `LinkedInScope.MARKETING` (`r_marketing`) - Access to marketing data
 - `LinkedInScope.MARKETING_READONLY` (`r_marketing_readonly`) - Read-only access to marketing data
 
 #### Offline Access
+
 - `LinkedInScope.OFFLINE_ACCESS` (`r_liteprofile r_emailaddress w_member_social offline_access`) - Enable refresh tokens (includes r_liteprofile, r_emailaddress, w_member_social, and offline_access)
 
 ### Configuration
