@@ -85,21 +85,21 @@ export class GoogleSheetsSdk {
     });
   }
 
-  /**
-   * Validates the access token and refreshes it if necessary.
-   * @private
-   */
-  private async ensureValidAccessToken(): Promise<void> {
-    try {
-      const isValid = await this.oauthSdk.validateAccessToken(this.config.accessToken);
-      if (!isValid) {
-        const { accessToken } = await this.oauthSdk.refreshAccessToken(this.config.refreshToken);
-        this.config.accessToken = accessToken;
-      }
-    } catch (error) {
-      throw new Error(`Failed to validate or refresh access token: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  }
+  // /**
+  //  * Validates the access token and refreshes it if necessary.
+  //  * @private
+  //  */
+  // private async ensureValidAccessToken(): Promise<void> {
+  //   try {
+  //     const isValid = await this.oauthSdk.validateAccessToken(this.config.accessToken);
+  //     if (!isValid) {
+  //       const { accessToken } = await this.oauthSdk.refreshAccessToken(this.config.refreshToken);
+  //       this.config.accessToken = accessToken;
+  //     }
+  //   } catch (error) {
+  //     throw new Error(`Failed to validate or refresh access token: ${error instanceof Error ? error.message : String(error)}`);
+  //   }
+  // }
 
   /**
    * Sends a request to the Google Sheets API.
@@ -110,7 +110,7 @@ export class GoogleSheetsSdk {
    * @returns {Promise<any>} The API response.
    */
   private async sendRequest(method: string, endpoint: string, body?: object): Promise<any> {
-    await this.ensureValidAccessToken();
+    // await this.ensureValidAccessToken();
 
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${endpoint}`;
     const headers = {
@@ -131,12 +131,12 @@ export class GoogleSheetsSdk {
     return await response.json();
   }
 
-  /**
-   * Validates the access token and refreshes it if necessary.
-   */
-  async validateAccessToken(): Promise<boolean> {
-    return await this.oauthSdk.validateAccessToken(this.config.accessToken);
-  }
+  // /**
+  //  * Validates the access token and refreshes it if necessary.
+  //  */
+  // async validateAccessToken(): Promise<boolean> {
+  //   return await this.oauthSdk.validateAccessToken(this.config.accessToken);
+  // }
 
   /**
    * Refreshes the access token.
