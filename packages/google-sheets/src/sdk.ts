@@ -135,7 +135,8 @@ export class GoogleSheetsSdk {
    * Validates the access token and refreshes it if necessary.
    */
   async validateAccessToken(): Promise<boolean> {
-    return await this.oauthSdk.validateAccessToken(this.config.accessToken);
+    const result = await this.oauthSdk.validateAccessToken(this.config.accessToken);
+    return result.isValid;
   }
 
   /**
