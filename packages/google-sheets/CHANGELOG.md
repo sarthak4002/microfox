@@ -1,5 +1,11 @@
 # @microfox/google-sheets
 
+## 1.0.3
+
+### Patch Changes
+
+- 147cc0e: added accessToken validation
+
 ## 1.0.2
 
 ### Patch Changes
