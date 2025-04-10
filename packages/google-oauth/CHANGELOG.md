@@ -1,5 +1,11 @@
 # @microfox/google-oauth
 
+## 1.0.3
+
+### Patch Changes
+
+- 8c9e132: add validation function and updated scopes
+
 ## 1.0.2
 
 ### Patch Changes
