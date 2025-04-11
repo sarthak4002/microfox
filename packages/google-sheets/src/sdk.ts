@@ -29,6 +29,12 @@ const RangeSchema = z.object({
 
 type Range = z.infer<typeof RangeSchema>;
 
+const ValueInputOptionSchema = z.enum(['USER_ENTERED', 'RAW', 'INPUT_VALUE_OPTION_UNSPECIFIED']).optional().describe('The value input option').default('USER_ENTERED');
+const InsertDataOptionSchema = z.enum(['INSERT_ROWS', 'OVERWRITE']).optional().describe('The insert data option').default('INSERT_ROWS');
+
+type ValueInputOption = z.infer<typeof ValueInputOptionSchema>;
+type InsertDataOption = z.infer<typeof InsertDataOptionSchema>;
+
 /**
  * Represents the input for updating values in a Google Sheet.
  */
@@ -191,14 +197,13 @@ export class GoogleSheetsSdk {
    * @param {UpdateValuesInput} input - The input for updating values.
    * @returns {Promise<ApiResponse>} The API response.
    */
-  async updateValues(input: UpdateValuesInput): Promise<ApiResponse> {
+  async updateValues(input: UpdateValuesInput, valueInputOption: ValueInputOption = 'USER_ENTERED'): Promise<ApiResponse> {
     const validatedInput = UpdateValuesInputSchema.parse(input);
     const response = await this.sendRequest(
       'PUT',
-      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}`,
+      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}?valueInputOption=${valueInputOption}`,
       {
         values: validatedInput.values,
-        valueInputOption: 'USER_ENTERED',
       },
     );
     return ApiResponseSchema.parse(response);
@@ -209,15 +214,13 @@ export class GoogleSheetsSdk {
    * @param {AppendValuesInput} input - The input for appending values.
    * @returns {Promise<ApiResponse>} The API response.
    */
-  async appendValues(input: AppendValuesInput): Promise<ApiResponse> {
+  async appendValues(input: AppendValuesInput, valueInputOption: ValueInputOption = 'USER_ENTERED', insertDataOption: InsertDataOption = 'INSERT_ROWS'): Promise<ApiResponse> {
     const validatedInput = AppendValuesInputSchema.parse(input);
     const response = await this.sendRequest(
       'POST',
-      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}:append`,
+      `${validatedInput.range.sheetId}/values/${validatedInput.range.range}:append?valueInputOption=${valueInputOption}&insertDataOption=${insertDataOption}`,
       {
         values: validatedInput.values,
-        valueInputOption: 'USER_ENTERED',
-        insertDataOption: 'INSERT_ROWS',
       },
     );
     return ApiResponseSchema.parse(response);
@@ -260,19 +263,19 @@ export class GoogleSheetsSdk {
   async batchUpdateValues(
     sheetId: string,
     inputs: UpdateValuesInput[],
+    valueInputOption: ValueInputOption = 'USER_ENTERED',
   ): Promise<ApiResponse[]> {
     const validatedInputs = inputs.map(input =>
       UpdateValuesInputSchema.parse(input),
     );
     const response = await this.sendRequest(
       'POST',
-      `${sheetId}/values:batchUpdate`,
+      `${sheetId}/values:batchUpdate?valueInputOption=${valueInputOption}`,
       {
         data: validatedInputs.map(input => ({
           range: input.range.range,
           values: input.values,
         })),
-        valueInputOption: 'USER_ENTERED',
       },
     );
     return response.responses.map((r: any) => ApiResponseSchema.parse(r));
