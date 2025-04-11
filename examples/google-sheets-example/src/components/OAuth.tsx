@@ -55,7 +55,10 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
       setError(null);
 
       // Check if credentials are saved
-      if (!localStorage.getItem('clientId') || !localStorage.getItem('clientSecret')) {
+      if (
+        !localStorage.getItem('clientId') ||
+        !localStorage.getItem('clientSecret')
+      ) {
         setError('Please save your credentials first');
         setIsLoading(false);
         return;
@@ -77,7 +80,9 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
     } catch (error) {
       console.error('Error initiating OAuth flow:', error);
       setError(
-        error instanceof Error ? error.message : 'Failed to initiate OAuth flow'
+        error instanceof Error
+          ? error.message
+          : 'Failed to initiate OAuth flow',
       );
       setIsLoading(false);
     }
@@ -118,7 +123,7 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
               type="text"
               id="clientId"
               value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
+              onChange={e => setClientId(e.target.value)}
               placeholder="Enter your Google OAuth Client ID"
             />
           </div>
@@ -129,14 +134,16 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
               type="password"
               id="clientSecret"
               value={clientSecret}
-              onChange={(e) => setClientSecret(e.target.value)}
+              onChange={e => setClientSecret(e.target.value)}
               placeholder="Enter your Google OAuth Client Secret"
             />
           </div>
 
           {error && <p className="error">{error}</p>}
 
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <div
+            style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}
+          >
             <button onClick={handleSaveCredentials} disabled={isLoading}>
               Save Credentials
             </button>
@@ -155,11 +162,15 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
                 Create OAuth 2.0 credentials (Client ID and Client Secret)
               </li>
               <li>
-                Add your redirect URI: {window.location.origin}/api/auth/callback/google
+                Add your redirect URI: {window.location.origin}
+                /api/auth/callback/google
               </li>
               <li>Enter your credentials above and click "Save Credentials"</li>
               <li>Click "Authenticate with Google" to start the OAuth flow</li>
-              <li>After authentication, go to the Sheets page to interact with Google Sheets</li>
+              <li>
+                After authentication, go to the Sheets page to interact with
+                Google Sheets
+              </li>
             </ol>
           </div>
         </div>
@@ -168,4 +179,4 @@ const OAuth = ({ tokens, updateTokens }: OAuthProps) => {
   );
 };
 
-export default OAuth; 
+export default OAuth;

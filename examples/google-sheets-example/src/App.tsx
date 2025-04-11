@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import OAuth from './components/OAuth';
 import Sheets from './components/Sheets';
 import './App.css';
@@ -46,13 +52,14 @@ export default function App() {
     const handleCallback = async () => {
       const searchParams = new URLSearchParams(location.search);
       const code = searchParams.get('code');
-      
+
       if (code) {
         try {
           // Exchange code for tokens
           const clientId = localStorage.getItem('clientId1');
           const clientSecret = localStorage.getItem('clientSecret1');
-          const redirectUri = window.location.origin + '/api/auth/callback/google';
+          const redirectUri =
+            window.location.origin + '/api/auth/callback/google';
           const scopes = [GoogleScope.SHEETS];
           const oauthSdk = new GoogleOAuthSdk({
             clientId: clientId || '',
@@ -73,7 +80,7 @@ export default function App() {
           // Save tokens
           localStorage.setItem('google_tokens', JSON.stringify(newTokens));
           setTokens(newTokens);
-          
+
           // Redirect to sheets page
           navigate('/sheets');
         } catch (error) {
@@ -109,7 +116,10 @@ export default function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<OAuth tokens={tokens} updateTokens={updateTokens} />} />
+          <Route
+            path="/"
+            element={<OAuth tokens={tokens} updateTokens={updateTokens} />}
+          />
           <Route path="/sheets" element={<Sheets tokens={tokens} />} />
           <Route path="/api/auth/callback/google" element={null} />
         </Routes>
@@ -120,4 +130,4 @@ export default function App() {
       </footer>
     </div>
   );
-} 
+}

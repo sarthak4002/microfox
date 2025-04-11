@@ -29,8 +29,16 @@ const RangeSchema = z.object({
 
 type Range = z.infer<typeof RangeSchema>;
 
-const ValueInputOptionSchema = z.enum(['USER_ENTERED', 'RAW', 'INPUT_VALUE_OPTION_UNSPECIFIED']).optional().describe('The value input option').default('USER_ENTERED');
-const InsertDataOptionSchema = z.enum(['INSERT_ROWS', 'OVERWRITE']).optional().describe('The insert data option').default('INSERT_ROWS');
+const ValueInputOptionSchema = z
+  .enum(['USER_ENTERED', 'RAW', 'INPUT_VALUE_OPTION_UNSPECIFIED'])
+  .optional()
+  .describe('The value input option')
+  .default('USER_ENTERED');
+const InsertDataOptionSchema = z
+  .enum(['INSERT_ROWS', 'OVERWRITE'])
+  .optional()
+  .describe('The insert data option')
+  .default('INSERT_ROWS');
 
 type ValueInputOption = z.infer<typeof ValueInputOptionSchema>;
 type InsertDataOption = z.infer<typeof InsertDataOptionSchema>;
@@ -197,7 +205,10 @@ export class GoogleSheetsSdk {
    * @param {UpdateValuesInput} input - The input for updating values.
    * @returns {Promise<ApiResponse>} The API response.
    */
-  async updateValues(input: UpdateValuesInput, valueInputOption: ValueInputOption = 'USER_ENTERED'): Promise<ApiResponse> {
+  async updateValues(
+    input: UpdateValuesInput,
+    valueInputOption: ValueInputOption = 'USER_ENTERED',
+  ): Promise<ApiResponse> {
     const validatedInput = UpdateValuesInputSchema.parse(input);
     const response = await this.sendRequest(
       'PUT',
@@ -214,7 +225,11 @@ export class GoogleSheetsSdk {
    * @param {AppendValuesInput} input - The input for appending values.
    * @returns {Promise<ApiResponse>} The API response.
    */
-  async appendValues(input: AppendValuesInput, valueInputOption: ValueInputOption = 'USER_ENTERED', insertDataOption: InsertDataOption = 'INSERT_ROWS'): Promise<ApiResponse> {
+  async appendValues(
+    input: AppendValuesInput,
+    valueInputOption: ValueInputOption = 'USER_ENTERED',
+    insertDataOption: InsertDataOption = 'INSERT_ROWS',
+  ): Promise<ApiResponse> {
     const validatedInput = AppendValuesInputSchema.parse(input);
     const response = await this.sendRequest(
       'POST',

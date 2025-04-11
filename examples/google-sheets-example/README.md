@@ -64,6 +64,7 @@ This example demonstrates how to use the Microfox Google OAuth and Google Sheets
 ## Usage
 
 1. **Authentication**:
+
    - Enter your Google OAuth Client ID and Client Secret
    - Click "Save Credentials" to store them in localStorage
    - Click "Authenticate with Google" to start the OAuth flow
@@ -89,4 +90,4 @@ This example demonstrates how to use the Microfox Google OAuth and Google Sheets
 
 - If you encounter authentication issues, make sure your OAuth credentials are correct and the redirect URI is properly configured
 - If you encounter API errors, check that the Google Sheets API is enabled for your project
-- If you encounter CORS issues, make sure your redirect URI is correctly set in the Google Cloud Console 
+- If you encounter CORS issues, make sure your redirect URI is correctly set in the Google Cloud Console
