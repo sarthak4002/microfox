@@ -12,7 +12,8 @@
 /**
  * The query used to generate SDK
  */
-export const SDK_QUERY = 'I need a brave sdk package with name "brave" and it should have functions for web-search, summarizer-search, image-search, video-search, news-search, suggest, spellcheck';
+export const SDK_QUERY =
+  'I need a brave sdk package with name "brave" and it should have functions for web-search, summarizer-search, image-search, video-search, news-search, suggest, spellcheck';
 
 /**
  * URLs for API documentation
@@ -62,4 +63,3 @@ export const API_DOCUMENTATION_URLS = [
 export const EXT_PACKAGE_URLS = [
   'https://github.com/slackapi/node-slack-sdk/tree/main/packages/web-api',
 ];
-
