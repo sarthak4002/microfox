@@ -1,5 +1,11 @@
 # @microfox/google-sheets
 
+## 1.0.4
+
+### Patch Changes
+
+- efd4782: fix append and update functions inputValueOptions
+
 ## 1.0.3
 
 ### Patch Changes
