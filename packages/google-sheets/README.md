@@ -40,6 +40,53 @@ const config: GoogleSheetsSdkConfig = {
 const sheetsSdk = createGoogleSheetsSdk(config);
 ```
 
+## Understanding Sheet References
+
+When working with Google Sheets, you need to understand three key concepts:
+
+1. **Sheet ID**: A unique identifier for your Google Spreadsheet (found in the URL)
+2. **Sheet Name**: The name of the specific tab within your spreadsheet
+3. **Range**: The specific cells you want to work with
+
+Here's how to use them:
+
+```typescript
+// Constants for better readability and maintenance
+const SHEET_ID = '1234567890abcdefghijklmnopqrstuvwxyz'; // Your spreadsheet ID from the URL
+const SHEET_NAME = 'Sales'; // The name of your sheet/tab
+const RANGE = 'A1:B10'; // The range of cells you want to work with
+
+// Combine them for use in the SDK
+const sheetReference = {
+  sheetId: SHEET_ID,
+  range: `${SHEET_NAME}!${RANGE}` // Format: "SheetName!Range"
+};
+```
+
+### Range Notation Examples
+
+The range parameter supports various formats:
+
+```typescript
+// Single cell
+const singleCell = 'A1';
+
+// Range of cells
+const cellRange = 'A1:B10';
+
+// Entire column
+const entireColumn = 'A:A';
+
+// Entire row
+const entireRow = '1:1';
+
+// Multiple columns
+const multipleColumns = 'A:C';
+
+// Multiple rows
+const multipleRows = '1:5';
+```
+
 ## API Reference
 
 ### `createGoogleSheetsSdk(config: GoogleSheetsSdkConfig): GoogleSheetsSdk`
@@ -89,7 +136,18 @@ Refreshes the access token.
 ### Reading Values
 
 ```typescript
-const range = { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A1:B10' };
+// Define your constants
+const SHEET_ID = 'your-spreadsheet-id';
+const SHEET_NAME = 'Sales';
+const RANGE = 'A1:B10';
+
+// Create the range object
+const range = {
+  sheetId: SHEET_ID,
+  range: `${SHEET_NAME}!${RANGE}`
+};
+
+// Get the values
 const values = await sheetsSdk.getValues(range);
 console.log(values);
 ```
@@ -97,13 +155,24 @@ console.log(values);
 ### Updating Values
 
 ```typescript
+// Define your constants
+const SHEET_ID = 'your-spreadsheet-id';
+const SHEET_NAME = 'Inventory';
+const RANGE = 'A1:B2';
+
+// Create the update input
 const updateInput = {
-  range: { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A1:B2' },
+  range: {
+    sheetId: SHEET_ID,
+    range: `${SHEET_NAME}!${RANGE}`
+  },
   values: [
     ['New Value 1', 'New Value 2'],
     ['New Value 3', 'New Value 4'],
   ],
 };
+
+// Update the values
 const response = await sheetsSdk.updateValues(updateInput);
 console.log(response);
 ```
@@ -111,10 +180,21 @@ console.log(response);
 ### Appending Values
 
 ```typescript
+// Define your constants
+const SHEET_ID = 'your-spreadsheet-id';
+const SHEET_NAME = 'Customers';
+const RANGE = 'A:B'; // Append to columns A and B
+
+// Create the append input
 const appendInput = {
-  range: { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A:B' },
+  range: {
+    sheetId: SHEET_ID,
+    range: `${SHEET_NAME}!${RANGE}`
+  },
   values: [['Appended Value 1', 'Appended Value 2']],
 };
+
+// Append the values
 const response = await sheetsSdk.appendValues(appendInput);
 console.log(response);
 ```
@@ -122,7 +202,18 @@ console.log(response);
 ### Clearing Values
 
 ```typescript
-const clearInput = { sheetId: 'YOUR_SHEET_ID', range: 'Sheet1!A1:B10' };
+// Define your constants
+const SHEET_ID = 'your-spreadsheet-id';
+const SHEET_NAME = 'Sales';
+const RANGE = 'A1:B10';
+
+// Create the clear input
+const clearInput = {
+  sheetId: SHEET_ID,
+  range: `${SHEET_NAME}!${RANGE}`
+};
+
+// Clear the values
 const response = await sheetsSdk.clearValues(clearInput);
 console.log(response);
 ```
