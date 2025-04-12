@@ -11,11 +11,7 @@
   "readme_map": {
     "path": "/README.md",
     "title": "createSlackSDK Microfox",
-    "functionalities": [
-      "sendMessage",
-      "updateMessage",
-      "uploadFile"
-    ],
+    "functionalities": ["sendMessage", "updateMessage", "uploadFile"],
     "description": "The full README for the Slack Web Tiny SDK"
   },
   "constructors": [
@@ -30,7 +26,52 @@
           "description": "The token for the Slack Web Tiny client"
         }
       ],
-      "internalKeys": []
+      "internalKeys": [],
+      "botConfig": [
+        {
+          "label": "Author Name",
+          "type": "text",
+          "field": "authorName",
+          "placeholder": "Enter author name",
+          "description": "Name that will appear as the message sender"
+        },
+        {
+          "label": "Message Format",
+          "type": "select",
+          "field": "messageFormat",
+          "options": [
+            {
+              "label": "Plain Text",
+              "value": "plain"
+            },
+            {
+              "label": "Markdown",
+              "value": "markdown"
+            }
+          ],
+          "description": "Format of the messages sent to Slack"
+        },
+        {
+          "label": "Default Channel",
+          "type": "text",
+          "field": "defaultChannel",
+          "placeholder": "Enter default channel name",
+          "description": "Default channel where messages will be sent"
+        },
+        {
+          "label": "Use Thread Replies",
+          "type": "boolean",
+          "field": "useThreads",
+          "description": "Enable thread-based conversations"
+        },
+        {
+          "label": "Custom Message Template",
+          "type": "textarea",
+          "field": "messageTemplate",
+          "placeholder": "Enter custom message template",
+          "description": "Template for formatting messages (supports variables)"
+        }
+      ]
     }
   ],
   "keysInfo": [
