@@ -1,60 +1,45 @@
-// export const SDK_QUERY = 'Google Sheets package';
-// export const API_DOCUMENTATION_URLS = [
-//   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get',
-//   'https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchGet',
-//   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update',
-//   'https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate',
-//   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append',
-//   'https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/clear',
-//   'https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/batchClear',
-// ];
+/**
+ * Common selectors for finding navigation/sidebar elements
+ */
+export const URL_SELECTORS = {
+  sidebar: [
+    'nav[role="navigation"]',
+    'aside',
+    '.sidebar',
+    '.navigation',
+    '.menu',
+    '.docs-sidebar',
+    '#sidebar',
+    '.sidebar-nav',
+    '.nav-sidebar',
+    '[class*="sub svelte-v0fzog"]', // Brave
+  ],
+  // Do not add multiple selectors for the same content/sub-content (it will duplicate content)
+  content: [
+    '.content-docs', // Brave
+    '[class*="section overview"]', // Reddit
+    '[class*="section methods"]', // Reddit
+  ]
+};
 
 /**
  * The query used to generate SDK
  */
 export const SDK_QUERY =
-  'I need a brave sdk package with name "brave" and it should have functions for web-search, summarizer-search, image-search, video-search, news-search, suggest, spellcheck';
+  'I need a reddit sdk package with name "reddit". Auth is oauth2 with @microfox/reddit-oauth';
 
 /**
  * URLs for API documentation
  */
 export const API_DOCUMENTATION_URLS = [
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/query',
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/web-search/codes',
-  'https://api-dashboard.search.brave.com/app/documentation/summarizer-search/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/summarizer-search/query',
-  'https://api-dashboard.search.brave.com/app/documentation/summarizer-search/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/summarizer-search/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/summarizer-search/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/image-search/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/image-search/query',
-  'https://api-dashboard.search.brave.com/app/documentation/image-search/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/image-search/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/image-search/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/video-search/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/video-search/query',
-  'https://api-dashboard.search.brave.com/app/documentation/video-search/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/video-search/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/video-search/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/news-search/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/news-search/query',
-  'https://api-dashboard.search.brave.com/app/documentation/news-search/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/news-search/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/news-search/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/suggest/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/suggest/query',
-  'https://api-dashboard.search.brave.com/app/documentation/suggest/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/suggest/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/suggest/responses',
-  'https://api-dashboard.search.brave.com/app/documentation/spellcheck/get-started',
-  'https://api-dashboard.search.brave.com/app/documentation/spellcheck/query',
-  'https://api-dashboard.search.brave.com/app/documentation/spellcheck/request-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/spellcheck/response-headers',
-  'https://api-dashboard.search.brave.com/app/documentation/spellcheck/responses',
+  'https://www.reddit.com/dev/api',
+];
+
+/**
+ * URLs that have been scraped and processed
+ */
+export const SCRAPED_URLS = [
+  'https://www.reddit.com/dev/api',
 ];
 
 /**
