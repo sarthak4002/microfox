@@ -7,7 +7,9 @@ import { promisify } from 'util';
 import { generateText, generateObject, tool } from 'ai';
 import { models } from './ai/models';
 import dedent from 'dedent';
-import { SDK_QUERY, API_DOCUMENTATION_URLS } from './constants';
+import { SDK_QUERY } from './constants';
+import scrapedContents from './scraped-content.json';
+import { generateReadme } from './genDocs';
 
 const execAsync = promisify(exec);
 
@@ -95,45 +97,6 @@ async function generateMetadata(query: string): Promise<SDKMetadata> {
 
   console.log('✅ Generated metadata successfully');
   return metadata;
-}
-
-/**
- * Scrape content from URLs using fetch
- */
-async function scrapeUrls(urls: string[]): Promise<string[]> {
-  const contents: string[] = [];
-
-  for (const url of urls) {
-    try {
-      console.log(`🔍 Scraping ${url}...`);
-      const response = await fetch(url, {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-          'Accept-Language': 'en-US,en;q=0.9', // Prioritize English language content
-          Accept:
-            'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-          Country: 'US', // Specify country to ensure content is from English-speaking regions
-        },
-      });
-      const html = await response.text();
-
-      // Use a simple regex-based approach to extract text and remove tags
-      const textContent = html
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
-        .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '') // Remove styles
-        .replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, '') // Remove SVGs
-        .replace(/<[^>]*>/g, ' ') // Remove HTML tags
-        .replace(/\s+/g, ' ') // Normalize whitespace
-        .trim();
-
-      contents.push(`URL: ${url}\n\nContent:\n${textContent.slice(0, 5000)}`);
-    } catch (error) {
-      console.warn(`⚠️ Error scraping ${url}:`, error);
-    }
-  }
-
-  return contents;
 }
 
 /**
@@ -346,11 +309,58 @@ const WriteToFileSchema = z.object({
     .describe(
       'The entire TypeScript code for this SDK, which will be saved to sdk.ts file',
     ),
-  constructorName: z
+  sdkDocs: z
     .string()
     .describe(
-      'The name of the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").',
+      'The entire documentation for this SDK, which will be saved to README.md file.',
     ),
+  authType: z
+    .enum(['apiKey', 'oauth2', 'none'])
+    .describe(
+      'Authentication type for this SDK: "apiKey" for API key auth, "oauth2" for OAuth2 flow, or "none" for no auth required',
+    ),
+  authSdk: z
+    .string()
+    .optional()
+    .describe(
+      'The name of the OAuth SDK to use (e.g., "@microfox/google-oauth", "@microfox/linkedin-oauth"). Required when authType is "oauth2".',
+    ),
+  oauth2Scopes: z
+    .array(z.string())
+    .optional()
+    .describe(
+      'Required OAuth2 scopes for this SDK (e.g., ["https://www.googleapis.com/auth/spreadsheets"]). Required Only when authType is "oauth2".',
+    ),
+});
+
+type WriteToFileData = z.infer<typeof WriteToFileSchema>;
+
+// Define the schema for the generate_docs tool
+const GenerateDocsSchema = z.object({
+  constructorDocs: z
+    .object({
+      name: z.string().describe('The name of the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK")'),
+      docs: z.string().describe('The DETAILED markdown documentation for the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").'),
+    })
+    .describe(
+      'The DETAILED markdown documentation for the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").',
+    ),
+  functionsDocs: z
+    .array(z.object({
+      name: z.string().describe('The name of the function (e.g., "createUser")'),
+      docs: z.string().describe('The DETAILED markdown documentation for the function including all parameters, return type, usage examples, and more'),
+    }))
+    .describe(
+      'The documentation for each function in this SDK, which will be saved to that specific function doc file like "createUser.md"',
+    ),
+  dependencies: z
+    .array(z.string())
+    .optional()
+    .describe('List of dependencies to install. Only include dependencies that are actually needed beyond what\'s already installed'),
+  devDependencies: z
+    .array(z.string())
+    .optional()
+    .describe('List of dev dependencies to install. Only include dev dependencies that are actually needed beyond what\'s already installed'),
   envKeys: z
     .array(
       z.object({
@@ -375,39 +385,9 @@ const WriteToFileSchema = z.object({
     .describe(
       'List of required API keys needed for authentication with this SDK',
     ),
-  authType: z
-    .enum(['apiKey', 'oauth2', 'none'])
-    .describe(
-      'Authentication type for this SDK: "apiKey" for API key auth, "oauth2" for OAuth2 flow, or "none" for no auth required',
-    ),
-  authSdk: z
-    .string()
-    .optional()
-    .describe(
-      'The name of the OAuth SDK to use (e.g., "@microfox/google-oauth", "@microfox/linkedin-oauth"). Required when authType is "oauth2".',
-    ),
-  oauth2Scopes: z
-    .array(z.string())
-    .optional()
-    .describe(
-      'Required OAuth2 scopes for this SDK (e.g., ["https://www.googleapis.com/auth/spreadsheets"]). Required Only when authType is "oauth2".',
-    ),
-  functions: z
-    .array(z.string())
-    .describe('List of function names exposed by this SDK.'),
 });
 
-type WriteToFileData = z.infer<typeof WriteToFileSchema>;
-
-// Define the schema for the run_command tool
-const RunCommandSchema = z.object({
-  dependencies: z.array(z.string()).describe('List of dependencies to install'),
-  devDependencies: z
-    .array(z.string())
-    .describe('List of dev dependencies to install'),
-});
-
-type RunCommandData = z.infer<typeof RunCommandSchema>;
+type GenerateDocsData = z.infer<typeof GenerateDocsSchema>;
 
 /**
  * Build the package
@@ -467,11 +447,6 @@ export async function generateSDK(
     const packageDir = await createInitialPackage(metadata);
     console.log(`📁 Created initial package structure at ${packageDir}`);
 
-    // Scrape URLs for content
-    console.log('🔍 Scraping URLs for API documentation...');
-    const scrapedContent = await scrapeUrls(API_DOCUMENTATION_URLS);
-    console.log(`✅ Scraped ${scrapedContent.length} URLs`);
-
     let oauthPackages = fs
       .readdirSync(path.join(__dirname, '../../packages'))
       .filter(dir => dir.includes('-oauth'));
@@ -502,31 +477,31 @@ export async function generateSDK(
 
     // Create tool to handle file writing
     const writeToFileTool = tool({
-      description: 'Write SDK code to sdk.ts file and update constructor info',
+      description: 'Write SDK code to sdk.ts file and update basic documentation',
       parameters: WriteToFileSchema,
       execute: async (data: WriteToFileData) => {
-        // Extract constructor name and functions from SDK code if not provided
-        let constructorName = data.constructorName || '';
-        let functions = data.functions || [];
-
         console.log('📝 Generated SDK with the following info:');
-        console.log(`- Constructor: ${constructorName}`);
-        console.log(`- Functions: ${functions.length}`);
         console.log(`- Auth Type: ${data.authType}`);
+        if (data.authSdk) {
+          console.log(`- Auth SDK: ${data.authSdk}`);
+        }
+        if (data.oauth2Scopes && data.oauth2Scopes.length > 0) {
+          console.log(`- OAuth2 Scopes: ${data.oauth2Scopes.join(', ')}`);
+        }
 
         // Get package directory
         console.log(`- Process directory: ${process.cwd()}`);
-        const srcDir = path.join(
-          process.cwd(),
-          '../packages',
-          metadata.packageName.replace('@microfox/', ''),
-          'src',
-        );
+        const dirName = metadata.packageName.replace('@microfox/', '');
+        const packageDir = path.join(process.cwd(), '../packages', dirName);
+        const srcDir = path.join(packageDir, 'src');
 
         // Update sdk.ts with generated code
         fs.writeFileSync(path.join(srcDir, 'sdk.ts'), data.sdkCode);
 
-        // Update package-info.json with constructor info
+        // Update README.md with generated documentation
+        fs.writeFileSync(path.join(packageDir, 'README.md'), data.sdkDocs);
+
+        // Update package-info.json with auth info
         const packageInfoPath = path.join(packageDir, 'package-info.json');
         const packageInfo = JSON.parse(
           fs.readFileSync(packageInfoPath, 'utf8'),
@@ -539,12 +514,78 @@ export async function generateSDK(
             : '';
         packageInfo.oauth2Scopes = data.oauth2Scopes || [];
 
+        // Write updated package-info.json
+        fs.writeFileSync(packageInfoPath, JSON.stringify(packageInfo, null, 2));
+
+        console.log(`✅ Updated SDK files at ${packageDir}`);
+
+        return {
+          success: true,
+          packageDir,
+          sdkCode: data.sdkCode,
+          sdkDocs: data.sdkDocs,
+        };
+      },
+    });
+
+    // Create tool to generate detailed documentation
+    const generateDocsTool = tool({
+      description: 'Generate detailed documentation for the SDK',
+      parameters: GenerateDocsSchema,
+      execute: async (data: GenerateDocsData) => {
+        const constructorName = data.constructorDocs.name;
+
+        console.log('📝 Generated detailed documentation with the following info:');
+        console.log(`- Constructor: ${constructorName}`);
+        console.log(`- Functions: ${data.functionsDocs.length}`);
+
+        // Get package directory
+        const dirName = metadata.packageName.replace('@microfox/', '');
+        const packageDir = path.join(process.cwd(), '../packages', dirName);
+        const docsDir = path.join(packageDir, 'docs');
+
+        // Create docs directory if it doesn't exist
+        if (!fs.existsSync(docsDir)) {
+          fs.mkdirSync(docsDir, { recursive: true });
+        }
+
+        // Save constructor documentation file
+        fs.writeFileSync(
+          path.join(docsDir, `${constructorName}.md`),
+          data.constructorDocs.docs
+        );
+
+        // Save function documentation files
+        for (const func of data.functionsDocs) {
+          fs.writeFileSync(
+            path.join(docsDir, `${func.name}.md`),
+            func.docs
+          );
+        }
+
+        // Update package-info.json with constructor info
+        const packageInfoPath = path.join(packageDir, 'package-info.json');
+        const packageInfo = JSON.parse(
+          fs.readFileSync(packageInfoPath, 'utf8'),
+        );
+
         // Add readme_map
         packageInfo.readme_map = {
-          path: '/README.md',
-          title: `${constructorName} Microfox`,
-          functionalities: functions,
+          title: `@microfox/${metadata.packageName} README`,
           description: `The full README for the ${metadata.title}`,
+          path: '/README.md',
+          constructors: [
+            {
+              name: constructorName,
+              description: `The documentation for the constructor ${constructorName} that initializes this SDK.`,
+              path: `/docs/${constructorName}.md`,
+            }
+          ],
+          functionalities: data.functionsDocs.map(f => ({
+            name: f.name,
+            description: `The documentation for the ${f.name} function.`,
+            path: `/docs/${f.name}.md`,
+          })),
         };
 
         // Add constructor info
@@ -552,26 +593,26 @@ export async function generateSDK(
           {
             name: constructorName,
             description: `Create a new ${metadata.title} client through which you can interact with the API`,
-            auth: data.authType,
-            authSdk: data.authType === 'oauth2' ? data.authSdk || '' : '',
+            auth: packageInfo.authEndpoint ? 'oauth2' : 'apiKey',
+            authSdk: packageInfo.authEndpoint ? packageInfo.authEndpoint.replace('/connect/', '@microfox/') : '',
             outputKeys: [],
             requiredKeys:
-              data.authType !== 'oauth2'
+              !packageInfo.authEndpoint
                 ? data.envKeys.map(key => ({
-                    key: key.key,
-                    displayName: key.displayName,
-                    description: key.description,
-                  }))
+                  key: key.key,
+                  displayName: key.displayName,
+                  description: key.description,
+                }))
                 : [],
             internalKeys:
-              data.authType === 'oauth2'
+              packageInfo.authEndpoint
                 ? data.envKeys.map(key => ({
-                    key: key.key,
-                    displayName: key.displayName,
-                    description: key.description,
-                  }))
+                  key: key.key,
+                  displayName: key.displayName,
+                  description: key.description,
+                }))
                 : [],
-            functionalities: functions,
+            functionalities: data.functionsDocs.map(f => f.name),
           },
         ];
 
@@ -588,28 +629,7 @@ export async function generateSDK(
           `Use the \`${constructorName}\` constructor to create a new client.`,
         ];
 
-        // Write updated package-info.json
-        fs.writeFileSync(packageInfoPath, JSON.stringify(packageInfo, null, 2));
-
-        console.log(`✅ Updated SDK files at ${packageDir}`);
-
-        return {
-          success: true,
-          packageDir,
-          constructorName: constructorName,
-        };
-      },
-    });
-
-    // Create command tool to install dependencies
-    const runCommandTool = tool({
-      description: 'Install package dependencies',
-      parameters: RunCommandSchema,
-      execute: async (data: RunCommandData) => {
-        // Get package directory
-        const dirName = metadata.packageName.replace('@microfox/', '');
-        const packageDir = path.join(process.cwd(), '../packages', dirName);
-
+        // Install dependencies if provided
         if (data.dependencies && data.dependencies.length > 0) {
           console.log('📦 Installing dependencies...');
           const depsString = data.dependencies.join(' ');
@@ -624,6 +644,12 @@ export async function generateSDK(
             const packageJson = JSON.parse(
               fs.readFileSync(packageJsonPath, 'utf8'),
             );
+
+            // Add new dependencies to package.json
+            for (const dep of data.dependencies) {
+              const [name, version] = dep.split('@');
+              packageJson.dependencies[name] = version || '^1.0.0';
+            }
 
             // Write updated package.json
             fs.writeFileSync(
@@ -640,6 +666,7 @@ export async function generateSDK(
           }
         }
 
+        // Install dev dependencies if provided
         if (data.devDependencies && data.devDependencies.length > 0) {
           console.log('📦 Installing dev dependencies...');
           const devDepsString = data.devDependencies.join(' ');
@@ -654,6 +681,12 @@ export async function generateSDK(
             const packageJson = JSON.parse(
               fs.readFileSync(packageJsonPath, 'utf8'),
             );
+
+            // Add new dev dependencies to package.json
+            for (const dep of data.devDependencies) {
+              const [name, version] = dep.split('@');
+              packageJson.devDependencies[name] = version || '^1.0.0';
+            }
 
             // Write updated package.json
             fs.writeFileSync(
@@ -671,26 +704,25 @@ export async function generateSDK(
         }
 
         // Update package-info.json with dependencies
-        const packageInfoPath = path.join(packageDir, 'package-info.json');
-        const packageInfo = JSON.parse(
-          fs.readFileSync(packageInfoPath, 'utf8'),
-        );
-
-        // Update dependencies list in package-info.json (keep 'zod' and add new ones)
         if (data.dependencies && data.dependencies.length > 0) {
           packageInfo.dependencies = Array.from(
-            new Set(['zod', ...data.dependencies]),
+            new Set(['zod', ...data.dependencies.map(d => d.split('@')[0])]),
           );
         }
 
         // Write updated package-info.json
         fs.writeFileSync(packageInfoPath, JSON.stringify(packageInfo, null, 2));
 
+        console.log(`✅ Updated documentation files at ${packageDir}`);
+
+        // Build the package
+        console.log('🔨 Building the package...');
+        await buildPackage(packageDir);
+
         return {
           success: true,
           packageDir,
-          dependencies: data.dependencies,
-          devDependencies: data.devDependencies,
+          constructorName: constructorName,
         };
       },
     });
@@ -710,57 +742,58 @@ export async function generateSDK(
       5. Recheck your code for any linting or TypeScript errors
       6. Make sure the SDK is easy to use and follows best practices
       
-      ## Core Requirements
+      ## Core Requirements for the SDK Code Generation
       1. Use Zod for defining types with descriptive comments using .describe()
       2. DO NOT use Zod for validation of API responses
       3. The SDK should expose a constructor function or Class named "create${metadata.apiName.replace(/\s+/g, '')}SDK"
       4. The SDK should have functions for all the endpoints mentioned in the documentation
-      5. Export all necessary types
-      6. Handle error cases properly
-      7. Include proper JSDoc comments
-      8. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
+      5. The SDK should abstract as much as possible of the API's complexity, so that the API can be easily used by any developer.
+      6. The parameters of constructor and functions should be as much abstracted as possible, so that the developer can pass in the parameters in the way that is most convenient for them.
+      7. The SDK should be as clean, customizable and reusable as possible
+      8. The SDK should be well documented with JSDoc comments
+      9. Export all necessary types
+      10. Handle error cases properly so that the developer can easily understand what went wrong
+      11. Do not use axios or node-fetch dependencies, use nodejs20 default fetch instead
 
       ## Authentication Implementation
-      ${
-        metadata.authType === 'auto'
-          ? `You must analyze the API documentation to determine the appropriate auth type:
+      ${metadata.authType === 'auto'
+        ? `You must analyze the API documentation to determine the appropriate auth type:
       - Use "oauth2" if the API uses OAuth 2.0 flows (client IDs, authorization codes, redirect URIs)
       - Use "apiKey" if the API uses API keys, tokens, or headers for auth
       - Use "none" if no auth is required
       
       You must explicitly decide which auth type to implement based on the documentation.`
-          : `The authentication type is set to "${metadata.authType}".`
+        : `The authentication type is set to "${metadata.authType}".`
       }
 
-      ${
-        metadata.authType === 'oauth2' || metadata.authType === 'auto'
-          ? `
+      ${metadata.authType === 'oauth2' || metadata.authType === 'auto'
+        ? `
       ## OAuth 2.0 Implementation Guidelines
       - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
       - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
       - The SDK should check if the provided access token is valid and if not, throw an error
 
       ## OAuth Integration
-      - You must provide the appropriate envKeys for OAuth tokens in the write_to_file tool
       - You must provide the appropriate authSdk value in the write_to_file tool
       - You must provide the appropriate oauth2Scopes values which fully cover the scopes required by the functions in the sdk in the write_to_file tool
       - You must install the OAuth package in the project
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
-          : ''
+        : ''
       }
 
       ## Tool Usage
-      - To write the SDK code, use the write_to_file tool
-        - You MUST provide a valid authType value from: "apiKey", "oauth2", or "none"
-        - For envKeys, provide detailed information including key names in UPPERCASE format and whether they are required
-        - For OAuth2, you MUST provide the appropriate authSdk value (e.g., "google-oauth", "linkedin-oauth")
-        - For OAuth2, you MUST provide the appropriate oauth2Scopes value
-        - The sdkCode parameter should contain the complete TypeScript code for the SDK
-      - To install dependencies, use the run_command tool
-        - Only include dependencies that are actually needed beyond what's already installed
-        - If it can be done with REST APIs, do not install any external dependencies
-        - For OAuth2, you MUST install the provided OAuth package
+      - To write the SDK code, use the write_to_file tool with the following parameters:
+        - sdkCode: The complete TypeScript code for the SDK
+        - sdkDocs: The complete documentation for the SDK in Markdown format
+        - authType: Authentication type ("apiKey", "oauth2", or "none")
+        - authSdk: The OAuth SDK to use (required when authType is "oauth2")
+        - oauth2Scopes: Required OAuth2 scopes (required when authType is "oauth2")
+      
+      - The write_to_file tool will:
+        1. Save the SDK code to sdk.ts
+        2. Save the documentation to README.md
+        3. Update package-info.json with auth info
     `;
 
     const generationPrompt = dedent`
@@ -769,10 +802,9 @@ export async function generateSDK(
       ## SDK Information
       - Title: ${metadata.title}
       - Description: ${metadata.description}
-      ${
-        metadata.authType !== 'auto'
-          ? `- Auth Type: ${metadata.authType}`
-          : `- Auth Type: auto - Please determine the appropriate auth type based on:
+      ${metadata.authType !== 'auto'
+        ? `- Auth Type: ${metadata.authType}`
+        : `- Auth Type: auto - Please determine the appropriate auth type based on:
             - Use "oauth2" if the API uses OAuth 2.0 flows
             - Use "apiKey" if the API uses API keys, tokens, or headers for auth
             - Use "none" if no auth is required`
@@ -780,15 +812,21 @@ export async function generateSDK(
       ${metadata.authSdk ? `- Auth SDK: ${metadata.authSdk}` : ''}
       
       ## API Documentation
-      ${scrapedContent.join('\n\n---\n\n').substring(0, 50000)}
-      
-      ${
-        metadata.authType === 'oauth2' && oauthPackageReadme
-          ? `
+      ${(() => {
+        const averageLength = Math.floor(100000 / scrapedContents.length);
+
+        return scrapedContents.map(content => {
+          const truncatedContent = content.content.substring(0, averageLength);
+          return `URL: ${content.url}\n\nCONTENT: ${truncatedContent}`;
+        }).join('\n\n---\n\n');
+      })().substring(0, 100000)}
+
+      ${metadata.authType === 'oauth2' && oauthPackageReadme
+        ? `
       ## OAuth Package Documentation
       ${oauthPackageReadme}
       `
-          : ''
+        : ''
       }
       
       ## Available Dependencies
@@ -803,10 +841,6 @@ export async function generateSDK(
       - Dependencies:
         - zod
       
-      ## Implementation Steps
-      1. First analyze what dependencies you'll need and use run_command to install them
-      2. Then generate the SDK code and use write_to_file to save it
-      
       ## SDK Requirements
       - Create a complete, production-ready SDK with no TODOs or placeholders
       - Ensure all types are properly defined with Zod
@@ -814,17 +848,21 @@ export async function generateSDK(
       - Add detailed JSDoc comments for all functions and types
       - Make sure the SDK is easy to use and follows best practices
       
-      ${
-        metadata.authType === 'oauth2' || metadata.authType === 'auto'
-          ? `
+      ${metadata.authType === 'oauth2' || metadata.authType === 'auto'
+        ? `
       ## OAuth Implementation Requirements
       - The SDK should accept accessToken, refreshToken, clientId, and clientSecret as parameters in the constructor
       - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
       - The SDK should check if the provided access token is valid and if not, throw an error
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
       `
-          : ''
+        : ''
       }
+      
+      ## Documentation Requirements
+      - Create comprehensive documentation for the SDK in the sdkDocs parameter
+      - Include examples of how to use the SDK in the documentation
+      - Explain authentication requirements and how to obtain necessary credentials
     `;
 
     // Log prompts
@@ -842,10 +880,9 @@ export async function generateSDK(
       maxTokens: 8000,
       tools: {
         write_to_file: writeToFileTool,
-        run_command: runCommandTool,
       },
       toolChoice: 'required',
-      maxSteps: 2,
+      maxSteps: 1,
       onStepFinish: step => {
         console.log('step', step.usage);
       },
@@ -861,14 +898,113 @@ export async function generateSDK(
       return undefined;
     }
 
-    // Build the package
-    console.log('🔨 Building the package...');
-    await buildPackage(
-      path.join(
-        process.cwd(),
-        '../packages',
-        metadata.packageName.replace('@microfox/', ''),
-      ),
+    // Get the SDK code and docs from the first generation
+    const sdkResult = result.toolResults[0].result;
+    if (!sdkResult || !sdkResult.success) {
+      console.warn('⚠️ SDK generation failed');
+      return undefined;
+    }
+
+    // Get auth information from the tool call arguments
+    const sdkArgs = result.toolResults[0].args;
+
+    // Create system prompt for documentation generation
+    const docsSystemPrompt = dedent`
+      You are a documentation generator for a TypeScript SDK. Your task is to create detailed documentation for the SDK based on the provided code and basic documentation.
+      
+      ## Process
+      1. First carefully analyze the SDK code and basic documentation
+      2. Identify the constructor and all functions in the SDK
+      3. Create detailed documentation for the constructor and each function
+      4. Make sure the documentation is comprehensive and easy to understand
+      
+      ## Core Requirements for the Documentation Generation
+      1. The constructorDocs should have a detailed description of the constructor, including the parameters, initialization, usage examples, and more
+      2. The functionsDocs should have a detailed documentation for the functions, including the parameters, return type, usage examples, and more
+      3. The functionDocs should have sections for Authentication, Usage, Parameters, and more
+      4. The documentation should be well written with Markdown format and should be well organized and easy to understand
+      5. The documentation should include examples of how to use the SDK
+      6. The documentation should explain authentication requirements and how to obtain necessary credentials
+      
+      ## Tool Usage
+      - To generate the documentation, use the generate_docs tool with the following parameters:
+        - constructorDocs: The constructor name and documentation
+        - functionsDocs: An array of objects with function names and their documentation
+        - dependencies: Optional array of dependencies to install
+        - devDependencies: Optional array of dev dependencies to install
+        - envKeys: Array of environment variable keys needed for authentication
+      
+      - The generate_docs tool will:
+        1. Save constructor documentation to docs/constructor_name.md
+        2. Save function documentation to docs/function_name.md files
+        3. Update package-info.json with constructor info
+        4. Install any dependencies you specify
+        5. Build the package
+    `;
+
+    const docsGenerationPrompt = dedent`
+      You are requested to generate detailed documentation for a TypeScript SDK based on the following code and basic documentation.
+      
+      ## SDK Code
+      \`\`\`typescript
+      ${sdkResult.sdkCode}
+      \`\`\`
+      
+      ## Basic Documentation
+      ${sdkResult.sdkDocs}
+      
+      ## SDK Information
+      - Title: ${metadata.title}
+      - Description: ${metadata.description}
+      - Auth Type: ${sdkArgs.authType || metadata.authType}
+      ${sdkArgs.authSdk ? `- Auth SDK: ${sdkArgs.authSdk}` : ''}
+      
+      ## Documentation Requirements
+      - Create detailed documentation for the constructor and each function
+      - Include examples of how to use the SDK in the documentation
+      - Explain authentication requirements and how to obtain necessary credentials
+    `;
+
+    // Generate documentation with Claude 3.5 Sonnet
+    console.log('\n🧠 Generating detailed documentation...');
+    const docsResult = await generateText({
+      model: models.claude35Sonnet,
+      system: docsSystemPrompt,
+      prompt: docsGenerationPrompt,
+      maxTokens: 8000,
+      tools: {
+        generate_docs: generateDocsTool,
+      },
+      toolChoice: 'required',
+      maxSteps: 1,
+      onStepFinish: step => {
+        console.log('step', step.usage);
+      },
+    });
+
+    console.log('Usage:', docsResult.usage);
+
+    // Check for tool results
+    if (!docsResult.toolResults || docsResult.toolResults.length === 0) {
+      console.warn(
+        '⚠️ No tool results received, documentation generation may have failed',
+      );
+      return undefined;
+    }
+
+    // Generate documentation
+    await generateReadme(
+      sdkResult.sdkCode,
+      sdkResult.sdkDocs,
+      {
+        apiName: metadata.apiName,
+        packageName: metadata.packageName,
+        title: metadata.title,
+        description: metadata.description,
+        authType: metadata.authType,
+        authSdk: metadata.authSdk,
+      },
+      packageDir
     );
 
     return {
