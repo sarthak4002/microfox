@@ -4,7 +4,11 @@ import 'dotenv/config';
 import { JSDOM } from 'jsdom';
 import { generateText, generateObject } from 'ai';
 import { models } from './ai/models';
-import { API_DOCUMENTATION_URLS, SCRAPED_URLS, URL_SELECTORS } from './constants';
+import {
+  API_DOCUMENTATION_URLS,
+  SCRAPED_URLS,
+  URL_SELECTORS,
+} from './constants';
 import { z } from 'zod';
 import readline from 'readline';
 
@@ -15,19 +19,22 @@ const skipQuestions = args.includes('--skip-questions');
 // Create readline interface for user input
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 // Promise-based question function
 function question(query: string): Promise<string> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     rl.question(query, resolve);
   });
 }
 
 // Custom error classes for better error handling
 class ScrapingError extends Error {
-  constructor(message: string, public url?: string) {
+  constructor(
+    message: string,
+    public url?: string,
+  ) {
     super(message);
     this.name = 'ScrapingError';
   }
@@ -62,7 +69,10 @@ class FileUpdateError extends Error {
 }
 
 class ContentScrapingError extends Error {
-  constructor(message: string, public url?: string) {
+  constructor(
+    message: string,
+    public url?: string,
+  ) {
     super(message);
     this.name = 'ContentScrapingError';
   }
@@ -77,7 +87,9 @@ class NoContentFoundError extends Error {
 
 // Schema for URL filtering response
 const URLFilterSchema = z.object({
-  urls: z.array(z.string()).describe('List of URLs that are relevant for API documentation')
+  urls: z
+    .array(z.string())
+    .describe('List of URLs that are relevant for API documentation'),
 });
 
 /**
@@ -129,10 +141,16 @@ function extractUrlsFromHtml(html: string, baseUrl: string): string[] {
 
     return Array.from(urls);
   } catch (error) {
-    if (error instanceof SidebarNotFoundError || error instanceof NoUrlsFoundError) {
+    if (
+      error instanceof SidebarNotFoundError ||
+      error instanceof NoUrlsFoundError
+    ) {
       throw error;
     }
-    throw new ScrapingError(`Error extracting URLs from HTML: ${error instanceof Error ? error.message : String(error)}`, baseUrl);
+    throw new ScrapingError(
+      `Error extracting URLs from HTML: ${error instanceof Error ? error.message : String(error)}`,
+      baseUrl,
+    );
   }
 }
 
@@ -186,14 +204,20 @@ function extractContentFromHtml(html: string, url: string): string {
     if (error instanceof NoContentFoundError) {
       throw error;
     }
-    throw new ContentScrapingError(`Error extracting content from HTML: ${error instanceof Error ? error.message : String(error)}`, url);
+    throw new ContentScrapingError(
+      `Error extracting content from HTML: ${error instanceof Error ? error.message : String(error)}`,
+      url,
+    );
   }
 }
 
 /**
  * Filter URLs using Gemini to keep only relevant ones
  */
-async function filterUrlsWithGemini(urls: string[], baseUrl: string): Promise<string[]> {
+async function filterUrlsWithGemini(
+  urls: string[],
+  baseUrl: string,
+): Promise<string[]> {
   if (urls.length === 0) {
     throw new GeminiFilteringError('No URLs provided for filtering');
   }
@@ -242,7 +266,9 @@ async function filterUrlsWithGemini(urls: string[], baseUrl: string): Promise<st
     if (error instanceof GeminiFilteringError) {
       throw error;
     }
-    throw new GeminiFilteringError(`Error filtering URLs with Gemini: ${error instanceof Error ? error.message : String(error)}`);
+    throw new GeminiFilteringError(
+      `Error filtering URLs with Gemini: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
@@ -292,7 +318,10 @@ async function scrapeUrls(urls: string[]): Promise<string[]> {
 
       // Add new URLs to process queue
       for (const sidebarUrl of sidebarUrls) {
-        if (!processedUrls.has(sidebarUrl) && !urlsToProcess.includes(sidebarUrl)) {
+        if (
+          !processedUrls.has(sidebarUrl) &&
+          !urlsToProcess.includes(sidebarUrl)
+        ) {
           urlsToProcess.push(sidebarUrl);
         }
         allFoundUrls.add(sidebarUrl);
@@ -312,7 +341,9 @@ async function scrapeUrls(urls: string[]): Promise<string[]> {
     throw new ScrapingError('No URLs found during scraping process');
   }
 
-  let filteredUrls = Array.from(allFoundUrls).filter((url, index, self) => self.indexOf(url) === index);
+  let filteredUrls = Array.from(allFoundUrls).filter(
+    (url, index, self) => self.indexOf(url) === index,
+  );
 
   // Filter URLs using Gemini
   // const baseUrl = new URL(urls[0]).origin;
@@ -361,7 +392,10 @@ async function scrapeContentFromUrls(urls: string[]): Promise<void> {
       });
 
       if (!response.ok) {
-        throw new ContentScrapingError(`HTTP error! status: ${response.status}`, url);
+        throw new ContentScrapingError(
+          `HTTP error! status: ${response.status}`,
+          url,
+        );
       }
 
       const html = await response.text();
@@ -386,7 +420,9 @@ async function scrapeContentFromUrls(urls: string[]): Promise<void> {
 
   // Log any errors that occurred during content scraping
   if (errors.length > 0) {
-    console.warn(`⚠️ ${errors.length} errors occurred during content scraping:`);
+    console.warn(
+      `⚠️ ${errors.length} errors occurred during content scraping:`,
+    );
     errors.forEach((error, index) => {
       console.warn(`  ${index + 1}. ${error.message}`);
     });
@@ -411,14 +447,12 @@ async function updateScrapedUrls(newUrls: string[]): Promise<void> {
     let content = fs.readFileSync(constantsPath, 'utf8');
 
     // Create the new SCRAPED_URLS array content
-    const urlsContent = newUrls
-      .map(url => `  '${url}'`)
-      .join(',\n');
+    const urlsContent = newUrls.map(url => `  '${url}'`).join(',\n');
 
     // Replace the existing SCRAPED_URLS array
     const newContent = content.replace(
       /export const SCRAPED_URLS = \[[\s\S]*?\];/,
-      `export const SCRAPED_URLS = [\n${urlsContent},\n];`
+      `export const SCRAPED_URLS = [\n${urlsContent},\n];`,
     );
 
     // if (content === newContent) {
@@ -431,7 +465,9 @@ async function updateScrapedUrls(newUrls: string[]): Promise<void> {
     if (error instanceof FileUpdateError) {
       throw error;
     }
-    throw new FileUpdateError(`Error updating constants.ts: ${error instanceof Error ? error.message : String(error)}`);
+    throw new FileUpdateError(
+      `Error updating constants.ts: ${error instanceof Error ? error.message : String(error)}`,
+    );
   }
 }
 
@@ -460,13 +496,22 @@ async function main() {
 
     // Only ask questions if not skipping
     if (!skipQuestions) {
-      shouldScrapeContent = await question('Do you want to scrape content from these URLs? (y/n) [default: y]: ');
+      shouldScrapeContent = await question(
+        'Do you want to scrape content from these URLs? (y/n) [default: y]: ',
+      );
 
-      if (shouldScrapeContent.toLowerCase() === 'y' || shouldScrapeContent === '') {
-        shouldUpdateContent = await question('Do you want to edit the URLs in constants.ts before scraping? (y/n) [default: n]: ');
+      if (
+        shouldScrapeContent.toLowerCase() === 'y' ||
+        shouldScrapeContent === ''
+      ) {
+        shouldUpdateContent = await question(
+          'Do you want to edit the URLs in constants.ts before scraping? (y/n) [default: n]: ',
+        );
 
         if (shouldUpdateContent.toLowerCase() === 'y') {
-          console.log('\n📝 Please edit the SCRAPED_URLS array in constants.ts file.');
+          console.log(
+            '\n📝 Please edit the SCRAPED_URLS array in constants.ts file.',
+          );
           console.log('After editing, press Enter to continue...');
           await question('');
 
@@ -480,20 +525,28 @@ async function main() {
           // Re-import the constants to get updated URLs
           const updatedConstants = require('./constants');
           urlsToScrape = updatedConstants.SCRAPED_URLS;
-          console.log("urlsToScrape length after editing", urlsToScrape.length);
+          console.log('urlsToScrape length after editing', urlsToScrape.length);
 
           if (urlsToScrape.length === 0) {
-            console.warn('⚠️ No URLs found in constants.ts after editing. Using previously scraped URLs.');
+            console.warn(
+              '⚠️ No URLs found in constants.ts after editing. Using previously scraped URLs.',
+            );
             urlsToScrape = scrapedUrls;
           } else {
-            console.log(`📝 Will scrape ${urlsToScrape.length} URLs from constants.ts`);
+            console.log(
+              `📝 Will scrape ${urlsToScrape.length} URLs from constants.ts`,
+            );
           }
         }
       }
     }
 
     // Scrape content if user wants to or if skipping questions
-    if (shouldScrapeContent.toLowerCase() === 'y' || shouldScrapeContent === '' || skipQuestions) {
+    if (
+      shouldScrapeContent.toLowerCase() === 'y' ||
+      shouldScrapeContent === '' ||
+      skipQuestions
+    ) {
       await scrapeContentFromUrls(urlsToScrape);
       console.log('✅ Content scraping process completed successfully');
     }
@@ -504,13 +557,21 @@ async function main() {
 
     // Provide more specific error messages based on error type
     if (error instanceof SidebarNotFoundError) {
-      console.error('❌ No sidebar found on the page. The page structure might have changed.');
+      console.error(
+        '❌ No sidebar found on the page. The page structure might have changed.',
+      );
     } else if (error instanceof NoUrlsFoundError) {
-      console.error('❌ No URLs found on the page. The page might be empty or have a different structure.');
+      console.error(
+        '❌ No URLs found on the page. The page might be empty or have a different structure.',
+      );
     } else if (error instanceof GeminiFilteringError) {
-      console.error('❌ Error filtering URLs with Gemini. The AI model might be unavailable or returned unexpected results.');
+      console.error(
+        '❌ Error filtering URLs with Gemini. The AI model might be unavailable or returned unexpected results.',
+      );
     } else if (error instanceof FileUpdateError) {
-      console.error('❌ Error updating the constants.ts file. The file might be read-only or have a different structure.');
+      console.error(
+        '❌ Error updating the constants.ts file. The file might be read-only or have a different structure.',
+      );
     } else if (error instanceof ScrapingError) {
       console.error(`❌ Error scraping URLs: ${error.message}`);
       if (error.url) {
@@ -533,4 +594,4 @@ async function main() {
 // Run the script if called directly
 if (require.main === module) {
   main();
-} 
+}

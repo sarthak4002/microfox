@@ -19,7 +19,7 @@ export const URL_SELECTORS = {
     '.content-docs', // Brave
     '[class*="section overview"]', // Reddit
     '[class*="section methods"]', // Reddit
-  ]
+  ],
 };
 
 /**
@@ -31,16 +31,12 @@ export const SDK_QUERY =
 /**
  * URLs for API documentation
  */
-export const API_DOCUMENTATION_URLS = [
-  'https://www.reddit.com/dev/api',
-];
+export const API_DOCUMENTATION_URLS = ['https://www.reddit.com/dev/api'];
 
 /**
  * URLs that have been scraped and processed
  */
-export const SCRAPED_URLS = [
-  'https://www.reddit.com/dev/api',
-];
+export const SCRAPED_URLS = ['https://www.reddit.com/dev/api'];
 
 /**
  * GitHub URLs for external packages to generate

@@ -14,28 +14,48 @@ const execAsync = promisify(exec);
 const GenerateDocsSchema = z.object({
   constructorDocs: z
     .object({
-      name: z.string().describe('The name of the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK")'),
-      docs: z.string().describe('The DETAILED markdown documentation for the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").'),
+      name: z
+        .string()
+        .describe(
+          'The name of the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK")',
+        ),
+      docs: z
+        .string()
+        .describe(
+          'The DETAILED markdown documentation for the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").',
+        ),
     })
     .describe(
       'The DETAILED markdown documentation for the constructor function or class that initializes this SDK (e.g., "createGoogleSheetsSDK").',
     ),
   functionsDocs: z
-    .array(z.object({
-      name: z.string().describe('The name of the function (e.g., "createUser")'),
-      docs: z.string().describe('The DETAILED markdown documentation for the function including all parameters, return type, usage examples, and more'),
-    }))
+    .array(
+      z.object({
+        name: z
+          .string()
+          .describe('The name of the function (e.g., "createUser")'),
+        docs: z
+          .string()
+          .describe(
+            'The DETAILED markdown documentation for the function including all parameters, return type, usage examples, and more',
+          ),
+      }),
+    )
     .describe(
       'The documentation for each function in this SDK, which will be saved to that specific function doc file like "createUser.md"',
     ),
   dependencies: z
     .array(z.string())
     .optional()
-    .describe('List of dependencies to install. Only include dependencies that are actually needed beyond what\'s already installed'),
+    .describe(
+      "List of dependencies to install. Only include dependencies that are actually needed beyond what's already installed",
+    ),
   devDependencies: z
     .array(z.string())
     .optional()
-    .describe('List of dev dependencies to install. Only include dev dependencies that are actually needed beyond what\'s already installed'),
+    .describe(
+      "List of dev dependencies to install. Only include dev dependencies that are actually needed beyond what's already installed",
+    ),
   envKeys: z
     .array(
       z.object({
@@ -92,8 +112,10 @@ export async function generateReadme(
       parameters: GenerateDocsSchema,
       execute: async (data: GenerateDocsData) => {
         const constructorName = data.constructorDocs.name;
-        
-        console.log('📝 Generated detailed documentation with the following info:');
+
+        console.log(
+          '📝 Generated detailed documentation with the following info:',
+        );
         console.log(`- Constructor: ${constructorName}`);
         console.log(`- Functions: ${data.functionsDocs.length}`);
 
@@ -108,15 +130,12 @@ export async function generateReadme(
         // Save constructor documentation file
         fs.writeFileSync(
           path.join(docsDir, `${constructorName}.md`),
-          data.constructorDocs.docs
+          data.constructorDocs.docs,
         );
 
         // Save function documentation files
         for (const func of data.functionsDocs) {
-          fs.writeFileSync(
-            path.join(docsDir, `${func.name}.md`),
-            func.docs
-          );
+          fs.writeFileSync(path.join(docsDir, `${func.name}.md`), func.docs);
         }
 
         // Update package-info.json with constructor info
@@ -135,7 +154,7 @@ export async function generateReadme(
               name: constructorName,
               description: `The documentation for the constructor ${constructorName} that initializes this SDK.`,
               path: `/docs/${constructorName}.md`,
-            }
+            },
           ],
           functionalities: data.functionsDocs.map(f => ({
             name: f.name,
@@ -150,24 +169,24 @@ export async function generateReadme(
             name: constructorName,
             description: `Create a new ${metadata.title} client through which you can interact with the API`,
             auth: packageInfo.authEndpoint ? 'oauth2' : 'apiKey',
-            authSdk: packageInfo.authEndpoint ? packageInfo.authEndpoint.replace('/connect/', '@microfox/') : '',
+            authSdk: packageInfo.authEndpoint
+              ? packageInfo.authEndpoint.replace('/connect/', '@microfox/')
+              : '',
             outputKeys: [],
-            requiredKeys:
-              !packageInfo.authEndpoint
-                ? data.envKeys.map(key => ({
+            requiredKeys: !packageInfo.authEndpoint
+              ? data.envKeys.map(key => ({
                   key: key.key,
                   displayName: key.displayName,
                   description: key.description,
                 }))
-                : [],
-            internalKeys:
-              packageInfo.authEndpoint
-                ? data.envKeys.map(key => ({
+              : [],
+            internalKeys: packageInfo.authEndpoint
+              ? data.envKeys.map(key => ({
                   key: key.key,
                   displayName: key.displayName,
                   description: key.description,
                 }))
-                : [],
+              : [],
             functionalities: data.functionsDocs.map(f => f.name),
           },
         ];
@@ -372,7 +391,7 @@ export async function generateReadme(
     console.error('❌ Error generating documentation:', error);
     return false;
   }
-} 
+}
 
 if (require.main === module) {
   const packageDir = path.join(__dirname, '../packages/reddit');
@@ -386,7 +405,6 @@ if (require.main === module) {
     authType: 'oauth2',
     authSdk: '@microfox/reddit',
   };
-
 
   generateReadme(sdkCode, sdkDocs, metadata, packageDir);
 }

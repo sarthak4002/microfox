@@ -22,4 +22,4 @@ export async function buildPackage(packageDir: string): Promise<boolean> {
     );
     return false;
   }
-} 
+}
