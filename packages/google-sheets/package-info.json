@@ -31,6 +31,7 @@
       "description": "Create a new Google Sheets SDK client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/google-oauth",
+      "authEndpoint": "/connect/google-oauth",
       "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
@@ -53,6 +54,12 @@
           "key": "GOOGLE_REFRESH_TOKEN",
           "displayName": "Google Refresh Token",
           "description": "The refresh token for Google OAuth authentication. This is used to obtain new access tokens when they expire."
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Scopes",
+          "description": "The scopes for Google OAuth authentication. This is used to specify the permissions that the client application needs.",
+          "defaultValue": ["https://www.googleapis.com/auth/spreadsheets"]
         }
       ],
       "functionalities": [
