@@ -6,6 +6,7 @@
     "build": "tsc",
     "scrape:pkg-urls": "ts-node src/scrapeUrls.ts",
     "gen:pkg": "ts-node src/genPackage.ts",
+    "gen:pkg-oauth": "ts-node src/genOAuthPackage.ts",
     "gen:ext-pkgs": "ts-node src/genExtPackage.ts",
     "update:readme": "ts-node src/updateReadme.ts",
     "gen:docs": "ts-node src/genDocs.ts",
@@ -23,11 +24,12 @@
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
     "jsdom": "^26.1.0",
+    "puppeteer": "^24.6.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
     "@types/jsdom": "^21.1.7",
+    "@types/node": "^20.11.19",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
