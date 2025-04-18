@@ -10,7 +10,7 @@ export async function buildPackage(packageDir: string): Promise<boolean> {
   try {
     const originalDir = process.cwd();
     process.chdir(packageDir);
-    console.log(`⚙️ Building SDK package...`);
+    console.log('🔨 Building the package...');
     await execAsync('npm run build');
     console.log(`✨ Build completed successfully!`);
     // Return to original directory
