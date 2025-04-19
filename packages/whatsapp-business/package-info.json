@@ -21,7 +21,23 @@
       "sendLocationMessage",
       "sendContactMessage",
       "sendInteractiveMessage",
-      "sendTemplateMessage"
+      "sendTemplateMessage",
+      "markMessageAsRead",
+      "uploadMedia",
+      "downloadMedia",
+      "getMediaUrl",
+      "registerPhone",
+      "deregisterPhone",
+      "getBusinessProfile",
+      "updateBusinessProfile",
+      "getTemplates",
+      "createTemplate",
+      "deleteTemplate",
+      "getQRCode",
+      "getPhoneNumbers",
+      "getAnalytics",
+      "getCommerceSettings",
+      "updateCommerceSettings"
     ],
     "description": "The full README for the WhatsApp Business SDK"
   },
@@ -31,13 +47,6 @@
       "description": "Create a new WhatsApp Business SDK through which you can operate WhatsApp Business API",
       "auth": "apiKey",
       "requiredKeys": [
-        {
-          "key": "WHATSAPP_RECIPIENT_PHONE_NUMBER",
-          "displayName": "WhatsApp Recipient Phone Number",
-          "description": "The phone number of the recipient"
-        }
-      ],
-      "internalKeys": [
         {
           "key": "WHATSAPP_PHONE_NUMBER_ID",
           "displayName": "WhatsApp Phone Number ID",
@@ -53,7 +62,8 @@
           "displayName": "WhatsApp Access Token",
           "description": "The access token for the WhatsApp Business API"
         }
-      ]
+      ],
+      "internalKeys": []
     }
   ],
   "keysInfo": [
