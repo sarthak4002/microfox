@@ -1,0 +1,9 @@
+{
+  "extends": "@microfox/tsconfig/ts-library.json",
+  "include": ["."],
+  "exclude": ["*/dist", "dist", "build", "node_modules"],
+  "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext"
+  }
+}
