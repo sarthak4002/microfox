@@ -9,6 +9,11 @@ A lightweight, type-safe SDK for interacting with the WhatsApp Business API. Thi
 - 🚀 Easy to use and integrate
 - 🔄 Built-in error handling
 - 📦 Lightweight and dependency-free
+- 📊 Analytics and insights
+- 🛍️ Commerce settings management
+- 📱 Phone number management
+- 📝 Template management
+- 📸 Media handling
 
 ## Installation
 
@@ -26,6 +31,8 @@ const whatsapp = new WhatsAppBusinessSDK({
   phoneNumberId: 'YOUR_PHONE_NUMBER_ID',
   businessAccountId: 'YOUR_BUSINESS_ACCOUNT_ID',
   accessToken: 'YOUR_ACCESS_TOKEN',
+  version: 'v22.0', // Optional: defaults to v22.0
+  baseUrl: 'https://graph.facebook.com/v22.0', // Optional: custom base URL
 });
 
 // Send a text message
@@ -49,6 +56,23 @@ interface WhatsAppSDKConfig {
 }
 ```
 
+## Common Message Options
+
+All message types support the following options:
+
+```typescript
+interface MessageOptions {
+  recipientType?: 'individual' | 'group'; // Default: 'individual'
+  checkWindow?: boolean; // Check if recipient is within the 24-hour window
+  templateFallback?: {
+    // Fallback template if outside 24-hour window
+    name: string;
+    language: string;
+    components?: any[];
+  };
+}
+```
+
 ## Message Types
 
 ### Text Messages
@@ -59,52 +83,122 @@ await whatsapp.sendTextMessage(
   'Hello from WhatsApp Business API!',
   {
     previewUrl: true, // Enable link preview
+    ...MessageOptions,
   },
 );
 ```
 
 ### Media Messages
 
+When sending media messages, you have two options for providing the media content:
+
+1. **Using Media ID (Recommended)**:
+
+   - First upload the media using `uploadMedia()` to get a MEDIA_ID
+   - Then use this ID in your message
+   - This is the recommended approach as it's more reliable and secure
+   - Required for all media types when sending through the WhatsApp Business API
+
+2. **Using Direct Link (Alternative)**:
+   - Provide a direct HTTPS URL to the media
+   - The URL must be publicly accessible
+   - Only supported for certain media types and in specific cases
+   - Not recommended for production use
+
+Common media options:
+
+```typescript
+interface MediaOptions {
+  mime_type?: string;
+  sha256?: string;
+  caption?: string;
+}
+```
+
 #### Image
 
 ```typescript
+// Option 1: Using Media ID (Recommended)
+const mediaId = await whatsapp.uploadMedia(file, 'image');
 await whatsapp.sendImageMessage('RECIPIENT_PHONE_NUMBER', {
-  id: 'MEDIA_ID', // Upload media first to get ID
-  caption: 'Optional caption',
+  id: mediaId,
+  ...MediaOptions,
+});
+
+// Option 2: Using Direct Link (Alternative)
+await whatsapp.sendImageMessage('RECIPIENT_PHONE_NUMBER', {
+  link: 'https://example.com/image.jpg',
+  ...MediaOptions,
 });
 ```
 
 #### Video
 
 ```typescript
+// Option 1: Using Media ID (Recommended)
+const mediaId = await whatsapp.uploadMedia(file, 'video');
 await whatsapp.sendVideoMessage('RECIPIENT_PHONE_NUMBER', {
-  id: 'MEDIA_ID',
-  caption: 'Optional caption',
+  id: mediaId,
+  ...MediaOptions,
+});
+
+// Option 2: Using Direct Link (Alternative)
+await whatsapp.sendVideoMessage('RECIPIENT_PHONE_NUMBER', {
+  link: 'https://example.com/video.mp4',
+  ...MediaOptions,
 });
 ```
 
 #### Document
 
 ```typescript
+// Option 1: Using Media ID (Recommended)
+const mediaId = await whatsapp.uploadMedia(file, 'document');
 await whatsapp.sendDocumentMessage('RECIPIENT_PHONE_NUMBER', {
-  id: 'MEDIA_ID',
+  id: mediaId,
   filename: 'document.pdf',
+  ...MediaOptions,
+});
+
+// Option 2: Using Direct Link (Alternative)
+await whatsapp.sendDocumentMessage('RECIPIENT_PHONE_NUMBER', {
+  link: 'https://example.com/document.pdf',
+  filename: 'document.pdf',
+  ...MediaOptions,
 });
 ```
 
 #### Audio
 
 ```typescript
+// Option 1: Using Media ID (Recommended)
+const mediaId = await whatsapp.uploadMedia(file, 'audio');
 await whatsapp.sendAudioMessage('RECIPIENT_PHONE_NUMBER', {
-  id: 'MEDIA_ID',
+  id: mediaId,
+  ...MediaOptions,
+});
+
+// Option 2: Using Direct Link (Alternative)
+await whatsapp.sendAudioMessage('RECIPIENT_PHONE_NUMBER', {
+  link: 'https://example.com/audio.mp3',
+  ...MediaOptions,
 });
 ```
 
 #### Sticker
 
 ```typescript
+// Option 1: Using Media ID (Recommended)
+const mediaId = await whatsapp.uploadMedia(file, 'sticker');
 await whatsapp.sendStickerMessage('RECIPIENT_PHONE_NUMBER', {
-  id: 'MEDIA_ID',
+  id: mediaId,
+  ...MediaOptions,
+});
+
+// Option 2: Using Direct Link (Alternative)
+await whatsapp.sendStickerMessage('RECIPIENT_PHONE_NUMBER', {
+  link: 'https://example.com/sticker.webp',
+  ...MediaOptions,
 });
 ```
 
@@ -127,13 +221,47 @@ await whatsapp.sendContactMessage('RECIPIENT_PHONE_NUMBER', [
     name: {
       formatted_name: 'John Doe',
       first_name: 'John',
+      last_name: 'Doe',
+      middle_name: 'M',
+      suffix: 'Jr',
+      prefix: 'Mr',
     },
     phones: [
       {
         phone: '+1234567890',
         type: 'CELL',
+        wa_id: '1234567890',
       },
     ],
+    emails: [
+      {
+        email: 'john@example.com',
+        type: 'WORK',
+      },
+    ],
+    urls: [
+      {
+        url: 'https://example.com',
+        type: 'WORK',
+      },
+    ],
+    addresses: [
+      {
+        street: '123 Main St',
+        city: 'San Francisco',
+        state: 'CA',
+        zip: '94105',
+        country: 'United States',
+        country_code: 'US',
+        type: 'WORK',
+      },
+    ],
+    org: {
+      company: 'Example Corp',
+      department: 'Engineering',
+      title: 'Software Engineer',
+    },
+    birthday: '1990-01-01',
   },
 ]);
 ```
@@ -202,6 +330,10 @@ await whatsapp.sendInteractiveMessage('RECIPIENT_PHONE_NUMBER', {
 
 ### Template Messages
 
+Template messages are pre-approved message formats that can be sent to users outside the 24-hour window. They are useful for sending notifications, updates, and marketing messages.
+
+#### Send Template Message
+
 ```typescript
 await whatsapp.sendTemplateMessage(
   'RECIPIENT_PHONE_NUMBER',
@@ -209,11 +341,51 @@ await whatsapp.sendTemplateMessage(
   'en',
   [
     {
+      type: 'header',
+      format: 'TEXT',
+      text: 'Hello {{1}}!',
+      example: {
+        header_handle: ['John'],
+      },
+    },
+    {
       type: 'body',
+      text: 'Welcome to our service!',
       parameters: [
         {
           type: 'text',
-          text: 'value',
+          text: 'John',
+        },
+        {
+          type: 'currency',
+          currency: {
+            fallback_value: '$10.00',
+            code: 'USD',
+            amount_1000: 10000,
+          },
+        },
+        {
+          type: 'date_time',
+          date_time: {
+            fallback_value: '2024-01-01',
+          },
+        },
+      ],
+      example: {
+        body_text: [['John', '$10.00', '2024-01-01']],
+      },
+    },
+    {
+      type: 'footer',
+      text: 'Thank you for choosing us!',
+    },
+    {
+      type: 'button',
+      text: 'Click here',
+      parameters: [
+        {
+          type: 'text',
+          text: 'https://example.com',
         },
       ],
     },
@@ -221,19 +393,48 @@ await whatsapp.sendTemplateMessage(
 );
 ```
 
-## Error Handling
+#### Template Management
 
-The SDK throws `WhatsAppBusinessSDKError` for API errors:
+##### Get Templates
 
 ```typescript
-try {
-  await whatsapp.sendTextMessage('RECIPIENT_PHONE_NUMBER', 'Hello!');
-} catch (error) {
-  if (error instanceof WhatsAppBusinessSDKError) {
-    console.error(`Error ${error.code}: ${error.message}`);
-    console.error('Original error:', error.originalError);
-  }
-}
+const templates = await whatsapp.getTemplates({
+  limit: 10,
+  offset: 0,
+});
+```
+
+##### Create Template
+
+```typescript
+await whatsapp.createTemplate({
+  name: 'template_name',
+  category: 'MARKETING',
+  language: 'en',
+  components: [
+    {
+      type: 'BODY',
+      text: 'Hello {{1}}!',
+      example: {
+        body_text: [['John']],
+      },
+    },
+  ],
+});
+```
+
+##### Delete Template
+
+```typescript
+await whatsapp.deleteTemplate('template_name');
+```
+
+## Message Management
+
+### Mark Message as Read
+
+```typescript
+await whatsapp.markMessageAsRead('MESSAGE_ID');
 ```
 
 ## Media Management
@@ -256,6 +457,32 @@ const mediaData = await whatsapp.downloadMedia('MEDIA_ID');
 const mediaUrl = await whatsapp.getMediaUrl('MEDIA_ID');
 ```
 
+## Phone Number Management
+
+### Register Phone Number
+
+```typescript
+await whatsapp.registerPhone('PHONE_NUMBER', 'PIN_CODE');
+```
+
+### Deregister Phone Number
+
+```typescript
+await whatsapp.deregisterPhone('PHONE_NUMBER');
+```
+
+### Get Phone Numbers
+
+```typescript
+const phoneNumbers = await whatsapp.getPhoneNumbers();
+```
+
+### Get QR Code
+
+```typescript
+const qrCode = await whatsapp.getQRCode();
+```
+
 ## Business Profile
 
 ### Get Business Profile
@@ -276,37 +503,47 @@ await whatsapp.updateBusinessProfile({
 });
 ```
 
-## Templates
+## Analytics
 
-### Get Templates
+### Get Analytics
 
 ```typescript
-const templates = await whatsapp.getTemplates({
-  limit: 10,
-  offset: 0,
+const analytics = await whatsapp.getAnalytics({
+  start: '2024-01-01',
+  end: '2024-01-31',
+  granularity: 'DAY', // 'DAY' | 'HOUR' | 'MONTH'
 });
 ```
 
-### Create Template
+## Commerce Settings
+
+### Get Commerce Settings
 
 ```typescript
-await whatsapp.createTemplate({
-  name: 'template_name',
-  category: 'MARKETING',
-  language: 'en',
-  components: [
-    {
-      type: 'BODY',
-      text: 'Hello {{1}}!',
-    },
-  ],
+const settings = await whatsapp.getCommerceSettings();
+```
+
+### Update Commerce Settings
+
+```typescript
+await whatsapp.updateCommerceSettings({
+  // Commerce settings data
 });
 ```
 
-### Delete Template
+## Error Handling
+
+The SDK throws `WhatsAppBusinessSDKError` for API errors:
 
 ```typescript
-await whatsapp.deleteTemplate('template_name');
+try {
+  await whatsapp.sendTextMessage('RECIPIENT_PHONE_NUMBER', 'Hello!');
+} catch (error) {
+  if (error instanceof WhatsAppBusinessSDKError) {
+    console.error(`Error ${error.code}: ${error.message}`);
+    console.error('Original error:', error.originalError);
+  }
+}
 ```
 
 ## Contributing
