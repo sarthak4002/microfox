@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Scripts for Microfox package documentation updates",
   "main": "dist/update-readme.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev:readme": "ts-node src/update-readme.ts",
