@@ -66,3 +66,9 @@ jobs:
             });
         env:
           ERROR_MESSAGE: ${{ steps.validate.outputs.error_message }}
+
+      - name: Fail if validation errors exist
+        if: ${{ fromJSON(steps.validate.outputs.has_errors) }}
+        run: |
+          echo "Validation errors were found. Failing the check."
+          exit 1
