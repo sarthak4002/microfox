@@ -18,7 +18,7 @@
     {
       "name": "createSlackSDK",
       "description": "Create a new Slack SDK through which you can operate bots on Slack",
-      "auth": "apiKey",
+      "auth": "apikey",
       "requiredKeys": [
         {
           "key": "SLACK_BOT_TOKEN",
