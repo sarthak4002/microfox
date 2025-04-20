@@ -13,16 +13,16 @@
     "dev:ext-sdk": "ts-node src/generate-ext-sdk.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.0",
-    "@ai-sdk/google": "^1.2.7",
+    "@ai-sdk/anthropic": "^1.2.10",
+    "@ai-sdk/google": "^1.2.12",
     "@microfox/serpapi": "1.0.2",
     "@microfox/tavily": "1.0.2",
     "@octokit/rest": "^21.1.1",
     "ai": "^4.2.0",
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
-    "zod": "^3.22.4",
-    "glob": "^11.0.1"
+    "glob": "^11.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",
