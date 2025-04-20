@@ -25,8 +25,19 @@ jobs:
       - name: Run validation
         id: validate
         run: |
+          echo "Compiling TypeScript from scripts directory..."
+          cd scripts
           npx tsc
-          node dist/scripts/src/validatePackageInfo.js
+          echo "TypeScript compilation completed"
+
+          echo "Checking if the compiled file exists..."
+          ls -la dist/src/
+
+          echo "Running the validation script..."
+          node dist/src/validatePackageInfo.js
+
+          echo "Script execution completed"
+        shell: bash
 
       - name: Comment on PR
         if: steps.validate.outputs.has_errors == 'true'
