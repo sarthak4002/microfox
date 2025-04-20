@@ -25,7 +25,8 @@
     "path": "/README.md",
     "title": "@slack/web-api",
     "functionalities": [],
-    "description": "The full README for the package"
+    "description": "The full README for the package",
+    "all_readmes": []
   },
   "constructors": [
     {
@@ -45,7 +46,9 @@
   "keysInfo": [
     {
       "key": "SLACK_TOKEN",
-      "constructors": ["WebClient"],
+      "constructors": [
+        "WebClient"
+      ],
       "description": "The token for the Slack Web Client",
       "required": true
     }
