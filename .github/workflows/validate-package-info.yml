@@ -24,7 +24,9 @@ jobs:
 
       - name: Run validation
         id: validate
-        run: node scripts/src/validatePackageInfo.ts
+        run: |
+          npx tsc
+          node dist/scripts/src/validatePackageInfo.js
 
       - name: Comment on PR
         if: steps.validate.outputs.has_errors == 'true'

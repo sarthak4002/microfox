@@ -1,8 +1,10 @@
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { z } from 'zod';
-import { PackageInfo } from './types';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as glob from 'glob';
+import { PackageInfo } from './types.js';
+import fs from 'fs';
+import path from 'path';
+import { glob, globSync } from 'glob';
 
 interface ValidationError {
   file: string;
