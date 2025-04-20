@@ -42,7 +42,8 @@
     "apps/*",
     "packages/*",
     "tools/*",
-    "examples/*"
+    "examples/*",
+    "scripts/*"
   ],
   "repository": {
     "type": "git",
