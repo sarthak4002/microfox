@@ -3,7 +3,7 @@ import path from 'path';
 import { Octokit } from 'octokit';
 import dotenv from 'dotenv';
 import { z } from 'zod';
-import { EXT_PACKAGE_URLS } from './constants.js';
+import { EXT_PACKAGE_URLS } from './constants';
 
 // Load environment variables
 dotenv.config();

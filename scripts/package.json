@@ -11,7 +11,7 @@
     "dev:package-info": "ts-node src/update-package-info.ts",
     "dev:package": "npm run dev:package-list && npm run dev:package-info",
     "dev:ext-sdk": "ts-node src/generate-ext-sdk.ts",
-    "dev:validate-package-info": "ts-node src/validatePackageInfo.ts"
+    "dev:validate": "ts-node src/validatePackageInfo.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.10",
