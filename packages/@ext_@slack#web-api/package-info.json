@@ -1,6 +1,6 @@
 {
   "name": "@slack/web-api",
-  "title": "@slack/web-api",
+  "title": "Slack Official",
   "description": "Official library for using the Slack Platform's Web API",
   "path": "packages/@ext_@slack#web-api",
   "dependencies": [
@@ -31,7 +31,7 @@
     {
       "name": "WebClient",
       "description": "Create a new Slack Web Client through which you can operate bots on Slack",
-      "auth": "apiKey",
+      "auth": "apikey",
       "requiredKeys": [
         {
           "key": "SLACK_TOKEN",

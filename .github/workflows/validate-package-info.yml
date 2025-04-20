@@ -1,0 +1,55 @@
+name: Validate Package Info
+
+on:
+  pull_request:
+    paths:
+      - 'packages/**/package-info.json'
+      - 'scripts/src/types.ts'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run validation
+        id: validate
+        run: node scripts/src/validatePackageInfo.ts
+
+      - name: Comment on PR
+        if: steps.validate.outputs.has_errors == 'true'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const errors = JSON.parse(process.env.ERROR_MESSAGE);
+            let comment = '### ❌ Package Info Validation Failed\n\n';
+
+            for (const error of errors) {
+              comment += `#### File: \`${error.file}\`\n`;
+              comment += 'The following issues were found:\n';
+              for (const err of error.errors) {
+                comment += `- ${err}\n`;
+              }
+              comment += '\n';
+            }
+
+            comment += '\nPlease fix these issues and update your PR.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+        env:
+          ERROR_MESSAGE: ${{ steps.validate.outputs.error_message }}
