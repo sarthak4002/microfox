@@ -78,20 +78,38 @@ function validateAllPackageInfos(): ValidationError[] {
 if (require.main === module) {
   const errors = validateAllPackageInfos();
   if (errors.length > 0) {
-    console.log('::set-output name=has_errors::true');
-    console.log(
-      '::set-output name=error_message::' +
-        JSON.stringify(
+    // Use environment files instead of set-output
+    const githubOutputPath = process.env.GITHUB_OUTPUT;
+    if (githubOutputPath) {
+      // Write to the GitHub Actions environment file
+      fs.appendFileSync(githubOutputPath, `has_errors=true\n`);
+      fs.appendFileSync(
+        githubOutputPath,
+        `error_message=${JSON.stringify(
           errors.map(err => ({
             file: err.file,
             errors: err.errors,
           })),
-        ),
+        )}\n`,
+      );
+    } else {
+      // Fallback for local execution
+      console.log('Validation errors found:');
+      errors.forEach(err => {
+        console.log(`File: ${err.file}`);
+        err.errors.forEach(error => console.log(`  - ${error}`));
+      });
+    }
+    // Don't exit with code 1 to allow the workflow to continue
+    console.log(
+      'Validation completed with errors. The workflow will continue to write PR comments.',
     );
-    process.exit(1);
   } else {
-    console.log('::set-output name=has_errors::false');
+    // Use environment files instead of set-output
+    const githubOutputPath = process.env.GITHUB_OUTPUT;
+    if (githubOutputPath) {
+      fs.appendFileSync(githubOutputPath, `has_errors=false\n`);
+    }
     console.log('All package info files are valid! ✨');
-    process.exit(0);
   }
 }

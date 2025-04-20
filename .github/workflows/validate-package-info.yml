@@ -40,7 +40,7 @@ jobs:
         shell: bash
 
       - name: Comment on PR
-        if: steps.validate.outputs.has_errors == 'true'
+        if: ${{ fromJSON(steps.validate.outputs.has_errors) }}
         uses: actions/github-script@v6
         with:
           script: |
