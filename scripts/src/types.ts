@@ -124,15 +124,14 @@ export const PackageInfo = z
     path: z
       .string()
       .describe(
-        'The path to the package in the monorepo - packages/@ext_@slack#web-api or packages/@microfox/slack',
+        'The path to the package in the monorepo - packages/@ext_@slack#web-api or packages/slack',
       )
       .refine(
         value =>
-          value.startsWith('packages/@ext_') ||
-          value.startsWith('packages/@microfox'),
+          value.startsWith('packages/@ext_') || value.startsWith('packages/'),
         {
           message:
-            'Path must start with either "packages/@ext_" or "packages/@microfox"',
+            'Path must start with either "packages/@ext_" or "packages/"',
         },
       ),
     dependencies: z
@@ -167,14 +166,14 @@ export const PackageInfo = z
       }
       if (data.status === 'stable') {
         // data.path must start with packages/@microfox
-        if (!data.path.startsWith('packages/@microfox')) {
+        if (data.path.startsWith('packages/@ext_')) {
           return false;
         }
       }
       return true;
     },
     {
-      message: `The path of the package must start with packages/@ext_ for semiStable packages and packages/@microfox for stable packages`,
+      message: `The path of the package must start with packages/@ext_ for semiStable packages and packages/ for stable packages`,
       path: ['path'],
     },
   );
