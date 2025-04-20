@@ -31,10 +31,10 @@ jobs:
           echo "TypeScript compilation completed"
 
           echo "Checking if the compiled file exists..."
-          ls -la dist/src/
+          ls -la dist/
 
           echo "Running the validation script..."
-          node dist/src/validatePackageInfo.js
+          node dist/validatePackageInfo.js
 
           echo "Script execution completed"
         shell: bash
