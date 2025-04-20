@@ -1,6 +1,6 @@
 {
   "name": "@slack/web-api",
-  "title": "@slack/web-api",
+  "title": "Slack Official",
   "description": "Official library for using the Slack Platform's Web API",
   "path": "packages/@ext_@slack#web-api",
   "dependencies": [
@@ -25,13 +25,14 @@
     "path": "/README.md",
     "title": "@slack/web-api",
     "functionalities": [],
-    "description": "The full README for the package"
+    "description": "The full README for the package",
+    "all_readmes": []
   },
   "constructors": [
     {
       "name": "WebClient",
       "description": "Create a new Slack Web Client through which you can operate bots on Slack",
-      "auth": "apiKey",
+      "auth": "apikey",
       "requiredKeys": [
         {
           "key": "SLACK_TOKEN",
@@ -45,7 +46,9 @@
   "keysInfo": [
     {
       "key": "SLACK_TOKEN",
-      "constructors": ["WebClient"],
+      "constructors": [
+        "WebClient"
+      ],
       "description": "The token for the Slack Web Client",
       "required": true
     }

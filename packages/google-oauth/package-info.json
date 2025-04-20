@@ -3,7 +3,9 @@
   "title": "Microfox Google OAuth SDK",
   "description": "Google OAuth SDK for Microfox",
   "path": "packages/google-oauth",
-  "dependencies": ["zod"],
+  "dependencies": [
+    "zod"
+  ],
   "status": "stable",
   "authEndpoint": "/connect/google-oauth",
   "documentation": "https://www.npmjs.com/package/@microfox/google-oauth",
@@ -47,36 +49,52 @@
   "keysInfo": [
     {
       "key": "GOOGLE_ACCESS_TOKEN",
-      "constructors": ["GoogleOAuthSdk"],
+      "constructors": [
+        "GoogleOAuthSdk"
+      ],
       "description": "The access token for the Google client",
       "required": true
     },
     {
       "key": "GOOGLE_REFRESH_TOKEN",
-      "constructors": ["GoogleOAuthSdk"],
+      "constructors": [
+        "GoogleOAuthSdk"
+      ],
       "description": "The refresh token for the Google client",
       "required": true
     },
     {
       "key": "GOOGLE_CLIENT_ID",
-      "constructors": ["GoogleOAuthSdk"],
+      "constructors": [
+        "GoogleOAuthSdk"
+      ],
       "description": "The client ID for the Google application",
       "required": true
     },
     {
       "key": "GOOGLE_CLIENT_SECRET",
-      "constructors": ["GoogleOAuthSdk"],
+      "constructors": [
+        "GoogleOAuthSdk"
+      ],
       "description": "The client secret for the Google application",
       "required": true
     },
     {
       "key": "GOOGLE_SCOPES",
-      "constructors": ["GoogleOAuthSdk"],
+      "constructors": [
+        "GoogleOAuthSdk"
+      ],
       "description": "The scopes for the Google client",
       "required": true
     }
   ],
   "extraInfo": [
     "Use the `GoogleOAuthSdk` class to create a new Google OAuth client."
-  ]
+  ],
+  "readme_map": {
+    "path": "/README.md",
+    "functionalities": [],
+    "description": "No description provided",
+    "all_readmes": []
+  }
 }
