@@ -29,7 +29,8 @@
     {
       "name": "Octokit",
       "description": "Create a new Octokit client",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "GITHUB_TOKEN",
