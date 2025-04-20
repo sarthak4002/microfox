@@ -42,6 +42,10 @@ export const Constructor = z.object({
   auth: z
     .enum(['oauth2', 'apikey'])
     .describe('The authentication method of the constructor'),
+  authEndpoint: z
+    .string()
+    .optional()
+    .describe('The endpoint of the constructor'),
   requiredKeys: z
     .array(KeyInfo)
     .describe('The required keys of the constructor'),
@@ -51,7 +55,10 @@ export const Constructor = z.object({
   functionalities: z
     .array(z.string())
     .describe('The functionalities of the constructor'),
-  apiType: z.enum(['bot_token', 'api_key']).describe('The type of the API'),
+  apiType: z
+    .enum(['bot_token', 'api_key'])
+    .optional()
+    .describe('The type of the API'),
 });
 
 export const PackageInfo = z.object({
