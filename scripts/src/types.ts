@@ -19,17 +19,40 @@ export const ReadMeObject = z.object({
     .describe('The functionality this README file explains on how to use'),
 });
 
-export const PackageReadmeMap = z.object({
-  path: z.string().describe('The path to the main README file in the package'),
-  functionalities: z
-    .array(z.string())
-    .describe('The functionalities of the package'),
-  all_readmes: z
-    .array(ReadMeObject)
-    .optional()
-    .describe('The main readmes of the package'),
-  description: z.string().describe('The description of the package'),
-});
+export const PackageReadmeMap = z
+  .object({
+    path: z
+      .string()
+      .describe('The path to the main README file in the package'),
+    functionalities: z
+      .array(z.string())
+      .describe('The functionalities of the package'),
+    all_readmes: z
+      .array(ReadMeObject)
+      .optional()
+      .describe('The main readmes of the package'),
+    description: z.string().describe('The description of the package'),
+  })
+  .refine(
+    data => {
+      // If all_readmes is not provided, validation passes
+      if (!data.all_readmes) return true;
+
+      // Check if any functionality in all_readmes exists in functionalities
+      return data.all_readmes.every(readme => {
+        // If readme doesn't have a functionality field, it's valid
+        if (!readme.functionality) return true;
+
+        // Check if the functionality exists in the functionalities array
+        return data.functionalities.includes(readme.functionality);
+      });
+    },
+    {
+      message:
+        'Each functionality specified in all_readmes must exist in the functionalities array',
+      path: ['all_readmes'],
+    },
+  );
 
 export const KeyInfo = z.object({
   key: z.string().describe('The key of the constructor'),
@@ -85,48 +108,73 @@ export const Constructor = z
     },
   );
 
-export const PackageInfo = z.object({
-  name: z
-    .string()
-    .startsWith('@')
-    .describe('The name of the package - @slack/web-api or @microfox/slack'),
-  title: z
-    .string()
-    .describe('Display name of the package')
-    .refine(value => !value.startsWith('@'), {
-      message: 'Title must not start with "@"',
-    }),
-  description: z.string().describe('One line Description of the package'),
-  path: z
-    .string()
-    .describe(
-      'The path to the package in the monorepo - packages/ext_@slack#web-api or packages/@microfox/slack',
-    )
-    .refine(
-      value =>
-        value.startsWith('packages/ext_') ||
-        value.startsWith('packages/@microfox'),
-      {
-        message:
-          'Path must start with either "packages/ext_" or "packages/@microfox"',
-      },
+export const PackageInfo = z
+  .object({
+    name: z
+      .string()
+      .startsWith('@')
+      .describe('The name of the package - @slack/web-api or @microfox/slack'),
+    title: z
+      .string()
+      .describe('Display name of the package')
+      .refine(value => !value.startsWith('@'), {
+        message: 'Title must not start with "@"',
+      }),
+    description: z.string().describe('One line Description of the package'),
+    path: z
+      .string()
+      .describe(
+        'The path to the package in the monorepo - packages/@ext_@slack#web-api or packages/@microfox/slack',
+      )
+      .refine(
+        value =>
+          value.startsWith('packages/@ext_') ||
+          value.startsWith('packages/@microfox'),
+        {
+          message:
+            'Path must start with either "packages/@ext_" or "packages/@microfox"',
+        },
+      ),
+    dependencies: z
+      .array(z.string())
+      .describe('The dependencies of the package'),
+    status: z
+      .enum(['stable', 'semiStable', 'unstable'])
+      .describe('The status of the package'),
+    documentation: z.string().describe('The documentation of the package'),
+    icon: z
+      .string()
+      .describe('The icon url of the package')
+      .startsWith('https://'),
+    readme_map: PackageReadmeMap,
+    constructors: z.array(Constructor),
+    keysInfo: z.array(
+      KeyInfo.partial({ displayName: true, description: true }).extend({
+        constructors: z.array(z.string()),
+        required: z.boolean().optional(),
+      }),
     ),
-  dependencies: z.array(z.string()).describe('The dependencies of the package'),
-  status: z
-    .enum(['stable', 'semiStable', 'unstable'])
-    .describe('The status of the package'),
-  documentation: z.string().describe('The documentation of the package'),
-  icon: z
-    .string()
-    .describe('The icon url of the package')
-    .startsWith('https://'),
-  readme_map: PackageReadmeMap,
-  constructors: z.array(Constructor),
-  keysInfo: z.array(
-    KeyInfo.partial({ displayName: true, description: true }).extend({
-      constructors: z.array(z.string()),
-      required: z.boolean().optional(),
-    }),
-  ),
-  extraInfo: z.array(z.string()),
-});
+    extraInfo: z.array(z.string()),
+  })
+  .refine(
+    data => {
+      // If all_readmes is not provided, validation passes
+      if (data.status === 'semiStable') {
+        // data.path must start with packages/ext_
+        if (!data.path.startsWith('packages/@ext_')) {
+          return false;
+        }
+      }
+      if (data.status === 'stable') {
+        // data.path must start with packages/@microfox
+        if (!data.path.startsWith('packages/@microfox')) {
+          return false;
+        }
+      }
+      return true;
+    },
+    {
+      message: `The path of the package must start with packages/@ext_ for semiStable packages and packages/@microfox for stable packages`,
+      path: ['path'],
+    },
+  );
