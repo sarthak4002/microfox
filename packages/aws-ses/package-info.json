@@ -11,17 +11,15 @@
   "readme_map": {
     "path": "/README.md",
     "title": "createSESClient Microfox",
-    "functionalities": [
-      "sendEmail",
-      "sendBulkEmails"
-    ],
+    "functionalities": ["sendEmail", "sendBulkEmails"],
     "description": "The full README for the AWS SES SDK"
   },
   "constructors": [
     {
       "name": "createSESClient",
       "description": "Create a new AWS SES client through which you can send emails",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "AWS_SES_ACCESS_KEY_ID",
