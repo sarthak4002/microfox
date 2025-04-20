@@ -38,7 +38,17 @@ function validatePackageInfo(filePath: string): ValidationError | null {
 
 function validateAllPackageInfos(): ValidationError[] {
   const errors: ValidationError[] = [];
-  const packageInfoFiles = glob.sync('packages/**/package-info.json');
+
+  // Get the project root directory (two levels up from the script location)
+  const scriptDir = __dirname;
+  const projectRoot = path.resolve(scriptDir, '../../');
+
+  // Use path.join to create a path relative to the project root
+  const packageInfoPattern = path.join(
+    projectRoot,
+    'packages/**/package-info.json',
+  );
+  const packageInfoFiles = globSync(packageInfoPattern);
 
   for (const file of packageInfoFiles) {
     const error = validatePackageInfo(file);
