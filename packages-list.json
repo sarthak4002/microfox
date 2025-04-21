@@ -52,15 +52,18 @@
     "packages/drive",
     "packages/github",
     "packages/google",
-    "packages/google-oauth",
     "packages/google-sheets",
-    "packages/linkedin-oauth",
     "packages/linkedin-share",
     "packages/rest-sdk",
     "packages/slack-web-tiny",
     "packages/twitter",
+    "packages/whatsapp-business",
     "packages/youtube"
   ],
-  "total": 56,
-  "generatedAt": "2025-04-11T21:26:58.954Z"
+  "oauthConnectorPackages": [
+    "packages/google-oauth",
+    "packages/linkedin-oauth"
+  ],
+  "total": 59,
+  "generatedAt": "2025-04-21T04:18:39.417Z"
 }
