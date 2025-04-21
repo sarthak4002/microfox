@@ -41,6 +41,15 @@
           }
         },
         {
+          "key": "authorImage",
+          "displayName": "Author Image",
+          "description": "Image that will appear as the message sender",
+          "ui": {
+            "type": "image",
+            "label": "Author Image"
+          }
+        },
+        {
           "key": "messageFormat",
           "displayName": "Message Format",
           "description": "Format of the messages sent to Slack",
