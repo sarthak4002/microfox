@@ -3,10 +3,7 @@
   "title": "Microfox Slack Web Tiny",
   "description": "A lightweight, type-safe SDK for interacting with the Slack Web API",
   "path": "packages/slack-web-tiny",
-  "dependencies": [
-    "@microfox/rest-sdk",
-    "zod"
-  ],
+  "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
   "authEndpoint": "/connect/slack",
   "documentation": "https://www.npmjs.com/package/@microfox/slack-web-tiny",
@@ -14,11 +11,7 @@
   "readme_map": {
     "path": "/README.md",
     "title": "createSlackSDK Microfox",
-    "functionalities": [
-      "sendMessage",
-      "updateMessage",
-      "uploadFile"
-    ],
+    "functionalities": ["sendMessage", "updateMessage", "uploadFile"],
     "description": "The full README for the Slack Web Tiny SDK",
     "all_readmes": []
   },
@@ -27,6 +20,7 @@
       "name": "createSlackSDK",
       "description": "Create a new Slack SDK through which you can operate bots on Slack",
       "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "SLACK_BOT_TOKEN",
@@ -85,9 +79,7 @@
   "keysInfo": [
     {
       "key": "SLACK_BOT_TOKEN",
-      "constructors": [
-        "createSlackSDK"
-      ],
+      "constructors": ["createSlackSDK"],
       "description": "The token for the createSlackSDK constructor",
       "required": true
     }

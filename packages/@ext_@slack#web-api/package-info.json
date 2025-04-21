@@ -33,6 +33,7 @@
       "name": "WebClient",
       "description": "Create a new Slack Web Client through which you can operate bots on Slack",
       "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "SLACK_TOKEN",
@@ -46,9 +47,7 @@
   "keysInfo": [
     {
       "key": "SLACK_TOKEN",
-      "constructors": [
-        "WebClient"
-      ],
+      "constructors": ["WebClient"],
       "description": "The token for the Slack Web Client",
       "required": true
     }

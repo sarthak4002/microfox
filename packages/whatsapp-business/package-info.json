@@ -45,7 +45,8 @@
     {
       "name": "WhatsAppBusinessSDK",
       "description": "Create a new WhatsApp Business SDK through which you can operate WhatsApp Business API",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "WHATSAPP_PHONE_NUMBER_ID",

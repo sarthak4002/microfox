@@ -29,7 +29,8 @@
     {
       "name": "createXSDK",
       "description": "Create a new X SDK client through which you can interact with X (Twitter) API",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "X_API_KEY",
