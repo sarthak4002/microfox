@@ -5,6 +5,7 @@ on:
     paths:
       - 'packages/**/package-info.json'
       - 'scripts/src/types.ts'
+      - 'scripts/src/validatePackageInfo.ts'
 
 jobs:
   validate:

@@ -64,6 +64,21 @@ function validateAllPackageInfos(): ValidationError[] {
   );
   const packageInfoFiles = globSync(packageInfoPattern);
 
+  // Find all package directories
+  const packageDirs = globSync(path.join(projectRoot, 'packages/*/'));
+
+  // Check for missing package-info.json files
+  for (const dir of packageDirs) {
+    const packageInfoPath = path.join(dir, 'package-info.json');
+    if (!packageInfoFiles.includes(packageInfoPath)) {
+      errors.push({
+        file: dir,
+        errors: ['Missing package-info.json file'],
+      });
+    }
+  }
+
+  // Validate existing package-info.json files
   for (const file of packageInfoFiles) {
     const error = validatePackageInfo(file);
     if (error) {

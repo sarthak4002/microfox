@@ -79,7 +79,9 @@ export const KeyInfoWithUi = KeyInfo.extend({
       'textarea',
       'image',
     ]),
-    options: z.array(z.string()).optional(),
+    options: z
+      .array(z.object({ label: z.string(), value: z.string() }))
+      .optional(),
     placeholder: z.string().optional(),
     label: z.string().optional(),
     required: z.boolean().optional(),
