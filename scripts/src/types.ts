@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import fs from 'fs';
+import path from 'path';
 
 export const ReadMeObject = z.object({
   path: z
@@ -200,5 +202,34 @@ export const PackageInfo = z
     {
       message: `The path of the package must start with packages/@ext_ for semiStable packages and packages/ for stable packages`,
       path: ['path'],
+    },
+  )
+  .refine(
+    data => {
+      if (data.status !== 'stable' && data.status !== 'semiStable') return true;
+      // If the icon is a GitHub raw URL from our repository
+      if (
+        data.icon.includes('raw.githubusercontent.com/microfox-ai/microfox')
+      ) {
+        try {
+          // Extract the path after the repository name
+          const pathInRepo = data.icon.split('microfox/refs/heads/main/')[1];
+          if (!pathInRepo) return false;
+
+          // Resolve the path relative to the workspace root
+          const workspaceRoot = path.resolve(__dirname, '..', '..');
+          const localPath = path.join(workspaceRoot, pathInRepo);
+
+          return fs.existsSync(localPath);
+        } catch (error) {
+          return false;
+        }
+      }
+      // For external URLs, just validate that it's a valid HTTPS URL
+      return data.icon.startsWith('https://');
+    },
+    {
+      message: `The icon must be either a valid HTTPS URL or a valid path to an existing file in the repository`,
+      path: ['icon'],
     },
   );
