@@ -31,47 +31,71 @@
       "internalKeys": [],
       "botConfig": [
         {
-          "label": "Author Name",
-          "type": "text",
-          "field": "authorName",
-          "placeholder": "Enter author name",
-          "description": "Name that will appear as the message sender"
+          "key": "authorName",
+          "displayName": "Author Name",
+          "description": "Name that will appear as the message sender",
+          "ui": {
+            "type": "text",
+            "label": "Author Name",
+            "placeholder": "Enter author name"
+          }
         },
         {
-          "label": "Message Format",
-          "type": "select",
-          "field": "messageFormat",
-          "options": [
-            {
-              "label": "Plain Text",
-              "value": "plain"
-            },
-            {
-              "label": "Markdown",
-              "value": "markdown"
-            }
-          ],
-          "description": "Format of the messages sent to Slack"
+          "key": "authorImage",
+          "displayName": "Author Image",
+          "description": "Image that will appear as the message sender",
+          "ui": {
+            "type": "image",
+            "label": "Author Image"
+          }
         },
         {
-          "label": "Default Channel",
-          "type": "text",
-          "field": "defaultChannel",
-          "placeholder": "Enter default channel name",
-          "description": "Default channel where messages will be sent"
+          "key": "messageFormat",
+          "displayName": "Message Format",
+          "description": "Format of the messages sent to Slack",
+          "ui": {
+            "type": "select",
+            "label": "Message Format",
+            "options": [
+              {
+                "label": "Plain Text",
+                "value": "plain"
+              },
+              {
+                "label": "Markdown",
+                "value": "markdown"
+              }
+            ]
+          }
         },
         {
-          "label": "Use Thread Replies",
-          "type": "boolean",
-          "field": "useThreads",
-          "description": "Enable thread-based conversations"
+          "key": "defaultChannel",
+          "displayName": "Default Channel",
+          "description": "Default channel where messages will be sent",
+          "ui": {
+            "type": "text",
+            "label": "Default Channel",
+            "placeholder": "Enter default channel name"
+          }
         },
         {
-          "label": "Custom Message Template",
-          "type": "textarea",
-          "field": "messageTemplate",
-          "placeholder": "Enter custom message template",
-          "description": "Template for formatting messages (supports variables)"
+          "key": "useThreads",
+          "displayName": "Use Thread Replies",
+          "description": "Enable thread-based conversations",
+          "ui": {
+            "type": "boolean",
+            "label": "Use Thread Replies"
+          }
+        },
+        {
+          "key": "messageTemplate",
+          "displayName": "Custom Message Template",
+          "description": "Template for formatting messages (supports variables)",
+          "ui": {
+            "type": "textarea",
+            "label": "Custom Message Template",
+            "placeholder": "Enter custom message template"
+          }
         }
       ]
     }

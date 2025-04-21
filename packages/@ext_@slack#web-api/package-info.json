@@ -41,7 +41,18 @@
           "description": "The token for the Slack Web Client"
         }
       ],
-      "internalKeys": []
+      "internalKeys": [],
+      "botConfig": [
+        {
+          "key": "image",
+          "displayName": "Bot Send as Image",
+          "description": "The image to use for the Slack Web Client",
+          "ui": {
+            "type": "image",
+            "required": false
+          }
+        }
+      ]
     }
   ],
   "keysInfo": [

@@ -68,6 +68,27 @@ export const KeyInfo = z.object({
     .describe('The default value of the key'),
 });
 
+export const KeyInfoWithUi = KeyInfo.extend({
+  ui: z.object({
+    type: z.enum([
+      'text',
+      'number',
+      'boolean',
+      'select',
+      'multiSelect',
+      'textarea',
+      'image',
+    ]),
+    options: z
+      .array(z.object({ label: z.string(), value: z.string() }))
+      .optional(),
+    placeholder: z.string().optional(),
+    label: z.string().optional(),
+    required: z.boolean().optional(),
+    disabled: z.boolean().optional(),
+  }),
+});
+
 export const Constructor = z
   .object({
     name: z.string().describe('The name of the constructor'),
@@ -89,6 +110,10 @@ export const Constructor = z
       .array(z.string())
       .default([])
       .describe('The functionalities of the constructor'),
+    botConfig: z
+      .array(KeyInfoWithUi)
+      .default([])
+      .describe('The bot config of the constructor'),
     apiType: z
       .enum(['bot_token', 'api_key'])
       .optional()
@@ -138,7 +163,7 @@ export const PackageInfo = z
       .array(z.string())
       .describe('The dependencies of the package'),
     status: z
-      .enum(['stable', 'semiStable', 'unstable'])
+      .enum(['stable', 'semiStable', 'unstable', 'oauthConnector'])
       .describe('The status of the package'),
     documentation: z.string().describe('The documentation of the package'),
     icon: z
