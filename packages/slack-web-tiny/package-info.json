@@ -31,70 +31,22 @@
       "internalKeys": [],
       "botConfig": [
         {
-          "key": "authorName",
-          "displayName": "Author Name",
+          "key": "AUTHOR_NAME",
+          "displayName": "Bot Name",
           "description": "Name that will appear as the message sender",
           "ui": {
             "type": "text",
-            "label": "Author Name",
-            "placeholder": "Enter author name"
+            "label": "Bot Name",
+            "placeholder": "Enter bot name"
           }
         },
         {
-          "key": "authorImage",
-          "displayName": "Author Image",
-          "description": "Image that will appear as the message sender",
+          "key": "ICON_URL",
+          "displayName": "Bot Icon",
+          "description": "Icon that will appear as the bot's avatar",
           "ui": {
             "type": "image",
-            "label": "Author Image"
-          }
-        },
-        {
-          "key": "messageFormat",
-          "displayName": "Message Format",
-          "description": "Format of the messages sent to Slack",
-          "ui": {
-            "type": "select",
-            "label": "Message Format",
-            "options": [
-              {
-                "label": "Plain Text",
-                "value": "plain"
-              },
-              {
-                "label": "Markdown",
-                "value": "markdown"
-              }
-            ]
-          }
-        },
-        {
-          "key": "defaultChannel",
-          "displayName": "Default Channel",
-          "description": "Default channel where messages will be sent",
-          "ui": {
-            "type": "text",
-            "label": "Default Channel",
-            "placeholder": "Enter default channel name"
-          }
-        },
-        {
-          "key": "useThreads",
-          "displayName": "Use Thread Replies",
-          "description": "Enable thread-based conversations",
-          "ui": {
-            "type": "boolean",
-            "label": "Use Thread Replies"
-          }
-        },
-        {
-          "key": "messageTemplate",
-          "displayName": "Custom Message Template",
-          "description": "Template for formatting messages (supports variables)",
-          "ui": {
-            "type": "textarea",
-            "label": "Custom Message Template",
-            "placeholder": "Enter custom message template"
+            "label": "Bot Icon"
           }
         }
       ]
