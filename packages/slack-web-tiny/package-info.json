@@ -31,7 +31,7 @@
       "internalKeys": [],
       "botConfig": [
         {
-          "key": "AUTHOR_NAME",
+          "key": "SLACK_AUTHOR_NAME",
           "displayName": "Bot Name",
           "description": "Name that will appear as the message sender",
           "ui": {
@@ -41,7 +41,7 @@
           }
         },
         {
-          "key": "ICON_URL",
+          "key": "SLACK_ICON_URL",
           "displayName": "Bot Icon",
           "description": "Icon that will appear as the bot's avatar",
           "ui": {

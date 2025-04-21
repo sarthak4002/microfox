@@ -88,6 +88,8 @@ const message = await slackSDK.sendMessage({
       accessory: blocks.button('Click Me', 'button_click_action'),
     }),
   ],
+  username: 'Bot/Author Name', // process.env.SLACK_AUTHOR_NAME
+  icon_url: 'https://image.bot.com', // process.env.SLACK_ICON_URL
 });
 ```
 
