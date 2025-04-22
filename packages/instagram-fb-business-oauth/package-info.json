@@ -19,7 +19,6 @@
       "name": "InstagramFbBusinessOAuthSdk",
       "description": "Create a new Instagram FB Business OAuth client",
       "auth": "oauth2",
-      "apiType": "oauth2",
       "requiredKeys": [],
       "internalKeys": [
         {
