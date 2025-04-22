@@ -86,23 +86,32 @@
           }
         },
         {
-          "key": "WHATSAPP_API_AGENT_ENDPOINT",
-          "displayName": "WhatsApp API Agent Endpoint",
-          "description": "The API agent endpoint for the WhatsApp Business API",
+          "key": "WHATSAPP_API_KEY",
+          "displayName": "WhatsApp API Key",
+          "description": "The API key for the whatsapp verification",
           "ui": {
             "type": "text",
-            "label": "WhatsApp API Agent Endpoint",
-            "placeholder": "Enter WhatsApp API Agent Endpoint"
+            "label": "WhatsApp API Key"
           }
         },
         {
           "key": "WHATSAPP_REGISTER_PHONE_NUMBER_ENDPOINT",
           "displayName": "WhatsApp Register Phone Number Endpoint",
-          "description": "The register phone number endpoint for the WhatsApp Business API",
+          "description": "The register phone number endpoint to register the user phone number in your db",
           "ui": {
             "type": "text",
             "label": "WhatsApp Register Phone Number Endpoint",
             "placeholder": "Enter WhatsApp Register Phone Number Endpoint"
+          }
+        },
+        {
+          "key": "WHATSAPP_API_AGENT_ENDPOINT",
+          "displayName": "WhatsApp API Agent Endpoint",
+          "description": "The API agent endpoint to communicate with the registered user",
+          "ui": {
+            "type": "text",
+            "label": "WhatsApp API Agent Endpoint",
+            "placeholder": "Enter WhatsApp API Agent Endpoint"
           }
         }
       ]
