@@ -90,7 +90,7 @@
           "displayName": "WhatsApp API Agent Endpoint",
           "description": "The API agent endpoint for the WhatsApp Business API",
           "ui": {
-            "type": "url",
+            "type": "text",
             "label": "WhatsApp API Agent Endpoint",
             "placeholder": "Enter WhatsApp API Agent Endpoint"
           }
@@ -100,7 +100,7 @@
           "displayName": "WhatsApp Register Phone Number Endpoint",
           "description": "The register phone number endpoint for the WhatsApp Business API",
           "ui": {
-            "type": "url",
+            "type": "text",
             "label": "WhatsApp Register Phone Number Endpoint",
             "placeholder": "Enter WhatsApp Register Phone Number Endpoint"
           }
