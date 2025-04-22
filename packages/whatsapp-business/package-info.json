@@ -64,7 +64,48 @@
           "description": "The access token for the WhatsApp Business API"
         }
       ],
-      "internalKeys": []
+      "internalKeys": [],
+      "botConfig": [
+        {
+          "key": "WHATSAPP_AUTHOR_NAME",
+          "displayName": "WhatsApp Author Name",
+          "description": "The name of the WhatsApp Business API author",
+          "ui": {
+            "type": "text",
+            "label": "WhatsApp Author Name",
+            "placeholder": "Enter WhatsApp Author Name"
+          }
+        },
+        {
+          "key": "WHATSAPP_ICON_URL",
+          "displayName": "WhatsApp Icon URL",
+          "description": "The URL of the WhatsApp Business API icon",
+          "ui": {
+            "type": "image",
+            "label": "WhatsApp Icon URL"
+          }
+        },
+        {
+          "key": "WHATSAPP_API_AGENT_ENDPOINT",
+          "displayName": "WhatsApp API Agent Endpoint",
+          "description": "The API agent endpoint for the WhatsApp Business API",
+          "ui": {
+            "type": "url",
+            "label": "WhatsApp API Agent Endpoint",
+            "placeholder": "Enter WhatsApp API Agent Endpoint"
+          }
+        },
+        {
+          "key": "WHATSAPP_REGISTER_PHONE_NUMBER_ENDPOINT",
+          "displayName": "WhatsApp Register Phone Number Endpoint",
+          "description": "The register phone number endpoint for the WhatsApp Business API",
+          "ui": {
+            "type": "url",
+            "label": "WhatsApp Register Phone Number Endpoint",
+            "placeholder": "Enter WhatsApp Register Phone Number Endpoint"
+          }
+        }
+      ]
     }
   ],
   "keysInfo": [
