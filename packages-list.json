@@ -1,7 +1,5 @@
 {
-  "semiStablePackages": [
-    "packages/@ext_@slack#web-api"
-  ],
+  "semiStablePackages": ["packages/@ext_@slack#web-api"],
   "partialPackages": [
     "packages/ai-sdk",
     "packages/apollo",
@@ -53,6 +51,8 @@
     "packages/github",
     "packages/google",
     "packages/google-sheets",
+    "packages/instagram-business-oauth",
+    "packages/instagram-fb-business-oauth",
     "packages/linkedin-share",
     "packages/rest-sdk",
     "packages/slack-web-tiny",
@@ -65,5 +65,5 @@
     "packages/linkedin-oauth"
   ],
   "total": 59,
-  "generatedAt": "2025-04-21T12:59:21.322Z"
+  "generatedAt": "2025-04-23T10:44:06.396Z"
 }
