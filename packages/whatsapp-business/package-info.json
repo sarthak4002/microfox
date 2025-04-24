@@ -131,7 +131,7 @@
     {
       "key": "WHATSAPP_BUSINESS_PHONE_NUMBER",
       "constructors": ["WhatsAppBusinessSDK"],
-      "description": "Your whatsapp business phone number to send the text from"
+      "description": "Your whatsapp business phone number to send the text from",
       "required": true
     },
     {
