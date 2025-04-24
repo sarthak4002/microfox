@@ -166,7 +166,7 @@ export const PackageInfo = z
       .array(z.string())
       .describe('The dependencies of the package'),
     status: z
-      .enum(['stable', 'semiStable', 'unstable', 'oauthConnector'])
+      .enum(['stable', 'semiStable', 'unstable', 'oauthConnector', 'internal'])
       .describe('The status of the package'),
     documentation: z.string().describe('The documentation of the package'),
     icon: z

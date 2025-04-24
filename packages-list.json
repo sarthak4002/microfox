@@ -56,7 +56,6 @@
     "packages/instagram-business-oauth",
     "packages/instagram-fb-business-oauth",
     "packages/linkedin-share",
-    "packages/rest-sdk",
     "packages/slack-web-tiny",
     "packages/twitter",
     "packages/whatsapp-business",
@@ -66,6 +65,9 @@
     "packages/google-oauth",
     "packages/linkedin-oauth"
   ],
+  "internalPackages": [
+    "packages/rest-sdk"
+  ],
   "total": 59,
-  "generatedAt": "2025-04-23T10:44:06.396Z"
+  "generatedAt": "2025-04-24T04:24:43.611Z"
 }
