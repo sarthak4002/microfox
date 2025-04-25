@@ -56,6 +56,12 @@ export const PackageReadmeMap = z
     },
   );
 
+export const Instructions = z.object({
+  type: z.enum(['video', 'image']),
+  url: z.string().url(),
+  placement: z.enum(['onCopy', 'onHowToGet']).optional(),
+});
+
 export const KeyInfo = z.object({
   key: z.string().describe('The key of the constructor'),
   displayName: z.string().describe('The display name of the key'),
@@ -68,6 +74,7 @@ export const KeyInfo = z.object({
     .or(z.boolean())
     .optional()
     .describe('The default value of the key'),
+  instructions: Instructions.optional(),
 });
 
 export const KeyInfoWithUi = KeyInfo.extend({
@@ -88,6 +95,8 @@ export const KeyInfoWithUi = KeyInfo.extend({
     placeholder: z.string().optional(),
     label: z.string().optional(),
     required: z.boolean().optional(),
+    isPrefilled: z.boolean().optional(),
+    isUnique: z.boolean().optional(),
     disabled: z.boolean().optional(),
   }),
 });
@@ -106,9 +115,12 @@ export const Constructor = z
     requiredKeys: z
       .array(KeyInfo)
       .describe('The required keys of the constructor'),
+    isAutoSetupEnabled: z.boolean().optional(),
+    requiredKeysInstructions: Instructions.optional(),
+    requiredKeysComponent: z.string().optional(),
     internalKeys: z
       .array(KeyInfo)
-      .describe('The internal keys of the constructor'),
+      .describe('The oauth2 keys of the constructor'),
     functionalities: z
       .array(z.string())
       .default([])
@@ -117,6 +129,8 @@ export const Constructor = z
       .array(KeyInfoWithUi)
       .default([])
       .describe('The bot config of the constructor'),
+    botConfigInstructions: Instructions.optional(),
+    botConfigComponent: z.string().optional(),
     apiType: z
       .enum(['bot_token', 'api_key'])
       .optional()

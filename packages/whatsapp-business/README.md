@@ -28,12 +28,13 @@ import { WhatsAppBusinessSDK } from '@microfox/whatsapp-business-sdk';
 
 // Initialize the SDK
 const whatsapp = new WhatsAppBusinessSDK({
-  phoneNumberId: 'YOUR_PHONE_NUMBER_ID',
-  businessAccountId: 'YOUR_BUSINESS_ACCOUNT_ID',
-  accessToken: 'YOUR_ACCESS_TOKEN',
-  version: 'v22.0', // Optional: defaults to v22.0
-  baseUrl: 'https://graph.facebook.com/v22.0', // Optional: custom base URL
+  phoneNumberId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER_ID,
+  businessAccountId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER,
+  accessToken: process.env.WHATSAPP_BUSINESS_ACCESS_TOKEN,
 });
+// Optional parameters
+// version: 'v22.0', // Optional: defaults to v22.0
+// baseUrl: 'https://graph.facebook.com/v22.0', // Optional: custom base URL
 
 // Send a text message
 await whatsapp.sendTextMessage(
