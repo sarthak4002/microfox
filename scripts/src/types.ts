@@ -57,7 +57,7 @@ export const PackageReadmeMap = z
   );
 
 export const Instructions = z.object({
-  type: z.enum(['video', 'image']),
+  type: z.enum(['video', 'image', 'externalLink']),
   url: z.string().url(),
   placement: z.enum(['onCopy', 'onHowToGet']).optional(),
 });
