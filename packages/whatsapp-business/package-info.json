@@ -49,6 +49,11 @@
       "apiType": "bot_token",
       "requiredKeys": [
         {
+          "key": "WHATSAPP_BUSINESS_PHONE_NUMBER",
+          "displayName": "WhatsApp Business Phone Number",
+          "description": "Your whatsapp business phone number to send the text from"
+        },
+        {
           "key": "WHATSAPP_PHONE_NUMBER_ID",
           "displayName": "WhatsApp Phone Number ID",
           "description": "The phone number ID for the WhatsApp Business API"
@@ -123,6 +128,12 @@
     }
   ],
   "keysInfo": [
+    {
+      "key": "WHATSAPP_BUSINESS_PHONE_NUMBER",
+      "constructors": ["WhatsAppBusinessSDK"],
+      "description": "Your whatsapp business phone number to send the text from",
+      "required": true
+    },
     {
       "key": "WHATSAPP_PHONE_NUMBER_ID",
       "constructors": ["WhatsAppBusinessSDK"],
