@@ -59,6 +59,7 @@ export const PackageReadmeMap = z
 export const Instructions = z.object({
   type: z.enum(['video', 'image']),
   url: z.string().url(),
+  placement: z.enum(['onCopy', 'onHowToGet']).optional(),
 });
 
 export const KeyInfo = z.object({
@@ -94,6 +95,8 @@ export const KeyInfoWithUi = KeyInfo.extend({
     placeholder: z.string().optional(),
     label: z.string().optional(),
     required: z.boolean().optional(),
+    isPrefilled: z.boolean().optional(),
+    isUnique: z.boolean().optional(),
     disabled: z.boolean().optional(),
   }),
 });
