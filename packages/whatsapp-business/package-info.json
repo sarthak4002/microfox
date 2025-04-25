@@ -62,23 +62,22 @@
           "key": "WHATSAPP_BUSINESS_ACCOUNT_ID",
           "displayName": "WhatsApp Business Account ID",
           "description": "The business account ID for the WhatsApp Business API (You can find it in the WhatsApp Business API dashboard)"
+        },
+        {
+          "key": "WHATSAPP_BUSINESS_ACCESS_TOKEN",
+          "displayName": "WhatsApp Access Token",
+          "description": "The access token for the WhatsApp Business API"
         }
       ],
       "internalKeys": [],
       "botConfigComponent": "WhatsAppBotConfig",
       "botConfig": [
         {
-          "key": "WHATSAPP_ACCESS_TOKEN",
-          "displayName": "WhatsApp Access Token",
-          "description": "The access token for the WhatsApp Business API"
-        },
-        {
           "key": "WHATSAPP_WEBHOOK_URL",
           "displayName": "WhatsApp Webhook Verify Token",
           "description": "Copy and paste this URL in the whatsapp Webhook dashboard.",
           "ui": {
             "type": "text",
-            "disabled": true,
             "isPrefilled": true,
             "label": "WhatsApp Webhook URL"
           },
