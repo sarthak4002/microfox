@@ -1,0 +1,317 @@
+{
+  "name": "@microfox/reddit",
+  "title": "Reddit TypeScript SDK",
+  "description": "A TypeScript SDK for interacting with the Reddit API, providing functionalities for user data retrieval, search operations (users, posts, communities), post and comment processing, moderation, and comprehensive data access.",
+  "path": "packages/reddit",
+  "dependencies": [
+    "zod",
+    "@microfox/reddit-oauth"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/reddit-oauth",
+  "oauth2Scopes": [
+    "identity",
+    "edit",
+    "flair",
+    "history",
+    "modconfig",
+    "modflair",
+    "modlog",
+    "modposts",
+    "modwiki",
+    "mysubreddits",
+    "privatemessages",
+    "read",
+    "report",
+    "save",
+    "submit",
+    "subscribe",
+    "vote",
+    "wikiedit",
+    "wikiread"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/reddit",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg",
+  "readme_map": {
+    "title": "@microfox/@microfox/reddit README",
+    "description": "The full README for the Reddit TypeScript SDK",
+    "path": "/README.md",
+    "constructors": [
+      {
+        "name": "createRedditSDK",
+        "description": "The documentation for the constructor createRedditSDK that initializes this SDK.",
+        "path": "/docs/createRedditSDK.md"
+      }
+    ],
+    "functionalities": [
+      {
+        "name": "validateAccessToken",
+        "description": "The documentation for the validateAccessToken function.",
+        "path": "/docs/validateAccessToken.md"
+      },
+      {
+        "name": "refreshAccessToken",
+        "description": "The documentation for the refreshAccessToken function.",
+        "path": "/docs/refreshAccessToken.md"
+      },
+      {
+        "name": "getMe",
+        "description": "The documentation for the getMe function.",
+        "path": "/docs/getMe.md"
+      },
+      {
+        "name": "getUserPreferences",
+        "description": "The documentation for the getUserPreferences function.",
+        "path": "/docs/getUserPreferences.md"
+      },
+      {
+        "name": "updateUserPreferences",
+        "description": "The documentation for the updateUserPreferences function.",
+        "path": "/docs/updateUserPreferences.md"
+      },
+      {
+        "name": "getUserKarma",
+        "description": "The documentation for the getUserKarma function.",
+        "path": "/docs/getUserKarma.md"
+      },
+      {
+        "name": "getUserTrophies",
+        "description": "The documentation for the getUserTrophies function.",
+        "path": "/docs/getUserTrophies.md"
+      },
+      {
+        "name": "getUser",
+        "description": "The documentation for the getUser function.",
+        "path": "/docs/getUser.md"
+      },
+      {
+        "name": "getUserContent",
+        "description": "The documentation for the getUserContent function.",
+        "path": "/docs/getUserContent.md"
+      },
+      {
+        "name": "getSubredditInfo",
+        "description": "The documentation for the getSubredditInfo function.",
+        "path": "/docs/getSubredditInfo.md"
+      },
+      {
+        "name": "searchSubreddit",
+        "description": "The documentation for the searchSubreddit function.",
+        "path": "/docs/searchSubreddit.md"
+      },
+      {
+        "name": "search",
+        "description": "The documentation for the search function.",
+        "path": "/docs/search.md"
+      },
+      {
+        "name": "submitComment",
+        "description": "The documentation for the submitComment function.",
+        "path": "/docs/submitComment.md"
+      },
+      {
+        "name": "submitPost",
+        "description": "The documentation for the submitPost function.",
+        "path": "/docs/submitPost.md"
+      },
+      {
+        "name": "vote",
+        "description": "The documentation for the vote function.",
+        "path": "/docs/vote.md"
+      },
+      {
+        "name": "deletePost",
+        "description": "The documentation for the deletePost function.",
+        "path": "/docs/deletePost.md"
+      },
+      {
+        "name": "editUserText",
+        "description": "The documentation for the editUserText function.",
+        "path": "/docs/editUserText.md"
+      },
+      {
+        "name": "hidePost",
+        "description": "The documentation for the hidePost function.",
+        "path": "/docs/hidePost.md"
+      },
+      {
+        "name": "unhidePost",
+        "description": "The documentation for the unhidePost function.",
+        "path": "/docs/unhidePost.md"
+      },
+      {
+        "name": "saveItem",
+        "description": "The documentation for the saveItem function.",
+        "path": "/docs/saveItem.md"
+      },
+      {
+        "name": "unsaveItem",
+        "description": "The documentation for the unsaveItem function.",
+        "path": "/docs/unsaveItem.md"
+      },
+      {
+        "name": "reportItem",
+        "description": "The documentation for the reportItem function.",
+        "path": "/docs/reportItem.md"
+      },
+      {
+        "name": "getInfo",
+        "description": "The documentation for the getInfo function.",
+        "path": "/docs/getInfo.md"
+      },
+      {
+        "name": "getMoreComments",
+        "description": "The documentation for the getMoreComments function.",
+        "path": "/docs/getMoreComments.md"
+      },
+      {
+        "name": "getPost",
+        "description": "The documentation for the getPost function.",
+        "path": "/docs/getPost.md"
+      }
+    ]
+  },
+  "constructors": [
+    {
+      "name": "createRedditSDK",
+      "description": "Create a new Reddit TypeScript SDK client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/reddit-oauth",
+      "outputKeys": [],
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "REDDIT_CLIENT_ID",
+          "displayName": "Reddit Client ID",
+          "description": "Your Reddit application's client ID.  Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps."
+        },
+        {
+          "key": "REDDIT_CLIENT_SECRET",
+          "displayName": "Reddit Client Secret",
+          "description": "Your Reddit application's client secret. Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps."
+        },
+        {
+          "key": "REDDIT_ACCESS_TOKEN",
+          "displayName": "Reddit Access Token",
+          "description": "The OAuth access token for authenticating with the Reddit API. This token expires after 1 hour."
+        },
+        {
+          "key": "REDDIT_REFRESH_TOKEN",
+          "displayName": "Reddit Refresh Token",
+          "description": "The OAuth refresh token for obtaining new access tokens. Include `duration=permanent` in the initial authorization request to receive a refresh token."
+        },
+        {
+          "key": "REDDIT_REDIRECT_URI",
+          "displayName": "Reddit Redirect URI",
+          "description": "The redirect URI you specified when creating your Reddit app. This URI must match exactly."
+        }
+      ],
+      "functionalities": [
+        "validateAccessToken",
+        "refreshAccessToken",
+        "getMe",
+        "getUserPreferences",
+        "updateUserPreferences",
+        "getUserKarma",
+        "getUserTrophies",
+        "getUser",
+        "getUserContent",
+        "getSubredditInfo",
+        "searchSubreddit",
+        "search",
+        "submitComment",
+        "submitPost",
+        "vote",
+        "deletePost",
+        "editUserText",
+        "hidePost",
+        "unhidePost",
+        "saveItem",
+        "unsaveItem",
+        "reportItem",
+        "getInfo",
+        "getMoreComments",
+        "getPost"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "REDDIT_CLIENT_ID",
+      "constructors": [
+        "createRedditSDK"
+      ],
+      "description": "Your Reddit application's client ID.  Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps.",
+      "required": true
+    },
+    {
+      "key": "REDDIT_CLIENT_SECRET",
+      "constructors": [
+        "createRedditSDK"
+      ],
+      "description": "Your Reddit application's client secret. Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps.",
+      "required": true
+    },
+    {
+      "key": "REDDIT_ACCESS_TOKEN",
+      "constructors": [
+        "createRedditSDK"
+      ],
+      "description": "The OAuth access token for authenticating with the Reddit API. This token expires after 1 hour.",
+      "required": true
+    },
+    {
+      "key": "REDDIT_REFRESH_TOKEN",
+      "constructors": [
+        "createRedditSDK"
+      ],
+      "description": "The OAuth refresh token for obtaining new access tokens. Include `duration=permanent` in the initial authorization request to receive a refresh token.",
+      "required": false
+    },
+    {
+      "key": "REDDIT_REDIRECT_URI",
+      "constructors": [
+        "createRedditSDK"
+      ],
+      "description": "The redirect URI you specified when creating your Reddit app. This URI must match exactly.",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "To use this SDK, you need to obtain OAuth credentials from Reddit. Follow these steps:",
+    "1. Go to https://www.reddit.com/prefs/apps",
+    "2. Click on 'create app' or 'create another app' at the bottom",
+    "3. Fill in the required information:",
+    "   - Name: Your app's name",
+    "   - App type: Choose 'web app' for most cases",
+    "   - Description: Brief description of your app",
+    "   - About URL: Your app's website (if applicable)",
+    "   - Redirect URI: The URI where Reddit will redirect after authorization",
+    "4. Click 'create app'",
+    "5. You'll receive a Client ID and Client Secret. Keep these secure.",
+    "",
+    "Environment variables:",
+    "- REDDIT_CLIENT_ID: Your Reddit application's client ID",
+    "- REDDIT_CLIENT_SECRET: Your Reddit application's client secret",
+    "- REDDIT_REDIRECT_URI: The redirect URI you specified when creating the app",
+    "",
+    "To set up environment variables:",
+    "1. Create a .env file in your project root (if not already present)",
+    "2. Add the following lines to the .env file:",
+    "   REDDIT_CLIENT_ID=your_client_id_here",
+    "   REDDIT_CLIENT_SECRET=your_client_secret_here",
+    "   REDDIT_REDIRECT_URI=your_redirect_uri_here",
+    "3. Use a package like dotenv to load these variables in your application",
+    "",
+    "Important notes:",
+    "- Reddit's OAuth implementation uses comma-separated scopes instead of space-separated",
+    "- Access tokens expire after 1 hour (3600 seconds)",
+    "- To get a refresh token, include 'duration=permanent' in the initial authorization request",
+    "- Rate limits: https://github.com/reddit-archive/reddit/wiki/API#rules",
+    "  - 60 requests per minute",
+    "  - OAuth2 clients may make up to 600 requests per 10 minutes",
+    "  - Monitor the X-Ratelimit headers in API responses for current limits and usage",
+    "",
+    "For more detailed information, refer to the Reddit API documentation: https://www.reddit.com/dev/api/oauth"
+  ]
+}
