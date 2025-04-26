@@ -120,6 +120,8 @@ export async function extractLinks(url: string): Promise<string[]> {
           );
         });
     });
+
+    links.push(validatedUrl);
     
     // Remove duplicates and normalize URLs
     const uniqueLinks = [...new Set(links)].map(link => {
@@ -145,7 +147,7 @@ export async function analyzeLinks(links: string[], query: string): Promise<stri
   console.log(`🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`);
   
   const { object: analysis } = await generateObject({
-    model: models.googleGeminiFlash,
+    model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
     system: `
       You are a helpful assistant that analyzes links and determines which ones are most useful for creating a package based on a query.
@@ -171,7 +173,7 @@ export async function analyzeLinks(links: string[], query: string): Promise<stri
       5. Pricing pages
       6. Any link from an external website
 
-      Return only the most relevant links (maximum 10) that will help in creating a comprehensive SDK.
+      Return only the most relevant links that will help in creating a comprehensive SDK.
     `,
     temperature: 0.5,
   });
@@ -243,7 +245,6 @@ export async function extractContentFromUrls(urls: string[]): Promise<{ url: str
           // Get text content from body
           return document.body.innerText;
         });
-        console.log('qweertey', content);
         
         results.push({ url: validatedUrl, content });
         console.log(`✅ Extracted ${content.length} characters from ${validatedUrl}`);

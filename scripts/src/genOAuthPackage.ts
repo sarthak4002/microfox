@@ -505,8 +505,7 @@ export async function generateOAuthPackage(
     const systemPrompt = dedent`
       You are a TypeScript OAuth package generator. Your task is to create a TypeScript OAuth package for a provider based on documentation.
       
-      ## Output Schema: should follow the schema exactly:
-      
+      ## Output Schema
       - To write the OAuth package code:
         - sdkImplementation: The complete OAuth SDK implementation with separate code and path for main SDK, types, schemas, and exports files.
         - extraInfo: Additional information for documentation (e.g., how to obtain credentials, environment variables, rate limits, etc.)
@@ -596,9 +595,10 @@ export async function generateOAuthPackage(
       Each component must be properly typed, documented, and follow best practices for security and error handling.
 
       ## OAuth Implementation Guidelines
-      - The package should accept clientId, clientSecret, and redirectUri as parameters in the constructor
-      - The package should export functions to validate and refresh the access token
+      - The package should accept config object with fields like clientId, clientSecret, redirectUri, scopes, and any other parameters needed for the OAuth flow as parameters in the constructor
+      - The package should export functions to validate and refresh the access token with the correct parameters like accessToken, refreshToken, expires_in (if supported), etc.
       - The package should check if the provided access token is valid and if not, throw an error
+      - The package should have a constructor function that initializes the OAuth client
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_CLIENT_ID" not "GOOGLE_SHEETS_CLIENT_ID")
     `;
 
@@ -633,8 +633,8 @@ export async function generateOAuthPackage(
       - Provide comprehensive extraInfo for documentation generation
       
       ## OAuth Implementation Requirements
-      - The package should accept clientId, clientSecret, and redirectUri as parameters in the constructor
-      - The package should export functions to validate and refresh the access token
+      - The package should accept config object with fields like clientId, clientSecret, redirectUri, scopes, and any other parameters needed for the OAuth flow as parameters in the constructor
+      - The package should export functions to validate and refresh the access token with the correct parameters like accessToken, refreshToken, expires_in (if supported), etc.
       - The package should check if the provided access token is valid and if not, throw an error
       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_CLIENT_ID" not "GOOGLE_SHEETS_CLIENT_ID")
       

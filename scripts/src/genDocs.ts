@@ -22,7 +22,7 @@ const GenerateDocsSchema = z.object({
       docs: z
         .string()
         .describe(
-          'The BRIEF markdown documentation for the constructor including all parameters, return type, usage examples, code examples, and more',
+          'The BRIEF markdown documentation for the constructor including all parameters, return type, code examples(VERY IMPORTANT), and more',
         ),
     })
     .describe('Documentation for the constructor function or class'),
@@ -35,7 +35,7 @@ const GenerateDocsSchema = z.object({
         docs: z
           .string()
           .describe(
-            'The BRIEF markdown documentation for the function including all parameters, return type, usage examples, code examples, and more',
+            'The BRIEF markdown documentation for the function including all parameters, return type, code examples(VERY IMPORTANT), and more',
           ),
       }),
     )
@@ -323,8 +323,8 @@ export async function generateDocs(
       4. Make sure the documentation is comprehensive and easy to understand
       
       ## Core Requirements for the Documentation Generation
-      1. The constructorDocs should have a detailed description of the constructor, including the parameters, initialization, usage examples, code examples, and more
-      2. The functionsDocs should have a brief documentation for the functions, including the parameters, return type, usage examples, code examples, and more
+      1. The constructorDocs should have a detailed description of the constructor, including the parameters, initialization, usage examples, code examples(VERY IMPORTANT), and more
+      2. The functionsDocs should have a brief documentation for the functions, including the parameters, return type, usage examples, code examples(VERY IMPORTANT), and more
       3. The documentation should be well written with Markdown format and should be well organized and easy to understand
       4. The documentation should include examples of how to use the SDK
       5. The documentation should explain authentication requirements and how to obtain necessary credentials
@@ -335,7 +335,7 @@ export async function generateDocs(
         - functionsDocs: An array of objects with function names and their documentation
         - dependencies: Optional array of dependencies to install
         - devDependencies: Optional array of dev dependencies to install
-        - envKeys: Optional array of environment variable keys needed for authentication
+        - envKeys: Optional array of environment variable keys needed for authentication.
       
       - The generate_docs tool will:
         1. Save constructor documentation to docs/constructor_name.md
@@ -367,6 +367,8 @@ export async function generateDocs(
       - Include examples of how to use the SDK in the documentation
       - Explain authentication requirements and how to obtain necessary credentials
       - Use the extra information provided to enhance the documentation
+      - If the SDK uses OAuth 2.0, the envKeys should include the ${!metadata.packageName.includes('-oauth') ? `accessToken, refreshToken (if supported by the provider), expires_in (if supported by the provider),` : ''} clientId, clientSecret, redirectUri, scopes and other parameters needed
+      - If the SDK uses API key authentication, the envKeys should include the apiKey
     `;
 
     // Generate documentation with Claude 3.5 Sonnet
