@@ -6,3 +6,4 @@ export * from './contacts';
 export * from './templates';
 export * from './analytics';
 export * from './location';
+export * from './conversational';

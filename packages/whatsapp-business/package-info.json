@@ -37,7 +37,9 @@
       "getPhoneNumbers",
       "getAnalytics",
       "getCommerceSettings",
-      "updateCommerceSettings"
+      "updateCommerceSettings",
+      "configureConversationalComponents",
+      "getConversationalComponents"
     ],
     "description": "The full README for the WhatsApp Business SDK"
   },
