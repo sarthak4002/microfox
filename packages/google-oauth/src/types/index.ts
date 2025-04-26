@@ -117,6 +117,10 @@ export enum GoogleScope {
   // Google Chat API
   CHAT = 'https://www.googleapis.com/auth/chat.messages',
   CHAT_READONLY = 'https://www.googleapis.com/auth/chat.messages.readonly',
+
+  // Google Search Console API
+  WEBMASTERS = 'https://www.googleapis.com/auth/webmasters',
+  WEBMASTERS_READONLY = 'https://www.googleapis.com/auth/webmasters.readonly',
 }
 
 /**
