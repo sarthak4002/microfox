@@ -1,5 +1,11 @@
 # @microfox/whatsapp-business
 
+## 1.2.0
+
+### Minor Changes
+
+- 1b02aa9: added whatsapp conversational components support
+
 ## 1.1.2
 
 ### Patch Changes
