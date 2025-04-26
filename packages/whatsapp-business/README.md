@@ -24,7 +24,7 @@ npm install @microfox/whatsapp-business-sdk
 ## Quick Start
 
 ```typescript
-import { WhatsAppBusinessSDK } from '@microfox/whatsapp-business-sdk';
+import { WhatsAppBusinessSDK } from '@microfox/whatsapp-business';
 
 // Initialize the SDK
 const whatsapp = new WhatsAppBusinessSDK({
