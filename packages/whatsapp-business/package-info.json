@@ -1,7 +1,7 @@
 {
   "name": "@microfox/whatsapp-business",
-  "title": "Microfox WhatsApp Business SDK",
-  "description": "A lightweight, type-safe SDK for interacting with the WhatsApp Business API",
+  "title": "Whatsapp Business",
+  "description": "Send messages from Whatsapp Business acount to end users, also types of Whatsapp Business Webhooks",
   "path": "packages/whatsapp-business",
   "dependencies": ["@microfox/rest-sdk"],
   "status": "stable",
