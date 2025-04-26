@@ -1,0 +1,155 @@
+{
+  "name": "@microfox/instagram-fb",
+  "title": "Instagram SDK",
+  "description": "A TypeScript SDK for interacting with the Instagram API using OAuth 2.0.  This package simplifies authentication and data access.",
+  "path": "packages/instagram-fb",
+  "dependencies": [
+    "zod"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/instagram-fb-business-oauth",
+  "oauth2Scopes": [
+    "instagram_basic",
+    "instagram_content_publish",
+    "instagram_manage_comments",
+    "instagram_manage_insights",
+    "pages_show_list",
+    "pages_read_engagement"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/instagram-fb",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-fb.svg",
+  "readme_map": {
+    "title": "@microfox/@microfox/instagram-fb README",
+    "description": "The full README for the Instagram SDK",
+    "path": "/README.md",
+    "constructors": [
+      {
+        "name": "createInstagramSDK",
+        "description": "The documentation for the constructor createInstagramSDK that initializes this SDK.",
+        "path": "/docs/createInstagramSDK.md"
+      }
+    ],
+    "functionalities": [
+      {
+        "name": "validateAccessToken",
+        "description": "The documentation for the validateAccessToken function.",
+        "path": "/docs/validateAccessToken.md"
+      },
+      {
+        "name": "refreshAccessToken",
+        "description": "The documentation for the refreshAccessToken function.",
+        "path": "/docs/refreshAccessToken.md"
+      },
+      {
+        "name": "createMediaContainer",
+        "description": "The documentation for the createMediaContainer function.",
+        "path": "/docs/createMediaContainer.md"
+      },
+      {
+        "name": "publishMedia",
+        "description": "The documentation for the publishMedia function.",
+        "path": "/docs/publishMedia.md"
+      },
+      {
+        "name": "getComments",
+        "description": "The documentation for the getComments function.",
+        "path": "/docs/getComments.md"
+      },
+      {
+        "name": "getOEmbed",
+        "description": "The documentation for the getOEmbed function.",
+        "path": "/docs/getOEmbed.md"
+      }
+    ]
+  },
+  "constructors": [
+    {
+      "name": "createInstagramSDK",
+      "description": "Create a new Instagram SDK client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/instagram-fb-business-oauth",
+      "outputKeys": [],
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "INSTAGRAM_CLIENT_ID",
+          "displayName": "Instagram Client ID",
+          "description": "Your Facebook App ID. Obtain this from your Facebook Developer account after creating an app."
+        },
+        {
+          "key": "INSTAGRAM_CLIENT_SECRET",
+          "displayName": "Instagram Client Secret",
+          "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account after creating an app."
+        },
+        {
+          "key": "INSTAGRAM_REDIRECT_URI",
+          "displayName": "Instagram Redirect URI",
+          "description": "Your OAuth callback URL. This is the URL where users will be redirected after authorizing your app."
+        },
+        {
+          "key": "INSTAGRAM_ACCESS_TOKEN",
+          "displayName": "Instagram Access Token",
+          "description": "A valid access token for the Instagram Graph API. Obtain this by implementing the OAuth 2.0 flow in your application."
+        }
+      ],
+      "functionalities": [
+        "validateAccessToken",
+        "refreshAccessToken",
+        "createMediaContainer",
+        "publishMedia",
+        "getComments",
+        "getOEmbed"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "INSTAGRAM_CLIENT_ID",
+      "constructors": [
+        "createInstagramSDK"
+      ],
+      "description": "Your Facebook App ID. Obtain this from your Facebook Developer account after creating an app.",
+      "required": true
+    },
+    {
+      "key": "INSTAGRAM_CLIENT_SECRET",
+      "constructors": [
+        "createInstagramSDK"
+      ],
+      "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account after creating an app.",
+      "required": true
+    },
+    {
+      "key": "INSTAGRAM_REDIRECT_URI",
+      "constructors": [
+        "createInstagramSDK"
+      ],
+      "description": "Your OAuth callback URL. This is the URL where users will be redirected after authorizing your app.",
+      "required": true
+    },
+    {
+      "key": "INSTAGRAM_ACCESS_TOKEN",
+      "constructors": [
+        "createInstagramSDK"
+      ],
+      "description": "A valid access token for the Instagram Graph API. Obtain this by implementing the OAuth 2.0 flow in your application.",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "To use this SDK, you need to set up a Facebook Developer account and create an app that uses the Instagram Graph API.",
+    "Visit https://developers.facebook.com/ to create your app and obtain the necessary credentials.",
+    "Required environment variables:",
+    "- INSTAGRAM_CLIENT_ID: Your Facebook App ID",
+    "- INSTAGRAM_CLIENT_SECRET: Your Facebook App Secret",
+    "- INSTAGRAM_REDIRECT_URI: Your OAuth callback URL",
+    "- INSTAGRAM_ACCESS_TOKEN: A valid access token for the Instagram Graph API",
+    "Make sure to configure the correct permissions and features for your app in the Facebook Developer Console.",
+    "This SDK uses OAuth 2.0 for authentication. You need to implement the full OAuth flow in your application to obtain a valid access token.",
+    "Rate limits: The API has various rate limits depending on the endpoint. Notable limits include:",
+    "- Content Publishing: 50 posts within a 24-hour moving period",
+    "- oEmbed: Up to 5 million requests per 24 hours for app tokens, significantly lower for client tokens",
+    "Ensure your application respects these rate limits to avoid being blocked by the API.",
+    "For more detailed information about the Instagram Graph API, visit: https://developers.facebook.com/docs/instagram-api/"
+  ]
+}
