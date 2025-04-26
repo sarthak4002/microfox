@@ -17,6 +17,8 @@ import type {
   LocationObject,
   ContactObject,
   TemplateComponent,
+  ConversationalAutomation,
+  ConversationalComponentsResponse,
 } from './types';
 
 class WhatsAppBusinessSDKError extends Error {
@@ -500,6 +502,39 @@ class WhatsAppBusinessSDK {
       `/${this.businessAccountId}/whatsapp_commerce_settings`,
       'POST',
       settings,
+    );
+  }
+
+  /**
+   * Configure conversational components for a phone number
+   * @param {ConversationalAutomation} config - Configuration for conversational components
+   * @returns {Promise<any>} - API response
+   */
+  async configureConversationalComponents(
+    config: ConversationalAutomation,
+  ): Promise<any> {
+    if (!process.env.WHATSAPP_WEBHOOK_URL) {
+      throw new WhatsAppBusinessSDKError(
+        'Webhook URL is required for conversational components',
+        400,
+      );
+    }
+
+    return this._makeRequest(
+      `/${this.phoneNumberId}/conversational_automation`,
+      'POST',
+      config,
+    );
+  }
+
+  /**
+   * Get current conversational components configuration
+   * @returns {Promise<ConversationalComponentsResponse>} - Current configuration
+   */
+  async getConversationalComponents(): Promise<ConversationalComponentsResponse> {
+    return this._makeRequest(
+      `/${this.phoneNumberId}?fields=conversational_automation`,
+      'GET',
     );
   }
 
