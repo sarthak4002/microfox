@@ -1,5 +1,11 @@
 # @microfox/whatsapp-business
 
+## 1.1.2
+
+### Patch Changes
+
+- 4b0f146: Fix: Duplicate Discriminator
+
 ## 1.1.0
 
 ### Minor Changes
