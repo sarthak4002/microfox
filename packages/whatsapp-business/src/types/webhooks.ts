@@ -138,33 +138,28 @@ const ContactMessageSchema = z.object({
 });
 
 // Interactive Messages
-const ButtonReplySchema = z.object({
+const InteractiveMessageSchema = z.object({
   from: z.string(),
   id: z.string(),
   timestamp: z.string(),
-  interactive: z.object({
-    button_reply: z.object({
-      id: z.string(),
-      title: z.string(),
-    }),
-    type: z.literal('button_reply'),
-  }),
   type: z.literal('interactive'),
-});
-
-const ListReplySchema = z.object({
-  from: z.string(),
-  id: z.string(),
-  timestamp: z.string(),
-  interactive: z.object({
-    list_reply: z.object({
-      id: z.string(),
-      title: z.string(),
-      description: z.string().optional(),
+  interactive: z.discriminatedUnion('type', [
+    z.object({
+      type: z.literal('button_reply'),
+      button_reply: z.object({
+        id: z.string(),
+        title: z.string(),
+      }),
     }),
-    type: z.literal('list_reply'),
-  }),
-  type: z.literal('interactive'),
+    z.object({
+      type: z.literal('list_reply'),
+      list_reply: z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().optional(),
+      }),
+    }),
+  ]),
 });
 
 // Status Updates
@@ -227,8 +222,7 @@ export const WebhookPayloadSchema = z.object({
                   StickerMessageSchema,
                   LocationMessageSchema,
                   ContactMessageSchema,
-                  ButtonReplySchema,
-                  ListReplySchema,
+                  InteractiveMessageSchema,
                 ]),
               )
               .optional(),
@@ -250,5 +244,6 @@ export type WhatsAppImageMessage = z.infer<typeof ImageMessageSchema>;
 export type WhatsAppStickerMessage = z.infer<typeof StickerMessageSchema>;
 export type WhatsAppLocationMessage = z.infer<typeof LocationMessageSchema>;
 export type WhatsAppContactMessage = z.infer<typeof ContactMessageSchema>;
-export type WhatsAppButtonReply = z.infer<typeof ButtonReplySchema>;
-export type WhatsAppListReply = z.infer<typeof ListReplySchema>;
+export type WhatsAppInteractiveMessage = z.infer<
+  typeof InteractiveMessageSchema
+>;
