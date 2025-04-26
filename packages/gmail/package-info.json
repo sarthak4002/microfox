@@ -1,0 +1,207 @@
+{
+  "name": "@microfox/gmail",
+  "title": "Gmail SDK",
+  "description": "TypeScript SDK for interacting with the Gmail API.",
+  "path": "packages/gmail",
+  "dependencies": [
+    "zod",
+    "@microfox/google-oauth"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/google-oauth",
+  "oauth2Scopes": [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/gmail.send",
+    "https://www.googleapis.com/auth/gmail.compose",
+    "https://www.googleapis.com/auth/gmail.modify",
+    "https://www.googleapis.com/auth/gmail.full"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/gmail",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/gmail.svg",
+  "readme_map": {
+    "title": "@microfox/@microfox/gmail README",
+    "description": "The full README for the Gmail SDK",
+    "path": "/README.md",
+    "constructors": [
+      {
+        "name": "createGmailSDK",
+        "description": "The documentation for the constructor createGmailSDK that initializes this SDK.",
+        "path": "/docs/createGmailSDK.md"
+      }
+    ],
+    "functionalities": [
+      {
+        "name": "listLabels",
+        "description": "The documentation for the listLabels function.",
+        "path": "/docs/listLabels.md"
+      },
+      {
+        "name": "createLabel",
+        "description": "The documentation for the createLabel function.",
+        "path": "/docs/createLabel.md"
+      },
+      {
+        "name": "getLabel",
+        "description": "The documentation for the getLabel function.",
+        "path": "/docs/getLabel.md"
+      },
+      {
+        "name": "updateLabel",
+        "description": "The documentation for the updateLabel function.",
+        "path": "/docs/updateLabel.md"
+      },
+      {
+        "name": "deleteLabel",
+        "description": "The documentation for the deleteLabel function.",
+        "path": "/docs/deleteLabel.md"
+      },
+      {
+        "name": "listMessages",
+        "description": "The documentation for the listMessages function.",
+        "path": "/docs/listMessages.md"
+      },
+      {
+        "name": "getMessage",
+        "description": "The documentation for the getMessage function.",
+        "path": "/docs/getMessage.md"
+      },
+      {
+        "name": "sendMessage",
+        "description": "The documentation for the sendMessage function.",
+        "path": "/docs/sendMessage.md"
+      },
+      {
+        "name": "listThreads",
+        "description": "The documentation for the listThreads function.",
+        "path": "/docs/listThreads.md"
+      },
+      {
+        "name": "getThread",
+        "description": "The documentation for the getThread function.",
+        "path": "/docs/getThread.md"
+      }
+    ]
+  },
+  "constructors": [
+    {
+      "name": "createGmailSDK",
+      "description": "Create a new Gmail SDK client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/google-oauth",
+      "outputKeys": [],
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "displayName": "Google Client ID",
+          "description": "Your Google OAuth client ID"
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "displayName": "Google Client Secret",
+          "description": "Your Google OAuth client secret"
+        },
+        {
+          "key": "GOOGLE_REDIRECT_URI",
+          "displayName": "Google Redirect URI",
+          "description": "The redirect URI for your application"
+        },
+        {
+          "key": "GOOGLE_ACCESS_TOKEN",
+          "displayName": "Google Access Token",
+          "description": "The access token for the Google OAuth application"
+        },
+        {
+          "key": "GOOGLE_REFRESH_TOKEN",
+          "displayName": "Google Refresh Token",
+          "description": "The refresh token for the Google OAuth application"
+        }
+      ],
+      "functionalities": [
+        "listLabels",
+        "createLabel",
+        "getLabel",
+        "updateLabel",
+        "deleteLabel",
+        "listMessages",
+        "getMessage",
+        "sendMessage",
+        "listThreads",
+        "getThread"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": [
+        "createGmailSDK"
+      ],
+      "description": "Your Google OAuth client ID",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": [
+        "createGmailSDK"
+      ],
+      "description": "Your Google OAuth client secret",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_REDIRECT_URI",
+      "constructors": [
+        "createGmailSDK"
+      ],
+      "description": "The redirect URI for your application",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": [
+        "createGmailSDK"
+      ],
+      "description": "The access token for the Google OAuth application",
+      "required": false
+    },
+    {
+      "key": "GOOGLE_REFRESH_TOKEN",
+      "constructors": [
+        "createGmailSDK"
+      ],
+      "description": "The refresh token for the Google OAuth application",
+      "required": false
+    }
+  ],
+  "extraInfo": [
+    "To use this SDK, you need to set up a Google Cloud project and enable the Gmail API. Follow these steps:",
+    "1. Go to the Google Cloud Console (https://console.cloud.google.com/)",
+    "2. Create a new project or select an existing one",
+    "3. Enable the Gmail API for your project",
+    "4. Create OAuth 2.0 credentials (client ID and client secret)",
+    "5. Set up the OAuth consent screen, including the necessary scopes",
+    "",
+    "Environment variables:",
+    "- GOOGLE_CLIENT_ID: Your Google OAuth client ID",
+    "- GOOGLE_CLIENT_SECRET: Your Google OAuth client secret",
+    "- GOOGLE_REDIRECT_URI: The redirect URI for your application",
+    "",
+    "To use the SDK, you can create an instance like this:",
+    "",
+    "```typescript",
+    "import { createGmailSDK } from 'gmail';",
+    "",
+    "const gmailSdk = createGmailSDK({",
+    "  clientId: process.env.GOOGLE_CLIENT_ID!,",
+    "  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,",
+    "  redirectUri: process.env.GOOGLE_REDIRECT_URI!,",
+    "});",
+    "```",
+    "",
+    "Make sure to handle the OAuth flow to obtain and refresh access tokens. The SDK will automatically refresh the token when needed.",
+    "",
+    "Rate limits: Be aware that the Gmail API has usage quotas and limits. For most users, this is 1,000,000,000 queries per day. You can check your specific quota in the Google Cloud Console.",
+    "",
+    "For more detailed information on using the Gmail API, refer to the official documentation: https://developers.google.com/gmail/api/guides"
+  ]
+}
