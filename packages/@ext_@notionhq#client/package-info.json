@@ -1,7 +1,7 @@
 {
   "name": "@notionhq/client",
-  "title": "@notionhq/client",
-  "description": "A simple and easy to use client for the Notion API",
+  "title": "Notion Official",
+  "description": "Official library for using the Notion API",
   "path": "packages/@ext_@notionhq#client",
   "dependencies": ["@types/node-fetch", "node-fetch"],
   "status": "semiStable",
