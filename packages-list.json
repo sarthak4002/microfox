@@ -1,21 +1,6 @@
 {
-  "stablePackages": [
-    "packages/@ext_@notionhq#client",
-    "packages/aws-ses",
-    "packages/discord",
-    "packages/drive",
-    "packages/github",
-    "packages/google",
-    "packages/google-sheets",
-    "packages/instagram-business-oauth",
-    "packages/instagram-fb-business-oauth",
-    "packages/linkedin-share",
-    "packages/slack-web-tiny",
-    "packages/twitter",
-    "packages/whatsapp-business",
-    "packages/youtube"
-  ],
   "semiStablePackages": [
+    "packages/@ext_@notionhq#client",
     "packages/@ext_@slack#web-api"
   ],
   "partialPackages": [
@@ -62,6 +47,21 @@
     "packages/wolfram-alpha",
     "packages/zoominfo"
   ],
+  "stablePackages": [
+    "packages/aws-ses",
+    "packages/discord",
+    "packages/drive",
+    "packages/github",
+    "packages/google",
+    "packages/google-sheets",
+    "packages/instagram-business-oauth",
+    "packages/instagram-fb-business-oauth",
+    "packages/linkedin-share",
+    "packages/slack-web-tiny",
+    "packages/twitter",
+    "packages/whatsapp-business",
+    "packages/youtube"
+  ],
   "oauthConnectorPackages": [
     "packages/google-oauth",
     "packages/linkedin-oauth"
@@ -70,5 +70,5 @@
     "packages/rest-sdk"
   ],
   "total": 60,
-  "generatedAt": "2025-04-27T12:57:33.781Z"
+  "generatedAt": "2025-04-27T12:59:33.863Z"
 }
