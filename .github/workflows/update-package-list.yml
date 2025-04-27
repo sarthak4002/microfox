@@ -1,0 +1,47 @@
+name: Update Package List
+
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'scripts/src/update-package-list.ts'
+      - '.github/workflows/update-package-list.yml'
+
+jobs:
+  update-package-list:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: cd scripts && npm ci
+
+      - name: Run update package list script
+        run: cd scripts && npm run dev:package-list
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git add packages-list.json
+          git diff --staged --quiet || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "chore: update package list [skip ci]"
+          git push

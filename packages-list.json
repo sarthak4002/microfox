@@ -52,15 +52,22 @@
     "packages/drive",
     "packages/github",
     "packages/google",
-    "packages/google-oauth",
     "packages/google-sheets",
-    "packages/linkedin-oauth",
+    "packages/instagram-business-oauth",
+    "packages/instagram-fb-business-oauth",
     "packages/linkedin-share",
-    "packages/rest-sdk",
     "packages/slack-web-tiny",
     "packages/twitter",
+    "packages/whatsapp-business",
     "packages/youtube"
   ],
-  "total": 56,
-  "generatedAt": "2025-04-11T21:26:58.954Z"
+  "oauthConnectorPackages": [
+    "packages/google-oauth",
+    "packages/linkedin-oauth"
+  ],
+  "internalPackages": [
+    "packages/rest-sdk"
+  ],
+  "total": 59,
+  "generatedAt": "2025-04-26T16:35:15.305Z"
 }

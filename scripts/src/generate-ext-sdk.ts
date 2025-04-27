@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Octokit } from '@octokit/rest';
+import { Octokit } from 'octokit';
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import { EXT_PACKAGE_URLS } from './constants';
@@ -79,11 +79,14 @@ async function fetchReadme(
     // Try to find README.md in the specified path
     const readmePath = path ? `${path}/README.md` : 'README.md';
 
-    const response = await octokit.repos.getContent({
-      owner,
-      repo,
-      path: readmePath,
-    });
+    const response = await octokit.request(
+      'GET /repos/{owner}/{repo}/contents/{path}',
+      {
+        owner,
+        repo,
+        path: readmePath,
+      },
+    );
 
     if ('content' in response.data) {
       return Buffer.from(response.data.content, 'base64').toString('utf-8');
@@ -107,11 +110,14 @@ async function fetchPackageJson(
     // Try to find package.json in the specified path
     const packageJsonPath = path ? `${path}/package.json` : 'package.json';
 
-    const response = await octokit.repos.getContent({
-      owner,
-      repo,
-      path: packageJsonPath,
-    });
+    const response = await octokit.request(
+      'GET /repos/{owner}/{repo}/contents/{path}',
+      {
+        owner,
+        repo,
+        path: packageJsonPath,
+      },
+    );
 
     if ('content' in response.data) {
       const content = Buffer.from(response.data.content, 'base64').toString(

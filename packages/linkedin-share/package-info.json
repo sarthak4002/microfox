@@ -3,7 +3,10 @@
   "title": "Microfox LinkedIn Share SDK",
   "description": "LinkedIn Share SDK for Microfox",
   "path": "packages/linkedin-share",
-  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "dependencies": [
+    "@microfox/rest-sdk",
+    "zod"
+  ],
   "status": "stable",
   "authEndpoint": "/connect/linkedin",
   "documentation": "https://www.npmjs.com/package/@microfox/linkedin-share",
@@ -27,12 +30,20 @@
   "keysInfo": [
     {
       "key": "LINKEDIN_ACCESS_TOKEN",
-      "constructors": ["linkedinShareManager"],
+      "constructors": [
+        "linkedinShareManager"
+      ],
       "description": "The access token for the LinkedIn client",
       "required": true
     }
   ],
   "extraInfo": [
     "Use the `createLinkedInShareClient` constructor to create a new LinkedIn Share client for posting content to LinkedIn."
-  ]
+  ],
+  "readme_map": {
+    "path": "/README.md",
+    "functionalities": [],
+    "description": "No description provided",
+    "all_readmes": []
+  }
 }

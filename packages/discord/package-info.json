@@ -50,7 +50,8 @@
     {
       "name": "createDiscordSdk",
       "description": "Create a new Discord SDK client through which you can interact with Discord API",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "DISCORD_TOKEN",
