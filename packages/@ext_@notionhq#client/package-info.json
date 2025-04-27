@@ -1,7 +1,7 @@
 {
   "name": "@notionhq/client",
   "title": "Notion Official",
-  "description": "Official library for using the Notion API",
+  "description": "Official Notion API client for managing pages, databases, blocks, and users with full TypeScript support.",
   "path": "packages/@ext_@notionhq#client",
   "dependencies": ["@types/node-fetch", "node-fetch"],
   "status": "semiStable",
