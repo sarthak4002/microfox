@@ -1,4 +1,4 @@
-# @microfox/whatsapp-business-sdk
+# @microfox/whatsapp-business
 
 A lightweight, type-safe SDK for interacting with the WhatsApp Business API. This SDK provides a simple and intuitive interface to send various types of messages through the WhatsApp Business API.
 
@@ -9,6 +9,7 @@ A lightweight, type-safe SDK for interacting with the WhatsApp Business API. Thi
 - 🚀 Easy to use and integrate
 - 🔄 Built-in error handling
 - 📦 Lightweight and dependency-free
+- 💬 Conversational Components Support
 - 📊 Analytics and insights
 - 🛍️ Commerce settings management
 - 📱 Phone number management
@@ -18,7 +19,7 @@ A lightweight, type-safe SDK for interacting with the WhatsApp Business API. Thi
 ## Installation
 
 ```bash
-npm install @microfox/whatsapp-business-sdk
+npm install @microfox/whatsapp-business
 ```
 
 ## Quick Start
@@ -55,6 +56,86 @@ interface WhatsAppSDKConfig {
   version?: string; // Optional: API version (defaults to v22.0)
   baseUrl?: string; // Optional: Custom base URL
 }
+```
+
+## Conversational Components
+
+Conversational components are in-chat features that make it easier for WhatsApp users to interact with your business. They include ice breakers and commands that users can tap or type to interact with your business.
+
+> **Important Note**: Make sure `WHATSAPP_WEBHOOK_URL` is set as an environment variable. The Conversational components require whatsapp webhook url.
+
+### Ice Breakers
+
+Ice breakers are customizable, tappable text strings that appear in a message thread the first time you chat with a user. You can configure up to 4 ice breakers, each with a maximum of 80 characters.
+
+### Commands
+
+Commands are text strings that WhatsApp users can see by typing a forward slash in a message thread. You can define up to 30 commands, each with a maximum of 32 characters for the command name and 256 characters for the description.
+
+### Configure Conversational Components
+
+You can configure ice breakers and commands separately or together. Here are examples for each scenario:
+
+#### Configure Only Ice Breakers
+
+```typescript
+await whatsapp.configureConversationalComponents({
+  enable_welcome_message: true,
+  prompts: ['Book a flight', 'Plan a vacation', 'Find hotels', 'Rent a car'],
+});
+```
+
+#### Configure Only Commands
+
+```typescript
+await whatsapp.configureConversationalComponents({
+  enable_welcome_message: true,
+  commands: [
+    {
+      command_name: 'tickets',
+      command_description: 'Book flight tickets',
+    },
+    {
+      command_name: 'hotel',
+      command_description: 'Book hotel',
+    },
+  ],
+});
+```
+
+#### Configure Both Ice Breakers and Commands
+
+```typescript
+await whatsapp.configureConversationalComponents({
+  enable_welcome_message: true,
+  prompts: ['Book a flight', 'Plan a vacation', 'Find hotels', 'Rent a car'],
+  commands: [
+    {
+      command_name: 'tickets',
+      command_description: 'Book flight tickets',
+    },
+    {
+      command_name: 'hotel',
+      command_description: 'Book hotel',
+    },
+  ],
+});
+```
+
+> **Important Note**: While Conversational Components can be reconfigured, it's recommended to avoid frequent changes as they can confuse users and disrupt their interaction patterns with your business. It's best to carefully plan your ice breakers and commands before implementation and only update them when absolutely necessary.
+
+### Get Current Configuration
+
+```typescript
+const config = await whatsapp.getConversationalComponents();
+console.log(config);
+// {
+//   enable_welcome_message: true,
+//   prompts: ["Book a flight", "Plan a vacation"],
+//   commands: [
+//     { command_name: "tickets", command_description: "Book flight tickets" }
+//   ]
+// }
 ```
 
 ## Common Message Options
