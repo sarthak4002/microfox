@@ -37,21 +37,26 @@
     {
       "name": "Client",
       "description": "Create a new client for the Notion API",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "NOTION_TOKEN",
           "displayName": "Notion Token",
           "description": "The token for the Notion API"
         }
-      ]
+      ],
+      "internalKeys": [],
+      "botConfigComponent": "NotionBotConfig",
+      "botConfig": []
     }
   ],
   "keysInfo": [
     {
       "key": "NOTION_TOKEN",
-      "displayName": "Notion Token",
-      "description": "The token for the Notion API"
+      "constructors": ["Client"],
+      "description": "The token for the Notion API",
+      "required": true
     }
   ],
   "extraInfo": [
