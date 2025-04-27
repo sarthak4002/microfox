@@ -29,7 +29,7 @@ import { WhatsAppBusinessSDK } from '@microfox/whatsapp-business';
 // Initialize the SDK
 const whatsapp = new WhatsAppBusinessSDK({
   phoneNumberId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER_ID,
-  businessAccountId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER,
+  businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID,
   accessToken: process.env.WHATSAPP_BUSINESS_ACCESS_TOKEN,
 });
 // Optional parameters
