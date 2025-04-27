@@ -4,7 +4,7 @@
   "description": "A simple and easy to use client for the Notion API",
   "path": "packages/@ext_@notionhq#client",
   "dependencies": ["@types/node-fetch", "node-fetch"],
-  "status": "stable",
+  "status": "semiStable",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/@notionhq/client",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/notion.svg",
