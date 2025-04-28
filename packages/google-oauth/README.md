@@ -202,8 +202,13 @@ The SDK provides a comprehensive set of Google API scopes through the `GoogleSco
 
 ### Google Chat API
 
-- `GoogleScope.CHAT` (`https://www.googleapis.com/auth/chat.messages`) - Send and manage chat messages
-- `GoogleScope.CHAT_READONLY` (`https://www.googleapis.com/auth/chat.messages.readonly`) - Read-only access to chat messages
+- `GoogleScope.CHAT` (`https://www.googleapis.com/auth/chat.messages`) - Allows the application to send and manage chat messages on behalf of the user.
+- `GoogleScope.CHAT_READONLY` (`https://www.googleapis.com/auth/chat.messages.readonly`) - Provides the application with read-only access to the user's chat messages.
+
+### Google Search Console API
+
+- `GoogleScope.WEBMASTERS` (`https://www.googleapis.com/auth/webmasters`) - Grants the application full access to the user's Search Console data.
+- `GoogleScope.WEBMASTERS_READONLY` (`https://www.googleapis.com/auth/webmasters.readonly`) - Provides the application with read-only access to the user's Search Console data.
 
 ## Error Handling
 

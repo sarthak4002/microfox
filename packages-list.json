@@ -49,14 +49,23 @@
   ],
   "stablePackages": [
     "packages/aws-ses",
+    "packages/brave",
     "packages/discord",
     "packages/drive",
     "packages/github",
+    "packages/gmail",
     "packages/google",
+    "packages/google-analytics",
+    "packages/google-seo",
     "packages/google-sheets",
+    "packages/instagram",
     "packages/instagram-business-oauth",
+    "packages/instagram-fb",
     "packages/instagram-fb-business-oauth",
+    "packages/linkedin-member-data-portability",
     "packages/linkedin-share",
+    "packages/reddit",
+    "packages/reddit-oauth",
     "packages/slack-web-tiny",
     "packages/twitter",
     "packages/whatsapp-business",
@@ -69,6 +78,6 @@
   "internalPackages": [
     "packages/rest-sdk"
   ],
-  "total": 60,
-  "generatedAt": "2025-04-27T13:15:15.765Z"
+  "total": 69,
+  "generatedAt": "2025-04-28T11:20:16.294Z"
 }

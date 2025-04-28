@@ -7,46 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  # prettier:
-  #   name: 'Prettier'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Use Node.js 18
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '18'
-  #         cache: 'npm'
-
-  #     - name: Install dependencies
-  #       run: npm i
-
-  #     - name: Run Prettier check
-  #       run: npm run prettier-check
-
-  # eslint:
-  #   name: 'ESLint'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Use Node.js 18
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '18'
-  #         cache: 'npm'
-
-  #     - name: Install dependencies
-  #       run: npm i
-
-  #     - name: Run ESLint check
-  #       run: npm run lint
-
-  types:
-    name: 'TypeScript'
+  quality:
+    name: 'Quality Checks'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -55,30 +17,20 @@ jobs:
       - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
         run: npm i
 
+      - name: Run Prettier check
+        run: npm run prettier-check
+
+      - name: Run ESLint check
+        run: npm run lint
+
       - name: Run TypeScript type check
         run: npm run type-check
 
-  # tests:
-  #   name: 'Tests'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Use Node.js 18
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '18'
-  #         cache: 'npm'
-
-  #     - name: Install dependencies
-  #       run: npm i
-
-  #     - name: Run tests
-  #       run: npm run test
+      - name: Run tests
+        run: npm run test
