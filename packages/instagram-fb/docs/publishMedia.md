@@ -14,6 +14,9 @@ Publishes a media container.
 **Example:**
 
 ```typescript
-const publishedMediaId = await sdk.publishMedia('your-instagram-id', 'your-creation-id');
+const publishedMediaId = await sdk.publishMedia(
+  'your-instagram-id',
+  'your-creation-id',
+);
 console.log('Published media ID:', publishedMediaId);
 ```

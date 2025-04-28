@@ -2,7 +2,11 @@ import { z } from 'zod';
 
 export interface SitesResource {
   siteUrl: string;
-  permissionLevel: 'siteFullUser' | 'siteOwner' | 'siteRestrictedUser' | 'siteUnverifiedUser';
+  permissionLevel:
+    | 'siteFullUser'
+    | 'siteOwner'
+    | 'siteRestrictedUser'
+    | 'siteUnverifiedUser';
 }
 
 export interface SitemapResource {
@@ -10,7 +14,13 @@ export interface SitemapResource {
   lastSubmitted: string;
   isPending: boolean;
   isSitemapsIndex: boolean;
-  type: 'atomFeed' | 'notSitemap' | 'patternSitemap' | 'rssFeed' | 'sitemap' | 'urlList';
+  type:
+    | 'atomFeed'
+    | 'notSitemap'
+    | 'patternSitemap'
+    | 'rssFeed'
+    | 'sitemap'
+    | 'urlList';
   lastDownloaded: string;
   warnings: number;
   errors: number;
@@ -31,9 +41,26 @@ export interface IndexStatusInspectionResult {
   verdict: 'VERDICT_UNSPECIFIED' | 'PASS' | 'PARTIAL' | 'FAIL' | 'NEUTRAL';
   coverageState: string;
   robotsTxtState: 'ROBOTS_TXT_STATE_UNSPECIFIED' | 'ALLOWED' | 'DISALLOWED';
-  indexingState: 'INDEXING_STATE_UNSPECIFIED' | 'INDEXING_ALLOWED' | 'BLOCKED_BY_META_TAG' | 'BLOCKED_BY_HTTP_HEADER' | 'BLOCKED_BY_ROBOTS_TXT';
+  indexingState:
+    | 'INDEXING_STATE_UNSPECIFIED'
+    | 'INDEXING_ALLOWED'
+    | 'BLOCKED_BY_META_TAG'
+    | 'BLOCKED_BY_HTTP_HEADER'
+    | 'BLOCKED_BY_ROBOTS_TXT';
   lastCrawlTime: string;
-  pageFetchState: 'PAGE_FETCH_STATE_UNSPECIFIED' | 'SUCCESSFUL' | 'SOFT_404' | 'BLOCKED_ROBOTS_TXT' | 'NOT_FOUND' | 'ACCESS_DENIED' | 'SERVER_ERROR' | 'REDIRECT_ERROR' | 'ACCESS_FORBIDDEN' | 'BLOCKED_4XX' | 'INTERNAL_CRAWL_ERROR' | 'INVALID_URL';
+  pageFetchState:
+    | 'PAGE_FETCH_STATE_UNSPECIFIED'
+    | 'SUCCESSFUL'
+    | 'SOFT_404'
+    | 'BLOCKED_ROBOTS_TXT'
+    | 'NOT_FOUND'
+    | 'ACCESS_DENIED'
+    | 'SERVER_ERROR'
+    | 'REDIRECT_ERROR'
+    | 'ACCESS_FORBIDDEN'
+    | 'BLOCKED_4XX'
+    | 'INTERNAL_CRAWL_ERROR'
+    | 'INVALID_URL';
   googleCanonical: string;
   userCanonical: string;
   crawledAs: 'CRAWLING_USER_AGENT_UNSPECIFIED' | 'DESKTOP' | 'MOBILE';
@@ -57,13 +84,25 @@ export interface GoogleSearchConsoleSDKOptions {
 export interface SearchAnalyticsQueryParams {
   startDate: string;
   endDate: string;
-  dimensions?: ('query' | 'page' | 'country' | 'device' | 'search-appearance')[];
+  dimensions?: (
+    | 'query'
+    | 'page'
+    | 'country'
+    | 'device'
+    | 'search-appearance'
+  )[];
   type?: 'web' | 'news' | 'image' | 'video' | 'discover' | 'googleNews';
   dimensionFilterGroups?: {
     groupType: 'and' | 'or';
     filters?: {
       dimension: string;
-      operator: 'equals' | 'notEquals' | 'contains' | 'notContains' | 'includingRegex' | 'excludingRegex';
+      operator:
+        | 'equals'
+        | 'notEquals'
+        | 'contains'
+        | 'notContains'
+        | 'includingRegex'
+        | 'excludingRegex';
       expression: string;
     }[];
   }[];

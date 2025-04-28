@@ -3,7 +3,9 @@
 Retrieves content (posts and comments) submitted by a specific user.
 
 ```typescript
-const content = await reddit.getUserContent('some_username', 'submitted', { limit: 50 });
+const content = await reddit.getUserContent('some_username', 'submitted', {
+  limit: 50,
+});
 console.log(content);
 ```
 

@@ -23,7 +23,7 @@ You can obtain these credentials by following the OAuth 2.0 flow for Reddit.
 
 The following environment variables are used by this SDK:
 
-- `REDDIT_CLIENT_ID`: Your Reddit application's client ID.  Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps. (Required)
+- `REDDIT_CLIENT_ID`: Your Reddit application's client ID. Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps. (Required)
 - `REDDIT_CLIENT_SECRET`: Your Reddit application's client secret. Obtain this by creating a Reddit app at https://www.reddit.com/prefs/apps. (Required)
 - `REDDIT_ACCESS_TOKEN`: The OAuth access token for authenticating with the Reddit API. This token expires after 1 hour. (Required)
 - `REDDIT_REFRESH_TOKEN`: The OAuth refresh token for obtaining new access tokens. Include `duration=permanent` in the initial authorization request to receive a refresh token. (Optional)
@@ -53,8 +53,6 @@ To use this SDK, you need to obtain OAuth credentials from Reddit. Follow these 
 
 5. You'll receive a Client ID and Client Secret. Keep these secure.
 
-
-
 Environment variables:
 
 - REDDIT_CLIENT_ID: Your Reddit application's client ID
@@ -62,8 +60,6 @@ Environment variables:
 - REDDIT_CLIENT_SECRET: Your Reddit application's client secret
 
 - REDDIT_REDIRECT_URI: The redirect URI you specified when creating the app
-
-
 
 To set up environment variables:
 
@@ -78,8 +74,6 @@ To set up environment variables:
    REDDIT_REDIRECT_URI=your_redirect_uri_here
 
 3. Use a package like dotenv to load these variables in your application
-
-
 
 Important notes:
 
@@ -96,8 +90,6 @@ Important notes:
   - OAuth2 clients may make up to 600 requests per 10 minutes
 
   - Monitor the X-Ratelimit headers in API responses for current limits and usage
-
-
 
 For more detailed information, refer to the Reddit API documentation: https://www.reddit.com/dev/api/oauth
 
@@ -117,7 +109,25 @@ const reddit = createRedditSDK({
   clientSecret: process.env.REDDIT_CLIENT_SECRET,
   accessToken: process.env.REDDIT_ACCESS_TOKEN, // Replace with actual access token
   redirectUri: process.env.REDDIT_REDIRECT_URI,
-  scopes: ['identity', 'read', 'submit', 'edit', 'vote', 'history', 'save', 'report', 'subscribe', 'modconfig', 'modposts', 'modflair', 'modlog', 'modmail', 'modothers', 'wikiedit', 'wikiread'],
+  scopes: [
+    'identity',
+    'read',
+    'submit',
+    'edit',
+    'vote',
+    'history',
+    'save',
+    'report',
+    'subscribe',
+    'modconfig',
+    'modposts',
+    'modflair',
+    'modlog',
+    'modmail',
+    'modothers',
+    'wikiedit',
+    'wikiread',
+  ],
 });
 ```
 
@@ -264,7 +274,9 @@ console.log(user);
 Retrieves content (posts and comments) submitted by a specific user.
 
 ```typescript
-const content = await reddit.getUserContent('some_username', 'submitted', { limit: 50 });
+const content = await reddit.getUserContent('some_username', 'submitted', {
+  limit: 50,
+});
 console.log(content);
 ```
 
@@ -300,7 +312,9 @@ console.log(subreddit);
 Searches for posts and comments within a specific subreddit.
 
 ```typescript
-const results = await reddit.searchSubreddit('typescript', 'sdk', { sort: 'relevance' });
+const results = await reddit.searchSubreddit('typescript', 'sdk', {
+  sort: 'relevance',
+});
 console.log(results);
 ```
 
@@ -355,7 +369,9 @@ console.log(comment);
 Submits a new post.
 
 ```typescript
-const post = await reddit.submitPost('typescript', 'New SDK Released!', { text: 'Check out the new TypeScript SDK!' });
+const post = await reddit.submitPost('typescript', 'New SDK Released!', {
+  text: 'Check out the new TypeScript SDK!',
+});
 console.log(post);
 ```
 
@@ -517,7 +533,10 @@ console.log(items);
 Retrieves additional comments for a post.
 
 ```typescript
-const comments = await reddit.getMoreComments('t3_12345', ['t1_67890', 't1_98765']);
+const comments = await reddit.getMoreComments('t3_12345', [
+  't1_67890',
+  't1_98765',
+]);
 console.log(comments);
 ```
 
@@ -544,4 +563,3 @@ console.log(post);
 - `id`: The ID of the post to retrieve.
 
 **Returns:** A promise that resolves to a Post object.
-

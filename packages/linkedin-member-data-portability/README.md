@@ -43,8 +43,6 @@ To use this SDK, you need to obtain LinkedIn API credentials. Follow these steps
 
 5. Request the 'r_dma_portability_3rd_party' scope for your app to access the Data Portability APIs.
 
-
-
 Environment Variables:
 
 - LINKEDIN_CLIENT_ID: Your LinkedIn app's Client ID
@@ -57,19 +55,13 @@ Environment Variables:
 
 - LINKEDIN_REFRESH_TOKEN: The refresh token to obtain new access tokens (optional)
 
-
-
 Authentication:
 
 This SDK uses OAuth 2.0 for authentication. You need to implement the OAuth flow in your application to obtain an access token. The @microfox/linkedin-oauth package is used to handle OAuth-related operations.
 
-
-
 Rate Limits:
 
 LinkedIn API has rate limits, but specific details are not provided in the documentation. Implement proper error handling and retry mechanisms in your application to handle rate limiting errors.
-
-
 
 Important Notes:
 
@@ -85,18 +77,12 @@ Important Notes:
 
 - For pagination in the Member Snapshot API, use the 'start' parameter (not implemented in this SDK version).
 
-
-
 Usage Example:
 
 ```typescript
-
 import { createLinkedInSDK, LinkedInScope } from './LinkedInDataPortabilitySDK';
 
-
-
 const sdk = createLinkedInSDK({
-
   clientId: process.env.LINKEDIN_CLIENT_ID!,
 
   clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
@@ -105,21 +91,15 @@ const sdk = createLinkedInSDK({
 
   accessToken: process.env.LINKEDIN_ACCESS_TOKEN!,
 
-  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN
-
+  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN,
 });
-
-
 
 // Example: Get member change logs
 
 const changeLogs = await sdk.getMemberChangeLogs();
 
 console.log(changeLogs);
-
 ```
-
-
 
 For more detailed information about the LinkedIn DMA Data Portability APIs, refer to the official LinkedIn Developer documentation.
 

@@ -51,8 +51,6 @@ To obtain OAuth credentials for Reddit:
 
 5. You'll receive a Client ID and Client Secret. Keep these secure.
 
-
-
 Environment variables:
 
 - REDDIT_CLIENT_ID: Your Reddit application's client ID
@@ -60,8 +58,6 @@ Environment variables:
 - REDDIT_CLIENT_SECRET: Your Reddit application's client secret
 
 - REDDIT_REDIRECT_URI: The redirect URI you specified when creating the app
-
-
 
 To set up environment variables:
 
@@ -76,8 +72,6 @@ To set up environment variables:
    REDDIT_REDIRECT_URI=your_redirect_uri_here
 
 3. Use a package like dotenv to load these variables in your application
-
-
 
 Important notes:
 
@@ -99,8 +93,6 @@ Important notes:
 
   - Monitor the X-Ratelimit headers in API responses for current limits and usage
 
-
-
 For more detailed information, refer to the Reddit API documentation: https://www.reddit.com/dev/api/oauth
 
 ## Constructor
@@ -112,9 +104,11 @@ Initializes a new instance of the RedditOAuthSdk.
 This SDK provides methods for authenticating with the Reddit API using OAuth 2.0.
 
 Parameters:
+
 - `config`: An object containing the client ID, client secret, redirect URI, and scopes.
 
 Usage Example:
+
 ```typescript
 import { createRedditOAuth } from '@microfox/reddit-oauth';
 
@@ -133,15 +127,21 @@ const redditOAuth = createRedditOAuth({
 Generates the authorization URL used to initiate the OAuth 2.0 flow.
 
 Parameters:
+
 - `state`: A string used to prevent CSRF attacks. This value will be returned in the redirect URI.
 - `duration`: The duration of the access token. Can be either 'temporary' or 'permanent' (default).
 
 Returns:
+
 - The authorization URL as a string.
 
 Usage Example:
+
 ```typescript
-const authorizationUrl = redditOAuth.getAuthorizationUrl('random_string', 'permanent');
+const authorizationUrl = redditOAuth.getAuthorizationUrl(
+  'random_string',
+  'permanent',
+);
 console.log(authorizationUrl);
 ```
 
@@ -150,12 +150,15 @@ console.log(authorizationUrl);
 Retrieves an access token from Reddit using the authorization code obtained from the redirect URI.
 
 Parameters:
+
 - `code`: The authorization code.
 
 Returns:
+
 - A Promise that resolves to an object containing the access token, token type, expiry time, scope, and refresh token (if requested).
 
 Usage Example:
+
 ```typescript
 const tokenResponse = await redditOAuth.getAccessToken('authorization_code');
 console.log(tokenResponse);
@@ -166,14 +169,18 @@ console.log(tokenResponse);
 Refreshes an existing access token using a refresh token.
 
 Parameters:
+
 - `refreshToken`: The refresh token.
 
 Returns:
+
 - A Promise that resolves to an object containing the new access token, token type, expiry time, and scope.
 
 Usage Example:
+
 ```typescript
-const refreshTokenResponse = await redditOAuth.refreshAccessToken('refresh_token');
+const refreshTokenResponse =
+  await redditOAuth.refreshAccessToken('refresh_token');
 console.log(refreshTokenResponse);
 ```
 
@@ -182,12 +189,15 @@ console.log(refreshTokenResponse);
 Validates an access token by making a request to the Reddit API.
 
 Parameters:
+
 - `accessToken`: The access token to validate.
 
 Returns:
+
 - A Promise that resolves to a boolean indicating whether the access token is valid.
 
 Usage Example:
+
 ```typescript
 const isValid = await redditOAuth.validateAccessToken('access_token');
 console.log(isValid);
@@ -198,14 +208,16 @@ console.log(isValid);
 Revokes an access token or refresh token.
 
 Parameters:
+
 - `token`: The token to revoke.
 - `tokenTypeHint`: An optional hint indicating the type of token being revoked. Can be either 'access_token' or 'refresh_token'.
 
 Returns:
+
 - A Promise that resolves when the token has been revoked.
 
 Usage Example:
+
 ```typescript
 await redditOAuth.revokeToken('access_token', 'access_token');
 ```
-

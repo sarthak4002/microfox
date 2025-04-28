@@ -1,1 +1,1 @@
-export * from "./instagram-fbSdk";
+export * from './instagram-fbSdk';

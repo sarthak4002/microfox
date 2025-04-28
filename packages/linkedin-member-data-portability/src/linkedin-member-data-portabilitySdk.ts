@@ -7,39 +7,45 @@ const ErrorSchema = z.object({
   status: z.number(),
 });
 
-const ChangelogEventSchema = z.object({
-  id: z.number(),
-  capturedAt: z.number(),
-  processedAt: z.number(),
-  configVersion: z.number(),
-  owner: z.string(),
-  actor: z.string(),
-  resourceName: z.string(),
-  resourceId: z.string(),
-  resourceUri: z.string(),
-  method: z.enum(['CREATE', 'UPDATE', 'PARTIAL_UPDATE', 'DELETE']),
-  methodName: z.string().optional(),
-  activity: z.record(z.unknown()),
-  processedActivity: z.record(z.unknown()),
-  siblingActivities: z.array(z.record(z.unknown())),
-  parentSiblingActivities: z.array(z.record(z.unknown())),
-  activityId: z.string(),
-  activityStatus: z.enum(['SUCCESS', 'FAILURE', 'SUCCESSFUL_REPLAY']),
-}).describe('Changelog event schema');
+const ChangelogEventSchema = z
+  .object({
+    id: z.number(),
+    capturedAt: z.number(),
+    processedAt: z.number(),
+    configVersion: z.number(),
+    owner: z.string(),
+    actor: z.string(),
+    resourceName: z.string(),
+    resourceId: z.string(),
+    resourceUri: z.string(),
+    method: z.enum(['CREATE', 'UPDATE', 'PARTIAL_UPDATE', 'DELETE']),
+    methodName: z.string().optional(),
+    activity: z.record(z.unknown()),
+    processedActivity: z.record(z.unknown()),
+    siblingActivities: z.array(z.record(z.unknown())),
+    parentSiblingActivities: z.array(z.record(z.unknown())),
+    activityId: z.string(),
+    activityStatus: z.enum(['SUCCESS', 'FAILURE', 'SUCCESSFUL_REPLAY']),
+  })
+  .describe('Changelog event schema');
 
-const MemberSnapshotSchema = z.object({
-  snapshotDomain: z.string(),
-  snapshotData: z.record(z.unknown()),
-}).describe('Member snapshot schema');
+const MemberSnapshotSchema = z
+  .object({
+    snapshotDomain: z.string(),
+    snapshotData: z.record(z.unknown()),
+  })
+  .describe('Member snapshot schema');
 
-const MemberComplianceAuthorizationSchema = z.object({
-  regulatedAt: z.number(),
-  memberComplianceAuthorizationKey: z.object({
-    developerApplication: z.string(),
-    member: z.string(),
-  }),
-  memberComplianceScopes: z.array(z.string()),
-}).describe('Member compliance authorization schema');
+const MemberComplianceAuthorizationSchema = z
+  .object({
+    regulatedAt: z.number(),
+    memberComplianceAuthorizationKey: z.object({
+      developerApplication: z.string(),
+      member: z.string(),
+    }),
+    memberComplianceScopes: z.array(z.string()),
+  })
+  .describe('Member compliance authorization schema');
 
 export class LinkedInDataPortabilitySDK {
   private oauthSdk: LinkedInOAuthSdk;
@@ -62,7 +68,11 @@ export class LinkedInDataPortabilitySDK {
     this.accessToken = config.accessToken;
   }
 
-  private async request<T>(endpoint: string, method: string, params?: Record<string, string>): Promise<T> {
+  private async request<T>(
+    endpoint: string,
+    method: string,
+    params?: Record<string, string>,
+  ): Promise<T> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -73,7 +83,7 @@ export class LinkedInDataPortabilitySDK {
     const response = await fetch(url.toString(), {
       method,
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'LinkedIn-Version': '202312',
         'Content-Type': 'application/json',
       },
@@ -81,7 +91,9 @@ export class LinkedInDataPortabilitySDK {
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      throw new Error(`LinkedIn API error: ${response.status} ${response.statusText}: ${error.message}`);
+      throw new Error(
+        `LinkedIn API error: ${response.status} ${response.statusText}: ${error.message}`,
+      );
     }
 
     return response.json();
@@ -94,49 +106,74 @@ export class LinkedInDataPortabilitySDK {
         throw new Error('Invalid access token');
       }
     } catch (error) {
-      throw new Error(`Failed to validate access token: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to validate access token: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<{ accessToken: string; refreshToken?: string }> {
+  async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<{ accessToken: string; refreshToken?: string }> {
     try {
       const result = await this.oauthSdk.refreshAccessToken(refreshToken);
       this.accessToken = result.accessToken;
       return result;
     } catch (error) {
-      throw new Error(`Failed to refresh access token: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to refresh access token: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
     }
   }
 
-  async getMemberChangeLogs(startTime?: number): Promise<z.infer<typeof ChangelogEventSchema>[]> {
+  async getMemberChangeLogs(
+    startTime?: number,
+  ): Promise<z.infer<typeof ChangelogEventSchema>[]> {
     await this.validateAccessToken();
     const params: Record<string, string> = { q: 'memberAndApplication' };
     if (startTime) {
       params.startTime = startTime.toString();
     }
-    const response = await this.request<z.infer<typeof ChangelogEventSchema>[]>('/rest/memberChangeLogs', 'GET', params);
+    const response = await this.request<z.infer<typeof ChangelogEventSchema>[]>(
+      '/rest/memberChangeLogs',
+      'GET',
+      params,
+    );
     return z.array(ChangelogEventSchema).parse(response);
   }
 
-  async getMemberSnapshotData(domain?: string): Promise<z.infer<typeof MemberSnapshotSchema>[]> {
+  async getMemberSnapshotData(
+    domain?: string,
+  ): Promise<z.infer<typeof MemberSnapshotSchema>[]> {
     await this.validateAccessToken();
     const params: Record<string, string> = { q: 'criteria' };
     if (domain) {
       params.domain = domain;
     }
-    const response = await this.request<z.infer<typeof MemberSnapshotSchema>[]>('/rest/memberSnapshotData', 'GET', params);
+    const response = await this.request<z.infer<typeof MemberSnapshotSchema>[]>(
+      '/rest/memberSnapshotData',
+      'GET',
+      params,
+    );
     return z.array(MemberSnapshotSchema).parse(response);
   }
 
-  async getMemberAuthorizations(): Promise<z.infer<typeof MemberComplianceAuthorizationSchema>> {
+  async getMemberAuthorizations(): Promise<
+    z.infer<typeof MemberComplianceAuthorizationSchema>
+  > {
     await this.validateAccessToken();
-    const response = await this.request<z.infer<typeof MemberComplianceAuthorizationSchema>>('/rest/memberAuthorizations', 'GET', { q: 'memberAndApplication' });
+    const response = await this.request<
+      z.infer<typeof MemberComplianceAuthorizationSchema>
+    >('/rest/memberAuthorizations', 'GET', { q: 'memberAndApplication' });
     return MemberComplianceAuthorizationSchema.parse(response);
   }
 
   async triggerMemberDataProcessing(): Promise<{ success: boolean }> {
     await this.validateAccessToken();
-    const response = await this.request<{ success: boolean }>('/rest/memberAuthorizations', 'POST');
+    const response = await this.request<{ success: boolean }>(
+      '/rest/memberAuthorizations',
+      'POST',
+    );
     return z.object({ success: z.boolean() }).parse(response);
   }
 }

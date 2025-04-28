@@ -19,4 +19,13 @@ export type SearchResult = z.infer<typeof searchResultSchema>;
 export type VoteDirection = z.infer<typeof voteDirectionSchema>;
 export type ListingParams = z.infer<typeof listingParamsSchema>;
 
-export { redditSDKConfigSchema, userSchema, postSchema, commentSchema, subredditSchema, searchResultSchema, voteDirectionSchema, listingParamsSchema };
+export {
+  redditSDKConfigSchema,
+  userSchema,
+  postSchema,
+  commentSchema,
+  subredditSchema,
+  searchResultSchema,
+  voteDirectionSchema,
+  listingParamsSchema,
+};

@@ -44,13 +44,13 @@ Store your client ID, client secret, and redirect URI securely. Never commit the
 
 Set up environment variables for your credentials:
 
-  - GOOGLE_ANALYTICS_CLIENT_ID
+- GOOGLE_ANALYTICS_CLIENT_ID
 
-  - GOOGLE_ANALYTICS_CLIENT_SECRET
+- GOOGLE_ANALYTICS_CLIENT_SECRET
 
-  - GOOGLE_ANALYTICS_REDIRECT_URI
+- GOOGLE_ANALYTICS_REDIRECT_URI
 
-  - GOOGLE_ANALYTICS_ACCESS_TOKEN
+- GOOGLE_ANALYTICS_ACCESS_TOKEN
 
 Obtain an access token using the OAuth 2.0 flow. You can use the @microfox/google-oauth package to handle the OAuth process.
 
@@ -75,6 +75,7 @@ Initializes a new instance of the GoogleAnalyticsSDK.
 Authentication is handled using OAuth 2.0. You will need to provide your client ID, client secret, redirect URI, and access token. The SDK uses the `@microfox/google-oauth` package for OAuth 2.0 functionalities.
 
 Usage Example:
+
 ```typescript
 import { createGoogleAnalyticsSDK } from 'google-analytics-sdk';
 
@@ -89,6 +90,7 @@ const sdk = createGoogleAnalyticsSDK({
 ```
 
 Parameters:
+
 - `config`: An object containing the following properties:
   - `clientId`: The client ID for your Google Cloud project.
   - `clientSecret`: The client secret for your Google Cloud project.
@@ -96,6 +98,7 @@ Parameters:
   - `accessToken`: The access token for authenticating with the Google Analytics Data API.
 
 Note:
+
 - You can obtain the necessary credentials by setting up a Google Cloud project, enabling the Google Analytics Data API, and creating OAuth 2.0 credentials.
 - Store your client ID, client secret, redirect URI, and access token securely. Never commit these to version control.
 - Use environment variables to manage your credentials.
@@ -108,10 +111,12 @@ Note:
 Runs a report.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The report request.
 
 Returns:
+
 - A promise that resolves to the report response.
 
 ## [batchRunReports](./docs/batchRunReports.md)
@@ -119,10 +124,12 @@ Returns:
 Batch runs reports.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The batch report request.
 
 Returns:
+
 - A promise that resolves to the batch report response.
 
 ## [runPivotReport](./docs/runPivotReport.md)
@@ -130,10 +137,12 @@ Returns:
 Runs a pivot report.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The pivot report request.
 
 Returns:
+
 - A promise that resolves to the pivot report response.
 
 ## [batchRunPivotReports](./docs/batchRunPivotReports.md)
@@ -141,10 +150,12 @@ Returns:
 Batch runs pivot reports.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The batch pivot report request.
 
 Returns:
+
 - A promise that resolves to the batch pivot report response.
 
 ## [getMetadata](./docs/getMetadata.md)
@@ -152,9 +163,11 @@ Returns:
 Gets metadata.
 
 Parameters:
+
 - `name`: The name of the metadata resource.
 
 Returns:
+
 - A promise that resolves to the metadata.
 
 ## [checkCompatibility](./docs/checkCompatibility.md)
@@ -162,10 +175,12 @@ Returns:
 Checks compatibility.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The compatibility check request.
 
 Returns:
+
 - A promise that resolves to the compatibility check response.
 
 ## [runRealtimeReport](./docs/runRealtimeReport.md)
@@ -173,10 +188,12 @@ Returns:
 Runs a realtime report.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The realtime report request.
 
 Returns:
+
 - A promise that resolves to the realtime report response.
 
 ## [createAudienceExport](./docs/createAudienceExport.md)
@@ -184,10 +201,12 @@ Returns:
 Creates an audience export.
 
 Parameters:
+
 - `parent`: The parent resource name.
 - `request`: The audience export creation request.
 
 Returns:
+
 - A promise that resolves to the audience export.
 
 ## [getAudienceExport](./docs/getAudienceExport.md)
@@ -195,9 +214,11 @@ Returns:
 Gets an audience export.
 
 Parameters:
+
 - `name`: The name of the audience export resource.
 
 Returns:
+
 - A promise that resolves to the audience export.
 
 ## [listAudienceExports](./docs/listAudienceExports.md)
@@ -205,9 +226,11 @@ Returns:
 Lists audience exports.
 
 Parameters:
+
 - `parent`: The parent resource name.
 
 Returns:
+
 - A promise that resolves to the list of audience exports.
 
 ## [runFunnelReport](./docs/runFunnelReport.md)
@@ -215,10 +238,12 @@ Returns:
 Runs a funnel report.
 
 Parameters:
+
 - `property`: The property ID.
 - `request`: The funnel report request.
 
 Returns:
+
 - A promise that resolves to the funnel report response.
 
 ## [getPropertyQuotasSnapshot](./docs/getPropertyQuotasSnapshot.md)
@@ -226,9 +251,11 @@ Returns:
 Gets property quotas snapshot.
 
 Parameters:
+
 - `name`: The name of the property quotas snapshot resource.
 
 Returns:
+
 - A promise that resolves to the property quotas snapshot.
 
 ## [createAudienceList](./docs/createAudienceList.md)
@@ -236,10 +263,12 @@ Returns:
 Creates an audience list.
 
 Parameters:
+
 - `parent`: The parent resource name.
 - `request`: The audience list creation request.
 
 Returns:
+
 - A promise that resolves to the audience list.
 
 ## [getAudienceList](./docs/getAudienceList.md)
@@ -247,9 +276,11 @@ Returns:
 Gets an audience list.
 
 Parameters:
+
 - `name`: The name of the audience list resource.
 
 Returns:
+
 - A promise that resolves to the audience list.
 
 ## [listAudienceLists](./docs/listAudienceLists.md)
@@ -257,9 +288,11 @@ Returns:
 Lists audience lists.
 
 Parameters:
+
 - `parent`: The parent resource name.
 
 Returns:
+
 - A promise that resolves to the list of audience lists.
 
 ## [createRecurringAudienceList](./docs/createRecurringAudienceList.md)
@@ -267,10 +300,12 @@ Returns:
 Creates a recurring audience list.
 
 Parameters:
+
 - `parent`: The parent resource name.
 - `request`: The recurring audience list creation request.
 
 Returns:
+
 - A promise that resolves to the recurring audience list.
 
 ## [getRecurringAudienceList](./docs/getRecurringAudienceList.md)
@@ -278,9 +313,11 @@ Returns:
 Gets a recurring audience list.
 
 Parameters:
+
 - `name`: The name of the recurring audience list resource.
 
 Returns:
+
 - A promise that resolves to the recurring audience list.
 
 ## [listRecurringAudienceLists](./docs/listRecurringAudienceLists.md)
@@ -288,9 +325,11 @@ Returns:
 Lists recurring audience lists.
 
 Parameters:
+
 - `parent`: The parent resource name.
 
 Returns:
+
 - A promise that resolves to the list of recurring audience lists.
 
 ## [createReportTask](./docs/createReportTask.md)
@@ -298,10 +337,12 @@ Returns:
 Creates a report task.
 
 Parameters:
+
 - `parent`: The parent resource name.
 - `request`: The report task creation request.
 
 Returns:
+
 - A promise that resolves to the report task.
 
 ## [getReportTask](./docs/getReportTask.md)
@@ -309,9 +350,11 @@ Returns:
 Gets a report task.
 
 Parameters:
+
 - `name`: The name of the report task resource.
 
 Returns:
+
 - A promise that resolves to the report task.
 
 ## [listReportTasks](./docs/listReportTasks.md)
@@ -319,9 +362,11 @@ Returns:
 Lists report tasks.
 
 Parameters:
+
 - `parent`: The parent resource name.
 
 Returns:
+
 - A promise that resolves to the list of report tasks.
 
 ## [refreshAccessToken](./docs/refreshAccessToken.md)
@@ -329,8 +374,9 @@ Returns:
 Refreshes the access token.
 
 Parameters:
+
 - `refreshToken`: The refresh token.
 
 Returns:
-- A promise that resolves when the access token is refreshed.
 
+- A promise that resolves when the access token is refreshed.

@@ -1,6 +1,14 @@
 import { z } from 'zod';
-import { RedditOAuthConfig, RedditTokenResponse, RedditRefreshTokenResponse } from './types';
-import { redditOAuthConfigSchema, redditTokenResponseSchema, redditRefreshTokenResponseSchema } from './schemas';
+import {
+  RedditOAuthConfig,
+  RedditTokenResponse,
+  RedditRefreshTokenResponse,
+} from './types';
+import {
+  redditOAuthConfigSchema,
+  redditTokenResponseSchema,
+  redditRefreshTokenResponseSchema,
+} from './schemas';
 
 export class RedditOAuthSdk {
   private clientId: string;
@@ -18,14 +26,17 @@ export class RedditOAuthSdk {
     this.scopes = validatedConfig.scopes;
   }
 
-  public getAuthorizationUrl(state: string, duration: 'temporary' | 'permanent' = 'permanent'): string {
+  public getAuthorizationUrl(
+    state: string,
+    duration: 'temporary' | 'permanent' = 'permanent',
+  ): string {
     const params = new URLSearchParams({
       client_id: this.clientId,
       response_type: 'code',
       state,
       redirect_uri: this.redirectUri,
       duration,
-      scope: this.scopes.join(',')
+      scope: this.scopes.join(','),
     });
 
     return `${this.authorizationEndpoint}?${params.toString()}`;
@@ -35,16 +46,16 @@ export class RedditOAuthSdk {
     const params = new URLSearchParams({
       grant_type: 'authorization_code',
       code,
-      redirect_uri: this.redirectUri
+      redirect_uri: this.redirectUri,
     });
 
     const response = await fetch(this.tokenEndpoint, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
 
     if (!response.ok) {
@@ -55,7 +66,9 @@ export class RedditOAuthSdk {
     return redditTokenResponseSchema.parse(data);
   }
 
-  public async refreshAccessToken(refreshToken: string): Promise<RedditRefreshTokenResponse> {
+  public async refreshAccessToken(
+    refreshToken: string,
+  ): Promise<RedditRefreshTokenResponse> {
     const params = new URLSearchParams({
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
@@ -64,10 +77,10 @@ export class RedditOAuthSdk {
     const response = await fetch(this.tokenEndpoint, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+        Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
 
     if (!response.ok) {
@@ -81,26 +94,29 @@ export class RedditOAuthSdk {
   public async validateAccessToken(accessToken: string): Promise<boolean> {
     const response = await fetch('https://oauth.reddit.com/api/v1/me', {
       headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
 
     return response.ok;
   }
 
-  public async revokeToken(token: string, tokenTypeHint?: 'access_token' | 'refresh_token'): Promise<void> {
+  public async revokeToken(
+    token: string,
+    tokenTypeHint?: 'access_token' | 'refresh_token',
+  ): Promise<void> {
     const params = new URLSearchParams({
       token,
-      token_type_hint: tokenTypeHint || ''
+      token_type_hint: tokenTypeHint || '',
     });
 
     const response = await fetch('https://www.reddit.com/api/v1/revoke_token', {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params
+      body: params,
     });
 
     if (!response.ok) {

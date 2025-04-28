@@ -116,7 +116,9 @@ export async function generateDocs(
           );
           console.log(`- Constructor: ${constructorName}`);
           console.log(`- Functions: ${validatedData.functionsDocs.length}`);
-          console.log(`- Environment Keys: ${validatedData.envKeys?.length || 0}`);
+          console.log(
+            `- Environment Keys: ${validatedData.envKeys?.length || 0}`,
+          );
 
           // Get package directory
           const docsDir = path.join(packageDir, 'docs');
@@ -134,7 +136,10 @@ export async function generateDocs(
 
           // Save function documentation files
           for (const func of validatedData.functionsDocs) {
-            fs.writeFileSync(path.join(docsDir, `${func.name}.md`), func.docs || '');
+            fs.writeFileSync(
+              path.join(docsDir, `${func.name}.md`),
+              func.docs || '',
+            );
           }
 
           // Update package-info.json with constructor info
@@ -174,35 +179,39 @@ export async function generateDocs(
               outputKeys: [],
               requiredKeys: !packageInfo.authEndpoint
                 ? validatedData.envKeys?.map(key => ({
-                  key: key.key,
-                  displayName: key.displayName,
-                  description: key.description,
-                })) || []
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  })) || []
                 : [],
               internalKeys: packageInfo.authEndpoint
                 ? validatedData.envKeys?.map(key => ({
-                  key: key.key,
-                  displayName: key.displayName,
-                  description: key.description,
-                })) || []
+                    key: key.key,
+                    displayName: key.displayName,
+                    description: key.description,
+                  })) || []
                 : [],
               functionalities: validatedData.functionsDocs.map(f => f.name),
             },
           ];
 
           // Add keysInfo
-          packageInfo.keysInfo = validatedData.envKeys?.map(key => ({
-            key: key.key,
-            constructors: [constructorName],
-            description: key.description,
-            required: key.required,
-          })) || [];
+          packageInfo.keysInfo =
+            validatedData.envKeys?.map(key => ({
+              key: key.key,
+              constructors: [constructorName],
+              description: key.description,
+              required: key.required,
+            })) || [];
 
           // Add extraInfo
           packageInfo.extraInfo = extraInfo;
 
           // Install dependencies if provided
-          if (validatedData.dependencies && validatedData.dependencies.length > 0) {
+          if (
+            validatedData.dependencies &&
+            validatedData.dependencies.length > 0
+          ) {
             console.log('📦 Installing dependencies...');
             const depsString = validatedData.dependencies.join(' ');
 
@@ -239,7 +248,10 @@ export async function generateDocs(
           }
 
           // Install dev dependencies if provided
-          if (validatedData.devDependencies && validatedData.devDependencies.length > 0) {
+          if (
+            validatedData.devDependencies &&
+            validatedData.devDependencies.length > 0
+          ) {
             console.log('📦 Installing dev dependencies...');
             const devDepsString = validatedData.devDependencies.join(' ');
 
@@ -276,14 +288,23 @@ export async function generateDocs(
           }
 
           // Update package-info.json with dependencies
-          if (validatedData.dependencies && validatedData.dependencies.length > 0) {
+          if (
+            validatedData.dependencies &&
+            validatedData.dependencies.length > 0
+          ) {
             packageInfo.dependencies = Array.from(
-              new Set(['zod', ...validatedData.dependencies.map(d => d.split('@')[0])]),
+              new Set([
+                'zod',
+                ...validatedData.dependencies.map(d => d.split('@')[0]),
+              ]),
             );
           }
 
           // Write updated package-info.json
-          fs.writeFileSync(packageInfoPath, JSON.stringify(packageInfo, null, 2));
+          fs.writeFileSync(
+            packageInfoPath,
+            JSON.stringify(packageInfo, null, 2),
+          );
 
           // Generate README.md
           const readmeContent = generateReadme(
@@ -492,7 +513,10 @@ function generateReadme(
 
 if (require.main === module) {
   const packageDir = path.join(__dirname, '../packages/reddit');
-  const sdkCode = fs.readFileSync(path.join(packageDir, 'src/redditSdk.ts'), 'utf8');
+  const sdkCode = fs.readFileSync(
+    path.join(packageDir, 'src/redditSdk.ts'),
+    'utf8',
+  );
   const metadata = {
     apiName: 'reddit',
     packageName: 'reddit',

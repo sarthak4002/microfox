@@ -21,4 +21,4 @@ export interface ApiResponse<T = any> {
 export interface TestFunctionRequest {
   accessToken: string;
   params: FunctionParams;
-} 
+}

@@ -1,2 +1,5 @@
-export { GoogleSearchConsoleSDK, createGoogleSearchConsoleSDK } from './googleSearchConsoleSdk';
+export {
+  GoogleSearchConsoleSDK,
+  createGoogleSearchConsoleSDK,
+} from './googleSearchConsoleSdk';
 export * from './types';

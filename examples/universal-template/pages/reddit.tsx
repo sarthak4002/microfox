@@ -58,13 +58,13 @@ const functionCategories: SdkCategory = {
     {
       name: 'getUserContent',
       description: 'Get content posted by a user',
-      params: { 
-        username: '', 
-        section: 'overview', 
-        after: '', 
-        before: '', 
-        count: 0, 
-        limit: 25 
+      params: {
+        username: '',
+        section: 'overview',
+        after: '',
+        before: '',
+        count: 0,
+        limit: 25,
       },
     },
   ],
@@ -78,15 +78,15 @@ const functionCategories: SdkCategory = {
     {
       name: 'searchSubreddit',
       description: 'Search within a subreddit',
-      params: { 
-        subreddit: '', 
-        query: '', 
-        sort: 'relevance', 
+      params: {
+        subreddit: '',
+        query: '',
+        sort: 'relevance',
         t: 'all',
-        after: '', 
-        before: '', 
-        count: 0, 
-        limit: 25 
+        after: '',
+        before: '',
+        count: 0,
+        limit: 25,
       },
     },
   ],
@@ -94,14 +94,14 @@ const functionCategories: SdkCategory = {
     {
       name: 'search',
       description: 'Search across all of Reddit',
-      params: { 
-        query: '', 
-        sort: 'relevance', 
+      params: {
+        query: '',
+        sort: 'relevance',
         t: 'all',
-        after: '', 
-        before: '', 
-        count: 0, 
-        limit: 25 
+        after: '',
+        before: '',
+        count: 0,
+        limit: 25,
       },
     },
   ],
@@ -109,10 +109,10 @@ const functionCategories: SdkCategory = {
     {
       name: 'submitPost',
       description: 'Submit a new post to a subreddit',
-      params: { 
-        subreddit: '', 
-        title: '', 
-        content: { text: '' } 
+      params: {
+        subreddit: '',
+        title: '',
+        content: { text: '' },
       },
     },
     {

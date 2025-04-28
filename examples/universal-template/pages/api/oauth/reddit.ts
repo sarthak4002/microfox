@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { RedditOAuthConfig, createRedditOAuth } from "@microfox/reddit-oauth";
+import { RedditOAuthConfig, createRedditOAuth } from '@microfox/reddit-oauth';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -26,7 +26,7 @@ export default async function handler(
 
     // Initialize OAuth SDK
     const oauthSdk = createRedditOAuth(oauthConfig);
-    
+
     // Exchange code for tokens
     const tokens = await oauthSdk.getAccessToken(code as string);
     console.log(tokens);
@@ -57,7 +57,10 @@ export default async function handler(
     `);
   } catch (error) {
     console.error('OAuth token exchange error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return res.redirect(`/?error=Failed to exchange token: ${encodeURIComponent(errorMessage)}`);
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
+    return res.redirect(
+      `/?error=Failed to exchange token: ${encodeURIComponent(errorMessage)}`,
+    );
   }
-} 
+}

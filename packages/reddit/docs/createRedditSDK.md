@@ -10,7 +10,25 @@ const reddit = createRedditSDK({
   clientSecret: process.env.REDDIT_CLIENT_SECRET,
   accessToken: process.env.REDDIT_ACCESS_TOKEN, // Replace with actual access token
   redirectUri: process.env.REDDIT_REDIRECT_URI,
-  scopes: ['identity', 'read', 'submit', 'edit', 'vote', 'history', 'save', 'report', 'subscribe', 'modconfig', 'modposts', 'modflair', 'modlog', 'modmail', 'modothers', 'wikiedit', 'wikiread'],
+  scopes: [
+    'identity',
+    'read',
+    'submit',
+    'edit',
+    'vote',
+    'history',
+    'save',
+    'report',
+    'subscribe',
+    'modconfig',
+    'modposts',
+    'modflair',
+    'modlog',
+    'modmail',
+    'modothers',
+    'wikiedit',
+    'wikiread',
+  ],
 });
 ```
 

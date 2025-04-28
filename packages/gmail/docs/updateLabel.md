@@ -12,7 +12,9 @@ Updates an existing label.
 **Usage Example:**
 
 ```typescript
-const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', { name: 'New Label Name' });
+const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', {
+  name: 'New Label Name',
+});
 console.log(updatedLabel);
 ```
 
@@ -20,7 +22,9 @@ console.log(updatedLabel);
 
 ```typescript
 async function updateLabelById() {
-  const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', { name: 'New Label Name' });
+  const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', {
+    name: 'New Label Name',
+  });
   console.log(updatedLabel);
 }
 

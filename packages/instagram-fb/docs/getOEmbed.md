@@ -16,6 +16,8 @@ Retrieves oEmbed data for a given URL.
 **Example:**
 
 ```typescript
-const oEmbedData = await sdk.getOEmbed('https://www.instagram.com/p/your-post-id/');
+const oEmbedData = await sdk.getOEmbed(
+  'https://www.instagram.com/p/your-post-id/',
+);
 console.log('oEmbed data:', oEmbedData);
 ```

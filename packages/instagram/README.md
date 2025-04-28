@@ -45,8 +45,6 @@ To use this SDK, you need to obtain Instagram API credentials. Follow these step
 
 6. Obtain your app's Client ID and Client Secret from the app dashboard
 
-
-
 Environment variables:
 
 - INSTAGRAM_CLIENT_ID: Your Instagram app's Client ID
@@ -59,19 +57,13 @@ Environment variables:
 
 - INSTAGRAM_REFRESH_TOKEN: The user's refresh token (obtained through OAuth flow)
 
-
-
 Authentication:
 
 This SDK uses OAuth 2.0 for authentication. You need to implement the OAuth flow in your application to obtain the initial access token and refresh token. The SDK handles token refreshing automatically.
 
-
-
 Rate Limits:
 
 Instagram API has rate limits that vary by endpoint. Monitor your usage and implement appropriate error handling and backoff strategies. Use the getContentPublishingLimit method to check your current rate limit status for content publishing.
-
-
 
 Important Notes:
 
@@ -88,8 +80,6 @@ Important Notes:
 - When working with insights, be aware of the different metrics available for media objects vs. user accounts
 
 - The oEmbed endpoint requires a separate app access token or client access token
-
-
 
 For more detailed information, refer to the official Instagram Graph API documentation: https://developers.facebook.com/docs/instagram-api/
 

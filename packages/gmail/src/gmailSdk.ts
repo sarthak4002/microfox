@@ -43,7 +43,7 @@ export class GmailSDK {
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     schema: z.ZodType<T>,
-    body?: unknown
+    body?: unknown,
   ): Promise<T> {
     const accessToken = await this.getValidAccessToken();
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -56,7 +56,9 @@ export class GmailSDK {
     });
 
     if (!response.ok) {
-      throw new Error(`Gmail API error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Gmail API error: ${response.status} ${response.statusText}`,
+      );
     }
 
     const data = await response.json();
@@ -69,7 +71,9 @@ export class GmailSDK {
       if (result.isValid) {
         return this.accessToken;
       }
-      const { accessToken } = await this.oauth.refreshAccessToken(this.refreshToken);
+      const { accessToken } = await this.oauth.refreshAccessToken(
+        this.refreshToken,
+      );
       return accessToken;
     } catch (error) {
       throw new Error('Failed to get a valid access token');
@@ -80,7 +84,7 @@ export class GmailSDK {
     return this.request<ListLabelsResponse>(
       `/users/${this.userId}/labels`,
       'GET',
-      ListLabelsResponseSchema
+      ListLabelsResponseSchema,
     );
   }
 
@@ -89,7 +93,7 @@ export class GmailSDK {
       `/users/${this.userId}/labels`,
       'POST',
       LabelSchema,
-      label
+      label,
     );
   }
 
@@ -97,7 +101,7 @@ export class GmailSDK {
     return this.request<Label>(
       `/users/${this.userId}/labels/${id}`,
       'GET',
-      LabelSchema
+      LabelSchema,
     );
   }
 
@@ -106,7 +110,7 @@ export class GmailSDK {
       `/users/${this.userId}/labels/${id}`,
       'PUT',
       LabelSchema,
-      label
+      label,
     );
   }
 
@@ -114,20 +118,24 @@ export class GmailSDK {
     await this.request<void>(
       `/users/${this.userId}/labels/${id}`,
       'DELETE',
-      z.void()
+      z.void(),
     );
   }
 
-  async listMessages(params: {
-    q?: string;
-    pageToken?: string;
-    maxResults?: number;
-  } = {}): Promise<ListMessagesResponse> {
-    const queryParams = new URLSearchParams(params as Record<string, string>).toString();
+  async listMessages(
+    params: {
+      q?: string;
+      pageToken?: string;
+      maxResults?: number;
+    } = {},
+  ): Promise<ListMessagesResponse> {
+    const queryParams = new URLSearchParams(
+      params as Record<string, string>,
+    ).toString();
     return this.request<ListMessagesResponse>(
       `/users/${this.userId}/messages?${queryParams}`,
       'GET',
-      ListMessagesResponseSchema
+      ListMessagesResponseSchema,
     );
   }
 
@@ -135,7 +143,7 @@ export class GmailSDK {
     return this.request<Message>(
       `/users/${this.userId}/messages/${id}`,
       'GET',
-      MessageSchema
+      MessageSchema,
     );
   }
 
@@ -144,20 +152,24 @@ export class GmailSDK {
       `/users/${this.userId}/messages/send`,
       'POST',
       MessageSchema,
-      message
+      message,
     );
   }
 
-  async listThreads(params: {
-    q?: string;
-    pageToken?: string;
-    maxResults?: number;
-  } = {}): Promise<ListThreadsResponse> {
-    const queryParams = new URLSearchParams(params as Record<string, string>).toString();
+  async listThreads(
+    params: {
+      q?: string;
+      pageToken?: string;
+      maxResults?: number;
+    } = {},
+  ): Promise<ListThreadsResponse> {
+    const queryParams = new URLSearchParams(
+      params as Record<string, string>,
+    ).toString();
     return this.request<ListThreadsResponse>(
       `/users/${this.userId}/threads?${queryParams}`,
       'GET',
-      ListThreadsResponseSchema
+      ListThreadsResponseSchema,
     );
   }
 
@@ -165,7 +177,7 @@ export class GmailSDK {
     return this.request<Thread>(
       `/users/${this.userId}/threads/${id}`,
       'GET',
-      ThreadSchema
+      ThreadSchema,
     );
   }
 }

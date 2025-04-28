@@ -2,16 +2,16 @@ export default function UniversalTemplate() {
   return (
     <div className="container">
       <h1 className="text-4xl font-bold mb-8">SDKs</h1>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-2xl font-semibold mb-4">Reddit</h2>
         <p className="text-gray-600 mb-4">
-          This package provides a powerful SDK for interacting with Reddit's API. 
-          You can easily fetch posts, comments, user data, and perform various Reddit operations 
-          with a simple and intuitive interface.
+          This package provides a powerful SDK for interacting with Reddit's
+          API. You can easily fetch posts, comments, user data, and perform
+          various Reddit operations with a simple and intuitive interface.
         </p>
-        <a 
-          href="/reddit" 
+        <a
+          href="/reddit"
           className="inline-block bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
         >
           Try Reddit SDK
@@ -20,10 +20,8 @@ export default function UniversalTemplate() {
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <h2 className="text-2xl font-semibold mb-4">GitHub</h2>
-        <p className="text-gray-600">
-          Coming soon...
-        </p>
+        <p className="text-gray-600">Coming soon...</p>
       </div>
     </div>
   );
-} 
+}

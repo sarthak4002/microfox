@@ -24,9 +24,8 @@ export interface FilterExpression {
   // Complex structure - see Google API docs for details
 }
 
-export enum MetricAggregation {
-  // Enum values - see Google API docs for details
-}
+export enum MetricAggregation {}
+// Enum values - see Google API docs for details
 
 export interface OrderBy {
   // Structure for ordering results - see Google API docs for details
@@ -83,9 +82,8 @@ export interface ResponseMetaData {
   // Metadata about the response - see Google API docs for details
 }
 
-export enum MetricType {
-  // Enum values - see Google API docs for details
-}
+export enum MetricType {}
+// Enum values - see Google API docs for details
 
 export interface RunReportResponse {
   dimensionHeaders: DimensionHeader[];

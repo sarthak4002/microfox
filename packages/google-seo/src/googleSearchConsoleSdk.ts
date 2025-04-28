@@ -39,7 +39,7 @@ export class GoogleSearchConsoleSDK {
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     body?: unknown,
-    params?: Record<string, string>
+    params?: Record<string, string>,
   ): Promise<T> {
     const url = new URL(`${this.baseUrl}${endpoint}`);
     if (params) {
@@ -51,7 +51,7 @@ export class GoogleSearchConsoleSDK {
     const response = await fetch(url.toString(), {
       method,
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: body ? JSON.stringify(body) : undefined,
@@ -72,7 +72,9 @@ export class GoogleSearchConsoleSDK {
         throw new Error('Invalid access token');
       }
     } catch (error) {
-      throw new Error(`Failed to validate access token: ${(error as Error).message}`);
+      throw new Error(
+        `Failed to validate access token: ${(error as Error).message}`,
+      );
     }
   }
 
@@ -81,17 +83,25 @@ export class GoogleSearchConsoleSDK {
       const result = await this.oauth.refreshAccessToken(refreshToken);
       this.accessToken = result.accessToken;
     } catch (error) {
-      throw new Error(`Failed to refresh access token: ${(error as Error).message}`);
+      throw new Error(
+        `Failed to refresh access token: ${(error as Error).message}`,
+      );
     }
   }
 
   async listSites(): Promise<SitesResource[]> {
-    const response = await this.request<{ siteEntry: SitesResource[] }>('/sites', 'GET');
+    const response = await this.request<{ siteEntry: SitesResource[] }>(
+      '/sites',
+      'GET',
+    );
     return response.siteEntry.map(site => sitesResourceSchema.parse(site));
   }
 
   async getSite(siteUrl: string): Promise<SitesResource> {
-    const response = await this.request<SitesResource>(`/sites/${encodeURIComponent(siteUrl)}`, 'GET');
+    const response = await this.request<SitesResource>(
+      `/sites/${encodeURIComponent(siteUrl)}`,
+      'GET',
+    );
     return sitesResourceSchema.parse(response);
   }
 
@@ -103,7 +113,10 @@ export class GoogleSearchConsoleSDK {
     await this.request(`/sites/${encodeURIComponent(siteUrl)}`, 'DELETE');
   }
 
-  async listSitemaps(siteUrl: string, sitemapIndex?: string): Promise<SitemapResource[]> {
+  async listSitemaps(
+    siteUrl: string,
+    sitemapIndex?: string,
+  ): Promise<SitemapResource[]> {
     const params: Record<string, string> = {};
     if (sitemapIndex) {
       params.sitemapIndex = sitemapIndex;
@@ -112,15 +125,20 @@ export class GoogleSearchConsoleSDK {
       `/sites/${encodeURIComponent(siteUrl)}/sitemaps`,
       'GET',
       undefined,
-      params
+      params,
     );
-    return response.sitemap.map(sitemap => sitemapResourceSchema.parse(sitemap));
+    return response.sitemap.map(sitemap =>
+      sitemapResourceSchema.parse(sitemap),
+    );
   }
 
-  async getSitemap(siteUrl: string, feedpath: string): Promise<SitemapResource> {
+  async getSitemap(
+    siteUrl: string,
+    feedpath: string,
+  ): Promise<SitemapResource> {
     const response = await this.request<SitemapResource>(
       `/sites/${encodeURIComponent(siteUrl)}/sitemaps/${encodeURIComponent(feedpath)}`,
-      'GET'
+      'GET',
     );
     return sitemapResourceSchema.parse(response);
   }
@@ -128,26 +146,29 @@ export class GoogleSearchConsoleSDK {
   async submitSitemap(siteUrl: string, feedpath: string): Promise<void> {
     await this.request(
       `/sites/${encodeURIComponent(siteUrl)}/sitemaps/${encodeURIComponent(feedpath)}`,
-      'PUT'
+      'PUT',
     );
   }
 
   async deleteSitemap(siteUrl: string, feedpath: string): Promise<void> {
     await this.request(
       `/sites/${encodeURIComponent(siteUrl)}/sitemaps/${encodeURIComponent(feedpath)}`,
-      'DELETE'
+      'DELETE',
     );
   }
 
   async querySearchAnalytics(
     siteUrl: string,
-    params: SearchAnalyticsQueryParams
+    params: SearchAnalyticsQueryParams,
   ): Promise<{ rows: SearchAnalyticsRow[]; responseAggregationType: string }> {
     const validatedParams = searchAnalyticsQueryParamsSchema.parse(params);
-    const response = await this.request<{ rows: SearchAnalyticsRow[]; responseAggregationType: string }>(
+    const response = await this.request<{
+      rows: SearchAnalyticsRow[];
+      responseAggregationType: string;
+    }>(
       `/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
       'POST',
-      validatedParams
+      validatedParams,
     );
     return {
       rows: response.rows.map(row => searchAnalyticsRowSchema.parse(row)),
@@ -157,15 +178,15 @@ export class GoogleSearchConsoleSDK {
 
   async inspectUrl(params: UrlInspectionParams): Promise<UrlInspectionResult> {
     const validatedParams = urlInspectionParamsSchema.parse(params);
-    const response = await this.request<{ inspectionResult: UrlInspectionResult }>(
-      '/urlInspection/index:inspect',
-      'POST',
-      validatedParams
-    );
+    const response = await this.request<{
+      inspectionResult: UrlInspectionResult;
+    }>('/urlInspection/index:inspect', 'POST', validatedParams);
     return response.inspectionResult;
   }
 }
 
-export function createGoogleSearchConsoleSDK(options: GoogleSearchConsoleSDKOptions): GoogleSearchConsoleSDK {
+export function createGoogleSearchConsoleSDK(
+  options: GoogleSearchConsoleSDKOptions,
+): GoogleSearchConsoleSDK {
   return new GoogleSearchConsoleSDK(options);
 }

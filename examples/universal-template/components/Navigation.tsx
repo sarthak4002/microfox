@@ -23,7 +23,7 @@ export default function Navigation() {
           margin-bottom: 2rem;
           border-bottom: 1px solid #e9ecef;
         }
-        
+
         ul {
           display: flex;
           list-style: none;
@@ -32,11 +32,11 @@ export default function Navigation() {
           max-width: 1200px;
           margin: 0 auto;
         }
-        
+
         li {
           margin-right: 1.5rem;
         }
-        
+
         li a {
           text-decoration: none;
           color: #495057;
@@ -44,11 +44,11 @@ export default function Navigation() {
           padding: 0.5rem 0;
           position: relative;
         }
-        
+
         li.active a {
           color: #0070f3;
         }
-        
+
         li.active a:after {
           content: '';
           position: absolute;
@@ -58,11 +58,11 @@ export default function Navigation() {
           height: 2px;
           background-color: #0070f3;
         }
-        
+
         li a:hover {
           color: #0070f3;
         }
       `}</style>
     </nav>
   );
-} 
+}

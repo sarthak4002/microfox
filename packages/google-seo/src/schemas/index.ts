@@ -2,7 +2,12 @@ import { z } from 'zod';
 
 export const sitesResourceSchema = z.object({
   siteUrl: z.string().url(),
-  permissionLevel: z.enum(['siteFullUser', 'siteOwner', 'siteRestrictedUser', 'siteUnverifiedUser']),
+  permissionLevel: z.enum([
+    'siteFullUser',
+    'siteOwner',
+    'siteRestrictedUser',
+    'siteUnverifiedUser',
+  ]),
 });
 
 export const sitemapResourceSchema = z.object({
@@ -10,7 +15,14 @@ export const sitemapResourceSchema = z.object({
   lastSubmitted: z.string(),
   isPending: z.boolean(),
   isSitemapsIndex: z.boolean(),
-  type: z.enum(['atomFeed', 'notSitemap', 'patternSitemap', 'rssFeed', 'sitemap', 'urlList']),
+  type: z.enum([
+    'atomFeed',
+    'notSitemap',
+    'patternSitemap',
+    'rssFeed',
+    'sitemap',
+    'urlList',
+  ]),
   lastDownloaded: z.string(),
   warnings: z.number(),
   errors: z.number(),
@@ -19,7 +31,7 @@ export const sitemapResourceSchema = z.object({
       type: z.string(),
       submitted: z.number(),
       indexed: z.number(),
-    })
+    }),
   ),
 });
 
@@ -34,9 +46,19 @@ export const searchAnalyticsRowSchema = z.object({
 export const indexStatusInspectionResultSchema = z.object({
   sitemap: z.array(z.string()),
   referringUrls: z.array(z.string()),
-  verdict: z.enum(['VERDICT_UNSPECIFIED', 'PASS', 'PARTIAL', 'FAIL', 'NEUTRAL']),
+  verdict: z.enum([
+    'VERDICT_UNSPECIFIED',
+    'PASS',
+    'PARTIAL',
+    'FAIL',
+    'NEUTRAL',
+  ]),
   coverageState: z.string(),
-  robotsTxtState: z.enum(['ROBOTS_TXT_STATE_UNSPECIFIED', 'ALLOWED', 'DISALLOWED']),
+  robotsTxtState: z.enum([
+    'ROBOTS_TXT_STATE_UNSPECIFIED',
+    'ALLOWED',
+    'DISALLOWED',
+  ]),
   indexingState: z.enum([
     'INDEXING_STATE_UNSPECIFIED',
     'INDEXING_ALLOWED',
@@ -82,8 +104,12 @@ export const googleSearchConsoleSDKOptionsSchema = z.object({
 export const searchAnalyticsQueryParamsSchema = z.object({
   startDate: z.string(),
   endDate: z.string(),
-  dimensions: z.array(z.enum(['query', 'page', 'country', 'device', 'search-appearance'])).optional(),
-  type: z.enum(['web', 'news', 'image', 'video', 'discover', 'googleNews']).optional(),
+  dimensions: z
+    .array(z.enum(['query', 'page', 'country', 'device', 'search-appearance']))
+    .optional(),
+  type: z
+    .enum(['web', 'news', 'image', 'video', 'discover', 'googleNews'])
+    .optional(),
   dimensionFilterGroups: z
     .array(
       z.object({
@@ -101,13 +127,15 @@ export const searchAnalyticsQueryParamsSchema = z.object({
                 'excludingRegex',
               ]),
               expression: z.string(),
-            })
+            }),
           )
           .optional(),
-      })
+      }),
     )
     .optional(),
-  aggregationType: z.enum(['auto', 'byPage', 'byProperty', 'byNewsShowcasePanel']).optional(),
+  aggregationType: z
+    .enum(['auto', 'byPage', 'byProperty', 'byNewsShowcasePanel'])
+    .optional(),
   rowLimit: z.number().int().positive().max(25000).optional(),
   startRow: z.number().int().nonnegative().optional(),
   dataState: z.enum(['all', 'final', 'hourly_all']).optional(),

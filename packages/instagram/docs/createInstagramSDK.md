@@ -5,11 +5,11 @@ Creates an instance of the InstagramSDK.
 ## Parameters
 
 - `config` (object): An object containing the following properties:
-    - `accessToken` (string): The user's access token.
-    - `refreshToken` (string): The user's refresh token.
-    - `clientId` (string): Your Instagram app's Client ID.
-    - `clientSecret` (string): Your Instagram app's Client Secret.
-    - `redirectUri` (string): The OAuth redirect URI for your app.
+  - `accessToken` (string): The user's access token.
+  - `refreshToken` (string): The user's refresh token.
+  - `clientId` (string): Your Instagram app's Client ID.
+  - `clientSecret` (string): Your Instagram app's Client Secret.
+  - `redirectUri` (string): The OAuth redirect URI for your app.
 
 ## Returns
 

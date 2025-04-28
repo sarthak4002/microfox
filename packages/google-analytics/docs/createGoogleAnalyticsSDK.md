@@ -3,6 +3,7 @@ Initializes a new instance of the GoogleAnalyticsSDK.
 Authentication is handled using OAuth 2.0. You will need to provide your client ID, client secret, redirect URI, and access token. The SDK uses the `@microfox/google-oauth` package for OAuth 2.0 functionalities.
 
 Usage Example:
+
 ```typescript
 import { createGoogleAnalyticsSDK } from 'google-analytics-sdk';
 
@@ -17,6 +18,7 @@ const sdk = createGoogleAnalyticsSDK({
 ```
 
 Parameters:
+
 - `config`: An object containing the following properties:
   - `clientId`: The client ID for your Google Cloud project.
   - `clientSecret`: The client secret for your Google Cloud project.
@@ -24,6 +26,7 @@ Parameters:
   - `accessToken`: The access token for authenticating with the Google Analytics Data API.
 
 Note:
+
 - You can obtain the necessary credentials by setting up a Google Cloud project, enabling the Google Analytics Data API, and creating OAuth 2.0 credentials.
 - Store your client ID, client secret, redirect URI, and access token securely. Never commit these to version control.
 - Use environment variables to manage your credentials.

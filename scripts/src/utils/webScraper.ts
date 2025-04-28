@@ -9,7 +9,7 @@ const USER_AGENTS = [
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15',
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59'
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59',
 ];
 
 // Helper function to get random user agent
@@ -25,7 +25,9 @@ async function randomDelay(min = 2000, max = 5000): Promise<void> {
 
 // Schema for link analysis
 const LinkAnalysisSchema = z.object({
-  usefulLinks: z.array(z.string()).describe('Array of useful links for package creation'),
+  usefulLinks: z
+    .array(z.string())
+    .describe('Array of useful links for package creation'),
   reason: z.string().describe('Reason why these links were selected'),
 });
 
@@ -40,7 +42,9 @@ function validateUrl(url: string): string {
     const urlObj = new URL(url);
     return urlObj.toString();
   } catch (error) {
-    throw new Error(`Invalid URL: ${url}. Please provide a valid URL including the protocol (http:// or https://)`);
+    throw new Error(
+      `Invalid URL: ${url}. Please provide a valid URL including the protocol (http:// or https://)`,
+    );
   }
 }
 
@@ -49,7 +53,7 @@ function validateUrl(url: string): string {
  */
 export async function extractLinks(url: string): Promise<string[]> {
   const validatedUrl = validateUrl(url);
-  
+
   console.log(`🌐 Launching browser to extract links from ${validatedUrl}...`);
   const browser = await puppeteer.launch({
     headless: true,
@@ -62,20 +66,21 @@ export async function extractLinks(url: string): Promise<string[]> {
       '--window-size=1920x1080',
     ],
   });
-  
+
   try {
     const page = await browser.newPage();
-    
+
     // Set random user agent
     await page.setUserAgent(getRandomUserAgent());
-    
+
     // Set additional headers
     await page.setExtraHTTPHeaders({
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      Accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
       'Accept-Language': 'en-US,en;q=0.5',
       'Accept-Encoding': 'gzip, deflate, br',
-      'DNT': '1',
-      'Connection': 'keep-alive',
+      DNT: '1',
+      Connection: 'keep-alive',
       'Upgrade-Insecure-Requests': '1',
       'Sec-Fetch-Dest': 'document',
       'Sec-Fetch-Mode': 'navigate',
@@ -86,12 +91,12 @@ export async function extractLinks(url: string): Promise<string[]> {
 
     // Add random delay before navigation
     await randomDelay();
-    
-    await page.goto(validatedUrl, { 
-      waitUntil: 'networkidle2', 
-      timeout: 30000 
+
+    await page.goto(validatedUrl, {
+      waitUntil: 'networkidle2',
+      timeout: 30000,
     });
-    
+
     // Extract all links from the page
     const links = await page.evaluate(() => {
       const anchors = Array.from(document.querySelectorAll('a[href]'));
@@ -122,7 +127,7 @@ export async function extractLinks(url: string): Promise<string[]> {
     });
 
     links.push(validatedUrl);
-    
+
     // Remove duplicates and normalize URLs
     const uniqueLinks = [...new Set(links)].map(link => {
       try {
@@ -132,8 +137,10 @@ export async function extractLinks(url: string): Promise<string[]> {
         return link;
       }
     });
-    
-    console.log(`✅ Extracted ${uniqueLinks.length} unique links from ${validatedUrl}`);
+
+    console.log(
+      `✅ Extracted ${uniqueLinks.length} unique links from ${validatedUrl}`,
+    );
     return uniqueLinks;
   } finally {
     await browser.close();
@@ -143,9 +150,14 @@ export async function extractLinks(url: string): Promise<string[]> {
 /**
  * Analyze links to determine which ones are useful for package creation
  */
-export async function analyzeLinks(links: string[], query: string): Promise<string[]> {
-  console.log(`🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`);
-  
+export async function analyzeLinks(
+  links: string[],
+  query: string,
+): Promise<string[]> {
+  console.log(
+    `🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`,
+  );
+
   const { object: analysis } = await generateObject({
     model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
@@ -177,17 +189,21 @@ export async function analyzeLinks(links: string[], query: string): Promise<stri
     `,
     temperature: 0.5,
   });
-  
-  console.log(`✅ Selected ${analysis.usefulLinks.length} useful links: ${analysis.reason}`);
+
+  console.log(
+    `✅ Selected ${analysis.usefulLinks.length} useful links: ${analysis.reason}`,
+  );
   return analysis.usefulLinks;
 }
 
 /**
  * Extract content from a list of URLs
  */
-export async function extractContentFromUrls(urls: string[]): Promise<{ url: string; content: string }[]> {
+export async function extractContentFromUrls(
+  urls: string[],
+): Promise<{ url: string; content: string }[]> {
   console.log(`🌐 Extracting content from ${urls.length} URLs...`);
-  
+
   const browser = await puppeteer.launch({
     headless: true,
     args: [
@@ -199,27 +215,28 @@ export async function extractContentFromUrls(urls: string[]): Promise<{ url: str
       '--window-size=1920x1080',
     ],
   });
-  
+
   let results: { url: string; content: string }[] = [];
-  
+
   try {
     for (const url of urls) {
       try {
         const validatedUrl = validateUrl(url);
-        
+
         console.log(`📄 Extracting content from ${validatedUrl}...`);
         const page = await browser.newPage();
-        
+
         // Set random user agent
         await page.setUserAgent(getRandomUserAgent());
-        
+
         // Set additional headers
         await page.setExtraHTTPHeaders({
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          Accept:
+            'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
           'Accept-Language': 'en-US,en;q=0.5',
           'Accept-Encoding': 'gzip, deflate, br',
-          'DNT': '1',
-          'Connection': 'keep-alive',
+          DNT: '1',
+          Connection: 'keep-alive',
           'Upgrade-Insecure-Requests': '1',
           'Sec-Fetch-Dest': 'document',
           'Sec-Fetch-Mode': 'navigate',
@@ -230,24 +247,26 @@ export async function extractContentFromUrls(urls: string[]): Promise<{ url: str
 
         // Add random delay before navigation
         await randomDelay();
-        
-        await page.goto(validatedUrl, { 
-          waitUntil: 'networkidle2', 
-          timeout: 30000 
+
+        await page.goto(validatedUrl, {
+          waitUntil: 'networkidle2',
+          timeout: 30000,
         });
-        
+
         // Extract text content from the page
         const content = await page.evaluate(() => {
           // Remove script and style elements
           const scripts = document.querySelectorAll('script, style');
           scripts.forEach(script => script.remove());
-          
+
           // Get text content from body
           return document.body.innerText;
         });
-        
+
         results.push({ url: validatedUrl, content });
-        console.log(`✅ Extracted ${content.length} characters from ${validatedUrl}`);
+        console.log(
+          `✅ Extracted ${content.length} characters from ${validatedUrl}`,
+        );
       } catch (error) {
         console.error(`❌ Error extracting content from ${url}:`, error);
         // Add longer delay after an error
@@ -257,7 +276,7 @@ export async function extractContentFromUrls(urls: string[]): Promise<{ url: str
   } finally {
     await browser.close();
   }
-  
+
   console.log(`✅ Extracted content from ${results.length} URLs`);
   return results;
-} 
+}

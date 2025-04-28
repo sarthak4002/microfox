@@ -17,11 +17,11 @@ constructor(config: {
 **Parameters:**
 
 - `config`: An object with the following properties:
-    - `clientId`: Your LinkedIn app's Client ID.
-    - `clientSecret`: Your LinkedIn app's Client Secret.
-    - `redirectUri`: The redirect URI registered in your LinkedIn app.
-    - `accessToken`: The OAuth 2.0 access token for authenticated requests.
-    - `refreshToken`: (Optional) The refresh token to obtain new access tokens.
+  - `clientId`: Your LinkedIn app's Client ID.
+  - `clientSecret`: Your LinkedIn app's Client Secret.
+  - `redirectUri`: The redirect URI registered in your LinkedIn app.
+  - `accessToken`: The OAuth 2.0 access token for authenticated requests.
+  - `refreshToken`: (Optional) The refresh token to obtain new access tokens.
 
 **Usage Example:**
 
@@ -33,6 +33,6 @@ const sdk = createLinkedInSDK({
   clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
   redirectUri: process.env.LINKEDIN_REDIRECT_URI!,
   accessToken: process.env.LINKEDIN_ACCESS_TOKEN!,
-  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN
+  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN,
 });
 ```

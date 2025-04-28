@@ -40,19 +40,21 @@ export class RedditSDK {
   private async request<T>(
     endpoint: string,
     method: 'GET' | 'POST' | 'PATCH' | 'DELETE' = 'GET',
-    body?: unknown
+    body?: unknown,
   ): Promise<T> {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method,
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: body ? JSON.stringify(body) : undefined,
     });
 
     if (!response.ok) {
-      throw new Error(`Reddit API error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Reddit API error: ${response.status} ${response.statusText}`,
+      );
     }
 
     return response.json();
@@ -76,11 +78,15 @@ export class RedditSDK {
     return this.request('/api/v1/me/prefs');
   }
 
-  async updateUserPreferences(prefs: Record<string, unknown>): Promise<Record<string, unknown>> {
+  async updateUserPreferences(
+    prefs: Record<string, unknown>,
+  ): Promise<Record<string, unknown>> {
     return this.request('/api/v1/me/prefs', 'PATCH', prefs);
   }
 
-  async getUserKarma(): Promise<Record<string, { link_karma: number; comment_karma: number }>> {
+  async getUserKarma(): Promise<
+    Record<string, { link_karma: number; comment_karma: number }>
+  > {
     return this.request('/api/v1/me/karma');
   }
 
@@ -95,15 +101,25 @@ export class RedditSDK {
 
   async getUserContent(
     username: string,
-    section: 'overview' | 'submitted' | 'comments' | 'upvoted' | 'downvoted' | 'hidden' | 'saved' | 'gilded',
-    params: ListingParams = {}
+    section:
+      | 'overview'
+      | 'submitted'
+      | 'comments'
+      | 'upvoted'
+      | 'downvoted'
+      | 'hidden'
+      | 'saved'
+      | 'gilded',
+    params: ListingParams = {},
   ): Promise<(Post | Comment)[]> {
     const validatedParams = listingParamsSchema.parse(params);
-    const queryParams = new URLSearchParams(validatedParams as Record<string, string>);
-    const data = await this.request<{ data: { children: { data: Post | Comment }[] } }>(
-      `/user/${username}/${section}?${queryParams}`
+    const queryParams = new URLSearchParams(
+      validatedParams as Record<string, string>,
     );
-    return data.data.children.map((child) => child.data);
+    const data = await this.request<{
+      data: { children: { data: Post | Comment }[] };
+    }>(`/user/${username}/${section}?${queryParams}`);
+    return data.data.children.map(child => child.data);
   }
 
   async getSubredditInfo(subreddit: string): Promise<Subreddit> {
@@ -114,52 +130,70 @@ export class RedditSDK {
   async searchSubreddit(
     subreddit: string,
     query: string,
-    params: ListingParams & { sort?: 'relevance' | 'hot' | 'top' | 'new' | 'comments'; t?: 'hour' | 'day' | 'week' | 'month' | 'year' | 'all' } = {}
+    params: ListingParams & {
+      sort?: 'relevance' | 'hot' | 'top' | 'new' | 'comments';
+      t?: 'hour' | 'day' | 'week' | 'month' | 'year' | 'all';
+    } = {},
   ): Promise<SearchResult[]> {
-    const validatedParams = listingParamsSchema.extend({
-      sort: z.enum(['relevance', 'hot', 'top', 'new', 'comments']).optional(),
-      t: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional(),
-    }).parse(params);
+    const validatedParams = listingParamsSchema
+      .extend({
+        sort: z.enum(['relevance', 'hot', 'top', 'new', 'comments']).optional(),
+        t: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional(),
+      })
+      .parse(params);
     const queryParams = new URLSearchParams(
       Object.fromEntries(
-        Object.entries({ ...validatedParams, q: query }).map(([key, value]) => [key, String(value)])
-      )
+        Object.entries({ ...validatedParams, q: query }).map(([key, value]) => [
+          key,
+          String(value),
+        ]),
+      ),
     );
-    const data = await this.request<{ data: { children: { data: SearchResult }[] } }>(
-      `/r/${subreddit}/search?${queryParams}`
-    );
-    return data.data.children.map((child) => child.data);
+    const data = await this.request<{
+      data: { children: { data: SearchResult }[] };
+    }>(`/r/${subreddit}/search?${queryParams}`);
+    return data.data.children.map(child => child.data);
   }
 
   async search(
     query: string,
-    params: ListingParams & { sort?: 'relevance' | 'hot' | 'top' | 'new' | 'comments'; t?: 'hour' | 'day' | 'week' | 'month' | 'year' | 'all' } = {}
+    params: ListingParams & {
+      sort?: 'relevance' | 'hot' | 'top' | 'new' | 'comments';
+      t?: 'hour' | 'day' | 'week' | 'month' | 'year' | 'all';
+    } = {},
   ): Promise<SearchResult[]> {
-    const validatedParams = listingParamsSchema.extend({
-      sort: z.enum(['relevance', 'hot', 'top', 'new', 'comments']).optional(),
-      t: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional(),
-    }).parse(params);
+    const validatedParams = listingParamsSchema
+      .extend({
+        sort: z.enum(['relevance', 'hot', 'top', 'new', 'comments']).optional(),
+        t: z.enum(['hour', 'day', 'week', 'month', 'year', 'all']).optional(),
+      })
+      .parse(params);
     const queryParams = new URLSearchParams(
       Object.fromEntries(
-        Object.entries({ ...validatedParams, q: query }).map(([key, value]) => [key, String(value)])
-      )
+        Object.entries({ ...validatedParams, q: query }).map(([key, value]) => [
+          key,
+          String(value),
+        ]),
+      ),
     );
-    const data = await this.request<{ data: { children: { data: SearchResult }[] } }>(
-      `/search?${queryParams}`
-    );
-    return data.data.children.map((child) => child.data);
+    const data = await this.request<{
+      data: { children: { data: SearchResult }[] };
+    }>(`/search?${queryParams}`);
+    return data.data.children.map(child => child.data);
   }
 
   async submitComment(parentId: string, text: string): Promise<Comment> {
-    const data = await this.request<{ json: { data: { things: [{ data: Comment }] } } }>(
-      '/api/comment',
-      'POST',
-      { parent: parentId, text }
-    );
+    const data = await this.request<{
+      json: { data: { things: [{ data: Comment }] } };
+    }>('/api/comment', 'POST', { parent: parentId, text });
     return data.json.data.things[0].data;
   }
 
-  async submitPost(subreddit: string, title: string, content: { text?: string; url?: string }): Promise<Post> {
+  async submitPost(
+    subreddit: string,
+    title: string,
+    content: { text?: string; url?: string },
+  ): Promise<Post> {
     const kind = content.text ? 'self' : 'link';
     const data = await this.request<{ json: { data: { name: string } } }>(
       '/api/submit',
@@ -169,7 +203,7 @@ export class RedditSDK {
         kind,
         title,
         ...(kind === 'self' ? { text: content.text } : { url: content.url }),
-      }
+      },
     );
     return this.getPost(data.json.data.name);
   }
@@ -184,11 +218,9 @@ export class RedditSDK {
   }
 
   async editUserText(id: string, text: string): Promise<Post | Comment> {
-    const data = await this.request<{ json: { data: { things: [{ data: Post | Comment }] } } }>(
-      '/api/editusertext',
-      'POST',
-      { thing_id: id, text }
-    );
+    const data = await this.request<{
+      json: { data: { things: [{ data: Post | Comment }] } };
+    }>('/api/editusertext', 'POST', { thing_id: id, text });
     const editedContent = data.json.data.things[0].data;
     return editedContent;
   }
@@ -214,10 +246,10 @@ export class RedditSDK {
   }
 
   async getInfo(ids: string[]): Promise<(Post | Comment | Subreddit)[]> {
-    const data = await this.request<{ data: { children: { kind: string; data: Post | Comment | Subreddit }[] } }>(
-      `/api/info?id=${ids.join(',')}`
-    );
-    return data.data.children.map((child) => {
+    const data = await this.request<{
+      data: { children: { kind: string; data: Post | Comment | Subreddit }[] };
+    }>(`/api/info?id=${ids.join(',')}`);
+    return data.data.children.map(child => {
       if (child.kind === 't1' || child.kind === 't3' || child.kind === 't5') {
         return child.data;
       } else {
@@ -226,18 +258,24 @@ export class RedditSDK {
     });
   }
 
-  async getMoreComments(linkId: string, children: string[]): Promise<Comment[]> {
-    const data = await this.request<{ json: { data: { things: { data: Comment }[] } } }>(
-      '/api/morechildren',
-      'GET',
-      { link_id: linkId, children: children.join(',') }
-    );
-    return data.json.data.things.map((thing) => thing.data);
+  async getMoreComments(
+    linkId: string,
+    children: string[],
+  ): Promise<Comment[]> {
+    const data = await this.request<{
+      json: { data: { things: { data: Comment }[] } };
+    }>('/api/morechildren', 'GET', {
+      link_id: linkId,
+      children: children.join(','),
+    });
+    return data.json.data.things.map(thing => thing.data);
   }
 
   async getPost(id: string): Promise<Post> {
-    const data = await this.request<{ data: { children: [{ data: Post }] } }>(`/api/info?id=${id}`);
-    return data.data.children[0].data
+    const data = await this.request<{ data: { children: [{ data: Post }] } }>(
+      `/api/info?id=${id}`,
+    );
+    return data.data.children[0].data;
   }
 
   // Add more methods for other endpoints as needed...

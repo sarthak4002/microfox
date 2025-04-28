@@ -44,8 +44,6 @@ To use this SDK, you need to set up a Google Cloud project and enable the Gmail 
 
 5. Set up the OAuth consent screen, including the necessary scopes
 
-
-
 Environment variables:
 
 - GOOGLE_ACCESS_TOKEN: The access token after the oauth authentication
@@ -58,20 +56,12 @@ Environment variables:
 
 - GOOGLE_REDIRECT_URI: The redirect URI for your application
 
-
-
 To use the SDK, you can create an instance like this:
 
-
-
 ```typescript
-
 import { createGmailSDK } from 'gmail';
 
-
-
 const gmailSdk = createGmailSDK({
-  
   accessToken: process.env.GOOGLE_ACCESS_TOKEN!,
 
   refreshToken: process.env.GOOGLE_REFRESH_TOKEN!,
@@ -81,20 +71,12 @@ const gmailSdk = createGmailSDK({
   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
 
   redirectUri: process.env.GOOGLE_REDIRECT_URI!,
-
 });
-
 ```
-
-
 
 Make sure to handle the OAuth flow to obtain and refresh access tokens. The SDK will automatically refresh the token when needed.
 
-
-
 Rate limits: Be aware that the Gmail API has usage quotas and limits. For most users, this is 1,000,000,000 queries per day. You can check your specific quota in the Google Cloud Console.
-
-
 
 For more detailed information on using the Gmail API, refer to the official documentation: https://developers.google.com/gmail/api/guides
 
@@ -193,7 +175,10 @@ console.log(newLabel);
 
 ```typescript
 async function createNewLabel() {
-  const newLabel = await gmailSdk.createLabel({ name: 'My Label', type: 'user' });
+  const newLabel = await gmailSdk.createLabel({
+    name: 'My Label',
+    type: 'user',
+  });
   console.log(newLabel);
 }
 
@@ -246,7 +231,9 @@ Updates an existing label.
 **Usage Example:**
 
 ```typescript
-const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', { name: 'New Label Name' });
+const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', {
+  name: 'New Label Name',
+});
 console.log(updatedLabel);
 ```
 
@@ -254,7 +241,9 @@ console.log(updatedLabel);
 
 ```typescript
 async function updateLabelById() {
-  const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', { name: 'New Label Name' });
+  const updatedLabel = await gmailSdk.updateLabel('LABEL_ID', {
+    name: 'New Label Name',
+  });
   console.log(updatedLabel);
 }
 
@@ -413,7 +402,6 @@ async function listThreadsByQuery() {
 }
 
 listThreadsByQuery();
-
 ```
 
 ## [getThread](./docs/getThread.md)
@@ -445,4 +433,3 @@ async function getThreadById() {
 
 getThreadById();
 ```
-

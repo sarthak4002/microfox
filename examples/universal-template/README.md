@@ -13,11 +13,13 @@ This template provides a universal testing interface for any package that requir
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Create a `.env.local` file with your OAuth credentials:
+
 ```env
 NEXT_PUBLIC_[PROVIDER]_CLIENT_ID=your_client_id
 NEXT_PUBLIC_[PROVIDER]_CLIENT_SECRET=your_client_secret
@@ -28,6 +30,7 @@ NEXT_PUBLIC_[PROVIDER]_SCOPE=your_required_scopes
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -44,10 +47,12 @@ npm run dev
 ## Customizing for Your Package
 
 1. **OAuth Configuration**:
+
    - Update the OAuth endpoints in `.env.local`
    - Modify the `oauthConfig` object in `pages/index.js` if needed
 
 2. **Function Testing**:
+
    - Modify `pages/api/test-function.js` to implement your package's specific function calls
    - Update the parameter structure in the frontend if needed
 
@@ -64,7 +69,7 @@ import { yourPackage } from 'your-package';
 
 export default async function handler(req, res) {
   const { accessToken, params } = req.body;
-  
+
   try {
     const result = await yourPackage.someFunction(accessToken, params);
     return res.status(200).json(result);
@@ -79,4 +84,4 @@ export default async function handler(req, res) {
 - Keep sensitive information in environment variables
 - Handle errors appropriately
 - Test thoroughly with your specific package
-- Update the UI/UX as needed for your use case 
+- Update the UI/UX as needed for your use case

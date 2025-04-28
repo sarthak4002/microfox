@@ -27,5 +27,4 @@ async function listThreadsByQuery() {
 }
 
 listThreadsByQuery();
-
 ```

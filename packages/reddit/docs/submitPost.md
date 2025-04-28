@@ -3,7 +3,9 @@
 Submits a new post.
 
 ```typescript
-const post = await reddit.submitPost('typescript', 'New SDK Released!', { text: 'Check out the new TypeScript SDK!' });
+const post = await reddit.submitPost('typescript', 'New SDK Released!', {
+  text: 'Check out the new TypeScript SDK!',
+});
 console.log(post);
 ```
 

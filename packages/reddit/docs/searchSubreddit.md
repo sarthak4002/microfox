@@ -3,7 +3,9 @@
 Searches for posts and comments within a specific subreddit.
 
 ```typescript
-const results = await reddit.searchSubreddit('typescript', 'sdk', { sort: 'relevance' });
+const results = await reddit.searchSubreddit('typescript', 'sdk', {
+  sort: 'relevance',
+});
 console.log(results);
 ```
 

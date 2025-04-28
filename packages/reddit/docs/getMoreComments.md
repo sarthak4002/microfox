@@ -3,7 +3,10 @@
 Retrieves additional comments for a post.
 
 ```typescript
-const comments = await reddit.getMoreComments('t3_12345', ['t1_67890', 't1_98765']);
+const comments = await reddit.getMoreComments('t3_12345', [
+  't1_67890',
+  't1_98765',
+]);
 console.log(comments);
 ```
 

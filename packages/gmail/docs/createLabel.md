@@ -23,7 +23,10 @@ console.log(newLabel);
 
 ```typescript
 async function createNewLabel() {
-  const newLabel = await gmailSdk.createLabel({ name: 'My Label', type: 'user' });
+  const newLabel = await gmailSdk.createLabel({
+    name: 'My Label',
+    type: 'user',
+  });
   console.log(newLabel);
 }
 

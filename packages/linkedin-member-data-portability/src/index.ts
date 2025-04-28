@@ -1,1 +1,1 @@
-export * from "./linkedin-member-data-portabilitySdk";
+export * from './linkedin-member-data-portabilitySdk';
