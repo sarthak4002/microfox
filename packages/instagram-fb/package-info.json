@@ -15,7 +15,7 @@
     "pages_read_engagement"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/instagram-fb",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-fb.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg",
   "readme_map": {
     "title": "@microfox/@microfox/instagram-fb README",
     "description": "The full README for the Instagram SDK",
@@ -65,6 +65,7 @@
       }
     ],
     "functionalities": [
+      "createInstagramSDK",
       "validateAccessToken",
       "refreshAccessToken",
       "createMediaContainer",
