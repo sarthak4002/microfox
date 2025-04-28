@@ -15,6 +15,12 @@ A lightweight, type-safe SDK for interacting with the WhatsApp Business API. Thi
 - 📱 Phone number management
 - 📝 Template management
 - 📸 Media handling
+- ••• Typing indicator support
+- 🔄 Message reactions and contextual replies
+- 📍 Location sharing
+- 👥 Contact sharing
+- 🔄 Interactive messages (buttons, lists, flows)
+- 📱 QR code generation
 
 ## Installation
 
@@ -30,7 +36,7 @@ import { WhatsAppBusinessSDK } from '@microfox/whatsapp-business';
 // Initialize the SDK
 const whatsapp = new WhatsAppBusinessSDK({
   phoneNumberId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER_ID,
-  businessAccountId: process.env.WHATSAPP_BUSINESS_PHONE_NUMBER,
+  businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID,
   accessToken: process.env.WHATSAPP_BUSINESS_ACCESS_TOKEN,
 });
 // Optional parameters
@@ -160,192 +166,229 @@ interface MessageOptions {
 ### Text Messages
 
 ```typescript
+// Basic text message
 await whatsapp.sendTextMessage(
   'RECIPIENT_PHONE_NUMBER',
   'Hello from WhatsApp Business API!',
-  {
-    previewUrl: true, // Enable link preview
-    ...MessageOptions,
-  },
+  'individual', // Optional: recipient type (individual or group)
+);
+
+// Text message with preview URL
+await whatsapp.sendTextMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  'Check out our website: https://example.com',
+  'individual',
 );
 ```
 
 ### Media Messages
 
-When sending media messages, you have two options for providing the media content:
-
-1. **Using Media ID (Recommended)**:
-
-   - First upload the media using `uploadMedia()` to get a MEDIA_ID
-   - Then use this ID in your message
-   - This is the recommended approach as it's more reliable and secure
-   - Required for all media types when sending through the WhatsApp Business API
-
-2. **Using Direct Link (Alternative)**:
-   - Provide a direct HTTPS URL to the media
-   - The URL must be publicly accessible
-   - Only supported for certain media types and in specific cases
-   - Not recommended for production use
-
-Common media options:
-
-```typescript
-interface MediaOptions {
-  mime_type?: string;
-  sha256?: string;
-  caption?: string;
-}
-```
-
 #### Image
 
 ```typescript
-// Option 1: Using Media ID (Recommended)
+// Using Media ID (Recommended)
 const mediaId = await whatsapp.uploadMedia(file, 'image');
-await whatsapp.sendImageMessage('RECIPIENT_PHONE_NUMBER', {
-  id: mediaId,
-  ...MediaOptions,
-});
+await whatsapp.sendImageMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    id: mediaId,
+    caption: 'This is an image caption',
+  },
+  'individual',
+);
 
-// Option 2: Using Direct Link (Alternative)
-await whatsapp.sendImageMessage('RECIPIENT_PHONE_NUMBER', {
-  link: 'https://example.com/image.jpg',
-  ...MediaOptions,
-});
+// Using Direct Link (Alternative)
+await whatsapp.sendImageMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    link: 'https://example.com/image.jpg',
+    caption: 'This is an image caption',
+  },
+  'individual',
+);
 ```
 
 #### Video
 
 ```typescript
-// Option 1: Using Media ID (Recommended)
+// Using Media ID (Recommended)
 const mediaId = await whatsapp.uploadMedia(file, 'video');
-await whatsapp.sendVideoMessage('RECIPIENT_PHONE_NUMBER', {
-  id: mediaId,
-  ...MediaOptions,
-});
+await whatsapp.sendVideoMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    id: mediaId,
+    caption: 'This is a video caption',
+  },
+  'individual',
+);
 
-// Option 2: Using Direct Link (Alternative)
-await whatsapp.sendVideoMessage('RECIPIENT_PHONE_NUMBER', {
-  link: 'https://example.com/video.mp4',
-  ...MediaOptions,
-});
+// Using Direct Link (Alternative)
+await whatsapp.sendVideoMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    link: 'https://example.com/video.mp4',
+    caption: 'This is a video caption',
+  },
+  'individual',
+);
 ```
 
 #### Document
 
 ```typescript
-// Option 1: Using Media ID (Recommended)
+// Using Media ID (Recommended)
 const mediaId = await whatsapp.uploadMedia(file, 'document');
-await whatsapp.sendDocumentMessage('RECIPIENT_PHONE_NUMBER', {
-  id: mediaId,
-  filename: 'document.pdf',
-  ...MediaOptions,
-});
+await whatsapp.sendDocumentMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    id: mediaId,
+    filename: 'document.pdf',
+    caption: 'This is a document caption',
+  },
+  'individual',
+);
 
-// Option 2: Using Direct Link (Alternative)
-await whatsapp.sendDocumentMessage('RECIPIENT_PHONE_NUMBER', {
-  link: 'https://example.com/document.pdf',
-  filename: 'document.pdf',
-  ...MediaOptions,
-});
+// Using Direct Link (Alternative)
+await whatsapp.sendDocumentMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    link: 'https://example.com/document.pdf',
+    filename: 'document.pdf',
+    caption: 'This is a document caption',
+  },
+  'individual',
+);
 ```
 
 #### Audio
 
 ```typescript
-// Option 1: Using Media ID (Recommended)
+// Using Media ID (Recommended)
 const mediaId = await whatsapp.uploadMedia(file, 'audio');
-await whatsapp.sendAudioMessage('RECIPIENT_PHONE_NUMBER', {
-  id: mediaId,
-  ...MediaOptions,
-});
+await whatsapp.sendAudioMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    id: mediaId,
+  },
+  'individual',
+);
 
-// Option 2: Using Direct Link (Alternative)
-await whatsapp.sendAudioMessage('RECIPIENT_PHONE_NUMBER', {
-  link: 'https://example.com/audio.mp3',
-  ...MediaOptions,
-});
+// Using Direct Link (Alternative)
+await whatsapp.sendAudioMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    link: 'https://example.com/audio.mp3',
+  },
+  'individual',
+);
 ```
 
 #### Sticker
 
 ```typescript
-// Option 1: Using Media ID (Recommended)
+// Using Media ID (Recommended)
 const mediaId = await whatsapp.uploadMedia(file, 'sticker');
-await whatsapp.sendStickerMessage('RECIPIENT_PHONE_NUMBER', {
-  id: mediaId,
-  ...MediaOptions,
-});
+await whatsapp.sendStickerMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    id: mediaId,
+  },
+  'individual',
+);
 
-// Option 2: Using Direct Link (Alternative)
-await whatsapp.sendStickerMessage('RECIPIENT_PHONE_NUMBER', {
-  link: 'https://example.com/sticker.webp',
-  ...MediaOptions,
-});
+// Using Direct Link (Alternative)
+await whatsapp.sendStickerMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    link: 'https://example.com/sticker.webp',
+  },
+  'individual',
+);
 ```
 
 ### Location Messages
 
 ```typescript
-await whatsapp.sendLocationMessage('RECIPIENT_PHONE_NUMBER', {
-  latitude: 37.7749,
-  longitude: -122.4194,
-  name: 'San Francisco',
-  address: 'Optional address',
-});
+// Basic location
+await whatsapp.sendLocationMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    longitude: 123.456,
+    latitude: 78.901,
+  },
+  'individual',
+);
+
+// Location with name and address
+await whatsapp.sendLocationMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    longitude: 123.456,
+    latitude: 78.901,
+    name: 'Business Location',
+    address: '123 Business Street, City, Country',
+  },
+  'individual',
+);
 ```
 
 ### Contact Messages
 
 ```typescript
-await whatsapp.sendContactMessage('RECIPIENT_PHONE_NUMBER', [
-  {
-    name: {
-      formatted_name: 'John Doe',
-      first_name: 'John',
-      last_name: 'Doe',
-      middle_name: 'M',
-      suffix: 'Jr',
-      prefix: 'Mr',
+// Single contact
+await whatsapp.sendContactMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  [
+    {
+      name: {
+        formatted_name: 'John Doe',
+        first_name: 'John',
+        last_name: 'Doe',
+      },
+      phones: [
+        {
+          phone: '+1234567890',
+          type: 'WORK',
+        },
+      ],
     },
-    phones: [
-      {
-        phone: '+1234567890',
-        type: 'CELL',
-        wa_id: '1234567890',
+  ],
+  'individual',
+);
+
+// Multiple contacts
+await whatsapp.sendContactMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  [
+    {
+      name: {
+        formatted_name: 'John Doe',
+        first_name: 'John',
+        last_name: 'Doe',
       },
-    ],
-    emails: [
-      {
-        email: 'john@example.com',
-        type: 'WORK',
-      },
-    ],
-    urls: [
-      {
-        url: 'https://example.com',
-        type: 'WORK',
-      },
-    ],
-    addresses: [
-      {
-        street: '123 Main St',
-        city: 'San Francisco',
-        state: 'CA',
-        zip: '94105',
-        country: 'United States',
-        country_code: 'US',
-        type: 'WORK',
-      },
-    ],
-    org: {
-      company: 'Example Corp',
-      department: 'Engineering',
-      title: 'Software Engineer',
+      phones: [
+        {
+          phone: '+1234567890',
+          type: 'WORK',
+        },
+      ],
     },
-    birthday: '1990-01-01',
-  },
-]);
+    {
+      name: {
+        formatted_name: 'Jane Smith',
+        first_name: 'Jane',
+        last_name: 'Smith',
+      },
+      phones: [
+        {
+          phone: '+0987654321',
+          type: 'CELL',
+        },
+      ],
+    },
+  ],
+  'individual',
+);
 ```
 
 ### Interactive Messages
@@ -353,269 +396,385 @@ await whatsapp.sendContactMessage('RECIPIENT_PHONE_NUMBER', [
 #### Buttons
 
 ```typescript
-await whatsapp.sendInteractiveMessage('RECIPIENT_PHONE_NUMBER', {
-  type: 'button',
-  body: {
-    text: 'Choose an option:',
-  },
-  action: {
-    buttons: [
-      {
-        type: 'reply',
-        reply: {
-          id: '1',
-          title: 'Option 1',
+// Simple buttons
+await whatsapp.sendInteractiveMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    type: 'button',
+    body: {
+      text: 'Choose an option',
+    },
+    action: {
+      buttons: [
+        {
+          type: 'reply',
+          reply: {
+            id: 'option1',
+            title: 'Option 1',
+          },
         },
-      },
-      {
-        type: 'reply',
-        reply: {
-          id: '2',
-          title: 'Option 2',
+        {
+          type: 'reply',
+          reply: {
+            id: 'option2',
+            title: 'Option 2',
+          },
         },
-      },
-    ],
+      ],
+    },
   },
-});
+  'individual',
+);
+
+// Buttons with emojis
+await whatsapp.sendInteractiveMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    type: 'button',
+    body: {
+      text: 'How can we help you?',
+    },
+    action: {
+      buttons: [
+        {
+          type: 'reply',
+          reply: {
+            id: 'support',
+            title: '💬 Support',
+          },
+        },
+        {
+          type: 'reply',
+          reply: {
+            id: 'sales',
+            title: '💰 Sales',
+          },
+        },
+      ],
+    },
+  },
+  'individual',
+);
 ```
 
 #### Lists
 
 ```typescript
-await whatsapp.sendInteractiveMessage('RECIPIENT_PHONE_NUMBER', {
-  type: 'list',
-  body: {
-    text: 'Choose an option:',
+// Simple list
+await whatsapp.sendInteractiveMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    type: 'list',
+    body: {
+      text: 'Choose a category',
+    },
+    action: {
+      button: 'Select',
+      sections: [
+        {
+          title: 'Products',
+          rows: [
+            {
+              id: 'product1',
+              title: 'Product 1',
+              description: 'Description of product 1',
+            },
+            {
+              id: 'product2',
+              title: 'Product 2',
+              description: 'Description of product 2',
+            },
+          ],
+        },
+      ],
+    },
   },
-  action: {
-    button: 'Select',
-    sections: [
-      {
-        title: 'Section 1',
-        rows: [
-          {
-            id: '1',
-            title: 'Option 1',
-            description: 'Description 1',
-          },
-          {
-            id: '2',
-            title: 'Option 2',
-            description: 'Description 2',
-          },
-        ],
-      },
-    ],
+  'individual',
+);
+
+// Multiple sections list
+await whatsapp.sendInteractiveMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    type: 'list',
+    body: {
+      text: 'Select a service',
+    },
+    action: {
+      button: 'Choose',
+      sections: [
+        {
+          title: 'Support',
+          rows: [
+            {
+              id: 'support_chat',
+              title: 'Chat Support',
+              description: '24/7 chat support',
+            },
+            {
+              id: 'support_email',
+              title: 'Email Support',
+              description: 'Email support team',
+            },
+          ],
+        },
+        {
+          title: 'Sales',
+          rows: [
+            {
+              id: 'sales_contact',
+              title: 'Contact Sales',
+              description: 'Talk to our sales team',
+            },
+            {
+              id: 'sales_demo',
+              title: 'Request Demo',
+              description: 'Schedule a product demo',
+            },
+          ],
+        },
+      ],
+    },
   },
-});
+  'individual',
+);
 ```
 
 ### Template Messages
 
-Template messages are pre-approved message formats that can be sent to users outside the 24-hour window. They are useful for sending notifications, updates, and marketing messages.
-
-#### Send Template Message
-
 ```typescript
+// Simple template
 await whatsapp.sendTemplateMessage(
   'RECIPIENT_PHONE_NUMBER',
-  'template_name',
-  'en',
+  'hello_world',
+  'en_US',
+  [
+    {
+      type: 'body',
+      parameters: [
+        {
+          type: 'text',
+          text: 'John',
+        },
+      ],
+    },
+  ],
+  'individual',
+);
+
+// Template with multiple components
+await whatsapp.sendTemplateMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  'order_confirmation',
+  'en_US',
   [
     {
       type: 'header',
-      format: 'TEXT',
-      text: 'Hello {{1}}!',
-      example: {
-        header_handle: ['John'],
-      },
+      parameters: [
+        {
+          type: 'text',
+          text: 'Order #12345',
+        },
+      ],
     },
     {
       type: 'body',
-      text: 'Welcome to our service!',
       parameters: [
         {
           type: 'text',
           text: 'John',
         },
         {
-          type: 'currency',
-          currency: {
-            fallback_value: '$10.00',
-            code: 'USD',
-            amount_1000: 10000,
-          },
+          type: 'text',
+          text: '2 items',
         },
         {
-          type: 'date_time',
-          date_time: {
-            fallback_value: '2024-01-01',
-          },
+          type: 'text',
+          text: '$99.99',
         },
       ],
-      example: {
-        body_text: [['John', '$10.00', '2024-01-01']],
-      },
     },
     {
       type: 'footer',
-      text: 'Thank you for choosing us!',
-    },
-    {
-      type: 'button',
-      text: 'Click here',
-      parameters: [
-        {
-          type: 'text',
-          text: 'https://example.com',
-        },
-      ],
+      text: 'Thank you for your order!',
     },
   ],
+  'individual',
 );
 ```
 
-#### Template Management
-
-##### Get Templates
+### Flow Messages
 
 ```typescript
-const templates = await whatsapp.getTemplates({
-  limit: 10,
-  offset: 0,
-});
-```
-
-##### Create Template
-
-```typescript
-await whatsapp.createTemplate({
-  name: 'template_name',
-  category: 'MARKETING',
-  language: 'en',
-  components: [
-    {
-      type: 'BODY',
-      text: 'Hello {{1}}!',
-      example: {
-        body_text: [['John']],
-      },
+// Simple flow
+await whatsapp.sendFlowMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    token: 'flow_token',
+    parameters: {
+      product_id: '123',
+      user_id: '456',
     },
-  ],
-});
+  },
+  'individual',
+);
+
+// Flow with header and body
+await whatsapp.sendFlowMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  {
+    token: 'flow_token',
+    header: {
+      type: 'text',
+      text: 'Welcome to our service!',
+    },
+    body: {
+      text: 'Please complete the following steps:',
+    },
+    parameters: {
+      flow_id: '789',
+      step: '1',
+    },
+  },
+  'individual',
+);
 ```
 
-##### Delete Template
+### Message Reactions
 
 ```typescript
-await whatsapp.deleteTemplate('template_name');
+// Simple reaction
+await whatsapp.sendReaction('RECIPIENT_PHONE_NUMBER', 'message_id', '👍');
+
+// Multiple reactions
+await whatsapp.sendReaction('RECIPIENT_PHONE_NUMBER', 'message_id', '❤️');
 ```
 
-## Message Management
-
-### Mark Message as Read
+### Message Replies
 
 ```typescript
+// Text reply
+await whatsapp.sendReply(
+  'RECIPIENT_PHONE_NUMBER',
+  'text',
+  'Thank you for your message!',
+  'message_id',
+  'individual',
+);
+
+// Media reply
+await whatsapp.sendReply(
+  'RECIPIENT_PHONE_NUMBER',
+  'image',
+  {
+    id: 'MEDIA_ID',
+    caption: 'Here is the image you requested',
+  },
+  'message_id',
+  'individual',
+);
+```
+
+### Message Management
+
+```typescript
+// Mark single message as read
 await whatsapp.markMessageAsRead('MESSAGE_ID');
+
+// Mark multiple messages as read
+await whatsapp.markMessagesAsRead(['MESSAGE_ID_1', 'MESSAGE_ID_2']);
 ```
 
-## Media Management
-
-### Upload Media
+### Media Management
 
 ```typescript
+// Upload media
 const mediaId = await whatsapp.uploadMedia(file, 'image');
-```
 
-### Download Media
-
-```typescript
+// Download media
 const mediaData = await whatsapp.downloadMedia('MEDIA_ID');
-```
 
-### Get Media URL
-
-```typescript
+// Get media URL
 const mediaUrl = await whatsapp.getMediaUrl('MEDIA_ID');
 ```
 
-## Phone Number Management
-
-### Register Phone Number
+### Phone Number Management
 
 ```typescript
-await whatsapp.registerPhone('PHONE_NUMBER', 'PIN_CODE');
-```
+// Register phone
+await whatsapp.registerPhone('PHONE_NUMBER', 'PIN');
 
-### Deregister Phone Number
-
-```typescript
+// Deregister phone
 await whatsapp.deregisterPhone('PHONE_NUMBER');
-```
 
-### Get Phone Numbers
-
-```typescript
+// Get phone numbers
 const phoneNumbers = await whatsapp.getPhoneNumbers();
-```
 
-### Get QR Code
-
-```typescript
+// Get QR code
 const qrCode = await whatsapp.getQRCode();
 ```
 
-## Business Profile
-
-### Get Business Profile
+### Business Profile
 
 ```typescript
+// Get business profile
 const profile = await whatsapp.getBusinessProfile();
-```
 
-### Update Business Profile
-
-```typescript
-await whatsapp.updateBusinessProfile({
-  about: 'New about text',
-  address: 'New address',
-  description: 'New description',
-  email: 'new@email.com',
-  website: ['https://example.com'],
+// Update business profile
+const updatedProfile = await whatsapp.updateBusinessProfile({
+  about: 'We provide excellent customer service',
+  address: '123 Business Street, City, Country',
+  description: 'Leading provider of business solutions',
+  email: 'contact@business.com',
+  website: 'https://business.com',
 });
 ```
 
-## Analytics
-
-### Get Analytics
+### Analytics
 
 ```typescript
+// Get daily analytics
 const analytics = await whatsapp.getAnalytics({
   start: '2024-01-01',
   end: '2024-01-31',
-  granularity: 'DAY', // 'DAY' | 'HOUR' | 'MONTH'
+  granularity: 'DAY',
+});
+
+// Get hourly analytics
+const hourlyAnalytics = await whatsapp.getAnalytics({
+  start: '2024-01-01T00:00:00Z',
+  end: '2024-01-01T23:59:59Z',
+  granularity: 'HOUR',
 });
 ```
 
-## Commerce Settings
-
-### Get Commerce Settings
+### Commerce Settings
 
 ```typescript
+// Get commerce settings
 const settings = await whatsapp.getCommerceSettings();
-```
 
-### Update Commerce Settings
-
-```typescript
-await whatsapp.updateCommerceSettings({
-  // Commerce settings data
+// Update commerce settings
+const updatedSettings = await whatsapp.updateCommerceSettings({
+  catalog_id: 'CATALOG_ID',
+  is_catalog_visible: true,
+  cart_enabled: true,
+  cart_expiration_time: 3600,
 });
 ```
 
 ## Error Handling
 
-The SDK throws `WhatsAppBusinessSDKError` for API errors:
+The SDK throws a `WhatsAppBusinessSDKError` for API errors with the following properties:
+
+```typescript
+class WhatsAppBusinessSDKError extends Error {
+  code: number;
+  originalError: any;
+}
+```
+
+Example error handling:
 
 ```typescript
 try {
