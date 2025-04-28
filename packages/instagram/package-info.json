@@ -13,7 +13,7 @@
     "instagram_manage_insights"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/instagram",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/instagram.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg",
   "readme_map": {
     "title": "@microfox/@microfox/instagram README",
     "description": "The full README for the Instagram SDK",
@@ -129,6 +129,10 @@
       }
     ],
     "functionalities": [
+      "InstagramSDK",
+      "getUserProfile",
+      "getUserMedia",
+      "getMediaComments",
       "createMediaContainer",
       "getMediaContainerStatus",
       "publishMedia",

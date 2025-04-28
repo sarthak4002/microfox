@@ -14,7 +14,7 @@
     "https://www.googleapis.com/auth/analytics"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/google-analytics",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/google-analytics.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-analytics.svg",
   "readme_map": {
     "title": "@microfox/@microfox/google-analytics README",
     "description": "The full README for the Google Analytics SDK",

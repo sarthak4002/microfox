@@ -31,7 +31,7 @@
     "wikiread"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/reddit",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/reddit.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg",
   "readme_map": {
     "title": "@microfox/@microfox/reddit README",
     "description": "The full README for the Reddit TypeScript SDK",

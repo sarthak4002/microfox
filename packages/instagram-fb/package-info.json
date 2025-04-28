@@ -22,43 +22,43 @@
     "path": "/README.md",
     "all_readmes": [
       {
-        "path": "/docs/createInstagramSDK.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/createInstagramSDK.md",
         "type": "constructor",
         "extension": "md",
         "functionality": "createInstagramSDK"
       },
       {
-        "path": "/docs/validateAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/validateAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "validateAccessToken"
       },
       {
-        "path": "/docs/refreshAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/refreshAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "refreshAccessToken"
       },
       {
-        "path": "/docs/createMediaContainer.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/createMediaContainer.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "createMediaContainer"
       },
       {
-        "path": "/docs/publishMedia.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/publishMedia.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "publishMedia"
       },
       {
-        "path": "/docs/getComments.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/getComments.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getComments"
       },
       {
-        "path": "/docs/getOEmbed.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/getOEmbed.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getOEmbed"
