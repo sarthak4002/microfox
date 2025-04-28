@@ -12,13 +12,15 @@
     "path": "/README.md",
     "title": "createSlackSDK Microfox",
     "functionalities": ["sendMessage", "updateMessage", "uploadFile"],
-    "description": "The full README for the Slack Web Tiny SDK"
+    "description": "The full README for the Slack Web Tiny SDK",
+    "all_readmes": []
   },
   "constructors": [
     {
       "name": "createSlackSDK",
       "description": "Create a new Slack SDK through which you can operate bots on Slack",
-      "auth": "apiKey",
+      "auth": "apikey",
+      "apiType": "bot_token",
       "requiredKeys": [
         {
           "key": "SLACK_BOT_TOKEN",
@@ -29,47 +31,23 @@
       "internalKeys": [],
       "botConfig": [
         {
-          "label": "Author Name",
-          "type": "text",
-          "field": "authorName",
-          "placeholder": "Enter author name",
-          "description": "Name that will appear as the message sender"
+          "key": "SLACK_AUTHOR_NAME",
+          "displayName": "Bot Name",
+          "description": "Name that will appear as the message sender",
+          "ui": {
+            "type": "text",
+            "label": "Bot Name",
+            "placeholder": "Enter bot name"
+          }
         },
         {
-          "label": "Message Format",
-          "type": "select",
-          "field": "messageFormat",
-          "options": [
-            {
-              "label": "Plain Text",
-              "value": "plain"
-            },
-            {
-              "label": "Markdown",
-              "value": "markdown"
-            }
-          ],
-          "description": "Format of the messages sent to Slack"
-        },
-        {
-          "label": "Default Channel",
-          "type": "text",
-          "field": "defaultChannel",
-          "placeholder": "Enter default channel name",
-          "description": "Default channel where messages will be sent"
-        },
-        {
-          "label": "Use Thread Replies",
-          "type": "boolean",
-          "field": "useThreads",
-          "description": "Enable thread-based conversations"
-        },
-        {
-          "label": "Custom Message Template",
-          "type": "textarea",
-          "field": "messageTemplate",
-          "placeholder": "Enter custom message template",
-          "description": "Template for formatting messages (supports variables)"
+          "key": "SLACK_ICON_URL",
+          "displayName": "Bot Icon",
+          "description": "Icon that will appear as the bot's avatar",
+          "ui": {
+            "type": "image",
+            "label": "Bot Icon"
+          }
         }
       ]
     }

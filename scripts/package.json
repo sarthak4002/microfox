@@ -15,11 +15,10 @@
     "update:package": "npm run update:package-list && npm run update:package-info"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.0",
-    "@ai-sdk/google": "^1.2.7",
+    "@ai-sdk/anthropic": "^1.2.10",
+    "@ai-sdk/google": "^1.2.12",
     "@microfox/serpapi": "1.0.2",
     "@microfox/tavily": "1.0.2",
-    "@octokit/rest": "^21.1.1",
     "ai": "^4.2.0",
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
