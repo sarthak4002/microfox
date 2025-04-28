@@ -32,42 +32,54 @@
   "documentation": "https://www.npmjs.com/package/@microfox/reddit-oauth",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg",
   "readme_map": {
+    "path": "/README.md",
     "title": "@microfox/@microfox/reddit-oauth README",
     "description": "The full README for the Microfox Reddit OAuth",
-    "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "createRedditOAuth",
-        "description": "The documentation for the constructor createRedditOAuth that initializes this SDK.",
-        "path": "/docs/createRedditOAuth.md"
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/createRedditOAuth.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createRedditOAuth"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/getAuthorizationUrl.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAuthorizationUrl"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/getAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/revokeToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "revokeToken"
       }
     ],
     "functionalities": [
-      {
-        "name": "getAuthorizationUrl",
-        "description": "The documentation for the getAuthorizationUrl function.",
-        "path": "/docs/getAuthorizationUrl.md"
-      },
-      {
-        "name": "getAccessToken",
-        "description": "The documentation for the getAccessToken function.",
-        "path": "/docs/getAccessToken.md"
-      },
-      {
-        "name": "refreshAccessToken",
-        "description": "The documentation for the refreshAccessToken function.",
-        "path": "/docs/refreshAccessToken.md"
-      },
-      {
-        "name": "validateAccessToken",
-        "description": "The documentation for the validateAccessToken function.",
-        "path": "/docs/validateAccessToken.md"
-      },
-      {
-        "name": "revokeToken",
-        "description": "The documentation for the revokeToken function.",
-        "path": "/docs/revokeToken.md"
-      }
+      "createRedditOAuth",
+      "getAuthorizationUrl",
+      "getAccessToken",
+      "refreshAccessToken",
+      "validateAccessToken",
+      "revokeToken"
     ]
   },
   "constructors": [

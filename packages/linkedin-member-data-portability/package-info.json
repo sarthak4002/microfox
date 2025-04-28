@@ -17,44 +17,58 @@
     "title": "@microfox/@microfox/linkedin-member-data-portability README",
     "description": "The full README for the LinkedIn Member Data Portability SDK",
     "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "LinkedInDataPortabilitySDK",
-        "description": "The documentation for the constructor LinkedInDataPortabilitySDK that initializes this SDK.",
-        "path": "/docs/LinkedInDataPortabilitySDK.md"
+        "path": "/docs/LinkedInDataPortabilitySDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "LinkedInDataPortabilitySDK"
+      },
+      {
+        "path": "/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken"
+      },
+      {
+        "path": "/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
+      },
+      {
+        "path": "/docs/getMemberChangeLogs.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMemberChangeLogs"
+      },
+      {
+        "path": "/docs/getMemberSnapshotData.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMemberSnapshotData"
+      },
+      {
+        "path": "/docs/getMemberAuthorizations.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMemberAuthorizations"
+      },
+      {
+        "path": "/docs/triggerMemberDataProcessing.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "triggerMemberDataProcessing"
       }
     ],
     "functionalities": [
-      {
-        "name": "validateAccessToken",
-        "description": "The documentation for the validateAccessToken function.",
-        "path": "/docs/validateAccessToken.md"
-      },
-      {
-        "name": "refreshAccessToken",
-        "description": "The documentation for the refreshAccessToken function.",
-        "path": "/docs/refreshAccessToken.md"
-      },
-      {
-        "name": "getMemberChangeLogs",
-        "description": "The documentation for the getMemberChangeLogs function.",
-        "path": "/docs/getMemberChangeLogs.md"
-      },
-      {
-        "name": "getMemberSnapshotData",
-        "description": "The documentation for the getMemberSnapshotData function.",
-        "path": "/docs/getMemberSnapshotData.md"
-      },
-      {
-        "name": "getMemberAuthorizations",
-        "description": "The documentation for the getMemberAuthorizations function.",
-        "path": "/docs/getMemberAuthorizations.md"
-      },
-      {
-        "name": "triggerMemberDataProcessing",
-        "description": "The documentation for the triggerMemberDataProcessing function.",
-        "path": "/docs/triggerMemberDataProcessing.md"
-      }
+      "LinkedInDataPortabilitySDK",
+      "validateAccessToken",
+      "refreshAccessToken",
+      "getMemberChangeLogs",
+      "getMemberSnapshotData",
+      "getMemberAuthorizations",
+      "triggerMemberDataProcessing"
     ]
   },
   "constructors": [

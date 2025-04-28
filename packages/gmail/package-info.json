@@ -22,63 +22,72 @@
     "title": "@microfox/@microfox/gmail README",
     "description": "The full README for the Gmail SDK",
     "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "createGmailSDK",
-        "description": "The documentation for the constructor createGmailSDK that initializes this SDK.",
-        "path": "/docs/createGmailSDK.md"
-      }
-    ],
-    "functionalities": [
-      {
-        "name": "listLabels",
-        "description": "The documentation for the listLabels function.",
-        "path": "/docs/listLabels.md"
+        "path": "/docs/createGmailSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createGmailSDK"
       },
       {
-        "name": "createLabel",
-        "description": "The documentation for the createLabel function.",
-        "path": "/docs/createLabel.md"
+        "path": "/docs/listLabels.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listLabels"
       },
       {
-        "name": "getLabel",
-        "description": "The documentation for the getLabel function.",
-        "path": "/docs/getLabel.md"
+        "path": "/docs/createLabel.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createLabel"
       },
       {
-        "name": "updateLabel",
-        "description": "The documentation for the updateLabel function.",
-        "path": "/docs/updateLabel.md"
+        "path": "/docs/getLabel.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getLabel"
       },
       {
-        "name": "deleteLabel",
-        "description": "The documentation for the deleteLabel function.",
-        "path": "/docs/deleteLabel.md"
+        "path": "/docs/updateLabel.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "updateLabel"
       },
       {
-        "name": "listMessages",
-        "description": "The documentation for the listMessages function.",
-        "path": "/docs/listMessages.md"
+        "path": "/docs/deleteLabel.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteLabel"
       },
       {
-        "name": "getMessage",
-        "description": "The documentation for the getMessage function.",
-        "path": "/docs/getMessage.md"
+        "path": "/docs/listMessages.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listMessages"
       },
       {
-        "name": "sendMessage",
-        "description": "The documentation for the sendMessage function.",
-        "path": "/docs/sendMessage.md"
+        "path": "/docs/getMessage.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMessage"
       },
       {
-        "name": "listThreads",
-        "description": "The documentation for the listThreads function.",
-        "path": "/docs/listThreads.md"
+        "path": "/docs/sendMessage.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "sendMessage"
       },
       {
-        "name": "getThread",
-        "description": "The documentation for the getThread function.",
-        "path": "/docs/getThread.md"
+        "path": "/docs/listThreads.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listThreads"
+      },
+      {
+        "path": "/docs/getThread.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getThread"
       }
     ]
   },

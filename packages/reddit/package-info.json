@@ -36,139 +36,191 @@
     "title": "@microfox/@microfox/reddit README",
     "description": "The full README for the Reddit TypeScript SDK",
     "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "createRedditSDK",
-        "description": "The documentation for the constructor createRedditSDK that initializes this SDK.",
-        "path": "/docs/createRedditSDK.md"
+        "path": "/docs/createRedditSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createRedditSDK"
+      },
+      {
+        "path": "/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken"
+      },
+      {
+        "path": "/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
+      },
+      {
+        "path": "/docs/getMe.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMe"
+      },
+      {
+        "path": "/docs/getUserPreferences.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getUserPreferences"
+      },
+      {
+        "path": "/docs/updateUserPreferences.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "updateUserPreferences"
+      },
+      {
+        "path": "/docs/getUserKarma.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getUserKarma"
+      },
+      {
+        "path": "/docs/getUserTrophies.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getUserTrophies"
+      },
+      {
+        "path": "/docs/getUser.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getUser"
+      },
+      {
+        "path": "/docs/getUserContent.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getUserContent"
+      },
+      {
+        "path": "/docs/getSubredditInfo.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getSubredditInfo"
+      },
+      {
+        "path": "/docs/searchSubreddit.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "searchSubreddit"
+      },
+      {
+        "path": "/docs/search.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "search"
+      },
+      {
+        "path": "/docs/submitComment.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "submitComment"
+      },
+      {
+        "path": "/docs/submitPost.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "submitPost"
+      },
+      {
+        "path": "/docs/vote.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "vote"
+      },
+      {
+        "path": "/docs/deletePost.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deletePost"
+      },
+      {
+        "path": "/docs/editUserText.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "editUserText"
+      },
+      {
+        "path": "/docs/hidePost.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "hidePost"
+      },
+      {
+        "path": "/docs/unhidePost.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "unhidePost"
+      },
+      {
+        "path": "/docs/saveItem.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "saveItem"
+      },
+      {
+        "path": "/docs/unsaveItem.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "unsaveItem"
+      },
+      {
+        "path": "/docs/reportItem.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "reportItem"
+      },
+      {
+        "path": "/docs/getInfo.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getInfo"
+      },
+      {
+        "path": "/docs/getMoreComments.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMoreComments"
+      },
+      {
+        "path": "/docs/getPost.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getPost"
       }
     ],
     "functionalities": [
-      {
-        "name": "validateAccessToken",
-        "description": "The documentation for the validateAccessToken function.",
-        "path": "/docs/validateAccessToken.md"
-      },
-      {
-        "name": "refreshAccessToken",
-        "description": "The documentation for the refreshAccessToken function.",
-        "path": "/docs/refreshAccessToken.md"
-      },
-      {
-        "name": "getMe",
-        "description": "The documentation for the getMe function.",
-        "path": "/docs/getMe.md"
-      },
-      {
-        "name": "getUserPreferences",
-        "description": "The documentation for the getUserPreferences function.",
-        "path": "/docs/getUserPreferences.md"
-      },
-      {
-        "name": "updateUserPreferences",
-        "description": "The documentation for the updateUserPreferences function.",
-        "path": "/docs/updateUserPreferences.md"
-      },
-      {
-        "name": "getUserKarma",
-        "description": "The documentation for the getUserKarma function.",
-        "path": "/docs/getUserKarma.md"
-      },
-      {
-        "name": "getUserTrophies",
-        "description": "The documentation for the getUserTrophies function.",
-        "path": "/docs/getUserTrophies.md"
-      },
-      {
-        "name": "getUser",
-        "description": "The documentation for the getUser function.",
-        "path": "/docs/getUser.md"
-      },
-      {
-        "name": "getUserContent",
-        "description": "The documentation for the getUserContent function.",
-        "path": "/docs/getUserContent.md"
-      },
-      {
-        "name": "getSubredditInfo",
-        "description": "The documentation for the getSubredditInfo function.",
-        "path": "/docs/getSubredditInfo.md"
-      },
-      {
-        "name": "searchSubreddit",
-        "description": "The documentation for the searchSubreddit function.",
-        "path": "/docs/searchSubreddit.md"
-      },
-      {
-        "name": "search",
-        "description": "The documentation for the search function.",
-        "path": "/docs/search.md"
-      },
-      {
-        "name": "submitComment",
-        "description": "The documentation for the submitComment function.",
-        "path": "/docs/submitComment.md"
-      },
-      {
-        "name": "submitPost",
-        "description": "The documentation for the submitPost function.",
-        "path": "/docs/submitPost.md"
-      },
-      {
-        "name": "vote",
-        "description": "The documentation for the vote function.",
-        "path": "/docs/vote.md"
-      },
-      {
-        "name": "deletePost",
-        "description": "The documentation for the deletePost function.",
-        "path": "/docs/deletePost.md"
-      },
-      {
-        "name": "editUserText",
-        "description": "The documentation for the editUserText function.",
-        "path": "/docs/editUserText.md"
-      },
-      {
-        "name": "hidePost",
-        "description": "The documentation for the hidePost function.",
-        "path": "/docs/hidePost.md"
-      },
-      {
-        "name": "unhidePost",
-        "description": "The documentation for the unhidePost function.",
-        "path": "/docs/unhidePost.md"
-      },
-      {
-        "name": "saveItem",
-        "description": "The documentation for the saveItem function.",
-        "path": "/docs/saveItem.md"
-      },
-      {
-        "name": "unsaveItem",
-        "description": "The documentation for the unsaveItem function.",
-        "path": "/docs/unsaveItem.md"
-      },
-      {
-        "name": "reportItem",
-        "description": "The documentation for the reportItem function.",
-        "path": "/docs/reportItem.md"
-      },
-      {
-        "name": "getInfo",
-        "description": "The documentation for the getInfo function.",
-        "path": "/docs/getInfo.md"
-      },
-      {
-        "name": "getMoreComments",
-        "description": "The documentation for the getMoreComments function.",
-        "path": "/docs/getMoreComments.md"
-      },
-      {
-        "name": "getPost",
-        "description": "The documentation for the getPost function.",
-        "path": "/docs/getPost.md"
-      }
+      "createRedditSDK",
+      "validateAccessToken",
+      "refreshAccessToken",
+      "getMe",
+      "getUserPreferences",
+      "updateUserPreferences",
+      "getUserKarma",
+      "getUserTrophies",
+      "getUser",
+      "getUserContent",
+      "getSubredditInfo",
+      "searchSubreddit",
+      "search",
+      "submitComment",
+      "submitPost",
+      "vote",
+      "deletePost",
+      "editUserText",
+      "hidePost",
+      "unhidePost",
+      "saveItem",
+      "unsaveItem",
+      "reportItem",
+      "getInfo",
+      "getMoreComments",
+      "getPost"
     ]
   },
   "constructors": [

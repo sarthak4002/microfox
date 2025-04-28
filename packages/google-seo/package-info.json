@@ -19,74 +19,99 @@
     "title": "@microfox/@microfox/google-seo README",
     "description": "The full README for the Google Search Console",
     "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "createGoogleSearchConsoleSDK",
-        "description": "The documentation for the constructor createGoogleSearchConsoleSDK that initializes this SDK.",
-        "path": "/docs/createGoogleSearchConsoleSDK.md"
+        "path": "/docs/createGoogleSearchConsoleSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createGoogleSearchConsoleSDK"
+      },
+      {
+        "path": "/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken"
+      },
+      {
+        "path": "/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
+      },
+      {
+        "path": "/docs/listSites.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listSites"
+      },
+      {
+        "path": "/docs/getSite.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getSite"
+      },
+      {
+        "path": "/docs/addSite.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "addSite"
+      },
+      {
+        "path": "/docs/deleteSite.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteSite"
+      },
+      {
+        "path": "/docs/listSitemaps.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listSitemaps"
+      },
+      {
+        "path": "/docs/getSitemap.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getSitemap"
+      },
+      {
+        "path": "/docs/submitSitemap.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "submitSitemap"
+      },
+      {
+        "path": "/docs/deleteSitemap.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteSitemap"
+      },
+      {
+        "path": "/docs/querySearchAnalytics.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "querySearchAnalytics"
+      },
+      {
+        "path": "/docs/inspectUrl.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "inspectUrl"
       }
     ],
     "functionalities": [
-      {
-        "name": "validateAccessToken",
-        "description": "The documentation for the validateAccessToken function.",
-        "path": "/docs/validateAccessToken.md"
-      },
-      {
-        "name": "refreshAccessToken",
-        "description": "The documentation for the refreshAccessToken function.",
-        "path": "/docs/refreshAccessToken.md"
-      },
-      {
-        "name": "listSites",
-        "description": "The documentation for the listSites function.",
-        "path": "/docs/listSites.md"
-      },
-      {
-        "name": "getSite",
-        "description": "The documentation for the getSite function.",
-        "path": "/docs/getSite.md"
-      },
-      {
-        "name": "addSite",
-        "description": "The documentation for the addSite function.",
-        "path": "/docs/addSite.md"
-      },
-      {
-        "name": "deleteSite",
-        "description": "The documentation for the deleteSite function.",
-        "path": "/docs/deleteSite.md"
-      },
-      {
-        "name": "listSitemaps",
-        "description": "The documentation for the listSitemaps function.",
-        "path": "/docs/listSitemaps.md"
-      },
-      {
-        "name": "getSitemap",
-        "description": "The documentation for the getSitemap function.",
-        "path": "/docs/getSitemap.md"
-      },
-      {
-        "name": "submitSitemap",
-        "description": "The documentation for the submitSitemap function.",
-        "path": "/docs/submitSitemap.md"
-      },
-      {
-        "name": "deleteSitemap",
-        "description": "The documentation for the deleteSitemap function.",
-        "path": "/docs/deleteSitemap.md"
-      },
-      {
-        "name": "querySearchAnalytics",
-        "description": "The documentation for the querySearchAnalytics function.",
-        "path": "/docs/querySearchAnalytics.md"
-      },
-      {
-        "name": "inspectUrl",
-        "description": "The documentation for the inspectUrl function.",
-        "path": "/docs/inspectUrl.md"
-      }
+      "validateAccessToken",
+      "refreshAccessToken",
+      "listSites",
+      "getSite",
+      "addSite",
+      "deleteSite",
+      "listSitemaps",
+      "getSitemap",
+      "submitSitemap",
+      "deleteSitemap",
+      "querySearchAnalytics",
+      "inspectUrl"
     ]
   },
   "constructors": [

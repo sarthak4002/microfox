@@ -19,124 +19,170 @@
     "title": "@microfox/@microfox/google-analytics README",
     "description": "The full README for the Google Analytics SDK",
     "path": "/README.md",
-    "constructors": [
+    "all_readmes": [
       {
-        "name": "createGoogleAnalyticsSDK",
-        "description": "The documentation for the constructor createGoogleAnalyticsSDK that initializes this SDK.",
-        "path": "/docs/createGoogleAnalyticsSDK.md"
+        "path": "/docs/createGoogleAnalyticsSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createGoogleAnalyticsSDK"
+      },
+      {
+        "path": "/docs/runReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runReport"
+      },
+      {
+        "path": "/docs/batchRunReports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchRunReports"
+      },
+      {
+        "path": "/docs/runPivotReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runPivotReport"
+      },
+      {
+        "path": "/docs/batchRunPivotReports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchRunPivotReports"
+      },
+      {
+        "path": "/docs/getMetadata.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMetadata"
+      },
+      {
+        "path": "/docs/checkCompatibility.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "checkCompatibility"
+      },
+      {
+        "path": "/docs/runRealtimeReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runRealtimeReport"
+      },
+      {
+        "path": "/docs/createAudienceExport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createAudienceExport"
+      },
+      {
+        "path": "/docs/getAudienceExport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAudienceExport"
+      },
+      {
+        "path": "/docs/listAudienceExports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listAudienceExports"
+      },
+      {
+        "path": "/docs/runFunnelReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runFunnelReport"
+      },
+      {
+        "path": "/docs/getPropertyQuotasSnapshot.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getPropertyQuotasSnapshot"
+      },
+      {
+        "path": "/docs/createAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createAudienceList"
+      },
+      {
+        "path": "/docs/getAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAudienceList"
+      },
+      {
+        "path": "/docs/listAudienceLists.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listAudienceLists"
+      },
+      {
+        "path": "/docs/createRecurringAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createRecurringAudienceList"
+      },
+      {
+        "path": "/docs/getRecurringAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getRecurringAudienceList"
+      },
+      {
+        "path": "/docs/listRecurringAudienceLists.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listRecurringAudienceLists"
+      },
+      {
+        "path": "/docs/createReportTask.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createReportTask"
+      },
+      {
+        "path": "/docs/getReportTask.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getReportTask"
+      },
+      {
+        "path": "/docs/listReportTasks.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listReportTasks"
+      },
+      {
+        "path": "/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
       }
     ],
     "functionalities": [
-      {
-        "name": "runReport",
-        "description": "The documentation for the runReport function.",
-        "path": "/docs/runReport.md"
-      },
-      {
-        "name": "batchRunReports",
-        "description": "The documentation for the batchRunReports function.",
-        "path": "/docs/batchRunReports.md"
-      },
-      {
-        "name": "runPivotReport",
-        "description": "The documentation for the runPivotReport function.",
-        "path": "/docs/runPivotReport.md"
-      },
-      {
-        "name": "batchRunPivotReports",
-        "description": "The documentation for the batchRunPivotReports function.",
-        "path": "/docs/batchRunPivotReports.md"
-      },
-      {
-        "name": "getMetadata",
-        "description": "The documentation for the getMetadata function.",
-        "path": "/docs/getMetadata.md"
-      },
-      {
-        "name": "checkCompatibility",
-        "description": "The documentation for the checkCompatibility function.",
-        "path": "/docs/checkCompatibility.md"
-      },
-      {
-        "name": "runRealtimeReport",
-        "description": "The documentation for the runRealtimeReport function.",
-        "path": "/docs/runRealtimeReport.md"
-      },
-      {
-        "name": "createAudienceExport",
-        "description": "The documentation for the createAudienceExport function.",
-        "path": "/docs/createAudienceExport.md"
-      },
-      {
-        "name": "getAudienceExport",
-        "description": "The documentation for the getAudienceExport function.",
-        "path": "/docs/getAudienceExport.md"
-      },
-      {
-        "name": "listAudienceExports",
-        "description": "The documentation for the listAudienceExports function.",
-        "path": "/docs/listAudienceExports.md"
-      },
-      {
-        "name": "runFunnelReport",
-        "description": "The documentation for the runFunnelReport function.",
-        "path": "/docs/runFunnelReport.md"
-      },
-      {
-        "name": "getPropertyQuotasSnapshot",
-        "description": "The documentation for the getPropertyQuotasSnapshot function.",
-        "path": "/docs/getPropertyQuotasSnapshot.md"
-      },
-      {
-        "name": "createAudienceList",
-        "description": "The documentation for the createAudienceList function.",
-        "path": "/docs/createAudienceList.md"
-      },
-      {
-        "name": "getAudienceList",
-        "description": "The documentation for the getAudienceList function.",
-        "path": "/docs/getAudienceList.md"
-      },
-      {
-        "name": "listAudienceLists",
-        "description": "The documentation for the listAudienceLists function.",
-        "path": "/docs/listAudienceLists.md"
-      },
-      {
-        "name": "createRecurringAudienceList",
-        "description": "The documentation for the createRecurringAudienceList function.",
-        "path": "/docs/createRecurringAudienceList.md"
-      },
-      {
-        "name": "getRecurringAudienceList",
-        "description": "The documentation for the getRecurringAudienceList function.",
-        "path": "/docs/getRecurringAudienceList.md"
-      },
-      {
-        "name": "listRecurringAudienceLists",
-        "description": "The documentation for the listRecurringAudienceLists function.",
-        "path": "/docs/listRecurringAudienceLists.md"
-      },
-      {
-        "name": "createReportTask",
-        "description": "The documentation for the createReportTask function.",
-        "path": "/docs/createReportTask.md"
-      },
-      {
-        "name": "getReportTask",
-        "description": "The documentation for the getReportTask function.",
-        "path": "/docs/getReportTask.md"
-      },
-      {
-        "name": "listReportTasks",
-        "description": "The documentation for the listReportTasks function.",
-        "path": "/docs/listReportTasks.md"
-      },
-      {
-        "name": "refreshAccessToken",
-        "description": "The documentation for the refreshAccessToken function.",
-        "path": "/docs/refreshAccessToken.md"
-      }
+      "createGoogleAnalyticsSDK",
+      "runReport",
+      "batchRunReports",
+      "runPivotReport",
+      "batchRunPivotReports",
+      "getMetadata",
+      "checkCompatibility",
+      "runRealtimeReport",
+      "createAudienceExport",
+      "getAudienceExport",
+      "listAudienceExports",
+      "runFunnelReport",
+      "getPropertyQuotasSnapshot",
+      "createAudienceList",
+      "getAudienceList",
+      "listAudienceLists",
+      "createRecurringAudienceList",
+      "getRecurringAudienceList",
+      "listRecurringAudienceLists",
+      "createReportTask",
+      "getReportTask",
+      "listReportTasks",
+      "refreshAccessToken"
     ]
   },
   "constructors": [
