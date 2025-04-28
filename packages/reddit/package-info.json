@@ -31,164 +31,164 @@
     "wikiread"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/reddit",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/reddit.svg",
   "readme_map": {
     "title": "@microfox/@microfox/reddit README",
     "description": "The full README for the Reddit TypeScript SDK",
-    "path": "/README.md",
+    "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/README.md",
     "all_readmes": [
       {
-        "path": "/docs/createRedditSDK.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/createRedditSDK.md",
         "type": "constructor",
         "extension": "md",
         "functionality": "createRedditSDK"
       },
       {
-        "path": "/docs/validateAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/validateAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "validateAccessToken"
       },
       {
-        "path": "/docs/refreshAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/refreshAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "refreshAccessToken"
       },
       {
-        "path": "/docs/getMe.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getMe.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMe"
       },
       {
-        "path": "/docs/getUserPreferences.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getUserPreferences.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getUserPreferences"
       },
       {
-        "path": "/docs/updateUserPreferences.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/updateUserPreferences.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "updateUserPreferences"
       },
       {
-        "path": "/docs/getUserKarma.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getUserKarma.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getUserKarma"
       },
       {
-        "path": "/docs/getUserTrophies.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getUserTrophies.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getUserTrophies"
       },
       {
-        "path": "/docs/getUser.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getUser.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getUser"
       },
       {
-        "path": "/docs/getUserContent.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getUserContent.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getUserContent"
       },
       {
-        "path": "/docs/getSubredditInfo.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getSubredditInfo.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getSubredditInfo"
       },
       {
-        "path": "/docs/searchSubreddit.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/searchSubreddit.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "searchSubreddit"
       },
       {
-        "path": "/docs/search.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/search.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "search"
       },
       {
-        "path": "/docs/submitComment.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/submitComment.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "submitComment"
       },
       {
-        "path": "/docs/submitPost.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/submitPost.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "submitPost"
       },
       {
-        "path": "/docs/vote.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/vote.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "vote"
       },
       {
-        "path": "/docs/deletePost.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/deletePost.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "deletePost"
       },
       {
-        "path": "/docs/editUserText.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/editUserText.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "editUserText"
       },
       {
-        "path": "/docs/hidePost.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/hidePost.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "hidePost"
       },
       {
-        "path": "/docs/unhidePost.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/unhidePost.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "unhidePost"
       },
       {
-        "path": "/docs/saveItem.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/saveItem.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "saveItem"
       },
       {
-        "path": "/docs/unsaveItem.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/unsaveItem.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "unsaveItem"
       },
       {
-        "path": "/docs/reportItem.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/reportItem.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "reportItem"
       },
       {
-        "path": "/docs/getInfo.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getInfo.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getInfo"
       },
       {
-        "path": "/docs/getMoreComments.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getMoreComments.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMoreComments"
       },
       {
-        "path": "/docs/getPost.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/reddit/docs/getPost.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getPost"

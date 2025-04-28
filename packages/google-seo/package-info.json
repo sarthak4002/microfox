@@ -14,86 +14,86 @@
     "https://www.googleapis.com/auth/webmasters.readonly"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/google-seo",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-seo.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/google-seo.svg",
   "readme_map": {
     "title": "@microfox/@microfox/google-seo README",
     "description": "The full README for the Google Search Console",
-    "path": "/README.md",
+    "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/README.md",
     "all_readmes": [
       {
-        "path": "/docs/createGoogleSearchConsoleSDK.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createGoogleSearchConsoleSDK.md",
         "type": "constructor",
         "extension": "md",
         "functionality": "createGoogleSearchConsoleSDK"
       },
       {
-        "path": "/docs/validateAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/validateAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "validateAccessToken"
       },
       {
-        "path": "/docs/refreshAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/refreshAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "refreshAccessToken"
       },
       {
-        "path": "/docs/listSites.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listSites.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listSites"
       },
       {
-        "path": "/docs/getSite.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getSite.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getSite"
       },
       {
-        "path": "/docs/addSite.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/addSite.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "addSite"
       },
       {
-        "path": "/docs/deleteSite.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/deleteSite.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "deleteSite"
       },
       {
-        "path": "/docs/listSitemaps.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listSitemaps.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listSitemaps"
       },
       {
-        "path": "/docs/getSitemap.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getSitemap.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getSitemap"
       },
       {
-        "path": "/docs/submitSitemap.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/submitSitemap.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "submitSitemap"
       },
       {
-        "path": "/docs/deleteSitemap.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/deleteSitemap.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "deleteSitemap"
       },
       {
-        "path": "/docs/querySearchAnalytics.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/querySearchAnalytics.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "querySearchAnalytics"
       },
       {
-        "path": "/docs/inspectUrl.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/inspectUrl.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "inspectUrl"

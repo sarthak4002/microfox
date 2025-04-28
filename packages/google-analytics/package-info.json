@@ -14,146 +14,146 @@
     "https://www.googleapis.com/auth/analytics"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/google-analytics",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-analytics.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/google-analytics.svg",
   "readme_map": {
     "title": "@microfox/@microfox/google-analytics README",
     "description": "The full README for the Google Analytics SDK",
-    "path": "/README.md",
+    "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/README.md",
     "all_readmes": [
       {
-        "path": "/docs/createGoogleAnalyticsSDK.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createGoogleAnalyticsSDK.md",
         "type": "constructor",
         "extension": "md",
         "functionality": "createGoogleAnalyticsSDK"
       },
       {
-        "path": "/docs/runReport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runReport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "runReport"
       },
       {
-        "path": "/docs/batchRunReports.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/batchRunReports.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "batchRunReports"
       },
       {
-        "path": "/docs/runPivotReport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runPivotReport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "runPivotReport"
       },
       {
-        "path": "/docs/batchRunPivotReports.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/batchRunPivotReports.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "batchRunPivotReports"
       },
       {
-        "path": "/docs/getMetadata.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getMetadata.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMetadata"
       },
       {
-        "path": "/docs/checkCompatibility.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/checkCompatibility.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "checkCompatibility"
       },
       {
-        "path": "/docs/runRealtimeReport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runRealtimeReport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "runRealtimeReport"
       },
       {
-        "path": "/docs/createAudienceExport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createAudienceExport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "createAudienceExport"
       },
       {
-        "path": "/docs/getAudienceExport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getAudienceExport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getAudienceExport"
       },
       {
-        "path": "/docs/listAudienceExports.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listAudienceExports.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listAudienceExports"
       },
       {
-        "path": "/docs/runFunnelReport.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runFunnelReport.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "runFunnelReport"
       },
       {
-        "path": "/docs/getPropertyQuotasSnapshot.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getPropertyQuotasSnapshot.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getPropertyQuotasSnapshot"
       },
       {
-        "path": "/docs/createAudienceList.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createAudienceList.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "createAudienceList"
       },
       {
-        "path": "/docs/getAudienceList.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getAudienceList.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getAudienceList"
       },
       {
-        "path": "/docs/listAudienceLists.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listAudienceLists.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listAudienceLists"
       },
       {
-        "path": "/docs/createRecurringAudienceList.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createRecurringAudienceList.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "createRecurringAudienceList"
       },
       {
-        "path": "/docs/getRecurringAudienceList.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getRecurringAudienceList.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getRecurringAudienceList"
       },
       {
-        "path": "/docs/listRecurringAudienceLists.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listRecurringAudienceLists.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listRecurringAudienceLists"
       },
       {
-        "path": "/docs/createReportTask.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createReportTask.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "createReportTask"
       },
       {
-        "path": "/docs/getReportTask.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getReportTask.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getReportTask"
       },
       {
-        "path": "/docs/listReportTasks.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listReportTasks.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "listReportTasks"
       },
       {
-        "path": "/docs/refreshAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/refreshAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "refreshAccessToken"

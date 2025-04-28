@@ -12,50 +12,50 @@
     "r_dma_portability_3rd_party"
   ],
   "documentation": "https://www.npmjs.com/package/@microfox/linkedin-member-data-portability",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/linkedin-member-data-portability.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/main/logos/linkedin-member-data-portability.svg",
   "readme_map": {
     "title": "@microfox/@microfox/linkedin-member-data-portability README",
     "description": "The full README for the LinkedIn Member Data Portability SDK",
-    "path": "/README.md",
+    "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/README.md",
     "all_readmes": [
       {
-        "path": "/docs/LinkedInDataPortabilitySDK.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/LinkedInDataPortabilitySDK.md",
         "type": "constructor",
         "extension": "md",
         "functionality": "LinkedInDataPortabilitySDK"
       },
       {
-        "path": "/docs/validateAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/validateAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "validateAccessToken"
       },
       {
-        "path": "/docs/refreshAccessToken.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/refreshAccessToken.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "refreshAccessToken"
       },
       {
-        "path": "/docs/getMemberChangeLogs.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/getMemberChangeLogs.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMemberChangeLogs"
       },
       {
-        "path": "/docs/getMemberSnapshotData.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/getMemberSnapshotData.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMemberSnapshotData"
       },
       {
-        "path": "/docs/getMemberAuthorizations.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/getMemberAuthorizations.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getMemberAuthorizations"
       },
       {
-        "path": "/docs/triggerMemberDataProcessing.md",
+        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/linkedin-member-data-portability/docs/triggerMemberDataProcessing.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "triggerMemberDataProcessing"
