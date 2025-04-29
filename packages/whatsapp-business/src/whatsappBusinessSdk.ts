@@ -19,6 +19,7 @@ import type {
   TemplateComponent,
   ConversationalAutomation,
   ConversationalComponentsResponse,
+  TypingIndicatorOptions,
 } from './types';
 
 class WhatsAppBusinessSDKError extends Error {
@@ -302,6 +303,24 @@ class WhatsAppBusinessSDK {
       messaging_product: 'whatsapp',
       status: 'read',
       message_id: messageId,
+    };
+
+    return this._makeRequest(`/${this.phoneNumberId}/messages`, 'POST', data);
+  }
+
+  /**
+   * Send a typing indicator to show that you are preparing a response
+   * @param {TypingIndicatorOptions} options - Options for the typing indicator
+   * @returns {Promise} - API response
+   */
+  async sendTypingIndicator(options: TypingIndicatorOptions): Promise<any> {
+    const data = {
+      messaging_product: 'whatsapp',
+      status: 'read',
+      message_id: options.messageId,
+      typing_indicator: {
+        type: options.type || 'text',
+      },
     };
 
     return this._makeRequest(`/${this.phoneNumberId}/messages`, 'POST', data);
