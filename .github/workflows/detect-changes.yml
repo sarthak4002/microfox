@@ -1,0 +1,71 @@
+name: Detect Changes and Create Changeset
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  detect-changes:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v39
+        with:
+          files: |
+            packages/**
+            !packages/@ext_**
+
+      - name: Create Changeset
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          # Get the number of changed lines
+          CHANGED_LINES=$(git diff --stat ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- packages/ | grep -v '@ext_' | awk '{sum += $4} END {print sum}')
+
+          # Determine version bump based on changed lines
+          if [ "$CHANGED_LINES" -gt 1000 ]; then
+            VERSION_TYPE="major"
+          elif [ "$CHANGED_LINES" -gt 100 ]; then
+            VERSION_TYPE="minor"
+          else
+            VERSION_TYPE="patch"
+          fi
+
+          # Get affected packages
+          AFFECTED_PACKAGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- packages/ | grep -v '@ext_' | sed -n 's/packages\/\([^/]*\).*/\1/p' | sort -u)
+
+          # Create changeset for each affected package
+          for PACKAGE in $AFFECTED_PACKAGES; do
+            echo "Creating changeset for $PACKAGE with $VERSION_TYPE bump"
+            npx changeset add $PACKAGE --$VERSION_TYPE
+          done
+
+      - name: Generate Changelog Summary
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: node .github/scripts/generate-changelog-summary.mjs
+
+      - name: Commit Changes
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .changeset/
+          git add CHANGELOG.md
+          git commit -m "chore: add changesets and update changelog [skip ci]"
+          git push
