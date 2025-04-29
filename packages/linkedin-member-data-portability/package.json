@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "@microfox/linkedin-oauth": "^1.0.4",
     "zod": "^3.24.2"
   },
   "devDependencies": {
