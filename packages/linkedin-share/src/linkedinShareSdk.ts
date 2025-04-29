@@ -143,7 +143,7 @@ export class LinkedinShareSdk {
    * Get the current user's LinkedIn ID
    */
   private async getUserId(): Promise<string> {
-    const response = await fetch(`${LinkedinShareSdk.API_BASE_URL}/me`, {
+    const response = await fetch(`${LinkedinShareSdk.API_BASE_URL}/userinfo`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
