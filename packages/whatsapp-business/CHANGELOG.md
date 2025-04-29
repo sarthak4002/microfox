@@ -1,5 +1,11 @@
 # @microfox/whatsapp-business
 
+## 1.2.1
+
+### Patch Changes
+
+- 0951b4c: Added typing indicators support
+
 ## 1.2.0
 
 ### Minor Changes

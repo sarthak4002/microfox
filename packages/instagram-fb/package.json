@@ -1,6 +1,6 @@
 {
   "name": "@microfox/instagram-fb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A TypeScript SDK for interacting with the Instagram API using OAuth 2.0.  This package simplifies authentication and data access.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
