@@ -158,10 +158,10 @@ export class LinkedinShareSdk {
       );
     }
 
-    if (typeof data.id !== 'string') {
+    if (typeof data.sub !== 'string') {
       throw new Error('Invalid user ID response from LinkedIn');
     }
 
-    return data.id;
+    return data.sub;
   }
 }
