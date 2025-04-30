@@ -1,21 +1,40 @@
-# getMediaInsights
+## Function: `getMediaInsights`
 
 Gets insights for a media object.
 
-## Parameters
+**Purpose:**
 
-- `mediaId` (string): The ID of the media object.
-- `insightsData` (object): An object containing the insights data.
+This function retrieves insights data for a specific media object.
 
-## Returns
+**Parameters:**
 
-- `Promise<any>`: A promise that resolves to the insights data.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| mediaId | `string` | Yes | ID of the media object |  | "178414057900101796" | Any valid media ID string |
+| insightsData | `InstagramInsightsSchema` | Yes | Insights data object | See `InstagramInsightsSchema` type details | See example below |  |
 
-## Example
+**Type Details:**
+
+### InstagramInsightsSchema
+Schema for retrieving Instagram insights.
+
+| Field | Type | Required | Description | Constraints | Example | Possible Values |
+|-------|------|----------|-------------|-------------|---------|----------------|
+| metric | `array` | Yes | Array of metric names to retrieve |  | `['impressions', 'reach']` | Array of strings |
+| period | `enum` | Yes | Time period for the metrics | One of: 'day', 'week', 'days_28', 'lifetime' | "day" | 'day', 'week', 'days_28', 'lifetime' |
+
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `any` | Media insights data |  |  |
+
+**Examples:**
 
 ```typescript
-const insights = await sdk.getMediaInsights('12345678901234567', {
+// Example: Getting media insights
+const insights = await instagramSDK.getMediaInsights('178414057900101796', {
   metric: ['impressions', 'reach'],
-  period: 'day',
+  period: 'day'
 });
 ```

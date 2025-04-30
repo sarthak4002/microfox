@@ -19,6 +19,10 @@ export const ReadMeObject = z.object({
     .string()
     .optional()
     .describe('The functionality this README file explains on how to use'),
+  description: z
+    .string()
+    .optional()
+    .describe('The description of the functionality this README file explains on how to use'),
 });
 
 export const PackageReadmeMap = z

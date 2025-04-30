@@ -1,18 +1,30 @@
-# toggleComments
+## Function: `toggleComments`
 
-Enables or disables comments on a media object.
+Toggles comments on or off for a media object.
 
-## Parameters
+**Purpose:**
 
-- `mediaId` (string): The ID of the media object.
-- `enable` (boolean): Whether to enable comments.
+This function enables or disables comments for a specific media object.
 
-## Returns
+**Parameters:**
 
-- `Promise<void>`: A promise that resolves when comments have been enabled or disabled.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| mediaId | `string` | Yes | ID of the media object |  | "178414057900101796" | Any valid media ID string |
+| enable | `boolean` | Yes | Whether to enable comments (`true`) or disable them (`false`) |  | true | true or false |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `void` |  |  |  |
+
+**Examples:**
 
 ```typescript
-await sdk.toggleComments('12345678901234567', false);
+// Example 1: Enabling comments
+await instagramSDK.toggleComments('178414057900101796', true);
+
+// Example 2: Disabling comments
+await instagramSDK.toggleComments('178414057900101796', false);
 ```

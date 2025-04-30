@@ -1,21 +1,40 @@
-# getAccountInsights
+## Function: `getAccountInsights`
 
-Gets insights for an account.
+Gets insights for an Instagram account.
 
-## Parameters
+**Purpose:**
 
-- `accountId` (string): The ID of the Instagram account.
-- `insightsData` (object): An object containing the insights data.
+This function retrieves insights data for a specific Instagram account.
 
-## Returns
+**Parameters:**
 
-- `Promise<any>`: A promise that resolves to the insights data.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| accountId | `string` | Yes | Instagram account ID |  | "1234567890" | Any valid Instagram account ID string |
+| insightsData | `InstagramInsightsSchema` | Yes | Insights data object | See `InstagramInsightsSchema` type details | See example below |  |
 
-## Example
+**Type Details:**
+
+### InstagramInsightsSchema
+Schema for retrieving Instagram insights.
+
+| Field | Type | Required | Description | Constraints | Example | Possible Values |
+|-------|------|----------|-------------|-------------|---------|----------------|
+| metric | `array` | Yes | Array of metric names to retrieve |  | `['impressions', 'reach']` | Array of strings |
+| period | `enum` | Yes | Time period for the metrics | One of: 'day', 'week', 'days_28', 'lifetime' | "day" | 'day', 'week', 'days_28', 'lifetime' |
+
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `any` | Account insights data |  |  |
+
+**Examples:**
 
 ```typescript
-const insights = await sdk.getAccountInsights('123456789', {
-  metric: ['follower_count'],
-  period: 'lifetime',
+// Example: Getting account insights
+const insights = await instagramSDK.getAccountInsights('1234567890', {
+  metric: ['impressions', 'reach'],
+  period: 'day'
 });
 ```

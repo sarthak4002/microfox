@@ -1,18 +1,30 @@
-# hideComment
+## Function: `hideComment`
 
-Hides or unhides a comment.
+Hides or unhides a comment on Instagram.
 
-## Parameters
+**Purpose:**
 
-- `commentId` (string): The ID of the comment to hide or unhide.
-- `hide` (boolean): Whether to hide the comment.
+This function allows you to hide or unhide a specific comment.
 
-## Returns
+**Parameters:**
 
-- `Promise<void>`: A promise that resolves when the comment has been hidden or unhidden.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| commentId | `string` | Yes | ID of the comment to hide/unhide |  | "17895705777297547" | Any valid comment ID string |
+| hide | `boolean` | Yes | Whether to hide the comment (`true`) or unhide it (`false`) |  | true | true or false |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `void` |  |  |  |
+
+**Examples:**
 
 ```typescript
-await sdk.hideComment('12345678901234567', true);
+// Example 1: Hiding a comment
+await instagramSDK.hideComment('17895705777297547', true);
+
+// Example 2: Unhiding a comment
+await instagramSDK.hideComment('17895705777297547', false);
 ```

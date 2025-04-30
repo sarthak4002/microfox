@@ -23,11 +23,11 @@ You can obtain these credentials by following the OAuth 2.0 flow for Instagram.
 
 The following environment variables are used by this SDK:
 
-- `INSTAGRAM_CLIENT_ID`: Your Instagram app's Client ID. (Required)
-- `INSTAGRAM_CLIENT_SECRET`: Your Instagram app's Client Secret. (Required)
-- `INSTAGRAM_REDIRECT_URI`: The OAuth redirect URI for your app. (Required)
-- `INSTAGRAM_ACCESS_TOKEN`: The user's access token (obtained through OAuth flow). (Required)
-- `INSTAGRAM_REFRESH_TOKEN`: The user's refresh token (obtained through OAuth flow). (Required)
+- `INSTAGRAM_CLIENT_ID`: Your Instagram app's Client ID. Obtained from Facebook Developer app dashboard. (Required)
+- `INSTAGRAM_CLIENT_SECRET`: Your Instagram app's Client Secret. Obtained from Facebook Developer app dashboard. (Required)
+- `INSTAGRAM_REDIRECT_URI`: The OAuth redirect URI for your app. Must match a valid redirect URI configured in your app dashboard. (Required)
+- `INSTAGRAM_ACCESS_TOKEN`: The user's access token. Obtained through OAuth flow. (Required)
+- `INSTAGRAM_REFRESH_TOKEN`: The user's refresh token. Obtained through OAuth flow. (Required)
 
 ## Additional Information
 
@@ -45,6 +45,8 @@ To use this SDK, you need to obtain Instagram API credentials. Follow these step
 
 6. Obtain your app's Client ID and Client Secret from the app dashboard
 
+
+
 Environment variables:
 
 - INSTAGRAM_CLIENT_ID: Your Instagram app's Client ID
@@ -57,13 +59,19 @@ Environment variables:
 
 - INSTAGRAM_REFRESH_TOKEN: The user's refresh token (obtained through OAuth flow)
 
+
+
 Authentication:
 
 This SDK uses OAuth 2.0 for authentication. You need to implement the OAuth flow in your application to obtain the initial access token and refresh token. The SDK handles token refreshing automatically.
 
+
+
 Rate Limits:
 
 Instagram API has rate limits that vary by endpoint. Monitor your usage and implement appropriate error handling and backoff strategies. Use the getContentPublishingLimit method to check your current rate limit status for content publishing.
+
+
 
 Important Notes:
 
@@ -81,13 +89,15 @@ Important Notes:
 
 - The oEmbed endpoint requires a separate app access token or client access token
 
+
+
 For more detailed information, refer to the official Instagram Graph API documentation: https://developers.facebook.com/docs/instagram-api/
 
 ## API Reference
 
 For detailed documentation on the constructor and all available functions, see:
 
-- [createInstagramSDK](./docs/createInstagramSDK.md)
+- [InstagramSDK](./docs/InstagramSDK.md)
 - [createMediaContainer](./docs/createMediaContainer.md)
 - [getMediaContainerStatus](./docs/getMediaContainerStatus.md)
 - [publishMedia](./docs/publishMedia.md)
