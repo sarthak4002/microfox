@@ -1,5 +1,11 @@
 # @microfox/linkedin-oauth
 
+## 1.0.5
+
+### Patch Changes
+
+- 34109f0: Changes from PR #139: testing-workflow
+
 ## 1.0.4
 
 ### Patch Changes
