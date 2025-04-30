@@ -503,7 +503,7 @@ export async function generateDocs(
         title: metadata.title,
         description: `The full README for the ${metadata.title}`,
         path: 'https://github.com/microfox-ai/microfox/blob/main/packages/' + metadata.packageName.replace('@microfox/', '') + '/README.md',
-        functionalities: validatedData.functionsDocs.map(f => f.name),
+        functionalities: [constructorName, ...validatedData.functionsDocs.map(f => f.name)],
         all_readmes: [
           {
             path: 'https://github.com/microfox-ai/microfox/blob/main/packages/' + metadata.packageName.replace('@microfox/', '') + '/docs/' + constructorName + '.md',

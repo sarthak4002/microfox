@@ -19,6 +19,7 @@
     "description": "The full README for the Microfox Instagram SDK",
     "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/README.md",
     "functionalities": [
+      "InstagramSDK",
       "createMediaContainer",
       "getMediaContainerStatus",
       "publishMedia",
