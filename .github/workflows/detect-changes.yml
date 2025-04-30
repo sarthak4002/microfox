@@ -62,11 +62,12 @@ jobs:
 
       - name: Create Changeset
         if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }} # Pass event path for jq
         run: |
-          # Compare the base commit on main before the merge with the merge commit
-          BASE_SHA=${{ github.event.pull_request.base.sha }}
-          MERGE_SHA=${{ github.sha }} # The SHA of the merge commit on main
-
           echo "Comparing base SHA ($BASE_SHA) with merge SHA ($MERGE_SHA)"
 
           # Get the number of changed lines, excluding @ext_ packages
@@ -92,9 +93,6 @@ jobs:
             exit 0
           fi
 
-          # Get PR title for summary
-          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
-
           # Create changeset files manually
           CHANGESET_DIR=".changeset"
           mkdir -p "$CHANGESET_DIR"
@@ -109,6 +107,7 @@ jobs:
           done
           echo "---" >> "$CHANGESET_FILE"
           echo "" >> "$CHANGESET_FILE"
+          # Use the environment variable for the PR title
           echo "Summary from PR: $PR_TITLE" >> "$CHANGESET_FILE"
 
           echo "Changeset file content:"
