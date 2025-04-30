@@ -643,10 +643,6 @@ await whatsapp.sendFlowMessage(
 ### Message Reactions
 
 ```typescript
-// Simple reaction
-await whatsapp.sendReaction('RECIPIENT_PHONE_NUMBER', 'message_id', '👍');
-
-// Multiple reactions
 await whatsapp.sendReaction('RECIPIENT_PHONE_NUMBER', 'message_id', '❤️');
 ```
 
@@ -698,13 +694,13 @@ await whatsapp.sendTypingIndicator({
 
 > **Note**: The typing indicator will be dismissed automatically after 25 seconds or when you send a response, whichever comes first. Only use this feature when you are actually going to respond to the user.
 
-````typescript
+`````typescript
 const mediaId = await whatsapp.uploadMedia(file, 'image');
 
 
 ### Media Management
 
-```typescript
+````typescript
 
 // Upload media
 const mediaId = await whatsapp.uploadMedia(file, 'image');
@@ -714,7 +710,7 @@ const mediaData = await whatsapp.downloadMedia('MEDIA_ID');
 
 // Get media URL
 const mediaUrl = await whatsapp.getMediaUrl('MEDIA_ID');
-````
+`````
 
 ### Phone Number Management
 
