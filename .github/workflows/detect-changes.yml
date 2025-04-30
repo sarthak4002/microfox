@@ -2,7 +2,6 @@ name: Detect Changes and Create Changeset
 
 on:
   pull_request:
-    types: [closed]
     branches:
       - main
 
