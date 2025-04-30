@@ -894,13 +894,13 @@ export async function generateSDK(
     }
 
     const combinedCode = `
-    // Main SDK
-    ${sdkResult.sdkImplementation.mainSdk.content}
-    // Types
-    ${sdkResult.sdkImplementation.types.content}
-    // Schemas
-    ${sdkResult.sdkImplementation.schemas.content}
-    // Exports
+    // Main SDK (src/[packageName]Sdk.ts)
+    ${sdkResult.sdkImplementation.mainSdk.content}\n\n
+    // Types (src/types/index.ts)
+    ${sdkResult.sdkImplementation.types.content}\n\n
+    // Schemas (src/schemas/index.ts)
+    ${sdkResult.sdkImplementation.schemas.content}\n\n
+    // Exports (src/index.ts)
     ${sdkResult.sdkImplementation.exports.content}
     `;
     // Generate documentation
