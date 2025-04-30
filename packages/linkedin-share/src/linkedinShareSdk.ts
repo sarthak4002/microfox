@@ -11,6 +11,13 @@ import {
   postOptionsSchema,
 } from './schemas/share';
 
+/**
+ * LinkedIn Share SDK
+ * @description LinkedIn Share SDK for Microfox - A robust TypeScript SDK for LinkedIn Share API integration
+ * @author Microfox
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 export class LinkedinShareSdk {
   private static readonly API_BASE_URL = 'https://api.linkedin.com/v2';
   private accessToken: string;
