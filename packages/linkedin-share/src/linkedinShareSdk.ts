@@ -15,8 +15,8 @@ import {
  * LinkedIn Share SDK
  * @description LinkedIn Share SDK for Microfox - A robust TypeScript SDK for LinkedIn Share API integration
  * @author Microfox
- * @version 1.0.1
- * @since 1.0.1
+ * @version 1.0.2
+ * @since 1.0.2
  */
 export class LinkedinShareSdk {
   private static readonly API_BASE_URL = 'https://api.linkedin.com/v2';
