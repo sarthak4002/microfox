@@ -1,7 +1,7 @@
 {
   "name": "@microfox/linkedin-oauth",
   "title": "LinkedIn OAuth",
-  "description": "LinkedIn OAuth - Connect to LinkedIn and get access to the LinkedIn API products.",
+  "description": "Oauth2 for LinkedIn - Connect to LinkedIn and get access to the LinkedIn API products.",
   "path": "packages/linkedin-oauth",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "oauthConnector",
