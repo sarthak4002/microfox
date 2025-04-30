@@ -1,7 +1,7 @@
 {
   "name": "@microfox/linkedin-share",
   "title": "LinkedIn Share",
-  "description": "LinkedIn Share - Simple Text Post, Share an Article, Share an Image, Create a draft post.",
+  "description": "LinkedIn Share - Simple Text Post, Share an Article, Share an Image, Create a draft post. etc..",
   "path": "packages/linkedin-share",
   "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
