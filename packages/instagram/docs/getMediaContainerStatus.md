@@ -1,17 +1,26 @@
-# getMediaContainerStatus
+## Function: `getMediaContainerStatus`
 
 Gets the status of a media container.
 
-## Parameters
+**Purpose:**
 
-- `containerId` (string): The ID of the media container.
+This function retrieves the current status of a media container, which indicates the progress of the media upload and processing.
 
-## Returns
+**Parameters:**
 
-- `Promise<string>`: A promise that resolves to the status code of the media container.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| containerId | `string` | Yes | ID of the media container |  | "178414057900101795" | Any valid media container ID string |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `string` | Status code of the media container | "FINISHED" |  |
+
+**Examples:**
 
 ```typescript
-const status = await sdk.getMediaContainerStatus('17849303057181032');
+// Example: Getting the status of a media container
+const status = await instagramSDK.getMediaContainerStatus('178414057900101795');
 ```

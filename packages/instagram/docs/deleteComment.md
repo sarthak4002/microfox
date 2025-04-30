@@ -1,17 +1,26 @@
-# deleteComment
+## Function: `deleteComment`
 
-Deletes a comment.
+Deletes a comment on Instagram.
 
-## Parameters
+**Purpose:**
 
-- `commentId` (string): The ID of the comment to delete.
+This function permanently deletes a specific comment.
 
-## Returns
+**Parameters:**
 
-- `Promise<void>`: A promise that resolves when the comment has been deleted.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| commentId | `string` | Yes | ID of the comment to delete |  | "17895705777297547" | Any valid comment ID string |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `void` |  |  |  |
+
+**Examples:**
 
 ```typescript
-await sdk.deleteComment('12345678901234567');
+// Example: Deleting a comment
+await instagramSDK.deleteComment('17895705777297547');
 ```

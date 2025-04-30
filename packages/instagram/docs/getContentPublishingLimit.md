@@ -1,17 +1,26 @@
-# getContentPublishingLimit
+## Function: `getContentPublishingLimit`
 
-Gets the content publishing limit for an account.
+Gets the content publishing limit for an Instagram account.
 
-## Parameters
+**Purpose:**
 
-- `accountId` (string): The ID of the Instagram account.
+This function retrieves information about the content publishing limits for a given Instagram account, including the current rate limit status and any restrictions.
 
-## Returns
+**Parameters:**
 
-- `Promise<any>`: A promise that resolves to the content publishing limit data.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| accountId | `string` | Yes | Instagram account ID |  | "1234567890" | Any valid Instagram account ID string |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `any` | Content publishing limit information |  |  |
+
+**Examples:**
 
 ```typescript
-const limit = await sdk.getContentPublishingLimit('123456789');
+// Example: Getting content publishing limit
+const limitInfo = await instagramSDK.getContentPublishingLimit('1234567890');
 ```

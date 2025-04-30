@@ -1,21 +1,40 @@
-# sendPrivateReply
+## Function: `sendPrivateReply`
 
-Sends a private reply to a comment.
+Sends a private reply to a comment on Instagram.
 
-## Parameters
+**Purpose:**
 
-- `userId` (string): The ID of the user to send the private reply to.
-- `replyData` (object): An object containing the reply data.
+This function sends a private reply to a user regarding a specific comment.
 
-## Returns
+**Parameters:**
 
-- `Promise<any>`: A promise that resolves to the response data.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| userId | `string` | Yes | ID of the user to reply to |  | "1234567890" | Any valid user ID string |
+| replyData | `InstagramPrivateReplySchema` | Yes | Private reply data object | See `InstagramPrivateReplySchema` type details | See example below |  |
 
-## Example
+**Type Details:**
+
+### InstagramPrivateReplySchema
+Schema for sending private replies.
+
+| Field | Type | Required | Description | Constraints | Example | Possible Values |
+|-------|------|----------|-------------|-------------|---------|----------------|
+| recipient | `object` | Yes | Recipient information |  | `{ comment_id: '17895705777297547' }` | Object with `comment_id` property |
+| message | `object` | Yes | Message content |  | `{ text: 'This is a private reply' }` | Object with `text` property |
+
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `any` | Private reply response data |  |  |
+
+**Examples:**
 
 ```typescript
-const response = await sdk.sendPrivateReply('123456789', {
-  recipient: { comment_id: '12345678901234567' },
-  message: { text: 'This is a private reply' },
+// Example: Sending a private reply
+const replyResponse = await instagramSDK.sendPrivateReply('1234567890', {
+  recipient: { comment_id: '17895705777297547' },
+  message: { text: 'This is a private reply' }
 });
 ```

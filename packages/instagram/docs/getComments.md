@@ -1,17 +1,26 @@
-# getComments
+## Function: `getComments`
 
 Gets comments for a media object.
 
-## Parameters
+**Purpose:**
 
-- `mediaId` (string): The ID of the media object.
+This function retrieves comments associated with a given media ID.
 
-## Returns
+**Parameters:**
 
-- `Promise<any>`: A promise that resolves to the comments data.
+| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
+|-----------|------|----------|-------------|-------------|---------|----------------|
+| mediaId | `string` | Yes | ID of the media object |  | "178414057900101796" | Any valid media ID string |
 
-## Example
+**Return Value:**
+
+| Type | Description | Example | Possible Values |
+|------|-------------|---------|----------------|
+| `any` | Comments data |  |  |
+
+**Examples:**
 
 ```typescript
-const comments = await sdk.getComments('12345678901234567');
+// Example: Getting comments for a media object
+const comments = await instagramSDK.getComments('178414057900101796');
 ```
