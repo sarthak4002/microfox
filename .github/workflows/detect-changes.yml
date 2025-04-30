@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   detect-changes:
-    # Only run on merge commits to main
-    if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request ')
+    # Only run on merge commits to main and skip if PR title starts with "Version Changes"
+    if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Merge pull request ') && !contains(github.event.head_commit.message, 'Version Changes')
     runs-on: ubuntu-latest
     steps:
       - name: Debug Event
@@ -123,8 +123,8 @@ jobs:
           # --- Frontmatter Start ---
           echo "---" > "$CHANGESET_FILE"
           for PACKAGE in $AFFECTED_PACKAGES; do
-            # Ensure package name is treated as a string key in YAML
-            echo "\"$(echo $PACKAGE | sed 's/"/\"/g')\": $VERSION_TYPE" >> "$CHANGESET_FILE"
+            # Ensure package name is treated as a string key in YAML and prepend @microfox/
+            echo "\"@microfox/$(echo $PACKAGE | sed 's/"/\"/g')\": $VERSION_TYPE" >> "$CHANGESET_FILE"
           done
           echo "---" >> "$CHANGESET_FILE"
           # --- Frontmatter End ---
