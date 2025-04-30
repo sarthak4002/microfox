@@ -41,18 +41,21 @@ export interface LinkedInShareContent {
   };
 }
 
+/**
+ * We only get the 'id' from the response @subhakar @vishwajeet
+ */
 export interface LinkedInShareResponse {
-  sub: string;
-  activity: string;
-  created: {
-    actor: string;
-    time: number;
-  };
-  lastModified: {
-    actor: string;
-    time: number;
-  };
-  lifecycleState: string;
+  id: string;
+  // activity: string;
+  // created: {
+  //   actor: string;
+  //   time: number;
+  // };
+  // lastModified: {
+  //   actor: string;
+  //   time: number;
+  // };
+  // lifecycleState: string;
 }
 
 export interface LinkedInError {

@@ -65,18 +65,23 @@ export const shareContentSchema = z.object({
   }),
 });
 
+/**
+ * 
+ * We only get the 'id' from the response @subhakar @vishwajeet
+ */
+
 export const shareResponseSchema = z.object({
-  sub: z.string(),
-  activity: z.string(),
-  created: z.object({
-    actor: z.string(),
-    time: z.number(),
-  }),
-  lastModified: z.object({
-    actor: z.string(),
-    time: z.number(),
-  }),
-  lifecycleState: z.string(),
+  id: z.string(),
+  // activity: z.string(),
+  // created: z.object({
+  //   actor: z.string(),
+  //   time: z.number(),
+  // }),
+  // lastModified: z.object({
+  //   actor: z.string(),
+  //   time: z.number(),
+  // }),
+  // lifecycleState: z.string(),
 });
 
 // Export inferred types
