@@ -11,6 +11,7 @@ async function updatePackageList() {
 
     // Get the packages directory path
     const packagesDir = path.join(process.cwd(), '../packages');
+    const outputPath = path.join(process.cwd(), '../packages-list.json');
 
     // Check if packages directory exists
     if (!fs.existsSync(packagesDir)) {
@@ -26,7 +27,6 @@ async function updatePackageList() {
 
     // Initialize status-based package arrays
     const statusPackages: Record<string, string[]> = {};
-    // Initialize external packages array
     // Process each package directory
     for (const dir of packageDirs) {
       const packageInfoPath = path.join(packagesDir, dir, 'package-info.json');
@@ -56,20 +56,31 @@ async function updatePackageList() {
     }
 
     // Create the output object
-    const output = {
+    const newOutput = {
       ...statusPackages,
       total: packageDirs.length,
       generatedAt: new Date().toISOString(),
     };
 
-    // Write to packages-list.json
-    fs.writeFileSync(
-      path.join(process.cwd(), '../packages-list.json'),
-      JSON.stringify(output, null, 2),
-    );
+    // Read existing file if it exists
+    let shouldUpdate = true;
+    if (fs.existsSync(outputPath)) {
+      const existingContent = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+      const { generatedAt: _, ...existingData } = existingContent;
+      const { generatedAt: __, ...newData } = newOutput;
+
+      shouldUpdate = JSON.stringify(existingData) !== JSON.stringify(newData);
+    }
+
+    if (shouldUpdate) {
+      // Write to packages-list.json
+      fs.writeFileSync(outputPath, JSON.stringify(newOutput, null, 2));
+      console.log('📝 Updated package list in packages-list.json');
+    } else {
+      console.log('ℹ️ No changes detected in package data, skipping update');
+    }
 
     console.log(`✅ Found ${packageDirs.length} packages`);
-    console.log('📝 Saved package list to packages-list.json');
 
     // Log status counts
     Object.entries(statusPackages).forEach(([status, packages]) => {

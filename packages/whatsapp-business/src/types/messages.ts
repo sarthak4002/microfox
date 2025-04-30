@@ -23,3 +23,8 @@ export interface DocumentMessageOptions extends MediaMessageOptions {
 export interface TemplateMessageOptions extends MessageOptions {
   recipientType?: 'individual' | 'group';
 }
+
+export interface TypingIndicatorOptions {
+  messageId: string;
+  type?: 'text';
+}
