@@ -42,7 +42,7 @@ export interface LinkedInShareContent {
 }
 
 export interface LinkedInShareResponse {
-  sub: string;
+  id: string;
   activity: string;
   created: {
     actor: string;
