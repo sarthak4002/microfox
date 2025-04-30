@@ -104,6 +104,29 @@ const main = () => {
     changelogEntry + packageEntries + prBodySection + '\n\n' + changelog;
   fs.writeFileSync(changelogPath, newChangelog);
 
+  // Generate changeset for each package
+  const changesetContent = Array.from(packageChanges.values())
+    .map(({ package: packageName, changes }) => {
+      return `---
+"@microfox/${packageName}": patch
+---
+
+Changes from PR #${process.env.PR_NUMBER || 'unknown'}: ${process.env.PR_TITLE || 'unknown'}`;
+    })
+    .join('\n\n');
+
+  // Write changeset file
+  const changesetDir = path.join(process.cwd(), '.changeset');
+  if (!fs.existsSync(changesetDir)) {
+    fs.mkdirSync(changesetDir);
+  }
+
+  const changesetFile = path.join(
+    changesetDir,
+    `generated-${process.env.GITHUB_SHA || Date.now()}.md`,
+  );
+  fs.writeFileSync(changesetFile, changesetContent);
+
   console.log('Changelog summary generated successfully');
 };
 

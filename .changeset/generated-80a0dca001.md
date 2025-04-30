@@ -1,6 +1,6 @@
 ---
-"linkedin-oauth": patch
-"linkedin-share": patch
+'@microfox/linkedin-oauth': patch
+'@microfox/linkedin-share': patch
 ---
 
 Changes from PR #139: testing-workflow
