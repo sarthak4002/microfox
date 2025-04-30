@@ -4,6 +4,11 @@ on:
   pull_request:
     branches:
       - main
+      - develop
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
   detect-changes:
@@ -27,8 +32,15 @@ jobs:
         uses: tj-actions/changed-files@v39
         with:
           files: |
-            packages/**
-            !packages/@ext_**
+            packages/*/**
+            !packages/@ext_*/**
+          files_ignore: |
+            packages/*/node_modules/**
+            packages/*/dist/**
+            packages/*/build/**
+            packages/*/.turbo/**
+            packages/*/.next/**
+            packages/*/coverage/**
 
       - name: Create Changeset
         if: steps.changed-files.outputs.any_changed == 'true'

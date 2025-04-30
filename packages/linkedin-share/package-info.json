@@ -37,7 +37,12 @@
   ],
   "readme_map": {
     "path": "/README.md",
-    "functionalities": [],
+    "functionalities": [
+      "Share a simple text post",
+      "Share an article",
+      "Share an image",
+      "Create a draft post"
+    ],
     "description": "No description provided",
     "all_readmes": []
   }
