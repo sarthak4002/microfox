@@ -66,7 +66,7 @@ export const shareContentSchema = z.object({
 });
 
 export const shareResponseSchema = z.object({
-  id: z.string(),
+  sub: z.string(),
   activity: z.string(),
   created: z.object({
     actor: z.string(),

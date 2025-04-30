@@ -135,7 +135,7 @@ export class LinkedInOAuthSdk {
     try {
       // LinkedIn doesn't have a dedicated token introspection endpoint
       // We'll validate by making a simple API call to the /me endpoint
-      const response = await fetch(`${LinkedInOAuthSdk.API_BASE_URL}/me`, {
+      const response = await fetch(`${LinkedInOAuthSdk.API_BASE_URL}/userinfo`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
