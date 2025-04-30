@@ -72,6 +72,7 @@ const main = () => {
   });
 
   // Generate changelog entry
+  const prBody = process.env.PR_BODY || '';
   const changelogEntry = `## Changes in this PR\n\n`;
   const packageEntries = Array.from(packageChanges.values())
     .map(({ package: packageName, changes }) => {
@@ -84,6 +85,11 @@ const main = () => {
     })
     .join('\n');
 
+  // Add PR body if it exists
+  const prBodySection = prBody
+    ? `\n### Pull Request Description\n\n${prBody}\n`
+    : '';
+
   // Update CHANGELOG.md
   const changelogPath = path.join(process.cwd(), 'CHANGELOG.md');
   let changelog = '';
@@ -94,7 +100,8 @@ const main = () => {
     console.log('Creating new CHANGELOG.md file');
   }
 
-  const newChangelog = changelogEntry + packageEntries + '\n\n' + changelog;
+  const newChangelog =
+    changelogEntry + packageEntries + prBodySection + '\n\n' + changelog;
   fs.writeFileSync(changelogPath, newChangelog);
 
   console.log('Changelog summary generated successfully');

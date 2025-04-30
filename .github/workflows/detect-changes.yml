@@ -86,6 +86,8 @@ jobs:
 
       - name: Generate Changelog Summary
         if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: node .github/scripts/generate-changelog-summary.mjs
 
       - name: Commit Changes
