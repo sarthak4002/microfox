@@ -10,7 +10,7 @@ export const ReadMeObject = z.object({
       'The complete path to the README file in the package or outside the package',
     ),
   type: z
-    .enum(['main', 'functionality'])
+    .enum(['main', 'constructor', 'functionality'])
     .describe('The type of the README file'),
   extension: z
     .enum(['md', 'txt', 'html'])

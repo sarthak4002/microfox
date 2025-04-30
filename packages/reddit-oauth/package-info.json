@@ -1,0 +1,184 @@
+{
+  "name": "@microfox/reddit-oauth",
+  "title": "Microfox Reddit OAuth",
+  "description": "A TypeScript OAuth package for Reddit.",
+  "path": "packages/reddit-oauth",
+  "dependencies": [
+    "zod"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/reddit",
+  "oauth2Scopes": [
+    "identity",
+    "edit",
+    "flair",
+    "history",
+    "modconfig",
+    "modflair",
+    "modlog",
+    "modposts",
+    "modwiki",
+    "mysubreddits",
+    "privatemessages",
+    "read",
+    "report",
+    "save",
+    "submit",
+    "subscribe",
+    "vote",
+    "wikiedit",
+    "wikiread"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/reddit-oauth",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg",
+  "readme_map": {
+    "path": "/README.md",
+    "title": "@microfox/@microfox/reddit-oauth README",
+    "description": "The full README for the Microfox Reddit OAuth",
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/createRedditOAuth.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createRedditOAuth"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/getAuthorizationUrl.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAuthorizationUrl"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/getAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken"
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/reddit-oauth/docs/revokeToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "revokeToken"
+      }
+    ],
+    "functionalities": [
+      "createRedditOAuth",
+      "getAuthorizationUrl",
+      "getAccessToken",
+      "refreshAccessToken",
+      "validateAccessToken",
+      "revokeToken"
+    ]
+  },
+  "constructors": [
+    {
+      "name": "createRedditOAuth",
+      "description": "Create a new Microfox Reddit OAuth client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/reddit",
+      "outputKeys": [],
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "REDDIT_CLIENT_ID",
+          "displayName": "Reddit Client ID",
+          "description": "Your Reddit application's client ID. Obtain this from your Reddit app settings."
+        },
+        {
+          "key": "REDDIT_CLIENT_SECRET",
+          "displayName": "Reddit Client Secret",
+          "description": "Your Reddit application's client secret. Obtain this from your Reddit app settings."
+        },
+        {
+          "key": "REDDIT_REDIRECT_URI",
+          "displayName": "Reddit Redirect URI",
+          "description": "The redirect URI you specified when creating your Reddit app."
+        }
+      ],
+      "functionalities": [
+        "getAuthorizationUrl",
+        "getAccessToken",
+        "refreshAccessToken",
+        "validateAccessToken",
+        "revokeToken"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "REDDIT_CLIENT_ID",
+      "constructors": [
+        "createRedditOAuth"
+      ],
+      "description": "Your Reddit application's client ID. Obtain this from your Reddit app settings.",
+      "required": true
+    },
+    {
+      "key": "REDDIT_CLIENT_SECRET",
+      "constructors": [
+        "createRedditOAuth"
+      ],
+      "description": "Your Reddit application's client secret. Obtain this from your Reddit app settings.",
+      "required": true
+    },
+    {
+      "key": "REDDIT_REDIRECT_URI",
+      "constructors": [
+        "createRedditOAuth"
+      ],
+      "description": "The redirect URI you specified when creating your Reddit app.",
+      "required": true
+    }
+  ],
+  "extraInfo": [
+    "To obtain OAuth credentials for Reddit:",
+    "1. Go to https://www.reddit.com/prefs/apps",
+    "2. Click on 'create app' or 'create another app' at the bottom",
+    "3. Fill in the required information:",
+    "   - Name: Your app's name",
+    "   - App type: Choose 'web app' for most cases",
+    "   - Description: Brief description of your app",
+    "   - About URL: Your app's website (if applicable)",
+    "   - Redirect URI: The URI where Reddit will redirect after authorization",
+    "4. Click 'create app'",
+    "5. You'll receive a Client ID and Client Secret. Keep these secure.",
+    "",
+    "Environment variables:",
+    "- REDDIT_CLIENT_ID: Your Reddit application's client ID",
+    "- REDDIT_CLIENT_SECRET: Your Reddit application's client secret",
+    "- REDDIT_REDIRECT_URI: The redirect URI you specified when creating the app",
+    "",
+    "To set up environment variables:",
+    "1. Create a .env file in your project root (if not already present)",
+    "2. Add the following lines to the .env file:",
+    "   REDDIT_CLIENT_ID=your_client_id_here",
+    "   REDDIT_CLIENT_SECRET=your_client_secret_here",
+    "   REDDIT_REDIRECT_URI=your_redirect_uri_here",
+    "3. Use a package like dotenv to load these variables in your application",
+    "",
+    "Important notes:",
+    "- Reddit's OAuth implementation uses comma-separated scopes instead of space-separated",
+    "- The authorization endpoint is https://ssl.reddit.com/api/v1/authorize",
+    "- The token endpoint is https://ssl.reddit.com/api/v1/access_token",
+    "- Access tokens expire after 1 hour (3600 seconds)",
+    "- To get a refresh token, include 'duration=permanent' in the initial authorization request",
+    "- Rate limits: https://github.com/reddit-archive/reddit/wiki/API#rules",
+    "  - 60 requests per minute",
+    "  - OAuth2 clients may make up to 600 requests per 10 minutes",
+    "  - Monitor the X-Ratelimit headers in API responses for current limits and usage",
+    "",
+    "For more detailed information, refer to the Reddit API documentation: https://www.reddit.com/dev/api/oauth"
+  ]
+}

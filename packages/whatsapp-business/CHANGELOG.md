@@ -1,5 +1,17 @@
 # @microfox/whatsapp-business
 
+## 1.2.1
+
+### Patch Changes
+
+- 0951b4c: Added typing indicators support
+
+## 1.2.0
+
+### Minor Changes
+
+- 1b02aa9: added whatsapp conversational components support
+
 ## 1.1.2
 
 ### Patch Changes

@@ -685,9 +685,27 @@ await whatsapp.markMessageAsRead('MESSAGE_ID');
 await whatsapp.markMessagesAsRead(['MESSAGE_ID_1', 'MESSAGE_ID_2']);
 ```
 
+### Send Typing Indicator
+
+The typing indicator shows the user that you are preparing a response. This is a good practice for improving user experience when it will take a few seconds to respond.
+
+```typescript
+await whatsapp.sendTypingIndicator({
+  messageId: 'MESSAGE_ID',
+  type: 'text', // Optional, defaults to 'text'
+});
+```
+
+> **Note**: The typing indicator will be dismissed automatically after 25 seconds or when you send a response, whichever comes first. Only use this feature when you are actually going to respond to the user.
+
+````typescript
+const mediaId = await whatsapp.uploadMedia(file, 'image');
+
+
 ### Media Management
 
 ```typescript
+
 // Upload media
 const mediaId = await whatsapp.uploadMedia(file, 'image');
 
@@ -696,7 +714,7 @@ const mediaData = await whatsapp.downloadMedia('MEDIA_ID');
 
 // Get media URL
 const mediaUrl = await whatsapp.getMediaUrl('MEDIA_ID');
-```
+````
 
 ### Phone Number Management
 

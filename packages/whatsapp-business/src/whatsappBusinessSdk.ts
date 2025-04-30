@@ -364,6 +364,24 @@ class WhatsAppBusinessSDK {
   }
 
   /**
+   * Send a typing indicator to show that you are preparing a response
+   * @param {TypingIndicatorOptions} options - Options for the typing indicator
+   * @returns {Promise} - API response
+   */
+  async sendTypingIndicator(options: TypingIndicatorOptions): Promise<any> {
+    const data = {
+      messaging_product: 'whatsapp',
+      status: 'read',
+      message_id: options.messageId,
+      typing_indicator: {
+        type: options.type || 'text',
+      },
+    };
+
+    return this._makeRequest(`/${this.phoneNumberId}/messages`, 'POST', data);
+  }
+
+  /**
    * Upload media to WhatsApp servers
    * @param {File|Blob} media - Media file to upload
    * @param {string} type - Media type (image, document, audio, video, sticker)

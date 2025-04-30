@@ -27,10 +27,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: cd scripts && npm ci
+        run: cd scripts && npm i
 
       - name: Run update package list script
-        run: cd scripts && npm run dev:package-list
+        run: cd scripts && npm run update:package-list
 
       - name: Check for changes
         id: git-check

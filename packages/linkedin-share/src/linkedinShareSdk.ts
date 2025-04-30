@@ -11,6 +11,13 @@ import {
   postOptionsSchema,
 } from './schemas/share';
 
+/**
+ * LinkedIn Share SDK
+ * @description LinkedIn Share SDK for Microfox - A robust TypeScript SDK for LinkedIn Share API integration
+ * @author Microfox
+ * @version 1.0.4
+ * @since 1.0.4
+ */
 export class LinkedinShareSdk {
   private static readonly API_BASE_URL = 'https://api.linkedin.com/v2';
   private accessToken: string;
@@ -143,7 +150,7 @@ export class LinkedinShareSdk {
    * Get the current user's LinkedIn ID
    */
   private async getUserId(): Promise<string> {
-    const response = await fetch(`${LinkedinShareSdk.API_BASE_URL}/me`, {
+    const response = await fetch(`${LinkedinShareSdk.API_BASE_URL}/userinfo`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
@@ -158,10 +165,10 @@ export class LinkedinShareSdk {
       );
     }
 
-    if (typeof data.id !== 'string') {
+    if (typeof data.sub !== 'string') {
       throw new Error('Invalid user ID response from LinkedIn');
     }
 
-    return data.id;
+    return data.sub;
   }
 }
