@@ -9,8 +9,8 @@ import {
  * LinkedIn OAuth SDK
  * @description LinkedIn OAuth SDK for Microfox - A robust TypeScript SDK for LinkedIn OAuth 2.0 authentication and API integration
  * @author Microfox
- * @version 1.0.1
- * @since 1.0.1
+ * @version 1.0.2
+ * @since 1.0.2
  */
 export class LinkedInOAuthSdk {
   private static readonly AUTH_BASE_URL = 'https://www.linkedin.com/oauth/v2';

@@ -41,6 +41,9 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v39
         with:
+          # Compare the base commit on main before merge with the merge commit on main
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          sha: ${{ github.sha }}
           files: |
             packages/*/**
             !packages/@ext_*/**
@@ -60,9 +63,15 @@ jobs:
       - name: Create Changeset
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # Get the number of changed lines
-          CHANGED_LINES=$(git diff --stat ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- packages/ | grep -v '@ext_' | awk '{sum += $4} END {print sum}')
-          echo "Changed lines: $CHANGED_LINES"
+          # Compare the base commit on main before the merge with the merge commit
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          MERGE_SHA=${{ github.sha }} # The SHA of the merge commit on main
+
+          echo "Comparing base SHA ($BASE_SHA) with merge SHA ($MERGE_SHA)"
+
+          # Get the number of changed lines, excluding @ext_ packages
+          CHANGED_LINES=$(git diff --stat $BASE_SHA $MERGE_SHA -- 'packages/' ':!packages/@ext_*/**' | awk '{s+=$1} END {print s}')
+          echo "Changed lines (excluding @ext_): $CHANGED_LINES"
 
           # Determine version bump based on changed lines
           if [ "$CHANGED_LINES" -gt 1000 ]; then
@@ -74,15 +83,36 @@ jobs:
           fi
           echo "Version type: $VERSION_TYPE"
 
-          # Get affected packages
-          AFFECTED_PACKAGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} -- packages/ | grep -v '@ext_' | sed -n 's/packages\/\([^/]*\).*/\1/p' | sort -u)
+          # Get affected packages, excluding @ext_ packages
+          AFFECTED_PACKAGES=$(git diff --name-only $BASE_SHA $MERGE_SHA -- 'packages/' ':!packages/@ext_*/**' | sed -n 's;^packages/\([^/]*\)/.*;\1;p' | sort -u)
           echo "Affected packages: $AFFECTED_PACKAGES"
 
-          # Create changeset for each affected package
+          if [ -z "$AFFECTED_PACKAGES" ]; then
+            echo "No non-@ext_ packages affected. Exiting."
+            exit 0
+          fi
+
+          # Get PR title for summary
+          PR_TITLE=$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")
+
+          # Create changeset files manually
+          CHANGESET_DIR=".changeset"
+          mkdir -p "$CHANGESET_DIR"
+          CHANGESET_ID=$(cat /proc/sys/kernel/random/uuid | sed 's/-//g' | head -c 10) # Generate a short random ID
+
+          CHANGESET_FILE="$CHANGESET_DIR/generated-$CHANGESET_ID.md"
+          echo "Creating changeset file: $CHANGESET_FILE"
+
+          echo "---" > "$CHANGESET_FILE"
           for PACKAGE in $AFFECTED_PACKAGES; do
-            echo "Creating changeset for $PACKAGE with $VERSION_TYPE bump"
-            npx changeset add $PACKAGE --$VERSION_TYPE
+            echo "\"$PACKAGE\": $VERSION_TYPE" >> "$CHANGESET_FILE"
           done
+          echo "---" >> "$CHANGESET_FILE"
+          echo "" >> "$CHANGESET_FILE"
+          echo "Summary from PR: $PR_TITLE" >> "$CHANGESET_FILE"
+
+          echo "Changeset file content:"
+          cat "$CHANGESET_FILE"
 
       - name: Generate Changelog Summary
         if: steps.changed-files.outputs.any_changed == 'true'
