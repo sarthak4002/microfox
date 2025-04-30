@@ -1,12 +1,9 @@
 {
   "name": "@microfox/linkedin-share",
-  "title": "Microfox LinkedIn Share SDK",
-  "description": "LinkedIn Share SDK for Microfox",
+  "title": "LinkedIn Share",
+  "description": "LinkedIn Share - Simple Text Post, Share an Article, Share an Image, Create a draft post.",
   "path": "packages/linkedin-share",
-  "dependencies": [
-    "@microfox/rest-sdk",
-    "zod"
-  ],
+  "dependencies": ["@microfox/rest-sdk", "zod"],
   "status": "stable",
   "authEndpoint": "/connect/linkedin",
   "documentation": "https://www.npmjs.com/package/@microfox/linkedin-share",
@@ -30,9 +27,7 @@
   "keysInfo": [
     {
       "key": "LINKEDIN_ACCESS_TOKEN",
-      "constructors": [
-        "linkedinShareManager"
-      ],
+      "constructors": ["linkedinShareManager"],
       "description": "The access token for the LinkedIn client",
       "required": true
     }
