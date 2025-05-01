@@ -15,8 +15,10 @@ import {
   TemplateData,
   CommerceSettings,
   Flow,
-  ReceipientType,
   MediaObject,
+  TypingIndicatorOptions,
+  TextMessageOptions,
+  MessageOptions,
 } from './types/index';
 import {
   WhatsAppSDKConfigSchema,
@@ -36,7 +38,9 @@ import {
   FlowSchema,
   ConversationalComponentsResponseSchema,
   MediaObjectSchema,
-  ReceipientTypeSchema,
+  TypingIndicatorOptionsSchema,
+  TextMessageOptionsSchema,
+  MessageOptionsSchema,
 } from './schemas';
 
 class WhatsAppBusinessSDKError extends Error {
@@ -70,16 +74,19 @@ class WhatsAppBusinessSDK {
 
   /**
    * Send a typing indicator
-   * @param {string} messageId - ID of the message to mark as read
+   * @param {TypingIndicatorOptions} options   - Options for the typing indicator
    * @returns {Promise<ApiResponse>} - API response
    */
-  async sendTypingIndicator(messageId: string): Promise<ApiResponse> {
+  async sendTypingIndicator(
+    options: TypingIndicatorOptions,
+  ): Promise<ApiResponse> {
+    const validatedOptions = TypingIndicatorOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
       status: 'read',
-      message_id: messageId,
+      message_id: validatedOptions.messageId,
       typing_indicator: {
-        type: 'text',
+        type: validatedOptions.type || 'text',
       },
     };
 
@@ -90,22 +97,23 @@ class WhatsAppBusinessSDK {
    * Send a text message
    * @param {string} to - Recipient's phone number in international format
    * @param {string} text - Message text content
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {TextMessageOptions} options - Options for the text message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendTextMessage(
     to: string,
     text: string,
-    recipientType: ReceipientType = 'individual',
+    options: TextMessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = TextMessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'text',
       text: {
         body: text,
+        preview_url: validatedOptions.previewUrl || true,
       },
     };
 
@@ -116,19 +124,19 @@ class WhatsAppBusinessSDK {
    * Send an image message
    * @param {string} to - Recipient's phone number in international format
    * @param {MediaObject} image - Media object with id, link or base64 data
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MediaMessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendImageMessage(
     to: string,
     image: MediaObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedImage = MediaObjectSchema.parse(image);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'image',
       image: validatedImage,
@@ -141,19 +149,19 @@ class WhatsAppBusinessSDK {
    * Send a video message
    * @param {string} to - Recipient's phone number in international format
    * @param {MediaObject} video - Media object with id, link or base64 data
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MediaMessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendVideoMessage(
     to: string,
     video: MediaObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedVideo = MediaObjectSchema.parse(video);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'video',
       video: validatedVideo,
@@ -166,19 +174,19 @@ class WhatsAppBusinessSDK {
    * Send a document message
    * @param {string} to - Recipient's phone number in international format
    * @param {MediaObject} document - Media object with id, link or base64 data
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the document message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendDocumentMessage(
     to: string,
     document: MediaObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedDocument = MediaObjectSchema.parse(document);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'document',
       document: validatedDocument,
@@ -197,13 +205,13 @@ class WhatsAppBusinessSDK {
   async sendAudioMessage(
     to: string,
     audio: MediaObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedAudio = MediaObjectSchema.parse(audio);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'audio',
       audio: validatedAudio,
@@ -222,13 +230,13 @@ class WhatsAppBusinessSDK {
   async sendStickerMessage(
     to: string,
     sticker: MediaObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedSticker = MediaObjectSchema.parse(sticker);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'sticker',
       sticker: validatedSticker,
@@ -241,19 +249,19 @@ class WhatsAppBusinessSDK {
    * Send a location message
    * @param {string} to - Recipient's phone number in international format
    * @param {LocationObject} location - Location object with coordinates and optional name/address
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendLocationMessage(
     to: string,
     location: LocationObject,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedLocation = LocationObjectSchema.parse(location);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'location',
       location: validatedLocation,
@@ -266,21 +274,21 @@ class WhatsAppBusinessSDK {
    * Send a contact message
    * @param {string} to - Recipient's phone number in international format
    * @param {ContactObject[]} contacts - Array of contact objects
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendContactMessage(
     to: string,
     contacts: ContactObject[],
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedContacts = contacts.map(contact =>
       ContactObjectSchema.parse(contact),
     );
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'contacts',
       contacts: validatedContacts,
@@ -293,19 +301,19 @@ class WhatsAppBusinessSDK {
    * Send an interactive message (buttons or list)
    * @param {string} to - Recipient's phone number in international format
    * @param {InteractiveMessage} interactive - Interactive message object
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MediaMessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendInteractiveMessage(
     to: string,
     interactive: InteractiveMessage,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
     const validatedInteractive = InteractiveMessageSchema.parse(interactive);
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'interactive',
       interactive: validatedInteractive,
@@ -320,7 +328,7 @@ class WhatsAppBusinessSDK {
    * @param {string} templateName - Name of the template
    * @param {string} language - Language code
    * @param {TemplateComponent[]} [components=[]] - Template components
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the media message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendTemplateMessage(
@@ -328,12 +336,12 @@ class WhatsAppBusinessSDK {
     templateName: string,
     language: string,
     components: TemplateComponent[] = [],
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'template',
       template: {
@@ -624,19 +632,19 @@ class WhatsAppBusinessSDK {
    * @param {string} to - Recipient's phone number in international format
    * @param {string} text - Message text content
    * @param {string} url - Call-to-action URL
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendInteractiveCtaMessage(
     to: string,
     text: string,
     url: string,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'interactive',
       interactive: {
@@ -657,19 +665,19 @@ class WhatsAppBusinessSDK {
    * Send an interactive Flow message
    * @param {string} to - Recipient's phone number in international format
    * @param {Flow} flow - Flow configuration
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendFlowMessage(
     to: string,
     flow: Flow,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const validatedFlow = FlowSchema.parse(flow);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'interactive',
       interactive: {
@@ -694,18 +702,18 @@ class WhatsAppBusinessSDK {
    * Send a location request message
    * @param {string} to - Recipient's phone number in international format
    * @param {string} text - Message text content
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendLocationRequestMessage(
     to: string,
     text: string,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       type: 'interactive',
       interactive: {
@@ -754,7 +762,7 @@ class WhatsAppBusinessSDK {
    * @param {'text' | 'image' | 'video' | 'document' | 'audio' | 'sticker' | 'location' | 'contacts' | 'interactive'} type - Type of message
    * @param {string | ImageObject | VideoObject | DocumentObject | AudioObject | StickerObject | LocationObject | ContactObject[] | InteractiveMessage} content - Content of the message based on type
    * @param {string} messageId - ID of the message to reply to
-   * @param {ReceipientType} recipientType - Recipient type (individual or group)
+   * @param {MessageOptions} options - Options for the message
    * @returns {Promise<ApiResponse>} - API response
    */
   async sendReply(
@@ -771,12 +779,12 @@ class WhatsAppBusinessSDK {
       | 'interactive',
     content: string | MediaObject,
     messageId: string,
-    recipientType: ReceipientType = 'individual',
+    options: MessageOptions = { recipientType: 'individual' },
   ): Promise<ApiResponse> {
-    const validatedRecipientType = ReceipientTypeSchema.parse(recipientType);
+    const validatedOptions = MessageOptionsSchema.parse(options);
     const data = {
       messaging_product: 'whatsapp',
-      recipient_type: validatedRecipientType,
+      recipient_type: validatedOptions.recipientType,
       to,
       context: {
         message_id: messageId,
@@ -809,7 +817,7 @@ class WhatsAppBusinessSDK {
    * @param {string} endpoint - API endpoint
    * @param {string} method - HTTP method
    * @param {any} data - Request data
-   * @param {RequestOptions} [options={}] - Additional options
+   * @param {RequestOptions} [options={ }] - Additional options
    * @returns {Promise<ApiResponse>} - API response
    */
   private async _makeRequest(
