@@ -1,14 +1,18 @@
-## getSubredditInfo(subreddit)
+## Function: `getSubredditInfo`
 
 Retrieves information about a specific subreddit.
 
-```typescript
-const subreddit = await reddit.getSubredditInfo('typescript');
-console.log(subreddit);
-```
+**Purpose:**
+Fetches the subreddit's information.
 
 **Parameters:**
+- `subreddit`: string - The name of the subreddit to retrieve.
 
-- `subreddit`: The name of the subreddit to retrieve information about.
+**Return Value:**
+Subreddit - An object containing the subreddit's information.
 
-**Returns:** A promise that resolves to a Subreddit object.
+**Examples:**
+```typescript
+const subreddit = await sdk.getSubredditInfo('AskReddit');
+console.log(subreddit);
+```

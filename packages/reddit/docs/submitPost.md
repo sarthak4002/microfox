@@ -1,18 +1,22 @@
-## submitPost(subreddit, title, content)
+## Function: `submitPost`
 
-Submits a new post.
+Submits a new post to a subreddit.
 
-```typescript
-const post = await reddit.submitPost('typescript', 'New SDK Released!', {
-  text: 'Check out the new TypeScript SDK!',
-});
-console.log(post);
-```
+**Purpose:**
+Creates a new text or link post in the specified subreddit.
 
 **Parameters:**
+- `subreddit`: string - The name of the subreddit to submit to.
+- `title`: string - The title of the post.
+- `content`: object<{ text?: string; url?: string }> - The content of the post. Either `text` or `url` must be provided.
+  - `text`: string - The text content of a self post.
+  - `url`: string - The URL of a link post.
 
-- `subreddit`: The name of the subreddit to submit the post to.
-- `title`: The title of the post.
-- `content`: An object containing either `text` for a text post or `url` for a link post.
+**Return Value:**
+Post - The submitted post object.
 
-**Returns:** A promise that resolves to a Post object.
+**Examples:**
+```typescript
+const post = await sdk.submitPost('AskReddit', 'What is your favorite book?', { text: 'I'm curious to hear your recommendations!' });
+console.log(post);
+```

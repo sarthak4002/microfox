@@ -1,15 +1,19 @@
-## editUserText(id, text)
+## Function: `editUserText`
 
-Edits the text of a post or comment.
+Edits the text of a self post or comment.
 
-```typescript
-const editedPost = await reddit.editUserText('t3_12345', 'Updated post text');
-console.log(editedPost);
-```
+**Purpose:**
+Modifies the text content of an existing post or comment.
 
 **Parameters:**
+- `id`: string - The full name of the item to edit (e.g., 't3_12345').
+- `text`: string - The new text content.
 
-- `id`: The ID of the post or comment to edit.
-- `text`: The new text.
+**Return Value:**
+Post | Comment - The edited post or comment object.
 
-**Returns:** A promise that resolves to the updated Post or Comment object.
+**Examples:**
+```typescript
+const editedPost = await sdk.editUserText('t3_12345', 'Edited post text.');
+console.log(editedPost);
+```

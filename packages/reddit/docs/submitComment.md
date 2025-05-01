@@ -1,15 +1,19 @@
-## submitComment(parentId, text)
+## Function: `submitComment`
 
-Submits a new comment.
+Submits a comment to a post or comment.
 
-```typescript
-const comment = await reddit.submitComment('t3_12345', 'This is a comment!');
-console.log(comment);
-```
+**Purpose:**
+Adds a new comment to a post or another comment.
 
 **Parameters:**
+- `parentId`: string - The full name of the parent post or comment (e.g., 't3_12345').
+- `text`: string - The text of the comment.
 
-- `parentId`: The ID of the parent post or comment.
-- `text`: The text of the comment.
+**Return Value:**
+Comment - The submitted comment object.
 
-**Returns:** A promise that resolves to a Comment object.
+**Examples:**
+```typescript
+const comment = await sdk.submitComment('t3_12345', 'This is a comment.');
+console.log(comment);
+```

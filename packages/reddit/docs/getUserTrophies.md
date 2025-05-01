@@ -1,10 +1,18 @@
-## getUserTrophies()
+## Function: `getUserTrophies`
 
-Retrieves the trophies of the currently authenticated user.
+Retrieves the trophies for the currently authenticated user.
 
+**Purpose:**
+Fetches the user's trophies.
+
+**Parameters:**
+None
+
+**Return Value:**
+unknown - An object representing the user's trophies.
+
+**Examples:**
 ```typescript
-const trophies = await reddit.getUserTrophies();
+const trophies = await sdk.getUserTrophies();
 console.log(trophies);
 ```
-
-**Returns:** A promise that resolves to an object containing the user's trophies.
