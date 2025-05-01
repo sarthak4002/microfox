@@ -4,8 +4,8 @@
   "description": "A TypeScript SDK for interacting with Google Sheets.",
   "path": "packages/google-sheets",
   "dependencies": [
-    "zod",
-    "@microfox/google-oauth"
+    "@microfox/google-oauth",
+    "zod"
   ],
   "status": "stable",
   "authEndpoint": "/connect/google-oauth",
@@ -15,21 +15,93 @@
   "documentation": "https://www.npmjs.com/package/@microfox/google-sheets",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg",
   "readme_map": {
-    "path": "/README.md",
-    "title": "createGoogleSheetsSdk Microfox",
+    "title": "Google Sheets SDK",
+    "description": "The full README for the Google Sheets SDK",
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/README.md",
     "functionalities": [
+      "createGoogleSheetsSdk",
+      "validateAccessToken",
+      "refreshAccessToken",
       "getValues",
       "updateValues",
       "appendValues",
       "clearValues",
       "batchGetValues",
       "batchUpdateValues",
-      "batchClearValues",
-      "validateAccessToken",
-      "refreshAccessToken"
+      "batchClearValues"
     ],
-    "description": "The full README for the Google Sheets SDK",
-    "all_readmes": []
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/createGoogleSheetsSdk.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createGoogleSheetsSdk",
+        "description": "Creates an instance of the Google Sheets SDK. The constructor initializes the SDK with the provided configuration and sets up the necessary components for interacting with the Google Sheets API."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken",
+        "description": "Validates the access token and refreshes it if necessary."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken",
+        "description": "Refreshes the access token."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/getValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getValues",
+        "description": "Gets values from a range in a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/updateValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "updateValues",
+        "description": "Updates values in a range of a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/appendValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "appendValues",
+        "description": "Appends values to a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/clearValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "clearValues",
+        "description": "Clears values from a range in a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/batchGetValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchGetValues",
+        "description": "Batch gets values from multiple ranges in a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/batchUpdateValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchUpdateValues",
+        "description": "Batch updates values in multiple ranges of a Google Sheet."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/docs/batchClearValues.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchClearValues",
+        "description": "Batch clears values from multiple ranges in a Google Sheet."
+      }
+    ]
   },
   "constructors": [
     {
@@ -44,22 +116,22 @@
         {
           "key": "GOOGLE_CLIENT_ID",
           "displayName": "Google Client ID",
-          "description": "The client ID for Google OAuth authentication. You can obtain this from the Google Cloud Console."
+          "description": "The client ID for Google OAuth.  You can obtain this from the Google Cloud Console."
         },
         {
           "key": "GOOGLE_CLIENT_SECRET",
           "displayName": "Google Client Secret",
-          "description": "The client secret for Google OAuth authentication. You can obtain this from the Google Cloud Console."
+          "description": "The client secret for Google OAuth. You can obtain this from the Google Cloud Console."
         },
         {
           "key": "GOOGLE_ACCESS_TOKEN",
           "displayName": "Google Access Token",
-          "description": "The access token for Google OAuth authentication. This is obtained after the OAuth flow and should be kept secure."
+          "description": "The access token for Google OAuth. This token is used to authenticate requests to the Google Sheets API."
         },
         {
           "key": "GOOGLE_REFRESH_TOKEN",
           "displayName": "Google Refresh Token",
-          "description": "The refresh token for Google OAuth authentication. This is used to obtain new access tokens when they expire."
+          "description": "The refresh token for Google OAuth. This token is used to refresh the access token when it expires."
         },
         {
           "key": "SCOPES",
@@ -71,15 +143,15 @@
         }
       ],
       "functionalities": [
+        "validateAccessToken",
+        "refreshAccessToken",
         "getValues",
         "updateValues",
         "appendValues",
         "clearValues",
         "batchGetValues",
         "batchUpdateValues",
-        "batchClearValues",
-        "validateAccessToken",
-        "refreshAccessToken"
+        "batchClearValues"
       ]
     }
   ],
@@ -89,7 +161,7 @@
       "constructors": [
         "createGoogleSheetsSdk"
       ],
-      "description": "The client ID for Google OAuth authentication. You can obtain this from the Google Cloud Console.",
+      "description": "The client ID for Google OAuth.  You can obtain this from the Google Cloud Console.",
       "required": true
     },
     {
@@ -97,7 +169,7 @@
       "constructors": [
         "createGoogleSheetsSdk"
       ],
-      "description": "The client secret for Google OAuth authentication. You can obtain this from the Google Cloud Console.",
+      "description": "The client secret for Google OAuth. You can obtain this from the Google Cloud Console.",
       "required": true
     },
     {
@@ -105,7 +177,7 @@
       "constructors": [
         "createGoogleSheetsSdk"
       ],
-      "description": "The access token for Google OAuth authentication. This is obtained after the OAuth flow and should be kept secure.",
+      "description": "The access token for Google OAuth. This token is used to authenticate requests to the Google Sheets API.",
       "required": true
     },
     {
@@ -113,7 +185,7 @@
       "constructors": [
         "createGoogleSheetsSdk"
       ],
-      "description": "The refresh token for Google OAuth authentication. This is used to obtain new access tokens when they expire.",
+      "description": "The refresh token for Google OAuth. This token is used to refresh the access token when it expires.",
       "required": true
     }
   ],
