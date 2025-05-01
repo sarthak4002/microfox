@@ -18,6 +18,8 @@ Retrieves a list of recurring audience lists.
 
 ```typescript
 // Example: List recurring audience lists
-const response = await sdk.listRecurringAudienceLists('properties/<propertyId>');
+const response = await sdk.listRecurringAudienceLists(
+  'properties/<propertyId>',
+);
 console.log(response);
 ```

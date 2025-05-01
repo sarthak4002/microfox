@@ -6,6 +6,7 @@ Retrieves search suggestions from the Brave Search API.
 Gets search suggestions for a given query and optional parameters.
 
 **Parameters:**
+
 - `params`: object<SuggestSearchParams> - Required. Suggest search parameters.
   - `q`: string - Required. The search query (maximum 400 characters).
   - `country`: string - Optional. Two-letter country code (e.g., "US").
@@ -14,9 +15,11 @@ Gets search suggestions for a given query and optional parameters.
   - `rich`: boolean - Optional. Whether to include rich suggestions.
 
 **Return Value:**
+
 - `Promise<any>` - A promise that resolves to the search suggestions.
 
 **Examples:**
+
 ```typescript
 // Example 1: Minimal usage
 const suggestions = await braveSDK.getSuggestions({ q: 'brave' });
@@ -27,6 +30,6 @@ const suggestions = await braveSDK.getSuggestions({
   country: 'JP',
   lang: 'ja',
   count: 15,
-  rich: true
+  rich: true,
 });
 ```

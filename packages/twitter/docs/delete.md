@@ -6,9 +6,11 @@ Deletes a tweet by its ID.
 Removes a specific tweet from X.
 
 **Parameters:**
+
 - `id`: string - The ID of the tweet to delete. **Required**.
 
 **Return Value:**
+
 - `Promise<TweetDeleteResponse>` - A promise that resolves to the deletion confirmation.
   - `data`: object - An object indicating whether the tweet was deleted.
     - `deleted`: boolean - True if the tweet was deleted, false otherwise.
@@ -19,6 +21,7 @@ Removes a specific tweet from X.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Delete a tweet by ID
 const result = await x.tweets.delete('1234567890');

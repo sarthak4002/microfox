@@ -6,6 +6,7 @@ Registers a command handler.
 Registers a function to handle a specific slash command.
 
 **Parameters:**
+
 - `guildId`: string - The ID of the guild to register the command in.
 - `command`: object<DiscordCommandHandlerSchema> - The command handler data.
   - `name`: string - The name of the command.
@@ -21,12 +22,15 @@ Registers a function to handle a specific slash command.
 A `Promise` that resolves when the command is registered.
 
 **Examples:**
+
 ```typescript
 await discordSdk.registerCommand('1234567890', {
   name: 'test',
   description: 'Test command',
   handler: async (interaction, options) => {
-    await discordSdk.respondToInteraction(interaction.token, { content: 'Command executed!' });
-  }
+    await discordSdk.respondToInteraction(interaction.token, {
+      content: 'Command executed!',
+    });
+  },
 });
 ```

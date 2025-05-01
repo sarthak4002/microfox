@@ -9,6 +9,7 @@ Checks if the current access token is valid.
 None
 
 **Return Value:**
+
 - `Promise<void>`
   - Resolves if the access token is valid.
   - Rejects with an error if the access token is invalid or if validation fails.

@@ -12,7 +12,7 @@ npm install @microfox/aws-ses
 
 The following environment variables are used by this SDK:
 
-- `AWS_ACCESS_KEY_ID`: The AWS access key ID.  Used to authenticate with AWS SES. (Required)
+- `AWS_ACCESS_KEY_ID`: The AWS access key ID. Used to authenticate with AWS SES. (Required)
 - `AWS_SECRET_ACCESS_KEY`: The AWS secret access key. Used to authenticate with AWS SES. (Required)
 
 ## Additional Information

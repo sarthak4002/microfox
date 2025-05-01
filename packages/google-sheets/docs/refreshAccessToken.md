@@ -9,6 +9,7 @@ Uses the refresh token to obtain a new access token.
 None
 
 **Return Value:**
+
 - `Promise<void>` - A promise that resolves when the access token has been refreshed.
 
 **Examples:**

@@ -6,10 +6,12 @@ Retrieves the currently authenticated user.
 Fetches the user associated with the provided access token.
 
 **Parameters:**
+
 - `options`: object (optional) - Additional options.
   - `expansions`: array<string> (optional) - An array of expansions to include in the response.
 
 **Return Value:**
+
 - `Promise<UserLookupResponse>` - A promise that resolves to the user data.
   - `data`: User - The authenticated user's data.
     - `id`: string - The unique identifier of the user.
@@ -35,6 +37,7 @@ Fetches the user associated with the provided access token.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Get the authenticated user
 const me = await x.users.getMe();

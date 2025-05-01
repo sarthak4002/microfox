@@ -6,9 +6,11 @@ Queries search analytics data for a site.
 Retrieves search analytics data for a verified site, such as clicks, impressions, CTR, and position.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site.
 - `params`: `SearchAnalyticsQueryParams` (required)
+
   - An object containing the query parameters for the search analytics request.
 
   **`SearchAnalyticsQueryParams` Type:**
@@ -48,10 +50,13 @@ Retrieves search analytics data for a verified site, such as clicks, impressions
     - Possible values: `auto`, `byPage`, `byProperty`
 
 **Return Value:**
+
 - `Promise<{ rows: SearchAnalyticsRow[]; responseAggregationType: string }>`
+
   - An object containing the search analytics data.
 
   - `rows`: `SearchAnalyticsRow[]`
+
     - An array of `SearchAnalyticsRow` objects, each representing a row of data.
 
     **`SearchAnalyticsRow` Type:**

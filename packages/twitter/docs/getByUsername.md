@@ -6,11 +6,13 @@ Retrieves a single user by their username.
 Fetches a specific user from X using their username.
 
 **Parameters:**
+
 - `username`: string - The username of the user to retrieve. **Required**.
 - `options`: object (optional) - Additional options.
   - `expansions`: array<string> (optional) - An array of expansions to include in the response.
 
 **Return Value:**
+
 - `Promise<UserLookupResponse>` - A promise that resolves to the user data.
   - `data`: User - The user data if found.
     - `id`: string - The unique identifier of the user.
@@ -36,6 +38,7 @@ Fetches a specific user from X using their username.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Get a user by username
 const user = await x.users.getByUsername('elonmusk');

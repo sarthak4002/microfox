@@ -6,6 +6,7 @@ Creates a new instance of the Microfox X SDK for interacting with the X (formerl
 Initializes a new X SDK client with the provided configuration.
 
 **Parameters:**
+
 - `config`: XSDKConfig - An object containing the API credentials and configuration options.
   - `apiKey`: string - Your X API key. **Required**.
   - `apiSecret`: string - Your X API secret key. **Required**.
@@ -13,6 +14,7 @@ Initializes a new X SDK client with the provided configuration.
   - `accessSecret`: string - Your X access token secret. **Required**.
 
 **Return Value:**
+
 - `XSDK` - An instance of the X SDK client.
 
 **Examples:**

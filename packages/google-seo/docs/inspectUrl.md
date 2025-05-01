@@ -6,7 +6,9 @@ Inspects a URL.
 Requests an inspection of a URL and retrieves the inspection results.
 
 **Parameters:**
+
 - `params`: `UrlInspectionParams` (required)
+
   - An object containing the parameters for the URL inspection request.
 
   **`UrlInspectionParams` Type:**
@@ -27,7 +29,9 @@ Requests an inspection of a URL and retrieves the inspection results.
     - The language code of the inspected URL.
 
 **Return Value:**
+
 - `Promise<UrlInspectionResult>`
+
   - An object containing the URL inspection results.
 
   **`UrlInspectionResult` Type:**

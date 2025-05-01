@@ -6,6 +6,7 @@ Creates a new role in the guild.
 Adds a new role to the specified guild.
 
 **Parameters:**
+
 - `guildId`: string - The ID of the guild to create the role in.
 - `data`: object<DiscordRoleSchema> - The role data.
   - `id`: string - The role ID.
@@ -22,6 +23,7 @@ Adds a new role to the specified guild.
 A `Promise` that resolves to the created role object.
 
 **Examples:**
+
 ```typescript
 await discordSdk.createRole('1234567890', {
   id: '9876543210',
@@ -31,6 +33,6 @@ await discordSdk.createRole('1234567890', {
   position: 2,
   permissions: '2147483647',
   mentionable: true,
-  managed: false
+  managed: false,
 });
 ```

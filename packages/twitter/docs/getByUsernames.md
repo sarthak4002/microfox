@@ -6,11 +6,13 @@ Retrieves multiple users by their usernames.
 Fetches multiple users from X using their usernames.
 
 **Parameters:**
+
 - `usernames`: array<string> - An array of usernames to retrieve. **Required**. Must contain between 1 and 100 usernames.
 - `options`: object (optional) - Additional options.
   - `expansions`: array<string> (optional) - An array of expansions to include in the response.
 
 **Return Value:**
+
 - `Promise<MultipleUsersLookupResponse>` - A promise that resolves to the users data.
   - `data`: array<User> - An array of user objects.
     - `id`: string - The unique identifier of the user.
@@ -36,6 +38,7 @@ Fetches multiple users from X using their usernames.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Get multiple users by usernames
 const users = await x.users.getByUsernames(['elonmusk', 'billgates']);

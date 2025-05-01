@@ -6,13 +6,16 @@ Lists all sitemaps submitted for a site.
 Retrieves a list of all sitemaps submitted for a verified site.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site.
 - `sitemapIndex`: `string` (optional)
   - If specified, only sitemaps with this index will be returned.
 
 **Return Value:**
+
 - `Promise<SitemapResource[]>`
+
   - An array of `SitemapResource` objects, each representing a submitted sitemap.
 
   **`SitemapResource` Type:**
@@ -64,7 +67,10 @@ try {
 
 // List sitemaps with a specific index
 try {
-  const sitemaps = await sdk.listSitemaps('https://www.example.com/', 'sitemap_index.xml');
+  const sitemaps = await sdk.listSitemaps(
+    'https://www.example.com/',
+    'sitemap_index.xml',
+  );
   console.log('Sitemaps:', sitemaps);
 } catch (error) {
   console.error('Failed to list sitemaps:', error.message);

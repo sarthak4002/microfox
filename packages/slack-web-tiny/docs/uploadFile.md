@@ -6,13 +6,16 @@ Uploads a file to Slack.
 Shares a file in a Slack channel or conversation.
 
 **Parameters:**
+
 - `file`: object<FileUpload>
   - An object containing the file upload details.
 
 **Return Value:**
+
 - `Promise<FileUploadResponse>`: A promise that resolves to the Slack API response.
 
 **FileUpload Type:**
+
 ```typescript
 export interface FileUpload {
   channels?: string; // Comma-separated channel IDs (optional)
@@ -26,6 +29,7 @@ export interface FileUpload {
 ```
 
 **FileUploadResponse Type:**
+
 ```typescript
 export interface FileUploadResponse {
   ok: boolean; // Success indicator
@@ -39,6 +43,7 @@ export interface FileUploadResponse {
 ```
 
 **Examples:**
+
 ```typescript
 // Example: Uploading a file from text content
 const uploadResponse = await sdk.uploadFile({

@@ -6,6 +6,7 @@ Performs a news search using the Brave Search API.
 Retrieves news search results for a given query and optional parameters.
 
 **Parameters:**
+
 - `params`: object<NewsSearchParams> - Required. News search parameters.
   - `q`: string - Required. The search query (maximum 400 characters).
   - `country`: string - Optional. Two-letter country code (e.g., "US").
@@ -19,9 +20,11 @@ Retrieves news search results for a given query and optional parameters.
   - `extra_snippets`: boolean - Optional. Whether to include extra snippets.
 
 **Return Value:**
+
 - `Promise<any>` - A promise that resolves to the news search results.
 
 **Examples:**
+
 ```typescript
 // Example 1: Minimal usage
 const results = await braveSDK.newsSearch({ q: 'world news' });
@@ -37,6 +40,6 @@ const results = await braveSDK.newsSearch({
   spellcheck: false,
   safesearch: 'moderate',
   freshness: 'pd',
-  extra_snippets: true
+  extra_snippets: true,
 });
 ```

@@ -33,13 +33,13 @@ Store your client ID, client secret, and redirect URI securely. Never commit the
 
 Set up environment variables for your credentials:
 
-  - GOOGLE_ANALYTICS_CLIENT_ID
+- GOOGLE_ANALYTICS_CLIENT_ID
 
-  - GOOGLE_ANALYTICS_CLIENT_SECRET
+- GOOGLE_ANALYTICS_CLIENT_SECRET
 
-  - GOOGLE_ANALYTICS_REDIRECT_URI
+- GOOGLE_ANALYTICS_REDIRECT_URI
 
-  - GOOGLE_ANALYTICS_ACCESS_TOKEN
+- GOOGLE_ANALYTICS_ACCESS_TOKEN
 
 Obtain an access token using the OAuth 2.0 flow. You can use the @microfox/google-oauth package to handle the OAuth process.
 

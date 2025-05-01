@@ -6,10 +6,12 @@ Deletes a site from the list of verified sites.
 Removes a site from Google Search Console.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site to delete.
 
 **Return Value:**
+
 - `Promise<void>`
   - Resolves if the site is successfully deleted.
   - Rejects with an error if the deletion fails.

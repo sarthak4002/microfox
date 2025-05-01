@@ -12,7 +12,7 @@ npm install @microfox/brave
 
 The following environment variables are used by this SDK:
 
-- `BRAVE_API_KEY`: Your Brave Search API key.  You can obtain this key from the Brave Search API developer portal. (Required)
+- `BRAVE_API_KEY`: Your Brave Search API key. You can obtain this key from the Brave Search API developer portal. (Required)
 
 ## Additional Information
 

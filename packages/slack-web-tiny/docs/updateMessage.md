@@ -6,13 +6,16 @@ Updates an existing message in a Slack channel.
 Modifies the content of a previously sent message.
 
 **Parameters:**
+
 - `message`: object<UpdateMessage>
   - An object containing the updated message data.
 
 **Return Value:**
+
 - `Promise<SlackMessageResponse>`: A promise that resolves to the Slack API response.
 
 **UpdateMessage Type:**
+
 ```typescript
 export interface UpdateMessage {
   channel: string; // Channel ID
@@ -25,6 +28,7 @@ export interface UpdateMessage {
 ```
 
 **SlackMessageResponse Type:**
+
 ```typescript
 export interface SlackMessageResponse {
   ok: boolean; // Success indicator
@@ -37,6 +41,7 @@ export interface SlackMessageResponse {
 ```
 
 **Examples:**
+
 ```typescript
 // Example: Updating message text
 const updateResponse = await sdk.updateMessage({

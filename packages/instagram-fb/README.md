@@ -1,6 +1,6 @@
 # Instagram SDK
 
-A TypeScript SDK for interacting with the Instagram API using OAuth 2.0.  This package simplifies authentication and data access.
+A TypeScript SDK for interacting with the Instagram API using OAuth 2.0. This package simplifies authentication and data access.
 
 ## Installation
 

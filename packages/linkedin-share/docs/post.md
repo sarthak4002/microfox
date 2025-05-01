@@ -52,20 +52,24 @@ await linkedinShare.post({ text: 'Hello LinkedIn!' });
 await linkedinShare.post({
   text: 'Check out this article!',
   mediaCategory: 'ARTICLE',
-  media: [{
-    url: 'https://example.com/article',
-    title: 'Amazing Article',
-    description: 'This is a must-read article'
-  }]
+  media: [
+    {
+      url: 'https://example.com/article',
+      title: 'Amazing Article',
+      description: 'This is a must-read article',
+    },
+  ],
 });
 
 // Image share
 await linkedinShare.post({
   text: 'Check out this image!',
   mediaCategory: 'IMAGE',
-  media: [{
-    url: 'https://example.com/image.jpg',
-    title: 'My Image'
-  }]
+  media: [
+    {
+      url: 'https://example.com/image.jpg',
+      title: 'My Image',
+    },
+  ],
 });
 ```

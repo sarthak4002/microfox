@@ -6,11 +6,14 @@ Retrieves information about a specific site.
 Gets detailed information about a verified site.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site to retrieve information for.
 
 **Return Value:**
+
 - `Promise<SitesResource>`
+
   - A `SitesResource` object containing information about the site.
 
   **`SitesResource` Type:**

@@ -6,10 +6,12 @@ Refreshes the access token using a refresh token.
 Obtains a new access token using the provided refresh token.
 
 **Parameters:**
+
 - `refreshToken`: `string` (required)
   - The refresh token obtained during the OAuth 2.0 flow.
 
 **Return Value:**
+
 - `Promise<void>`
   - Resolves if the access token is successfully refreshed.
   - Rejects with an error if the refresh fails.

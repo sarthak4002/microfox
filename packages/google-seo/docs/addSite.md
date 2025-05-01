@@ -6,10 +6,12 @@ Adds a site to the list of verified sites.
 Verifies ownership of a site and adds it to Google Search Console.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site to add.
 
 **Return Value:**
+
 - `Promise<void>`
   - Resolves if the site is successfully added.
   - Rejects with an error if the addition fails.

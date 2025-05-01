@@ -6,6 +6,7 @@ Registers a slash command for the bot.
 Creates a new slash command that can be used in a specific guild.
 
 **Parameters:**
+
 - `guildId`: string - The ID of the guild to register the command in.
 - `command`: object<DiscordSlashCommandSchema> - An object defining the command's properties.
   - `name`: string - The name of the command.
@@ -26,6 +27,7 @@ Creates a new slash command that can be used in a specific guild.
 A `Promise` that resolves to the registered command object.
 
 **Examples:**
+
 ```typescript
 await discordSdk.registerSlashCommand('1234567890', {
   name: 'ping',
@@ -40,8 +42,8 @@ await discordSdk.registerSlashCommand('1234567890', {
       name: 'user',
       description: 'The user to greet',
       type: 6, // USER
-      required: true
-    }
-  ]
+      required: true,
+    },
+  ],
 });
 ```

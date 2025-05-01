@@ -24,6 +24,6 @@ const sdk = new LinkedInDataPortabilitySDK({
   clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
   redirectUri: process.env.LINKEDIN_REDIRECT_URI,
   accessToken: process.env.LINKEDIN_ACCESS_TOKEN,
-  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN
+  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN,
 });
 ```

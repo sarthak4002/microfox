@@ -6,6 +6,7 @@ Performs a web search using the Brave Search API.
 Retrieves web search results for a given query and optional parameters.
 
 **Parameters:**
+
 - `params`: object<WebSearchParams> - Required. Web search parameters.
   - `q`: string - Required. The search query (maximum 400 characters).
   - `country`: string - Optional. Two-letter country code (e.g., "US").
@@ -19,9 +20,11 @@ Retrieves web search results for a given query and optional parameters.
   - `spellcheck`: boolean - Optional. Whether to enable spellcheck.
 
 **Return Value:**
+
 - `Promise<any>` - A promise that resolves to the web search results.
 
 **Examples:**
+
 ```typescript
 // Example 1: Minimal usage
 const results = await braveSDK.webSearch({ q: 'test' });
@@ -37,6 +40,6 @@ const results = await braveSDK.webSearch({
   safesearch: 'moderate',
   freshness: 'pw',
   text_decorations: true,
-  spellcheck: true
+  spellcheck: true,
 });
 ```

@@ -6,6 +6,7 @@ Sends a message to a specified channel or user.
 This function allows you to send messages to either a specific channel using `channelId` or directly to a user using `userId`. You can send text messages, embed images/links using `fileUrl` or rich embeds using the `embed` object.
 
 **Parameters:**
+
 - `data`: object<MessageSchema>
   - `content`: string (optional) - The text content of the message.
   - `userId`: string (optional) - The ID of the user to send a direct message to. If provided, `channelId` is ignored and a new DM channel is created.
@@ -21,15 +22,25 @@ This function allows you to send messages to either a specific channel using `ch
 A `Promise` that resolves to the sent message object.
 
 **Examples:**
+
 ```typescript
 // Example 1: Send a simple text message to a channel
-await discordSdk.sendMessage({ channelId: '1234567890', content: 'Hello, world!' });
+await discordSdk.sendMessage({
+  channelId: '1234567890',
+  content: 'Hello, world!',
+});
 
 // Example 2: Send a direct message to a user
-await discordSdk.sendMessage({ userId: '9876543210', content: 'This is a DM!' });
+await discordSdk.sendMessage({
+  userId: '9876543210',
+  content: 'This is a DM!',
+});
 
 // Example 3: Send a message with an embedded image
-await discordSdk.sendMessage({ channelId: '1234567890', fileUrl: 'https://example.com/image.png' });
+await discordSdk.sendMessage({
+  channelId: '1234567890',
+  fileUrl: 'https://example.com/image.png',
+});
 
 // Example 4: Send a message with a rich embed
 await discordSdk.sendMessage({
@@ -38,7 +49,7 @@ await discordSdk.sendMessage({
     title: 'Embed Title',
     description: 'This is a rich embed.',
     color: 16711680,
-    image: 'https://example.com/image.png'
-  }
+    image: 'https://example.com/image.png',
+  },
 });
 ```

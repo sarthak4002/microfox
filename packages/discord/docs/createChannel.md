@@ -6,6 +6,7 @@ Creates a new channel in the guild.
 Adds a new channel to the specified guild.
 
 **Parameters:**
+
 - `guildId`: string - The ID of the guild to create the channel in.
 - `data`: object<DiscordChannelSchema> - The channel data.
   - `id`: string - The channel ID.
@@ -26,6 +27,7 @@ Adds a new channel to the specified guild.
 A `Promise` that resolves to the created channel object.
 
 **Examples:**
+
 ```typescript
 await discordSdk.createChannel('1234567890', {
   id: '9876543210',

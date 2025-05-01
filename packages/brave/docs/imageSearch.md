@@ -6,6 +6,7 @@ Performs an image search using the Brave Search API.
 Retrieves image search results for a given query and optional parameters.
 
 **Parameters:**
+
 - `params`: object<ImageSearchParams> - Required. Image search parameters.
   - `q`: string - Required. The search query (maximum 400 characters).
   - `country`: string - Optional. Two-letter country code (e.g., "US").
@@ -15,9 +16,11 @@ Retrieves image search results for a given query and optional parameters.
   - `spellcheck`: boolean - Optional. Whether to enable spellcheck.
 
 **Return Value:**
+
 - `Promise<any>` - A promise that resolves to the image search results.
 
 **Examples:**
+
 ```typescript
 // Example 1: Minimal usage
 const results = await braveSDK.imageSearch({ q: 'cat' });
@@ -29,6 +32,6 @@ const results = await braveSDK.imageSearch({
   search_lang: 'fr',
   count: 50,
   safesearch: 'strict',
-  spellcheck: false
+  spellcheck: false,
 });
 ```

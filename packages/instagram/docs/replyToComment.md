@@ -15,5 +15,7 @@ Replies to a comment.
 **Examples:**
 
 ```typescript
-const replyId = await instagramSDK.replyToComment('<commentId>', { message: 'This is my reply' });
+const replyId = await instagramSDK.replyToComment('<commentId>', {
+  message: 'This is my reply',
+});
 ```

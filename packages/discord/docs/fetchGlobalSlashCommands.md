@@ -12,6 +12,7 @@ None
 A `Promise` that resolves to an array of slash command objects.
 
 **Examples:**
+
 ```typescript
 const commands = await discordSdk.fetchGlobalSlashCommands();
 ```

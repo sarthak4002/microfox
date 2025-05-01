@@ -6,13 +6,16 @@ Sends a message to a Slack channel.
 Posts a message to a specified Slack channel.
 
 **Parameters:**
+
 - `message`: object<SlackMessage>
   - An object representing the message to be sent.
 
 **Return Value:**
+
 - `Promise<SlackMessageResponse>`: A promise that resolves to the Slack API response.
 
 **SlackMessage Type:**
+
 ```typescript
 export interface SlackMessage {
   channel: string; // Channel ID or name
@@ -26,6 +29,7 @@ export interface SlackMessage {
 ```
 
 **SlackMessageResponse Type:**
+
 ```typescript
 export interface SlackMessageResponse {
   ok: boolean; // Success indicator
@@ -38,6 +42,7 @@ export interface SlackMessageResponse {
 ```
 
 **Examples:**
+
 ```typescript
 // Example 1: Simple message
 const response1 = await sdk.sendMessage({

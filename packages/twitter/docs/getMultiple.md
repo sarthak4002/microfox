@@ -6,11 +6,13 @@ Retrieves multiple tweets by their IDs.
 Fetches multiple tweets from X in a single request.
 
 **Parameters:**
+
 - `ids`: array<string> - An array of tweet IDs to retrieve. **Required**. Must contain between 1 and 100 IDs.
 - `options`: object (optional) - Additional options.
   - `expansions`: array<string> (optional) - An array of expansions to include in the response.
 
 **Return Value:**
+
 - `Promise<TweetLookupResponse>` - A promise that resolves to the tweets data.
   - `data`: TweetResponse - The tweets data.
     - `id`: string - The unique identifier of the tweet.
@@ -25,6 +27,7 @@ Fetches multiple tweets from X in a single request.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Get multiple tweets by IDs
 const tweets = await x.tweets.getMultiple(['1234567890', '9876543210']);

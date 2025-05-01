@@ -6,11 +6,13 @@ Retrieves multiple users by their IDs.
 Fetches multiple users from X using their unique IDs.
 
 **Parameters:**
+
 - `ids`: array<string> - An array of user IDs to retrieve. **Required**. Must contain between 1 and 100 user IDs.
 - `options`: object (optional) - Additional options.
   - `expansions`: array<string> (optional) - An array of expansions to include in the response.
 
 **Return Value:**
+
 - `Promise<MultipleUsersLookupResponse>` - A promise that resolves to the users data.
   - `data`: array<User> - An array of user objects.
     - `id`: string - The unique identifier of the user.
@@ -36,6 +38,7 @@ Fetches multiple users from X using their unique IDs.
     - `type`: string (optional) - The type of the error.
 
 **Examples:**
+
 ```typescript
 // Example: Get multiple users by IDs
 const users = await x.users.getByIds(['1234567890', '9876543210']);

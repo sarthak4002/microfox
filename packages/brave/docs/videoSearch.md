@@ -6,6 +6,7 @@ Performs a video search using the Brave Search API.
 Retrieves video search results for a given query and optional parameters.
 
 **Parameters:**
+
 - `params`: object<VideoSearchParams> - Required. Video search parameters.
   - `q`: string - Required. The search query (maximum 400 characters).
   - `country`: string - Optional. Two-letter country code (e.g., "US").
@@ -18,9 +19,11 @@ Retrieves video search results for a given query and optional parameters.
   - `freshness`: enum<FreshnessOption> | string - Optional. Freshness option. Possible values: "pd", "pw", "pm", "py", or a date range in the format "YYYY-MM-DDtoYYYY-MM-DD".
 
 **Return Value:**
+
 - `Promise<any>` - A promise that resolves to the video search results.
 
 **Examples:**
+
 ```typescript
 // Example 1: Minimal usage
 const results = await braveSDK.videoSearch({ q: 'music' });
@@ -35,6 +38,6 @@ const results = await braveSDK.videoSearch({
   offset: 5,
   spellcheck: true,
   safesearch: 'off',
-  freshness: 'pm'
+  freshness: 'pm',
 });
 ```

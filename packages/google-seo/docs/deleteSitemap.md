@@ -6,12 +6,14 @@ Deletes a sitemap for a site.
 Removes a sitemap from Google Search Console.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site.
 - `feedpath`: `string` (required)
   - The path of the sitemap.
 
 **Return Value:**
+
 - `Promise<void>`
   - Resolves if the sitemap is successfully deleted.
   - Rejects with an error if the deletion fails.

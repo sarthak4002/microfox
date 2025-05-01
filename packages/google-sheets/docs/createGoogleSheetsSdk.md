@@ -6,9 +6,11 @@ Creates an instance of the Google Sheets SDK.
 Initializes a new instance of the `GoogleSheetsSdk` with the provided configuration. This sets up the OAuth2 client and other necessary components for interacting with the Google Sheets API.
 
 **Parameters:**
+
 - `config`: GoogleSheetsSdkConfig - The configuration object for the SDK.
 
 **Return Value:**
+
 - `GoogleSheetsSdk` - An instance of the Google Sheets SDK.
 
 **`GoogleSheetsSdkConfig` Type:**

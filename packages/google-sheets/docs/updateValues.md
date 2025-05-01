@@ -6,10 +6,12 @@ Updates values in a range of a Google Sheet.
 Updates the values in a specified range of a Google Sheet with the provided data.
 
 **Parameters:**
+
 - `input`: UpdateValuesInput - An object containing the range and values to update.
 - `valueInputOption`: ValueInputOption = 'USER_ENTERED' - How the input data should be interpreted. Possible values: 'USER_ENTERED', 'RAW', 'INPUT_VALUE_OPTION_UNSPECIFIED'. Defaults to 'USER_ENTERED'.
 
 **UpdateValuesInput Type:**
+
 ```typescript
 interface UpdateValuesInput {
   range: Range; // The range to update. This is a required field.
@@ -18,6 +20,7 @@ interface UpdateValuesInput {
 ```
 
 **Range Type:**
+
 ```typescript
 interface Range {
   sheetId: string; // The ID of the sheet. This is a required field and should be a valid string.
@@ -26,9 +29,11 @@ interface Range {
 ```
 
 **Return Value:**
+
 - `Promise<ApiResponse>` - A promise that resolves to an object containing information about the update operation.
 
 **ApiResponse Type:**
+
 ```typescript
 interface ApiResponse {
   spreadsheetId: string; // The ID of the spreadsheet. This is a required field and should be a valid string.
@@ -46,7 +51,10 @@ interface ApiResponse {
 // Example usage:
 const response = await sdk.updateValues({
   range: { sheetId: '<sheetId>', range: 'A1:B2' },
-  values: [['new value 1', 'new value 2'], ['new value 3', 'new value 4']],
+  values: [
+    ['new value 1', 'new value 2'],
+    ['new value 3', 'new value 4'],
+  ],
 });
 console.log(response);
 ```

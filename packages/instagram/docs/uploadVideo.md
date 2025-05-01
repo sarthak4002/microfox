@@ -15,5 +15,9 @@ Uploads a video to a media container.
 **Examples:**
 
 ```typescript
-const uploadResponse = await instagramSDK.uploadVideo('<containerId>', new File([''], 'video.mp4'), 0);
+const uploadResponse = await instagramSDK.uploadVideo(
+  '<containerId>',
+  new File([''], 'video.mp4'),
+  0,
+);
 ```

@@ -6,6 +6,7 @@ Responds to a slash command interaction.
 Sends a response back to the user who interacted with a slash command.
 
 **Parameters:**
+
 - `interactionToken`: string - The interaction token received from Discord.
 - `response`: object - The response data.
   - `content`: string (optional) - The text content of the response.
@@ -17,6 +18,9 @@ Sends a response back to the user who interacted with a slash command.
 A `Promise` that resolves when the response is sent.
 
 **Examples:**
+
 ```typescript
-await discordSdk.respondToInteraction('interaction_token', { content: 'Hello from the command handler!' });
+await discordSdk.respondToInteraction('interaction_token', {
+  content: 'Hello from the command handler!',
+});
 ```

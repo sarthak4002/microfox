@@ -9,6 +9,7 @@ Checks if the current access token is valid. If not, it attempts to refresh the 
 None
 
 **Return Value:**
+
 - `Promise<boolean>` - A promise that resolves to `true` if the access token is valid, `false` otherwise.
 
 **Examples:**

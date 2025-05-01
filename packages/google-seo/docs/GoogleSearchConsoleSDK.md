@@ -5,6 +5,7 @@ Initializes a new instance of the Google Search Console SDK.
 **Parameters:**
 
 - `options`: `GoogleSearchConsoleSDKOptions` (required)
+
   - An object containing the necessary options for configuring the SDK.
 
   **`GoogleSearchConsoleSDKOptions` Type:**

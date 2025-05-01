@@ -9,7 +9,9 @@ Retrieves a list of all sites that the authenticated user has verified in Google
 None
 
 **Return Value:**
+
 - `Promise<SitesResource[]>`
+
   - An array of `SitesResource` objects, each representing a verified site.
 
   **`SitesResource` Type:**

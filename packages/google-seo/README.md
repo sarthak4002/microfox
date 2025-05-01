@@ -25,13 +25,13 @@ Enable the Google Search Console API in your Google Cloud project.
 
 Set up the following environment variables:
 
-  - GOOGLE_CLIENT_ID: Your Google OAuth 2.0 client ID
+- GOOGLE_CLIENT_ID: Your Google OAuth 2.0 client ID
 
-  - GOOGLE_CLIENT_SECRET: Your Google OAuth 2.0 client secret
+- GOOGLE_CLIENT_SECRET: Your Google OAuth 2.0 client secret
 
-  - GOOGLE_REDIRECT_URI: The redirect URI you specified in your Google Cloud Console
+- GOOGLE_REDIRECT_URI: The redirect URI you specified in your Google Cloud Console
 
-  - GOOGLE_ACCESS_TOKEN: Your Google OAuth 2.0 access token
+- GOOGLE_ACCESS_TOKEN: Your Google OAuth 2.0 access token
 
 To obtain an access token, you need to go through the OAuth 2.0 flow. You can use the @microfox/google-oauth package to handle this process.
 

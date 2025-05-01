@@ -6,6 +6,7 @@ Creates a new instance of the Discord SDK. This function initializes the SDK wit
 Initializes the Discord SDK with user configuration.
 
 **Parameters:**
+
 - `config`: object<DiscordConfig>
   - `token`: string - The Discord bot token. This is required for authenticating with the Discord API.
 
@@ -13,14 +14,15 @@ Initializes the Discord SDK with user configuration.
 An object containing all the available API methods.
 
 **Examples:**
+
 ```typescript
 // Example 1: Using environment variables
 const discordSdk = createDiscordSdk({
-  token: process.env.DISCORD_BOT_TOKEN
+  token: process.env.DISCORD_BOT_TOKEN,
 });
 
 // Example 2: Providing the token directly
 const discordSdk = createDiscordSdk({
-  token: 'YOUR_DISCORD_BOT_TOKEN'
+  token: 'YOUR_DISCORD_BOT_TOKEN',
 });
 ```

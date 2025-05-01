@@ -6,13 +6,16 @@ Retrieves a specific sitemap.
 Gets detailed information about a submitted sitemap.
 
 **Parameters:**
+
 - `siteUrl`: `string` (required)
   - The URL of the site.
 - `feedpath`: `string` (required)
   - The path of the sitemap.
 
 **Return Value:**
+
 - `Promise<SitemapResource>`
+
   - A `SitemapResource` object containing information about the sitemap.
 
   **`SitemapResource` Type:**
@@ -55,7 +58,10 @@ Gets detailed information about a submitted sitemap.
 
 ```typescript
 try {
-  const sitemap = await sdk.getSitemap('https://www.example.com/', 'sitemap.xml');
+  const sitemap = await sdk.getSitemap(
+    'https://www.example.com/',
+    'sitemap.xml',
+  );
   console.log('Sitemap information:', sitemap);
 } catch (error) {
   console.error('Failed to get sitemap information:', error.message);

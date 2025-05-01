@@ -6,6 +6,7 @@ Creates a new tweet on X.
 Posts a new tweet with the given content and options.
 
 **Parameters:**
+
 - `tweet`: TweetCreate - An object containing the tweet content and options.
   - `text`: string - The text content of the tweet. **Required**.
   - `card_uri`: string (optional) - The URI of a card to attach to the tweet.
@@ -29,6 +30,7 @@ Posts a new tweet with the given content and options.
   - `reply_settings`: "following" | "mentionedUsers" | "subscribers" (optional) - The reply settings for the tweet.
 
 **Return Value:**
+
 - `Promise<TweetResponse>` - A promise that resolves to the created tweet data.
   - `id`: string - The unique identifier of the tweet.
   - `text`: string - The text content of the tweet.
@@ -37,6 +39,7 @@ Posts a new tweet with the given content and options.
   - `edit_history_tweet_ids`: array<string> (optional) - An array of previous tweet IDs.
 
 **Examples:**
+
 ```typescript
 // Example 1: Create a simple tweet
 const newTweet = await x.tweets.create({ text: 'Hello, world!' });
