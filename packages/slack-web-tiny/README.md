@@ -54,7 +54,7 @@ const blockMessage = await slackSDK.sendMessage({
   text: 'Fallback text for notifications',
   blocks: [
     {
-      type: 'section',
+      type: 'section', // only accepts section/image/divider
       text: {
         type: 'mrkdwn',
         text: '*Hello* from Block Kit!',
@@ -64,7 +64,7 @@ const blockMessage = await slackSDK.sendMessage({
       type: 'divider',
     },
     {
-      type: 'section',
+      type: 'section', // only accepts section/image/divider
       accessory: {
         type: 'button',
         text: { type: 'plain_text', text: 'Click me' },
