@@ -1,5 +1,12 @@
 # @microfox/whatsapp-business
 
+## 1.2.2
+
+### Patch Changes
+
+- a3a23da: Changes from PR #146: whatsapp-sdk
+- 6e08bd5: Changes from PR #147: whatsapp-sdk
+
 ## 1.2.1
 
 ### Patch Changes
