@@ -12,6 +12,8 @@ import {
   BusinessProfileSchema,
   BusinessProfileUpdateSchema,
   TemplateDataSchema,
+  TextMessageOptionsSchema,
+  TypingIndicatorOptionsSchema,
   CommerceSettingsSchema,
   MediaUploadSchema,
   PhoneRegistrationSchema,
@@ -26,6 +28,7 @@ import {
   CtaUrlParametersSchema,
   ReceipientTypeSchema,
   MediaObjectSchema,
+  MessageOptionsSchema,
 } from '../schemas';
 
 export type WhatsAppSDKConfig = z.infer<typeof WhatsAppSDKConfigSchema>;
@@ -39,10 +42,16 @@ export type TemplateOptions = z.infer<typeof TemplateOptionsSchema>;
 export type ConversationalAutomation = z.infer<
   typeof ConversationalAutomationSchema
 >;
+export type MessageOptions = z.infer<typeof MessageOptionsSchema>;
 export type RequestOptions = z.infer<typeof RequestOptionsSchema>;
 export type BusinessProfile = z.infer<typeof BusinessProfileSchema>;
 export type BusinessProfileUpdate = z.infer<typeof BusinessProfileUpdateSchema>;
 export type TemplateData = z.infer<typeof TemplateDataSchema>;
+export type TextMessageOptions = z.infer<typeof TextMessageOptionsSchema>;
+
+export type TypingIndicatorOptions = z.infer<
+  typeof TypingIndicatorOptionsSchema
+>;
 export type CommerceSettings = z.infer<typeof CommerceSettingsSchema>;
 export type MediaUpload = z.infer<typeof MediaUploadSchema>;
 export type PhoneRegistration = z.infer<typeof PhoneRegistrationSchema>;

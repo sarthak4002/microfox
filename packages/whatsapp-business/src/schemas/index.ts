@@ -22,6 +22,27 @@ export const WhatsAppSDKConfigSchema = z.object({
     .describe('The access token for WhatsApp Business API'),
 });
 
+// Receipient Type Schema
+export const ReceipientTypeSchema = z.enum(['individual', 'group']);
+
+// Message Options Schema
+export const MessageOptionsSchema = z
+  .object({
+    recipientType: ReceipientTypeSchema.describe('The type of recipient'),
+  })
+  .describe('The options for the message');
+
+// Text Message Options Schema
+export const TextMessageOptionsSchema = MessageOptionsSchema.extend({
+  previewUrl: z.boolean().optional().describe('Whether to show a preview URL'),
+});
+
+// Typing Indicator Options Schema
+export const TypingIndicatorOptionsSchema = z.object({
+  messageId: z.string().describe('ID of the message to mark as read'),
+  type: z.enum(['text']).optional().describe('Type of typing indicator'),
+});
+
 // Context schema for message replies
 export const ContextSchema = z.object({
   message_id: z
@@ -568,9 +589,6 @@ export const PhoneRegistrationSchema = z.object({
   messaging_product: z.literal('whatsapp').describe('Messaging product type'),
   pin: z.string().min(4).max(6).describe('PIN code for registration'),
 });
-
-// Receipient Type Schema
-export const ReceipientTypeSchema = z.enum(['individual', 'group']);
 
 // Response schemas
 export const ApiResponseSchema = z.object({
