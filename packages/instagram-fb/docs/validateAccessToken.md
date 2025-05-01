@@ -1,18 +1,26 @@
-## validateAccessToken()
+## Function: `validateAccessToken`
 
-Validates the current access token.
+Validates the access token by attempting to retrieve the Instagram Business Account.
 
-**Throws:**
+**Purpose:**
 
-- `Error`: If the access token is invalid.
+Checks if the provided access token is valid.
 
-**Example:**
+**Parameters:**
+
+None
+
+**Return Value:**
+
+- `Promise<void>`: Resolves if the access token is valid, rejects otherwise.
+
+**Examples:**
 
 ```typescript
 try {
   await sdk.validateAccessToken();
   console.log('Access token is valid');
 } catch (error) {
-  console.error('Access token is invalid:', error);
+  console.error('Invalid access token:', error.message);
 }
 ```

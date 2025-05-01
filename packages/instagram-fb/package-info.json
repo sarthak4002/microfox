@@ -3,7 +3,10 @@
   "title": "Instagram SDK",
   "description": "A TypeScript SDK for interacting with the Instagram API using OAuth 2.0.  This package simplifies authentication and data access.",
   "path": "packages/instagram-fb",
-  "dependencies": ["zod"],
+  "dependencies": [
+    "@microfox/instagram-fb-business-oauth",
+    "zod"
+  ],
   "status": "stable",
   "authEndpoint": "/connect/instagram-fb-business-oauth",
   "oauth2Scopes": [
@@ -17,99 +20,186 @@
   "documentation": "https://www.npmjs.com/package/@microfox/instagram-fb",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg",
   "readme_map": {
-    "title": "@microfox/@microfox/instagram-fb README",
+    "title": "Instagram SDK",
     "description": "The full README for the Instagram SDK",
-    "path": "/README.md",
-    "all_readmes": [
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/createInstagramSDK.md",
-        "type": "constructor",
-        "extension": "md",
-        "functionality": "createInstagramSDK"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/validateAccessToken.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "validateAccessToken"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/refreshAccessToken.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "refreshAccessToken"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/createMediaContainer.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "createMediaContainer"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/publishMedia.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "publishMedia"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/getComments.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getComments"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/packages/instagram-fb/docs/getOEmbed.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getOEmbed"
-      }
-    ],
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/README.md",
     "functionalities": [
-      "createInstagramSDK",
+      "InstagramSDK",
       "validateAccessToken",
-      "refreshAccessToken",
       "createMediaContainer",
       "publishMedia",
+      "checkMediaStatus",
+      "getContentPublishingLimit",
+      "uploadVideo",
       "getComments",
+      "replyToComment",
+      "hideComment",
+      "enableDisableComments",
+      "deleteComment",
+      "sendPrivateReply",
+      "getMediaInsights",
+      "getAccountInsights",
       "getOEmbed"
+    ],
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/InstagramSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "InstagramSDK",
+        "description": "Initializes a new instance of the InstagramSDK."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/validateAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "validateAccessToken",
+        "description": "Validates the access token."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/createMediaContainer.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createMediaContainer",
+        "description": "Creates a media container."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/publishMedia.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "publishMedia",
+        "description": "Publishes media."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/checkMediaStatus.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "checkMediaStatus",
+        "description": "Checks the status of media."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/getContentPublishingLimit.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getContentPublishingLimit",
+        "description": "Gets the content publishing limit."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/uploadVideo.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "uploadVideo",
+        "description": "Uploads a video."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/getComments.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getComments",
+        "description": "Gets comments on a media object."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/replyToComment.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "replyToComment",
+        "description": "Replies to a comment."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/hideComment.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "hideComment",
+        "description": "Hides or unhides a comment."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/enableDisableComments.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "enableDisableComments",
+        "description": "Enables or disables comments on a media object."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/deleteComment.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteComment",
+        "description": "Deletes a comment."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/sendPrivateReply.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "sendPrivateReply",
+        "description": "Sends a private reply to a comment."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/getMediaInsights.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMediaInsights",
+        "description": "Gets insights for a media object."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/getAccountInsights.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAccountInsights",
+        "description": "Gets insights for an account."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/docs/getOEmbed.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getOEmbed",
+        "description": "Gets oEmbed data for a URL."
+      }
     ]
   },
   "constructors": [
     {
-      "name": "createInstagramSDK",
+      "name": "InstagramSDK",
       "description": "Create a new Instagram SDK client through which you can interact with the API",
       "auth": "oauth2",
-      "authSdk": "@microfox/instagram-fb-business-oauth",
       "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {
           "key": "INSTAGRAM_CLIENT_ID",
           "displayName": "Instagram Client ID",
-          "description": "Your Facebook App ID. Obtain this from your Facebook Developer account after creating an app."
+          "description": "Your Facebook App ID. Obtain this from your Facebook Developer account."
         },
         {
           "key": "INSTAGRAM_CLIENT_SECRET",
           "displayName": "Instagram Client Secret",
-          "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account after creating an app."
+          "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account."
         },
         {
           "key": "INSTAGRAM_REDIRECT_URI",
           "displayName": "Instagram Redirect URI",
-          "description": "Your OAuth callback URL. This is the URL where users will be redirected after authorizing your app."
+          "description": "Your OAuth callback URL. This is the URL where Facebook will redirect the user after authorization."
         },
         {
           "key": "INSTAGRAM_ACCESS_TOKEN",
           "displayName": "Instagram Access Token",
-          "description": "A valid access token for the Instagram Graph API. Obtain this by implementing the OAuth 2.0 flow in your application."
+          "description": "A valid access token for the Instagram Graph API. Obtain this through the OAuth flow."
         }
       ],
       "functionalities": [
         "validateAccessToken",
-        "refreshAccessToken",
         "createMediaContainer",
         "publishMedia",
+        "checkMediaStatus",
+        "getContentPublishingLimit",
+        "uploadVideo",
         "getComments",
+        "replyToComment",
+        "hideComment",
+        "enableDisableComments",
+        "deleteComment",
+        "sendPrivateReply",
+        "getMediaInsights",
+        "getAccountInsights",
         "getOEmbed"
       ]
     }
@@ -117,26 +207,34 @@
   "keysInfo": [
     {
       "key": "INSTAGRAM_CLIENT_ID",
-      "constructors": ["createInstagramSDK"],
-      "description": "Your Facebook App ID. Obtain this from your Facebook Developer account after creating an app.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "Your Facebook App ID. Obtain this from your Facebook Developer account.",
       "required": true
     },
     {
       "key": "INSTAGRAM_CLIENT_SECRET",
-      "constructors": ["createInstagramSDK"],
-      "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account after creating an app.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "Your Facebook App Secret. Obtain this from your Facebook Developer account.",
       "required": true
     },
     {
       "key": "INSTAGRAM_REDIRECT_URI",
-      "constructors": ["createInstagramSDK"],
-      "description": "Your OAuth callback URL. This is the URL where users will be redirected after authorizing your app.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "Your OAuth callback URL. This is the URL where Facebook will redirect the user after authorization.",
       "required": true
     },
     {
       "key": "INSTAGRAM_ACCESS_TOKEN",
-      "constructors": ["createInstagramSDK"],
-      "description": "A valid access token for the Instagram Graph API. Obtain this by implementing the OAuth 2.0 flow in your application.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "A valid access token for the Instagram Graph API. Obtain this through the OAuth flow.",
       "required": true
     }
   ],

@@ -1,18 +1,15 @@
-## getComments(igMediaId)
+## Function: `getComments`
 
-Retrieves comments for a media object.
+Retrieves comments for a given media object.
 
 **Parameters:**
+- `igMediaId` (string, required): The ID of the media object.
 
-- `igMediaId`: The ID of the media object.
+**Return Value:**
+- `Promise<array<Comment>>`: An array of comments.
 
-**Returns:**
-
-- An array of comments.
-
-**Example:**
-
+**Examples:**
 ```typescript
-const comments = await sdk.getComments('your-media-id');
-console.log('Comments:', comments);
+const comments = await sdk.getComments('<igMediaId>');
+console.log(comments);
 ```

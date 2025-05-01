@@ -1,27 +1,28 @@
-## createMediaContainer(igId, params)
+## Function: `createMediaContainer`
 
-Creates a media container.
+Creates a media container for uploading media.
 
 **Parameters:**
 
-- `igId`: The Instagram ID.
-- `params`: An object with the following properties:
-  - `image_url`: The URL of the image.
-  - `video_url`: The URL of the video.
-  - `media_type`: The media type ('IMAGE', 'VIDEO', 'REELS', 'STORIES', 'CAROUSEL').
-  - `is_carousel_item`: Whether the media is a carousel item.
-  - `upload_type`: The upload type ('resumable').
+- `igId` (string, required): The Instagram Business Account ID.
+- `params` (object, required):
+  - `image_url` (string, optional): The URL of the image to upload.
+  - `video_url` (string, optional): The URL of the video to upload.
+  - `media_type` (MediaType, required): The type of media. Possible values: 'IMAGE', 'VIDEO', 'REELS', 'STORIES', 'CAROUSEL'.
+  - `is_carousel_item` (boolean, optional): Whether the media is a carousel item.
+  - `upload_type` (string, optional): The upload type. Currently only 'resumable' is supported.
 
-**Returns:**
+**Return Value:**
 
-- The ID of the created media container.
+- `Promise<object>`:
+  - `id` (string): The ID of the created media container.
 
-**Example:**
+**Examples:**
 
 ```typescript
-const mediaContainer = await sdk.createMediaContainer('your-instagram-id', {
-  image_url: 'https://example.com/image.jpg',
+const container = await sdk.createMediaContainer('<igId>', {
+  image_url: '<imageUrl>',
   media_type: 'IMAGE',
 });
-console.log('Media container ID:', mediaContainer.id);
+console.log(container.id);
 ```
