@@ -13,17 +13,41 @@ const execAsync = promisify(exec);
 // Define the schema for documentation generation
 const GenerateDocsSchema = z.object({
   constructorDocs: z.object({
-    name: z.string().describe('The name of the constructor function or class that initializes the SDK'),
-    description: z.string().describe('A comprehensive description of the constructor\'s purpose, functionality, and behavior'),
-    docs: z.string().describe('Complete markdown documentation for the constructor including all parameters, return types, and examples'),
+    name: z
+      .string()
+      .describe(
+        'The name of the constructor function or class that initializes the SDK',
+      ),
+    description: z
+      .string()
+      .describe(
+        "A comprehensive description of the constructor's purpose, functionality, and behavior",
+      ),
+    docs: z
+      .string()
+      .describe(
+        'Complete markdown documentation for the constructor including all parameters, return types, and examples',
+      ),
   }),
-  functionsDocs: z.array(
-    z.object({
-      name: z.string().describe('The name of the function being documented'),
-      description: z.string().describe('A detailed description of what the function does and how it works'),
-      docs: z.string().describe('Complete markdown documentation for the function including all parameters, return types, and examples'),
-    })
-  ).describe('Documentation for each function in the SDK. MUST include documentation for EVERY function available in the constructor.'),
+  functionsDocs: z
+    .array(
+      z.object({
+        name: z.string().describe('The name of the function being documented'),
+        description: z
+          .string()
+          .describe(
+            'A detailed description of what the function does and how it works',
+          ),
+        docs: z
+          .string()
+          .describe(
+            'Complete markdown documentation for the function including all parameters, return types, and examples',
+          ),
+      }),
+    )
+    .describe(
+      'Documentation for each function in the SDK. MUST include documentation for EVERY function available in the constructor.',
+    ),
   dependencies: z
     .array(z.string())
     .optional()
@@ -398,6 +422,11 @@ export async function generateDocs(
            * Demonstrate different use cases
            * Include error handling if relevant
            * Use mock data in examples
+         - IMPORTANT: 
+           * NEVER leave placeholders like [Implementation Details], [Parameter Details], etc.
+           * NEVER cross-reference other documentation files
+           * Each function's documentation must be complete and self-contained
+           * If the function is not documented, it should be removed from the package
 
       3. Constructor Documentation:
          Generate documentation that includes:
@@ -409,8 +438,25 @@ export async function generateDocs(
            * Different configuration combinations
            * Authentication setup
            * Error handling setup
+         - IMPORTANT:
+           * NEVER leave placeholders like [Implementation Details], [Parameter Details], etc.
+           * NEVER cross-reference other documentation files
+           * Constructor documentation must be complete and self-contained
 
-      4. Formatting Requirements:
+      4. Environment Variables:
+         Generate environment variables documentation that includes:
+         - All required API keys and tokens
+         - For OAuth2 authentication:
+           * Include the constructor configs like accessToken, refreshToken, clientId, clientSecret, etc. in the environment variables
+           * If the constructor config includes scopes, ALWAYS include a SCOPES environment variable
+           * The name of the environment variable should be based on the oauth provider name not the package name. For example, for google-oauth, the environment variable should be GOOGLE_ACCESS_TOKEN, GOOGLE_REFRESH_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SCOPES etc. not GOOGLE_SHEETS_ACCESS_TOKEN, GOOGLE_SHEETS_REFRESH_TOKEN, GOOGLE_SHEETS_CLIENT_ID, GOOGLE_SHEETS_CLIENT_SECRET, GOOGLE_SHEETS_SCOPES etc.
+         - For each environment variable:
+           * Clear display name
+           * Detailed description
+           * Required/optional status
+           * Format and validation requirements
+
+      5. Formatting Requirements:
          - Include code blocks for examples
          - Maintain consistent style
          - Use clear section headers
@@ -426,6 +472,7 @@ export async function generateDocs(
       - Technically accurate
       - Consistent in style and formatting
       - Follows TypeScript best practices
+      - COMPLETE with no placeholders or cross-references
     `;
 
     // Generate documentation with Claude 3.5 Sonnet
@@ -449,9 +496,7 @@ export async function generateDocs(
       );
       console.log(`- Constructor: ${constructorName}`);
       console.log(`- Functions: ${validatedData.functionsDocs.length}`);
-      console.log(
-        `- Environment Keys: ${validatedData.envKeys?.length || 0}`,
-      );
+      console.log(`- Environment Keys: ${validatedData.envKeys?.length || 0}`);
 
       // Get package directory
       const docsDir = path.join(packageDir, 'docs');
@@ -469,38 +514,57 @@ export async function generateDocs(
 
       // Save function documentation files
       for (const func of validatedData.functionsDocs) {
-        fs.writeFileSync(
-          path.join(docsDir, `${func.name}.md`),
-          func.docs
-        );
+        fs.writeFileSync(path.join(docsDir, `${func.name}.md`), func.docs);
       }
 
       // Update package-info.json with constructor info
       const packageInfoPath = path.join(packageDir, 'package-info.json');
-      const packageInfo = JSON.parse(
-        fs.readFileSync(packageInfoPath, 'utf8'),
-      );
+      const packageInfo = JSON.parse(fs.readFileSync(packageInfoPath, 'utf8'));
 
       // Add readme_map
       packageInfo.readme_map = {
         title: metadata.title,
         description: `The full README for the ${metadata.title}`,
-        path: 'https://github.com/microfox-ai/microfox/blob/main/packages/' + metadata.packageName.replace('@microfox/', '') + '/README.md',
-        functionalities: [constructorName, ...validatedData.functionsDocs.map(f => f.name)],
+        path:
+          'https://github.com/microfox-ai/microfox/blob/main/packages/' +
+          metadata.packageName.replace('@microfox/', '') +
+          '/README.md',
+        functionalities: [
+          constructorName,
+          ...validatedData.functionsDocs.map(f => f.name),
+        ],
         all_readmes: [
           {
-            path: 'https://github.com/microfox-ai/microfox/blob/main/packages/' + metadata.packageName.replace('@microfox/', '') + '/docs/' + constructorName + '.md',
+            path:
+              'https://github.com/microfox-ai/microfox/blob/main/packages/' +
+              metadata.packageName.replace('@microfox/', '') +
+              '/docs/' +
+              constructorName +
+              '.md',
             type: 'constructor',
             extension: 'md',
             functionality: constructorName,
-            description: validatedData?.constructorDocs?.description || 'The full README for the ' + metadata.title + ' constructor',
+            description:
+              validatedData?.constructorDocs?.description ||
+              'The full README for the ' + metadata.title + ' constructor',
           },
           ...validatedData.functionsDocs.map(f => ({
-            path: 'https://github.com/microfox-ai/microfox/blob/main/packages/' + metadata.packageName.replace('@microfox/', '') + '/docs/' + f.name + '.md',
+            path:
+              'https://github.com/microfox-ai/microfox/blob/main/packages/' +
+              metadata.packageName.replace('@microfox/', '') +
+              '/docs/' +
+              f.name +
+              '.md',
             type: 'functionality',
             extension: 'md',
             functionality: f.name,
-            description: f.description || 'The full README for the ' + metadata.title + ' ' + f.name + ' functionality',
+            description:
+              f.description ||
+              'The full README for the ' +
+                metadata.title +
+                ' ' +
+                f.name +
+                ' functionality',
           })),
         ],
       };
@@ -510,24 +574,29 @@ export async function generateDocs(
         {
           name: constructorName,
           description: `Create a new ${metadata.title} client through which you can interact with the API`,
-          auth: packageInfo.authEndpoint ? 'oauth2' : 'apiKey',
-          authSdk: packageInfo.authEndpoint
-            ? packageInfo.authEndpoint.replace('/connect/', '@microfox/')
-            : '',
-          outputKeys: [],
+          auth: metadata.authType,
+          ...(metadata.authType === 'apikey' && {
+            apiType: 'api_key',
+          }),
+          ...(metadata.authType === 'oauth2' && {
+            authSdk: metadata.authSdk,
+          }),
+          ...(metadata.authType === 'oauth2' && {
+            authEndpoint: packageInfo.authEndpoint,
+          }),
           requiredKeys: !packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-              key: key.key,
-              displayName: key.displayName,
-              description: key.description,
-            })) || []
+                key: key.key,
+                displayName: key.displayName,
+                description: key.description,
+              })) || []
             : [],
           internalKeys: packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-              key: key.key,
-              displayName: key.displayName,
-              description: key.description,
-            })) || []
+                key: key.key,
+                displayName: key.displayName,
+                description: key.description,
+              })) || []
             : [],
           functionalities: validatedData.functionsDocs.map(f => f.name),
         },
@@ -547,7 +616,8 @@ export async function generateDocs(
 
       // Install dependencies if provided
       const depsString = validatedData.dependencies?.join(' ') || '';
-      const devDepsString = validatedData.devDependencies?.join(' --save-dev') || '';
+      const devDepsString =
+        validatedData.devDependencies?.join(' --save-dev') || '';
 
       try {
         const originalDir = process.cwd();
@@ -571,17 +641,12 @@ export async function generateDocs(
 
       // Update package.json with dependencies
       const packageJsonPath = path.join(packageDir, 'package.json');
-      const packageJson = JSON.parse(
-        fs.readFileSync(packageJsonPath, 'utf8'),
-      );
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
-      packageInfo.dependencies = Object.keys(packageJson.dependencies)
+      packageInfo.dependencies = Object.keys(packageJson?.dependencies || {});
 
       // Write updated package-info.json
-      fs.writeFileSync(
-        packageInfoPath,
-        JSON.stringify(packageInfo, null, 2),
-      );
+      fs.writeFileSync(packageInfoPath, JSON.stringify(packageInfo, null, 2));
 
       // Generate README.md
       const readmeContent = generateMainReadme(
@@ -597,7 +662,6 @@ export async function generateDocs(
 
       // Build the package
       await buildPackage(packageDir);
-
     } catch (error) {
       console.error('❌ Error generating documentation:', error);
       throw error;
@@ -646,7 +710,7 @@ function generateMainReadme(
   //   content += `- \`clientId\`: Your OAuth client ID\n`;
   //   content += `- \`clientSecret\`: Your OAuth client secret\n\n`;
   //   content += `You can obtain these credentials by following the OAuth 2.0 flow for ${metadata.apiName}.\n\n`;
-  // } else if (metadata.authType === 'apiKey') {
+  // } else if (metadata.authType === 'apikey') {
   //   content += `This SDK uses API key authentication. You need to provide the following credentials:\n\n`;
 
   //   for (const key of envKeys) {
@@ -680,7 +744,8 @@ function generateMainReadme(
   }
 
   content += '## API Reference\n\n';
-  content += 'For detailed documentation on the constructor and all available functions, see:\n\n';
+  content +=
+    'For detailed documentation on the constructor and all available functions, see:\n\n';
   content += `- [${constructorName}](./docs/${constructorName}.md)\n`;
   for (const func of functionsDocs) {
     content += `- [${func.name}](./docs/${func.name}.md)\n`;
@@ -690,49 +755,52 @@ function generateMainReadme(
 }
 
 if (require.main === module) {
-  const packageDir = path.join(__dirname, '../../packages/instagram');
-  const sdkCode = fs.readFileSync(
-    path.join(packageDir, 'src/instagramSdk.ts'),
-    'utf8',
+  // Get package name from command line argument
+  const packageName = process.argv[2];
+  if (!packageName) {
+    console.error('Please provide a package name as an argument');
+    process.exit(1);
+  }
+
+  const packageDir = path.join(__dirname, '../../packages', packageName);
+
+  // Check if package directory exists
+  if (!fs.existsSync(packageDir)) {
+    console.error(`Package directory not found: ${packageDir}`);
+    process.exit(1);
+  }
+
+  // Find all TypeScript files in src directory
+  const srcDir = path.join(packageDir, 'src');
+  const tsFiles = fs
+    .readdirSync(srcDir)
+    .filter(file => file.endsWith('.ts'))
+    .map(file => path.join('src', file));
+
+  // Read and combine all TypeScript files
+  let combinedCode = '';
+  for (const file of tsFiles) {
+    const filePath = path.join(packageDir, file);
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    combinedCode += `\n// ${file}\n${fileContent}\n`;
+  }
+
+  const packageInfo = JSON.parse(
+    fs.readFileSync(path.join(packageDir, 'package-info.json'), 'utf8'),
   );
-  // const schemaCode = fs.readFileSync(
-  //   path.join(packageDir, 'src/schemas/index.ts'),
-  //   'utf8',
-  // ) || '';
-  // const typesCode = fs.readFileSync(
-  //   path.join(packageDir, 'src/types/index.ts'),
-  //   'utf8',
-  // ) || '';
-  const exportsCode = fs.readFileSync(
-    path.join(packageDir, 'src/index.ts'),
-    'utf8',
-  ) || '';
-  const packageInfo = JSON.parse(fs.readFileSync(
-    path.join(packageDir, 'package-info.json'),
-    'utf8',
-  ));
-  // // Types (src/types/index.ts)
-  // ${typesCode}\n\n
-  // // Schemas (src/schemas/index.ts)
-  // ${schemaCode}\n\n
-  const combinedCode = `
-  // Main SDK (src/[packageName]Sdk.ts)
-  ${sdkCode}\n\n
-  // Exports (src/index.ts)
-  ${exportsCode}
-  `;
+
   const metadata = {
     apiName: packageInfo.name,
     packageName: packageInfo.name,
     title: packageInfo.title,
     description: packageInfo.description,
     authType: packageInfo.constructors[0]?.auth || 'none',
-    ...(packageInfo.constructors[0]?.auth === 'oauth2' && packageInfo.constructors[0]?.authSdk && {
-      authSdk: packageInfo.constructors[0]?.authSdk,
-    }),
+    ...(packageInfo.constructors[0]?.auth === 'oauth2' &&
+      packageInfo.constructors[0]?.authSdk && {
+        authSdk: packageInfo.constructors[0]?.authSdk,
+      }),
   };
-  console.log("metadata", metadata)
-  const extraInfo = packageInfo.extraInfo || [];
 
+  const extraInfo = packageInfo.extraInfo || [];
   generateDocs(combinedCode, metadata, packageDir, extraInfo);
 }
