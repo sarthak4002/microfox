@@ -1,54 +1,45 @@
 ## Function: `createMediaContainer`
 
-Creates a media container on Instagram.
+Creates a media container on Instagram, which can then be used to publish media.
 
 **Purpose:**
 
-This function initiates the media upload process by creating a container that will hold the media data.
+This function initiates the media creation process. It creates a container that holds the media data and returns the container ID. You can then use the container ID to upload the actual media content and publish the post.
 
 **Parameters:**
 
-| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
-|-----------|------|----------|-------------|-------------|---------|----------------|
-| accountId | `string` | Yes | Instagram account ID |  | "1234567890" | Any valid Instagram account ID string |
-| mediaData | `InstagramMediaSchema` | Yes | Media data object | See `InstagramMediaSchema` type details | See examples below |  |
-
-**Type Details:**
-
-### InstagramMediaSchema
-Schema for creating media on Instagram.
-
-| Field | Type | Required | Description | Constraints | Example | Possible Values |
-|-------|------|----------|-------------|-------------|---------|----------------|
-| image_url | `string` | No | URL of the image to be published | Must be a valid URL | "https://example.com/image.jpg" | Any valid URL string |
-| video_url | `string` | No | URL of the video to be published | Must be a valid URL | "https://example.com/video.mp4" | Any valid URL string |
-| media_type | `enum` | Yes | Type of media | One of: 'IMAGE', 'VIDEO', 'REELS', 'STORIES', 'CAROUSEL' | "IMAGE" | 'IMAGE', 'VIDEO', 'REELS', 'STORIES', 'CAROUSEL' |
-| caption | `string` | No | Caption for the media |  | "This is a caption" | Any string |
-| location_id | `string` | No | ID of the location to tag |  | "1234567890" | Any string |
-| user_tags | `array` | No | Array of user tags |  | `[{ username: 'user1', x: 0.5, y: 0.5 }]` | Array of objects with `username`, `x`, and `y` properties |
-| is_carousel_item | `boolean` | No | Whether this media is part of a carousel |  | true | true or false |
-| children | `array` | No | Array of media IDs for carousel posts |  | `['media_id_1', 'media_id_2']` | Array of strings |
+- `accountId`: string - The ID of the Instagram account.
+- `mediaData`: object - The media data.
+  - `image_url`: string (optional) - URL of the image to be published.
+  - `video_url`: string (optional) - URL of the video to be published.
+  - `media_type`: enum - Type of media. Possible values: 'IMAGE', 'VIDEO', 'REELS', 'STORIES', 'CAROUSEL'.
+  - `caption`: string (optional) - Caption for the media.
+  - `location_id`: string (optional) - ID of the location to tag.
+  - `user_tags`: array<object> (optional) - Array of user tags.
+    - `username`: string - Username of the user to tag.
+    - `x`: number - X coordinate of the tag.
+    - `y`: number - Y coordinate of the tag.
+  - `is_carousel_item`: boolean (optional) - Whether this media is part of a carousel.
+  - `children`: array<string> (optional) - Array of media IDs for carousel posts.
 
 **Return Value:**
 
-| Type | Description | Example | Possible Values |
-|------|-------------|---------|----------------|
-| `string` | ID of the created media container | "178414057900101795" | Any valid media container ID string |
+- `Promise<string>` - The ID of the created media container.
 
 **Examples:**
 
 ```typescript
-// Example 1: Creating an image container
-const containerId = await instagramSDK.createMediaContainer('1234567890', {
+// Example 1: Create a media container for a single image
+const containerId = await instagramSDK.createMediaContainer('<accountId>', {
   image_url: 'https://example.com/image.jpg',
   media_type: 'IMAGE',
-  caption: 'This is an image'
+  caption: 'My image caption',
 });
 
-// Example 2: Creating a video container
-const containerId = await instagramSDK.createMediaContainer('1234567890', {
+// Example 2: Create a media container for a video
+const containerId = await instagramSDK.createMediaContainer('<accountId>', {
   video_url: 'https://example.com/video.mp4',
   media_type: 'VIDEO',
-  caption: 'This is a video'
+  caption: 'My video caption',
 });
 ```
