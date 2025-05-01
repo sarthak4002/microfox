@@ -1,15 +1,27 @@
-## validateAccessToken()
+## Function: `validateAccessToken`
 
 Validates the current access token.
 
-```typescript
-async validateAccessToken(): Promise<void>
-```
+**Purpose:**
 
-**Returns:**
+Checks if the current access token is valid.
+
+**Parameters:**
+
+- None
+
+**Return Value:**
 
 - `Promise<void>`: Resolves if the access token is valid, rejects otherwise.
 
-**Throws:**
+**Examples:**
 
-- `Error`: If the access token is invalid or if validation fails.
+```typescript
+// Example: Validate the access token
+try {
+  await sdk.validateAccessToken();
+  console.log('Access token is valid');
+} catch (error) {
+  console.error('Access token is invalid:', error);
+}
+```

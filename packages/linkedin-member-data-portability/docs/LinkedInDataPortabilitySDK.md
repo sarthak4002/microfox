@@ -1,38 +1,29 @@
-# LinkedInDataPortabilitySDK
+## Constructor: `LinkedInDataPortabilitySDK`
 
-The `LinkedInDataPortabilitySDK` class provides methods to interact with the LinkedIn Data Portability API.
-
-## Constructor
-
-```typescript
-constructor(config: {
-  clientId: string;
-  clientSecret: string;
-  redirectUri: string;
-  accessToken: string;
-  refreshToken?: string;
-})
-```
+Initializes a new instance of the LinkedInDataPortabilitySDK.
 
 **Parameters:**
 
-- `config`: An object with the following properties:
-  - `clientId`: Your LinkedIn app's Client ID.
-  - `clientSecret`: Your LinkedIn app's Client Secret.
-  - `redirectUri`: The redirect URI registered in your LinkedIn app.
-  - `accessToken`: The OAuth 2.0 access token for authenticated requests.
-  - `refreshToken`: (Optional) The refresh token to obtain new access tokens.
+- `config` (object, required): Configuration options for the SDK.
+  - `clientId` (string, required): Your LinkedIn app's Client ID.
+  - `clientSecret` (string, required): Your LinkedIn app's Client Secret.
+  - `redirectUri` (string, required): The redirect URI registered in your LinkedIn app.
+  - `accessToken` (string, required): The OAuth 2.0 access token for authenticated requests.
+  - `refreshToken` (string, optional): The refresh token to obtain new access tokens.
 
-**Usage Example:**
+**Return Value:**
+
+- `LinkedInDataPortabilitySDK`: An instance of the LinkedInDataPortabilitySDK.
+
+**Examples:**
 
 ```typescript
-import { createLinkedInSDK } from './LinkedInDataPortabilitySDK';
-
-const sdk = createLinkedInSDK({
-  clientId: process.env.LINKEDIN_CLIENT_ID!,
-  clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
-  redirectUri: process.env.LINKEDIN_REDIRECT_URI!,
-  accessToken: process.env.LINKEDIN_ACCESS_TOKEN!,
-  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN,
+// Example: Initialize the SDK
+const sdk = new LinkedInDataPortabilitySDK({
+  clientId: process.env.LINKEDIN_CLIENT_ID,
+  clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+  redirectUri: process.env.LINKEDIN_REDIRECT_URI,
+  accessToken: process.env.LINKEDIN_ACCESS_TOKEN,
+  refreshToken: process.env.LINKEDIN_REFRESH_TOKEN
 });
 ```

@@ -1,19 +1,33 @@
-## getMemberSnapshotData()
+## Function: `getMemberSnapshotData`
 
 Retrieves member snapshot data.
 
-```typescript
-async getMemberSnapshotData(domain?: string): Promise<z.infer<typeof MemberSnapshotSchema>[]>
-```
+**Purpose:**
+
+Fetches snapshot data for the authenticated member.
 
 **Parameters:**
 
-- `domain`: (Optional) The domain of the snapshot data.
+- `domain` (string, optional): The domain of the snapshot data.
 
-**Returns:**
+**Return Value:**
 
-- `Promise<z.infer<typeof MemberSnapshotSchema>[]>`: An array of member snapshot data.
+- `Promise<MemberSnapshotSchema[]>`: An array of member snapshot data.
+  - `MemberSnapshotSchema` (object):
+    - `snapshotDomain` (string, required): Domain of the snapshot.
+    - `snapshotData` (record<unknown>, required): Snapshot data.
 
-**Throws:**
+**Examples:**
 
-- `Error`: If retrieving snapshot data fails.
+```typescript
+// Example: Get member snapshot data
+try {
+  const snapshotData = await sdk.getMemberSnapshotData();
+  console.log(snapshotData);
+
+  const snapshotDataForDomain = await sdk.getMemberSnapshotData('<domain>');
+  console.log(snapshotDataForDomain);
+} catch (error) {
+  console.error('Failed to get snapshot data:', error);
+}
+```
