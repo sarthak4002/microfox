@@ -1,73 +1,45 @@
-# webSearch
+## Function: `webSearch`
 
-The `webSearch` method performs a web search using the Brave Search API.
+Performs a web search using the Brave Search API.
 
-## Syntax
+**Purpose:**
+Retrieves web search results for a given query and optional parameters.
 
-```typescript
-async webSearch(params: WebSearchParams): Promise<any>
-```
+**Parameters:**
 
-## Parameters
+- `params`: object<WebSearchParams> - Required. Web search parameters.
+  - `q`: string - Required. The search query (maximum 400 characters).
+  - `country`: string - Optional. Two-letter country code (e.g., "US").
+  - `search_lang`: string - Optional. Language code (e.g., "en", "es"). Minimum 2 characters.
+  - `ui_lang`: string - Optional. UI language code (e.g., "en-US"). Must match the regex /^[a-z]{2}-[A-Z]{2}$/.
+  - `count`: number - Optional. Number of results to return (integer between 1 and 20). Defaults to 10.
+  - `offset`: number - Optional. Offset for pagination (integer between 0 and 9).
+  - `safesearch`: enum<SafeSearchOption> - Optional. SafeSearch option. Possible values: "off", "moderate", "strict".
+  - `freshness`: enum<FreshnessOption> | string - Optional. Freshness option. Possible values: "pd", "pw", "pm", "py", or a date range in the format "YYYY-MM-DDtoYYYY-MM-DD".
+  - `text_decorations`: boolean - Optional. Whether to include text decorations.
+  - `spellcheck`: boolean - Optional. Whether to enable spellcheck.
 
-The method accepts a single parameter:
+**Return Value:**
 
-- `params` (required): An object of type `WebSearchParams` containing the search parameters.
+- `Promise<any>` - A promise that resolves to the web search results.
 
-### WebSearchParams
-
-The `WebSearchParams` object has the following properties:
-
-- `q` (required): A string representing the search query (max 400 characters).
-- `country` (optional): A two-letter country code string.
-- `search_lang` (optional): A language code string (e.g., 'en', 'es').
-- `ui_lang` (optional): A UI language code string (e.g., 'en-US').
-- `count` (optional): A number between 1 and 20 representing the number of results to return.
-- `offset` (optional): A number between 0 and 9 representing the offset for pagination.
-- `safesearch` (optional): A string enum ('off', 'moderate', 'strict') for SafeSearch option.
-- `freshness` (optional): A string enum ('pd', 'pw', 'pm', 'py') or a date range string for result freshness.
-- `text_decorations` (optional): A boolean to enable or disable text decorations.
-- `spellcheck` (optional): A boolean to enable or disable spellcheck.
-
-## Return Value
-
-The method returns a Promise that resolves to the API response containing the web search results.
-
-## Usage Example
+**Examples:**
 
 ```typescript
-import { createBraveSDK } from 'brave-search-sdk';
+// Example 1: Minimal usage
+const results = await braveSDK.webSearch({ q: 'test' });
 
-const braveSDK = createBraveSDK({
-  apiKey: 'your-api-key-here',
+// Example 2: Full usage
+const results = await braveSDK.webSearch({
+  q: 'technology',
+  country: 'US',
+  search_lang: 'en',
+  ui_lang: 'en-US',
+  count: 20,
+  offset: 0,
+  safesearch: 'moderate',
+  freshness: 'pw',
+  text_decorations: true,
+  spellcheck: true,
 });
-
-async function performWebSearch() {
-  try {
-    const results = await braveSDK.webSearch({
-      q: 'Brave Search API',
-      country: 'US',
-      count: 10,
-      safesearch: 'moderate',
-      freshness: 'pw',
-    });
-    console.log('Web search results:', results);
-  } catch (error) {
-    console.error('Error performing web search:', error);
-  }
-}
-
-performWebSearch();
 ```
-
-## Error Handling
-
-The method uses Zod for input validation. If invalid parameters are provided, a `ZodError` will be thrown. API errors will result in a thrown `Error` with the HTTP status code. It's recommended to wrap the method call in a try-catch block to handle potential errors.
-
-## Notes
-
-- The `q` parameter is required and must not exceed 400 characters.
-- The `count` parameter is limited to a maximum of 20 results per request.
-- The `offset` parameter can be used for pagination, with a maximum value of 9.
-- The `freshness` parameter accepts predefined values ('pd' for past day, 'pw' for past week, 'pm' for past month, 'py' for past year) or a custom date range in the format 'YYYY-MM-DDtoYYYY-MM-DD'.
-- Ensure that you respect the rate limits imposed by the Brave Search API to avoid temporary blocks or account suspension.

@@ -1,23 +1,21 @@
-## getOEmbed(url, maxwidth, fields, omitScript)
+## Function: `getOEmbed`
 
-Retrieves oEmbed data for a given URL.
+Gets oEmbed data for a given URL.
 
 **Parameters:**
 
-- `url`: The URL to retrieve oEmbed data for.
-- `maxwidth` (optional): The maximum width of the embed.
-- `fields` (optional): An array of fields to include in the response.
-- `omitScript` (optional): Whether to omit the script tag in the embed HTML.
+- `url` (string, required): The URL to get oEmbed data for.
+- `maxwidth` (number, optional): The maximum width of the embed.
+- `fields` (array<string>, optional): An array of fields to include in the response.
+- `omitScript` (boolean, optional): Whether to omit the script tag in the embed HTML.
 
-**Returns:**
+**Return Value:**
 
-- The oEmbed response data.
+- `Promise<OEmbedResponse>`: The oEmbed response object.
 
-**Example:**
+**Examples:**
 
 ```typescript
-const oEmbedData = await sdk.getOEmbed(
-  'https://www.instagram.com/p/your-post-id/',
-);
-console.log('oEmbed data:', oEmbedData);
+const oembed = await sdk.getOEmbed('<url>');
+console.log(oembed);
 ```

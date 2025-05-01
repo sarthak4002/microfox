@@ -33,9 +33,9 @@ const SDKMetadataSchema = z.object({
   description: z.string().describe('A clear description of what this SDK does'),
   keywords: z.array(z.string()).describe('Relevant keywords for the package'),
   authType: z
-    .enum(['oauth2', 'apiKey', 'auto'])
+    .enum(['oauth2', 'apikey', 'auto'])
     .describe(
-      'Authentication type for this SDK: "oauth2" for OAuth 2.0 flow, "apiKey" for API key authentication, or "auto" to let the model decide',
+      'Authentication type for this SDK: "oauth2" for OAuth 2.0 flow, "apikey" for API key authentication, or "auto" to let the model decide',
     ),
   authSdk: z
     .string()
@@ -85,7 +85,7 @@ async function generateMetadata(query: string): Promise<SDKMetadata> {
       
       For authType:
       - Use "oauth2" if the API primarily uses OAuth 2.0 for authentication (like Google, GitHub, or LinkedIn APIs)
-      - Use "apiKey" if the API primarily uses API keys or tokens for authentication
+      - Use "apikey" if the API primarily uses API keys or tokens for authentication
       - Use "auto" if you're not sure about the authentication mechanism
       
       For authSdk:
@@ -406,9 +406,9 @@ const WriteToFileSchema = z.object({
       'Additional information about the SDK that will be useful for documentation, such as how to obtain API keys, environment variables, or other important details not covered in the code',
     ),
   authType: z
-    .enum(['apiKey', 'oauth2', 'none'])
+    .enum(['apikey', 'oauth2', 'none'])
     .describe(
-      'Authentication type for this SDK: "apiKey" for API key auth, "oauth2" for OAuth2 flow, or "none" for no auth required',
+      'Authentication type for this SDK: "apikey" for API key auth, "oauth2" for OAuth2 flow, or "none" for no auth required',
     ),
   authSdk: z
     .string()
@@ -720,7 +720,7 @@ export async function generateSDK(
         metadata.authType === 'auto'
           ? `You must analyze the API documentation to determine the appropriate auth type:
       - Use "oauth2" if the API uses OAuth 2.0 flows (client IDs, authorization codes, redirect URIs)
-      - Use "apiKey" if the API uses API keys, tokens, or headers for auth
+      - Use "apikey" if the API uses API keys, tokens, or headers for auth
       - Use "none" if no auth is required
       
       You must explicitly decide which auth type to implement based on the documentation.`
@@ -747,7 +747,7 @@ export async function generateSDK(
       - To write the SDK code, use the write_to_file tool with the following parameters:
         - sdkImplementation: The complete SDK implementation OBJECT with separate code and paths for main SDK, types, schemas, and exports files
         - extraInfo: Additional information for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.)
-        - authType: Authentication type ("apiKey", "oauth2", or "none")
+        - authType: Authentication type ("apikey", "oauth2", or "none")
         - oauth2Scopes: Required OAuth2 scopes (required when authType is "oauth2")
       
       ## IMPORTANT: Example of the expected input schema for the write_to_file tool:
@@ -795,7 +795,7 @@ export async function generateSDK(
           ? `- Auth Type: ${metadata.authType}`
           : `- Auth Type: auto - Please determine the appropriate auth type based on:
             - Use "oauth2" if the API uses OAuth 2.0 flows
-            - Use "apiKey" if the API uses API keys, tokens, or headers for auth
+            - Use "apikey" if the API uses API keys, tokens, or headers for auth
             - Use "none" if no auth is required`
       }
       ${metadata.authSdk ? `- Auth SDK: ${metadata.authSdk}` : ''}

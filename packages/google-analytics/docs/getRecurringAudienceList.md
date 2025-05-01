@@ -1,9 +1,25 @@
-Gets a recurring audience list.
+## Function: `getRecurringAudienceList`
 
-Parameters:
+Retrieves a recurring audience list.
 
-- `name`: The name of the recurring audience list resource.
+**Purpose:**
 
-Returns:
+Gets an existing recurring audience list.
 
-- A promise that resolves to the recurring audience list.
+**Parameters:**
+
+- `name`: string - The name of the recurring audience list to retrieve.
+
+**Return Value:**
+
+- `Promise<RecurringAudienceList>` - A promise that resolves to the recurring audience list.
+
+**Examples:**
+
+```typescript
+// Example: Get a recurring audience list
+const recurringAudienceList = await sdk.getRecurringAudienceList(
+  'properties/<propertyId>/recurringAudienceLists/<recurringAudienceListId>',
+);
+console.log(recurringAudienceList);
+```

@@ -2,39 +2,22 @@
 
 Gets oEmbed data for an Instagram post.
 
-**Purpose:**
-
-This function retrieves oEmbed data for a given Instagram post URL.
-
 **Parameters:**
 
-| Parameter | Type | Required | Description | Constraints | Example | Possible Values |
-|-----------|------|----------|-------------|-------------|---------|----------------|
-| oembedData | `InstagramOEmbedSchema` | Yes | oEmbed data object | See `InstagramOEmbedSchema` type details | See example below |  |
-
-**Type Details:**
-
-### InstagramOEmbedSchema
-Schema for retrieving oEmbed data for an Instagram post.
-
-| Field | Type | Required | Description | Constraints | Example | Possible Values |
-|-------|------|----------|-------------|-------------|---------|----------------|
-| url | `string` | Yes | URL of the Instagram post to embed | Must be a valid URL | "https://www.instagram.com/p/post-id/" | Any valid URL string |
-| maxwidth | `number` | No | Maximum width of the embedded content |  | 640 | Any non-negative integer |
-| fields | `array` | No | Specific fields to include in the response |  | `['author_name', 'media_id']` | Array of strings |
-| omit_script | `boolean` | No | Whether to omit the script tag in the response |  | true | true or false |
+- `oembedData`: object - The oEmbed data.
+  - `url`: string - URL of the Instagram post to embed.
+  - `maxwidth`: number (optional) - Maximum width of the embedded content.
+  - `fields`: array<string> (optional) - Specific fields to include in the response.
+  - `omit_script`: boolean (optional) - Whether to omit the script tag in the response.
 
 **Return Value:**
 
-| Type | Description | Example | Possible Values |
-|------|-------------|---------|----------------|
-| `any` | oEmbed data |  |  |
+- `Promise<any>` - The oEmbed data.
 
 **Examples:**
 
 ```typescript
-// Example: Getting oEmbed data
-const oembed = await instagramSDK.getOEmbedData({
-  url: 'https://www.instagram.com/p/post-id/'
+const oembedData = await instagramSDK.getOEmbedData({
+  url: 'https://www.instagram.com/p/<postId>/',
 });
 ```

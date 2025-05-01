@@ -1,74 +1,43 @@
-# videoSearch
+## Function: `videoSearch`
 
-The `videoSearch` method performs a video search using the Brave Search API.
+Performs a video search using the Brave Search API.
 
-## Syntax
+**Purpose:**
+Retrieves video search results for a given query and optional parameters.
 
-```typescript
-async videoSearch(params: VideoSearchParams): Promise<any>
-```
+**Parameters:**
 
-## Parameters
+- `params`: object<VideoSearchParams> - Required. Video search parameters.
+  - `q`: string - Required. The search query (maximum 400 characters).
+  - `country`: string - Optional. Two-letter country code (e.g., "US").
+  - `search_lang`: string - Optional. Language code (e.g., "en", "es"). Minimum 2 characters.
+  - `ui_lang`: string - Optional. UI language code (e.g., "en-US"). Must match the regex /^[a-z]{2}-[A-Z]{2}$/.
+  - `count`: number - Optional. Number of results to return (integer between 1 and 50). Defaults to 10.
+  - `offset`: number - Optional. Offset for pagination (integer between 0 and 9).
+  - `spellcheck`: boolean - Optional. Whether to enable spellcheck.
+  - `safesearch`: enum<SafeSearchOption> - Optional. SafeSearch option. Possible values: "off", "moderate", "strict".
+  - `freshness`: enum<FreshnessOption> | string - Optional. Freshness option. Possible values: "pd", "pw", "pm", "py", or a date range in the format "YYYY-MM-DDtoYYYY-MM-DD".
 
-The method accepts a single parameter:
+**Return Value:**
 
-- `params` (required): An object of type `VideoSearchParams` containing the search parameters.
+- `Promise<any>` - A promise that resolves to the video search results.
 
-### VideoSearchParams
-
-The `VideoSearchParams` object has the following properties:
-
-- `q` (required): A string representing the search query (max 400 characters).
-- `country` (optional): A two-letter country code string.
-- `search_lang` (optional): A language code string (e.g., 'en', 'es').
-- `ui_lang` (optional): A UI language code string (e.g., 'en-US').
-- `count` (optional): A number between 1 and 50 representing the number of results to return.
-- `offset` (optional): A number between 0 and 9 representing the offset for pagination.
-- `spellcheck` (optional): A boolean to enable or disable spellcheck.
-- `safesearch` (optional): A string enum ('off', 'moderate', 'strict') for SafeSearch option.
-- `freshness` (optional): A string enum ('pd', 'pw', 'pm', 'py') or a date range string for result freshness.
-
-## Return Value
-
-The method returns a Promise that resolves to the API response containing the video search results.
-
-## Usage Example
+**Examples:**
 
 ```typescript
-import { createBraveSDK } from 'brave-search-sdk';
+// Example 1: Minimal usage
+const results = await braveSDK.videoSearch({ q: 'music' });
 
-const braveSDK = createBraveSDK({
-  apiKey: 'your-api-key-here',
+// Example 2: Full usage
+const results = await braveSDK.videoSearch({
+  q: 'coding',
+  country: 'CA',
+  search_lang: 'de',
+  ui_lang: 'de-DE',
+  count: 25,
+  offset: 5,
+  spellcheck: true,
+  safesearch: 'off',
+  freshness: 'pm',
 });
-
-async function performVideoSearch() {
-  try {
-    const results = await braveSDK.videoSearch({
-      q: 'funny cat videos',
-      country: 'US',
-      count: 15,
-      safesearch: 'moderate',
-      freshness: 'pw',
-    });
-    console.log('Video search results:', results);
-  } catch (error) {
-    console.error('Error performing video search:', error);
-  }
-}
-
-performVideoSearch();
 ```
-
-## Error Handling
-
-The method uses Zod for input validation. If invalid parameters are provided, a `ZodError` will be thrown. API errors will result in a thrown `Error` with the HTTP status code. It's recommended to wrap the method call in a try-catch block to handle potential errors.
-
-## Notes
-
-- The `q` parameter is required and must not exceed 400 characters.
-- The `count` parameter is limited to a maximum of 50 results per request.
-- The `offset` parameter can be used for pagination, with a maximum value of 9.
-- The `freshness` parameter accepts predefined values ('pd' for past day, 'pw' for past week, 'pm' for past month, 'py' for past year) or a custom date range in the format 'YYYY-MM-DDtoYYYY-MM-DD'.
-- The `safesearch` option can be used to filter out potentially inappropriate videos.
-- Ensure that you respect the rate limits imposed by the Brave Search API to avoid temporary blocks or account suspension.
-- The response will include metadata about the videos, such as thumbnails, duration, and source platform.

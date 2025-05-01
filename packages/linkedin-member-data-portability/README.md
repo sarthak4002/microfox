@@ -8,17 +8,6 @@ A TypeScript SDK for LinkedIn Member Data Portability.
 npm install @microfox/linkedin-member-data-portability
 ```
 
-## Authentication
-
-This SDK uses OAuth 2.0 for authentication. You need to provide the following credentials:
-
-- `accessToken`: Your OAuth access token
-- `refreshToken`: Your OAuth refresh token
-- `clientId`: Your OAuth client ID
-- `clientSecret`: Your OAuth client secret
-
-You can obtain these credentials by following the OAuth 2.0 flow for LinkedIn.
-
 ## Environment Variables
 
 The following environment variables are used by this SDK:
@@ -28,6 +17,7 @@ The following environment variables are used by this SDK:
 - `LINKEDIN_REDIRECT_URI`: The redirect URI registered in your LinkedIn app. (Required)
 - `LINKEDIN_ACCESS_TOKEN`: The OAuth 2.0 access token for authenticated requests. (Required)
 - `LINKEDIN_REFRESH_TOKEN`: The refresh token to obtain new access tokens. (Optional)
+- `SCOPES`: The scopes for OAuth requests (Required)
 
 ## Additional Information
 

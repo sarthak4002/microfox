@@ -1,19 +1,27 @@
-## refreshAccessToken()
+## Function: `refreshAccessToken`
 
-Refreshes the access token using the provided refresh token.
+Refreshes the access token using the refresh token.
 
-```typescript
-async refreshAccessToken(refreshToken: string): Promise<{ accessToken: string; refreshToken: string }>
-```
+**Purpose:**
+
+Obtains a new access token using the refresh token.
 
 **Parameters:**
 
-- `refreshToken`: The refresh token.
+- `refreshToken` (string, required): The refresh token.
 
-**Returns:**
+**Return Value:**
 
-- `Promise<{ accessToken: string; refreshToken: string }>`: An object containing the new access and refresh tokens.
+- `Promise<{ accessToken: string; refreshToken?: string }>`: An object containing the new access token and optionally a new refresh token.
 
-**Throws:**
+**Examples:**
 
-- `Error`: If refreshing the access token fails.
+```typescript
+// Example: Refresh the access token
+try {
+  const newTokens = await sdk.refreshAccessToken('<refreshToken>');
+  console.log('New access token:', newTokens.accessToken);
+} catch (error) {
+  console.error('Failed to refresh access token:', error);
+}
+```

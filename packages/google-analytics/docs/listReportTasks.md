@@ -1,9 +1,23 @@
+## Function: `listReportTasks`
+
 Lists report tasks.
 
-Parameters:
+**Purpose:**
 
-- `parent`: The parent resource name.
+Retrieves a list of report tasks.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the list of report tasks.
+- `parent`: string - The parent resource name.
+
+**Return Value:**
+
+- `Promise<ListReportTasksResponse>` - A promise that resolves to the list of report tasks.
+
+**Examples:**
+
+```typescript
+// Example: List report tasks
+const response = await sdk.listReportTasks('properties/<propertyId>');
+console.log(response);
+```

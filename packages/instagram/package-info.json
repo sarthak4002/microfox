@@ -3,7 +3,10 @@
   "title": "Microfox Instagram SDK",
   "description": "A TypeScript SDK for interacting with the Instagram Graph API using OAuth 2.0.",
   "path": "packages/instagram",
-  "dependencies": ["zod"],
+  "dependencies": [
+    "@microfox/instagram-business-oauth",
+    "zod"
+  ],
   "status": "stable",
   "authEndpoint": "/connect/instagram-business-oauth",
   "oauth2Scopes": [
@@ -62,21 +65,21 @@
         "type": "functionality",
         "extension": "md",
         "functionality": "publishMedia",
-        "description": "Publishes a media container to Instagram."
+        "description": "Publishes a media container."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/getContentPublishingLimit.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "getContentPublishingLimit",
-        "description": "Gets the content publishing limit for an Instagram account."
+        "description": "Gets the content publishing limit for an account."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/uploadVideo.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "uploadVideo",
-        "description": "Uploads a video to Instagram."
+        "description": "Uploads a video to a media container."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/getComments.md",
@@ -90,35 +93,35 @@
         "type": "functionality",
         "extension": "md",
         "functionality": "replyToComment",
-        "description": "Replies to a comment on Instagram."
+        "description": "Replies to a comment."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/hideComment.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "hideComment",
-        "description": "Hides or unhides a comment on Instagram."
+        "description": "Hides or shows a comment."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/toggleComments.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "toggleComments",
-        "description": "Toggles comments on or off for a media object."
+        "description": "Enables or disables comments on a media object."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/deleteComment.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "deleteComment",
-        "description": "Deletes a comment on Instagram."
+        "description": "Deletes a comment."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/sendPrivateReply.md",
         "type": "functionality",
         "extension": "md",
         "functionality": "sendPrivateReply",
-        "description": "Sends a private reply to a comment on Instagram."
+        "description": "Sends a private reply to a comment."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/getMediaInsights.md",
@@ -132,7 +135,7 @@
         "type": "functionality",
         "extension": "md",
         "functionality": "getAccountInsights",
-        "description": "Gets insights for an Instagram account."
+        "description": "Gets insights for an account."
       },
       {
         "path": "https://github.com/microfox-ai/microfox/blob/main/packages/instagram/docs/getOEmbedData.md",
@@ -149,33 +152,32 @@
       "description": "Create a new Microfox Instagram SDK client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/instagram-business-oauth",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {
           "key": "INSTAGRAM_CLIENT_ID",
           "displayName": "Instagram Client ID",
-          "description": "Your Instagram app's Client ID. Obtained from Facebook Developer app dashboard."
+          "description": "Your Instagram app's Client ID. Obtain this from your app's settings on the Facebook Developer platform."
         },
         {
           "key": "INSTAGRAM_CLIENT_SECRET",
           "displayName": "Instagram Client Secret",
-          "description": "Your Instagram app's Client Secret. Obtained from Facebook Developer app dashboard."
+          "description": "Your Instagram app's Client Secret. Obtain this from your app's settings on the Facebook Developer platform. Keep this value secure."
         },
         {
           "key": "INSTAGRAM_REDIRECT_URI",
           "displayName": "Instagram Redirect URI",
-          "description": "The OAuth redirect URI for your app. Must match a valid redirect URI configured in your app dashboard."
+          "description": "The OAuth redirect URI configured for your app on the Facebook Developer platform. This URI must match the one used during the OAuth flow."
         },
         {
           "key": "INSTAGRAM_ACCESS_TOKEN",
           "displayName": "Instagram Access Token",
-          "description": "The user's access token. Obtained through OAuth flow."
+          "description": "The user's access token obtained through the OAuth flow. This token is used to authenticate API requests."
         },
         {
           "key": "INSTAGRAM_REFRESH_TOKEN",
           "displayName": "Instagram Refresh Token",
-          "description": "The user's refresh token. Obtained through OAuth flow."
+          "description": "The user's refresh token obtained through the OAuth flow. This token is used to refresh the access token when it expires."
         }
       ],
       "functionalities": [
@@ -199,32 +201,42 @@
   "keysInfo": [
     {
       "key": "INSTAGRAM_CLIENT_ID",
-      "constructors": ["InstagramSDK"],
-      "description": "Your Instagram app's Client ID. Obtained from Facebook Developer app dashboard.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "Your Instagram app's Client ID. Obtain this from your app's settings on the Facebook Developer platform.",
       "required": true
     },
     {
       "key": "INSTAGRAM_CLIENT_SECRET",
-      "constructors": ["InstagramSDK"],
-      "description": "Your Instagram app's Client Secret. Obtained from Facebook Developer app dashboard.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "Your Instagram app's Client Secret. Obtain this from your app's settings on the Facebook Developer platform. Keep this value secure.",
       "required": true
     },
     {
       "key": "INSTAGRAM_REDIRECT_URI",
-      "constructors": ["InstagramSDK"],
-      "description": "The OAuth redirect URI for your app. Must match a valid redirect URI configured in your app dashboard.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "The OAuth redirect URI configured for your app on the Facebook Developer platform. This URI must match the one used during the OAuth flow.",
       "required": true
     },
     {
       "key": "INSTAGRAM_ACCESS_TOKEN",
-      "constructors": ["InstagramSDK"],
-      "description": "The user's access token. Obtained through OAuth flow.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "The user's access token obtained through the OAuth flow. This token is used to authenticate API requests.",
       "required": true
     },
     {
       "key": "INSTAGRAM_REFRESH_TOKEN",
-      "constructors": ["InstagramSDK"],
-      "description": "The user's refresh token. Obtained through OAuth flow.",
+      "constructors": [
+        "InstagramSDK"
+      ],
+      "description": "The user's refresh token obtained through the OAuth flow. This token is used to refresh the access token when it expires.",
       "required": true
     }
   ],

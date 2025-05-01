@@ -1,7 +1,28 @@
-Deletes a site from the authenticated user's Search Console account.
+## Function: `deleteSite`
 
-**Code Example:**
+Deletes a site from the list of verified sites.
+
+**Purpose:**
+Removes a site from Google Search Console.
+
+**Parameters:**
+
+- `siteUrl`: `string` (required)
+  - The URL of the site to delete.
+
+**Return Value:**
+
+- `Promise<void>`
+  - Resolves if the site is successfully deleted.
+  - Rejects with an error if the deletion fails.
+
+**Examples:**
 
 ```typescript
-await sdk.deleteSite('https://www.example.com/');
+try {
+  await sdk.deleteSite('https://www.example.com/');
+  console.log('Site deleted');
+} catch (error) {
+  console.error('Failed to delete site:', error.message);
+}
 ```

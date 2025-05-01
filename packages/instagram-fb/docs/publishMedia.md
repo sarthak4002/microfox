@@ -1,22 +1,20 @@
-## publishMedia(igId, creationId)
+## Function: `publishMedia`
 
 Publishes a media container.
 
 **Parameters:**
 
-- `igId`: The Instagram ID.
-- `creationId`: The ID of the media container to publish.
+- `igId` (string, required): The Instagram Business Account ID.
+- `creationId` (string, required): The ID of the media container to publish.
 
-**Returns:**
+**Return Value:**
 
-- The ID of the published media.
+- `Promise<object>`:
+  - `id` (string): The ID of the published media.
 
-**Example:**
+**Examples:**
 
 ```typescript
-const publishedMediaId = await sdk.publishMedia(
-  'your-instagram-id',
-  'your-creation-id',
-);
-console.log('Published media ID:', publishedMediaId);
+const publishedMedia = await sdk.publishMedia('<igId>', '<creationId>');
+console.log(publishedMedia.id);
 ```

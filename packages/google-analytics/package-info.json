@@ -4,8 +4,8 @@
   "description": "A TypeScript SDK for interacting with the Google Analytics API.",
   "path": "packages/google-analytics",
   "dependencies": [
-    "zod",
-    "@microfox/google-oauth"
+    "@microfox/google-oauth",
+    "zod"
   ],
   "status": "stable",
   "authEndpoint": "/connect/google-oauth",
@@ -16,151 +16,11 @@
   "documentation": "https://www.npmjs.com/package/@microfox/google-analytics",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-analytics.svg",
   "readme_map": {
-    "title": "@microfox/@microfox/google-analytics README",
+    "title": "Google Analytics SDK",
     "description": "The full README for the Google Analytics SDK",
-    "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/README.md",
-    "all_readmes": [
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createGoogleAnalyticsSDK.md",
-        "type": "constructor",
-        "extension": "md",
-        "functionality": "createGoogleAnalyticsSDK"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runReport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "runReport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/batchRunReports.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "batchRunReports"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runPivotReport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "runPivotReport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/batchRunPivotReports.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "batchRunPivotReports"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getMetadata.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getMetadata"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/checkCompatibility.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "checkCompatibility"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runRealtimeReport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "runRealtimeReport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createAudienceExport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "createAudienceExport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getAudienceExport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getAudienceExport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listAudienceExports.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "listAudienceExports"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/runFunnelReport.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "runFunnelReport"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getPropertyQuotasSnapshot.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getPropertyQuotasSnapshot"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createAudienceList.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "createAudienceList"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getAudienceList.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getAudienceList"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listAudienceLists.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "listAudienceLists"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createRecurringAudienceList.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "createRecurringAudienceList"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getRecurringAudienceList.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getRecurringAudienceList"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listRecurringAudienceLists.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "listRecurringAudienceLists"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/createReportTask.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "createReportTask"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/getReportTask.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "getReportTask"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/listReportTasks.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "listReportTasks"
-      },
-      {
-        "path": "https://raw.githubusercontent.com/microfox-ai/microfox/main/docs/refreshAccessToken.md",
-        "type": "functionality",
-        "extension": "md",
-        "functionality": "refreshAccessToken"
-      }
-    ],
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/README.md",
     "functionalities": [
-      "createGoogleAnalyticsSDK",
+      "GoogleAnalyticsSDK",
       "runReport",
       "batchRunReports",
       "runPivotReport",
@@ -183,15 +43,177 @@
       "getReportTask",
       "listReportTasks",
       "refreshAccessToken"
+    ],
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/GoogleAnalyticsSDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "GoogleAnalyticsSDK",
+        "description": "Initializes a new instance of the GoogleAnalyticsSDK."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/runReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runReport",
+        "description": "Runs a report."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/batchRunReports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchRunReports",
+        "description": "Runs multiple reports in a single request."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/runPivotReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runPivotReport",
+        "description": "Runs a pivot report."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/batchRunPivotReports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "batchRunPivotReports",
+        "description": "Runs multiple pivot reports in a single request."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getMetadata.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getMetadata",
+        "description": "Retrieves metadata."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/checkCompatibility.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "checkCompatibility",
+        "description": "Checks compatibility."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/runRealtimeReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runRealtimeReport",
+        "description": "Runs a realtime report."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/createAudienceExport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createAudienceExport",
+        "description": "Creates an audience export."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getAudienceExport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAudienceExport",
+        "description": "Retrieves an audience export."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/listAudienceExports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listAudienceExports",
+        "description": "Lists audience exports."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/runFunnelReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "runFunnelReport",
+        "description": "Runs a funnel report."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getPropertyQuotasSnapshot.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getPropertyQuotasSnapshot",
+        "description": "Retrieves property quotas snapshot."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/createAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createAudienceList",
+        "description": "Creates an audience list."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getAudienceList",
+        "description": "Retrieves an audience list."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/listAudienceLists.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listAudienceLists",
+        "description": "Lists audience lists."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/createRecurringAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createRecurringAudienceList",
+        "description": "Creates a recurring audience list."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getRecurringAudienceList.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getRecurringAudienceList",
+        "description": "Retrieves a recurring audience list."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/listRecurringAudienceLists.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listRecurringAudienceLists",
+        "description": "Lists recurring audience lists."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/createReportTask.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createReportTask",
+        "description": "Creates a report task."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/getReportTask.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "getReportTask",
+        "description": "Retrieves a report task."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/listReportTasks.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listReportTasks",
+        "description": "Lists report tasks."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/docs/refreshAccessToken.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "refreshAccessToken",
+        "description": "Refreshes the access token."
+      }
     ]
   },
   "constructors": [
     {
-      "name": "createGoogleAnalyticsSDK",
+      "name": "GoogleAnalyticsSDK",
       "description": "Create a new Google Analytics SDK client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/google-oauth",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {
@@ -207,7 +229,7 @@
         {
           "key": "GOOGLE_ANALYTICS_REDIRECT_URI",
           "displayName": "Google Analytics Redirect URI",
-          "description": "The redirect URI for your Google Cloud project."
+          "description": "The redirect URI for your OAuth 2.0 credentials."
         },
         {
           "key": "GOOGLE_ANALYTICS_ACCESS_TOKEN",
@@ -245,7 +267,7 @@
     {
       "key": "GOOGLE_ANALYTICS_CLIENT_ID",
       "constructors": [
-        "createGoogleAnalyticsSDK"
+        "GoogleAnalyticsSDK"
       ],
       "description": "The client ID for your Google Cloud project.",
       "required": true
@@ -253,7 +275,7 @@
     {
       "key": "GOOGLE_ANALYTICS_CLIENT_SECRET",
       "constructors": [
-        "createGoogleAnalyticsSDK"
+        "GoogleAnalyticsSDK"
       ],
       "description": "The client secret for your Google Cloud project.",
       "required": true
@@ -261,15 +283,15 @@
     {
       "key": "GOOGLE_ANALYTICS_REDIRECT_URI",
       "constructors": [
-        "createGoogleAnalyticsSDK"
+        "GoogleAnalyticsSDK"
       ],
-      "description": "The redirect URI for your Google Cloud project.",
+      "description": "The redirect URI for your OAuth 2.0 credentials.",
       "required": true
     },
     {
       "key": "GOOGLE_ANALYTICS_ACCESS_TOKEN",
       "constructors": [
-        "createGoogleAnalyticsSDK"
+        "GoogleAnalyticsSDK"
       ],
       "description": "The access token for authenticating with the Google Analytics Data API.",
       "required": true

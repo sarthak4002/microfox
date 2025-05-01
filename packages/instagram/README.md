@@ -8,26 +8,15 @@ A TypeScript SDK for interacting with the Instagram Graph API using OAuth 2.0.
 npm install @microfox/instagram
 ```
 
-## Authentication
-
-This SDK uses OAuth 2.0 for authentication. You need to provide the following credentials:
-
-- `accessToken`: Your OAuth access token
-- `refreshToken`: Your OAuth refresh token
-- `clientId`: Your OAuth client ID
-- `clientSecret`: Your OAuth client secret
-
-You can obtain these credentials by following the OAuth 2.0 flow for Instagram.
-
 ## Environment Variables
 
 The following environment variables are used by this SDK:
 
-- `INSTAGRAM_CLIENT_ID`: Your Instagram app's Client ID. Obtained from Facebook Developer app dashboard. (Required)
-- `INSTAGRAM_CLIENT_SECRET`: Your Instagram app's Client Secret. Obtained from Facebook Developer app dashboard. (Required)
-- `INSTAGRAM_REDIRECT_URI`: The OAuth redirect URI for your app. Must match a valid redirect URI configured in your app dashboard. (Required)
-- `INSTAGRAM_ACCESS_TOKEN`: The user's access token. Obtained through OAuth flow. (Required)
-- `INSTAGRAM_REFRESH_TOKEN`: The user's refresh token. Obtained through OAuth flow. (Required)
+- `INSTAGRAM_CLIENT_ID`: Your Instagram app's Client ID. Obtain this from your app's settings on the Facebook Developer platform. (Required)
+- `INSTAGRAM_CLIENT_SECRET`: Your Instagram app's Client Secret. Obtain this from your app's settings on the Facebook Developer platform. Keep this value secure. (Required)
+- `INSTAGRAM_REDIRECT_URI`: The OAuth redirect URI configured for your app on the Facebook Developer platform. This URI must match the one used during the OAuth flow. (Required)
+- `INSTAGRAM_ACCESS_TOKEN`: The user's access token obtained through the OAuth flow. This token is used to authenticate API requests. (Required)
+- `INSTAGRAM_REFRESH_TOKEN`: The user's refresh token obtained through the OAuth flow. This token is used to refresh the access token when it expires. (Required)
 
 ## Additional Information
 
@@ -45,8 +34,6 @@ To use this SDK, you need to obtain Instagram API credentials. Follow these step
 
 6. Obtain your app's Client ID and Client Secret from the app dashboard
 
-
-
 Environment variables:
 
 - INSTAGRAM_CLIENT_ID: Your Instagram app's Client ID
@@ -59,19 +46,13 @@ Environment variables:
 
 - INSTAGRAM_REFRESH_TOKEN: The user's refresh token (obtained through OAuth flow)
 
-
-
 Authentication:
 
 This SDK uses OAuth 2.0 for authentication. You need to implement the OAuth flow in your application to obtain the initial access token and refresh token. The SDK handles token refreshing automatically.
 
-
-
 Rate Limits:
 
 Instagram API has rate limits that vary by endpoint. Monitor your usage and implement appropriate error handling and backoff strategies. Use the getContentPublishingLimit method to check your current rate limit status for content publishing.
-
-
 
 Important Notes:
 
@@ -88,8 +69,6 @@ Important Notes:
 - When working with insights, be aware of the different metrics available for media objects vs. user accounts
 
 - The oEmbed endpoint requires a separate app access token or client access token
-
-
 
 For more detailed information, refer to the official Instagram Graph API documentation: https://developers.facebook.com/docs/instagram-api/
 

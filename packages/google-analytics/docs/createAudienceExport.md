@@ -1,10 +1,27 @@
+## Function: `createAudienceExport`
+
 Creates an audience export.
 
-Parameters:
+**Purpose:**
 
-- `parent`: The parent resource name.
-- `request`: The audience export creation request.
+Creates a new audience export.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the audience export.
+- `parent`: string - The parent resource name.
+- `request`: CreateAudienceExportRequest - The audience export request parameters.
+
+**Return Value:**
+
+- `Promise<AudienceExport>` - A promise that resolves to the created audience export.
+
+**Examples:**
+
+```typescript
+// Example: Create an audience export
+const audienceExport = await sdk.createAudienceExport(
+  'properties/<propertyId>',
+  { audience: '<audienceId>', audienceDisplayName: '<displayName>' },
+);
+console.log(audienceExport);
+```

@@ -1,10 +1,26 @@
+## Function: `createAudienceList`
+
 Creates an audience list.
 
-Parameters:
+**Purpose:**
 
-- `parent`: The parent resource name.
-- `request`: The audience list creation request.
+Creates a new audience list.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the audience list.
+- `parent`: string - The parent resource name.
+- `request`: CreateAudienceListRequest - The audience list request parameters.
+
+**Return Value:**
+
+- `Promise<AudienceList>` - A promise that resolves to the created audience list.
+
+**Examples:**
+
+```typescript
+// Example: Create an audience list
+const audienceList = await sdk.createAudienceList('properties/<propertyId>', {
+  audienceList: { name: '<name>', description: '<description>' },
+});
+console.log(audienceList);
+```

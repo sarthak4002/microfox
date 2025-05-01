@@ -1,9 +1,23 @@
-Gets metadata.
+## Function: `getMetadata`
 
-Parameters:
+Retrieves metadata.
 
-- `name`: The name of the metadata resource.
+**Purpose:**
 
-Returns:
+Gets metadata information.
 
-- A promise that resolves to the metadata.
+**Parameters:**
+
+- `name`: string - The name of the metadata to retrieve.
+
+**Return Value:**
+
+- `Promise<Metadata>` - A promise that resolves to the metadata.
+
+**Examples:**
+
+```typescript
+// Example: Get metadata
+const metadata = await sdk.getMetadata('properties/<propertyId>/metadata');
+console.log(metadata);
+```

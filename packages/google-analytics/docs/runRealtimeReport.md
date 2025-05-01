@@ -1,10 +1,26 @@
+## Function: `runRealtimeReport`
+
 Runs a realtime report.
 
-Parameters:
+**Purpose:**
 
-- `property`: The property ID.
-- `request`: The realtime report request.
+Executes a Google Analytics realtime report.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the realtime report response.
+- `property`: string - The property ID to query.
+- `request`: RunRealtimeReportRequest - The realtime report request parameters.
+
+**Return Value:**
+
+- `Promise<RunRealtimeReportResponse>` - A promise that resolves to the realtime report response.
+
+**Examples:**
+
+```typescript
+// Example: Run a realtime report
+const response = await sdk.runRealtimeReport('properties/<propertyId>', {
+  metrics: [{ name: 'activeUsers' }],
+});
+console.log(response);
+```

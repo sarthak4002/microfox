@@ -1,9 +1,25 @@
-Gets property quotas snapshot.
+## Function: `getPropertyQuotasSnapshot`
 
-Parameters:
+Retrieves property quotas snapshot.
 
-- `name`: The name of the property quotas snapshot resource.
+**Purpose:**
 
-Returns:
+Gets a snapshot of property quotas.
 
-- A promise that resolves to the property quotas snapshot.
+**Parameters:**
+
+- `name`: string - The name of the property quotas snapshot to retrieve.
+
+**Return Value:**
+
+- `Promise<PropertyQuotasSnapshot>` - A promise that resolves to the property quotas snapshot.
+
+**Examples:**
+
+```typescript
+// Example: Get property quotas snapshot
+const snapshot = await sdk.getPropertyQuotasSnapshot(
+  'properties/<propertyId>/quotasSnapshot',
+);
+console.log(snapshot);
+```

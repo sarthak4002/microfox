@@ -27,17 +27,14 @@
     }
   },
   "dependencies": {
-    "@microfox/rest-sdk": "1.0.4",
-    "zod": "^3.24.2"
+    "@microfox/rest-sdk": "^1.0.4",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@microfox/tsconfig": "*",
     "@types/node": "^18",
     "tsup": "^8",
     "typescript": "5.6.3"
-  },
-  "peerDependencies": {
-    "@microfox/rest-sdk": ">=1.0.4"
   },
   "publishConfig": {
     "access": "public"

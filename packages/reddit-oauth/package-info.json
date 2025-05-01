@@ -88,7 +88,6 @@
       "description": "Create a new Microfox Reddit OAuth client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/reddit",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

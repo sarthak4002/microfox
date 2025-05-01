@@ -18,13 +18,14 @@
     "@ai-sdk/google": "^1.2.12",
     "@microfox/serpapi": "1.0.2",
     "@microfox/tavily": "1.0.2",
+    "@supabase/supabase-js": "^2.49.4",
     "ai": "^4.2.0",
     "dedent": "^1.5.3",
     "dotenv": "^16.4.5",
-    "jsdom": "^26.1.0",
-    "puppeteer": "^24.6.1",
     "glob": "^11.0.1",
+    "jsdom": "^26.1.0",
     "octokit": "^4.1.3",
+    "puppeteer": "^24.6.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
