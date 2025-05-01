@@ -151,13 +151,14 @@ All message types support the following options:
 ```typescript
 interface MessageOptions {
   recipientType?: 'individual' | 'group'; // Default: 'individual'
-  checkWindow?: boolean; // Check if recipient is within the 24-hour window
-  templateFallback?: {
-    // Fallback template if outside 24-hour window
-    name: string;
-    language: string;
-    components?: any[];
-  };
+}
+```
+
+Text messages have additional options:
+
+```typescript
+interface TextMessageOptions extends MessageOptions {
+  previewUrl?: boolean; // Whether to show a preview URL, default: true
 }
 ```
 
@@ -166,18 +167,31 @@ interface MessageOptions {
 ### Text Messages
 
 ```typescript
-// Basic text message
+// Basic text message (URL preview enabled by default)
 await whatsapp.sendTextMessage(
   'RECIPIENT_PHONE_NUMBER',
   'Hello from WhatsApp Business API!',
-  'individual', // Optional: recipient type (individual or group)
+  { recipientType: 'individual' }, // Optional
 );
 
-// Text message with preview URL
+// Text message with preview URL disabled
 await whatsapp.sendTextMessage(
   'RECIPIENT_PHONE_NUMBER',
   'Check out our website: https://example.com',
-  'individual',
+  {
+    recipientType: 'individual',
+    previewUrl: false, // Explicitly disable URL preview
+  },
+);
+
+// Text message with preview URL enabled (explicit)
+await whatsapp.sendTextMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  'Check out our website: https://example.com',
+  {
+    recipientType: 'individual',
+    previewUrl: true, // Explicitly enable URL preview
+  },
 );
 ```
 
@@ -194,7 +208,7 @@ await whatsapp.sendImageMessage(
     id: mediaId,
     caption: 'This is an image caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Using Direct Link (Alternative)
@@ -204,7 +218,7 @@ await whatsapp.sendImageMessage(
     link: 'https://example.com/image.jpg',
     caption: 'This is an image caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -219,7 +233,7 @@ await whatsapp.sendVideoMessage(
     id: mediaId,
     caption: 'This is a video caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Using Direct Link (Alternative)
@@ -229,7 +243,7 @@ await whatsapp.sendVideoMessage(
     link: 'https://example.com/video.mp4',
     caption: 'This is a video caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -245,7 +259,7 @@ await whatsapp.sendDocumentMessage(
     filename: 'document.pdf',
     caption: 'This is a document caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Using Direct Link (Alternative)
@@ -256,7 +270,7 @@ await whatsapp.sendDocumentMessage(
     filename: 'document.pdf',
     caption: 'This is a document caption',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -270,7 +284,7 @@ await whatsapp.sendAudioMessage(
   {
     id: mediaId,
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Using Direct Link (Alternative)
@@ -279,7 +293,7 @@ await whatsapp.sendAudioMessage(
   {
     link: 'https://example.com/audio.mp3',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -293,7 +307,7 @@ await whatsapp.sendStickerMessage(
   {
     id: mediaId,
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Using Direct Link (Alternative)
@@ -302,7 +316,7 @@ await whatsapp.sendStickerMessage(
   {
     link: 'https://example.com/sticker.webp',
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -316,7 +330,7 @@ await whatsapp.sendLocationMessage(
     longitude: 123.456,
     latitude: 78.901,
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Location with name and address
@@ -328,6 +342,17 @@ await whatsapp.sendLocationMessage(
     name: 'Business Location',
     address: '123 Business Street, City, Country',
   },
+  { recipientType: 'individual' }, // Optional
+);
+```
+
+### Location Request Messages
+
+```typescript
+// Request user's location
+await whatsapp.sendLocationRequestMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  'Please share your location',
   'individual',
 );
 ```
@@ -353,7 +378,7 @@ await whatsapp.sendContactMessage(
       ],
     },
   ],
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Multiple contacts
@@ -423,7 +448,7 @@ await whatsapp.sendInteractiveMessage(
       ],
     },
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Buttons with emojis
@@ -453,7 +478,7 @@ await whatsapp.sendInteractiveMessage(
       ],
     },
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -489,7 +514,7 @@ await whatsapp.sendInteractiveMessage(
       ],
     },
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Multiple sections list
@@ -536,6 +561,18 @@ await whatsapp.sendInteractiveMessage(
       ],
     },
   },
+  { recipientType: 'individual' }, // Optional
+);
+```
+
+#### Call-to-Action (CTA)
+
+```typescript
+// CTA message with URL
+await whatsapp.sendInteractiveCtaMessage(
+  'RECIPIENT_PHONE_NUMBER',
+  'Click the button below to visit our website',
+  'https://example.com',
   'individual',
 );
 ```
@@ -559,7 +596,7 @@ await whatsapp.sendTemplateMessage(
       ],
     },
   ],
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Template with multiple components
@@ -599,7 +636,7 @@ await whatsapp.sendTemplateMessage(
       text: 'Thank you for your order!',
     },
   ],
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
@@ -616,7 +653,7 @@ await whatsapp.sendFlowMessage(
       user_id: '456',
     },
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
 // Flow with header and body
@@ -636,15 +673,33 @@ await whatsapp.sendFlowMessage(
       step: '1',
     },
   },
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 ```
 
 ### Message Reactions
 
 ```typescript
-await whatsapp.sendReaction('RECIPIENT_PHONE_NUMBER', 'message_id', '❤️');
+// Send a reaction to a message
+await whatsapp.sendReaction(
+  'RECIPIENT_PHONE_NUMBER',
+  'message_id',
+  '❤️', // Emoji to react with
+);
 ```
+
+### Send Typing Indicator
+
+The typing indicator shows the user that you are preparing a response. This is a good practice for improving user experience when it will take a few seconds to respond.
+
+```typescript
+await whatsapp.sendTypingIndicator({
+  messageId: 'MESSAGE_ID',
+  type: 'text', // Optional, defaults to 'text'
+});
+```
+
+> **Note**: The typing indicator will be dismissed automatically after 25 seconds or when you send a response, whichever comes first. Only use this feature when you are actually going to respond to the user.
 
 ### Message Replies
 
@@ -655,16 +710,78 @@ await whatsapp.sendReply(
   'text',
   'Thank you for your message!',
   'message_id',
-  'individual',
+  { recipientType: 'individual' }, // Optional
 );
 
-// Media reply
+// Media reply (image, video, document, audio, sticker)
 await whatsapp.sendReply(
   'RECIPIENT_PHONE_NUMBER',
   'image',
   {
     id: 'MEDIA_ID',
     caption: 'Here is the image you requested',
+  },
+  'message_id',
+  { recipientType: 'individual' }, // Optional
+);
+
+// Location reply
+await whatsapp.sendReply(
+  'RECIPIENT_PHONE_NUMBER',
+  'location',
+  {
+    longitude: 123.456,
+    latitude: 78.901,
+    name: 'Business Location',
+    address: '123 Business Street, City, Country',
+  },
+  'message_id',
+  'individual',
+);
+
+// Contact reply
+await whatsapp.sendReply(
+  'RECIPIENT_PHONE_NUMBER',
+  'contacts',
+  [
+    {
+      name: {
+        formatted_name: 'John Doe',
+        first_name: 'John',
+        last_name: 'Doe',
+      },
+      phones: [
+        {
+          phone: '+1234567890',
+          type: 'WORK',
+        },
+      ],
+    },
+  ],
+  'message_id',
+  'individual',
+);
+
+// Interactive reply
+await whatsapp.sendReply(
+  'RECIPIENT_PHONE_NUMBER',
+  'interactive',
+  {
+    type: 'button',
+    body: {
+      text: 'Choose an option',
+    },
+    action: {
+      buttons: [
+        {
+          type: 'reply',
+          reply: {
+            id: 'option1',
+            title: 'Option 1',
+          },
+        },
+      ],
+    },
   },
   'message_id',
   'individual',
@@ -681,27 +798,9 @@ await whatsapp.markMessageAsRead('MESSAGE_ID');
 await whatsapp.markMessagesAsRead(['MESSAGE_ID_1', 'MESSAGE_ID_2']);
 ```
 
-### Send Typing Indicator
-
-The typing indicator shows the user that you are preparing a response. This is a good practice for improving user experience when it will take a few seconds to respond.
-
-```typescript
-await whatsapp.sendTypingIndicator({
-  messageId: 'MESSAGE_ID',
-  type: 'text', // Optional, defaults to 'text'
-});
-```
-
-> **Note**: The typing indicator will be dismissed automatically after 25 seconds or when you send a response, whichever comes first. Only use this feature when you are actually going to respond to the user.
-
-`````typescript
-const mediaId = await whatsapp.uploadMedia(file, 'image');
-
-
 ### Media Management
 
-````typescript
-
+```typescript
 // Upload media
 const mediaId = await whatsapp.uploadMedia(file, 'image');
 
@@ -710,7 +809,7 @@ const mediaData = await whatsapp.downloadMedia('MEDIA_ID');
 
 // Get media URL
 const mediaUrl = await whatsapp.getMediaUrl('MEDIA_ID');
-`````
+```
 
 ### Phone Number Management
 
