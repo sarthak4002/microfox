@@ -11,19 +11,34 @@ dotenv.config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const PACKAGES_DIR = path.resolve(__dirname, '../../../packages');
+
+// 1) Use process.cwd() so it works the same on Windows, macOS, Linux, and in GH Actions:
+const PACKAGES_DIR = path.resolve(process.cwd(), '..', 'packages');
 const DOCS_TABLE = 'docs_embeddings';
 
-// initialize clients
+// initialize Supabase
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function getGitLastModified(filePath: string): Date {
-  const out = execSync(`git log -1 --format=%ct -- "${filePath}"`, {
-    cwd: PACKAGES_DIR,
-  })
-    .toString()
-    .trim();
-  return new Date(Number(out) * 1000);
+// 2) Try git timestamp, but fall back to FS mtime if it fails:
+function getGitLastModified(fullPath: string): Date {
+  try {
+    // git expects a repo root, so we run from process.cwd()
+    const out = execSync(
+      `git log -1 --format=%ct -- "${path.relative(process.cwd(), fullPath)}"`,
+      { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'ignore'] }
+    )
+      .toString()
+      .trim();
+    const sec = Number(out);
+    if (!isNaN(sec)) {
+      return new Date(sec * 1000);
+    }
+  } catch {
+    console.log(`Error getting git last modified for ${fullPath}`);
+    // ignore errors
+  }
+  // fallback:
+  return fs.statSync(fullPath).mtime;
 }
 
 async function getExistingDocs() {
@@ -31,92 +46,97 @@ async function getExistingDocs() {
     .from(DOCS_TABLE)
     .select('id,file_path,updated_at');
   if (error) throw error;
-  return data! as Array<{ id: string; file_path: string; updated_at: string }>;
+  return data as Array<{ id: string; file_path: string; updated_at: string }>;
 }
 
-function walkDocs(): Array<{
-  packageName: string;
-  filePath: string;
-  fullPath: string;
-  mtime: Date;
-  content: string;
-  functionName: string;
-}> {
-  const results: Array<any> = [];
+function walkDocs() {
+  const results: Array<{
+    packageName: string;
+    functionName: string;
+    filePath: string;
+    fullPath: string;
+    mtime: Date;
+    content: string;
+  }> = [];
+
+  if (!fs.existsSync(PACKAGES_DIR)) {
+    console.warn(`⚠️  packages/ directory not found at ${PACKAGES_DIR}`);
+    return results;
+  }
+
   for (const pkg of fs.readdirSync(PACKAGES_DIR)) {
     const docsDir = path.join(PACKAGES_DIR, pkg, 'docs');
     if (!fs.existsSync(docsDir)) continue;
+
     for (const file of fs.readdirSync(docsDir).filter(f => f.endsWith('.md'))) {
       const fullPath = path.join(docsDir, file);
       const mtime = getGitLastModified(fullPath);
       results.push({
         packageName: pkg,
+        functionName: file.replace(/\.md$/, ''),
         filePath: path.relative(PACKAGES_DIR, fullPath),
-        functionName: file.replace('.md', ''),
         fullPath,
         mtime,
         content: fs.readFileSync(fullPath, 'utf-8'),
       });
     }
   }
+
   return results;
 }
 
 async function main() {
-  console.log('⏳ fetching existing docs from DB…');
+  console.log('⏳ Fetching existing docs from DB…');
   const existing = await getExistingDocs();
   const existingMap = new Map(existing.map(r => [r.file_path, r]));
 
-  console.log('⏳ scanning filesystem…');
+  console.log('⏳ Scanning filesystem…');
   const localDocs = walkDocs();
   const localPaths = new Set(localDocs.map(d => d.filePath));
 
-  // 1) Deleted files → delete from DB
+  // 1) Remove deleted files
   const toDelete = existing.filter(r => !localPaths.has(r.file_path));
   if (toDelete.length) {
-    console.log(`🗑  deleting ${toDelete.length} removed docs…`);
-    for (const row of toDelete) {
-      await supabase.from(DOCS_TABLE).delete().eq('id', row.id);
+    console.log(`🗑 Deleting ${toDelete.length} removed docs…`);
+    for (const { id } of toDelete) {
+      await supabase.from(DOCS_TABLE).delete().eq('id', id);
     }
   }
 
-  // 2) New or updated files → upsert
-  const upserts: Array<any> = [];
+  // 2) Upsert new/updated files
+  const upserts: any[] = [];
   for (const doc of localDocs) {
     const dbRow = existingMap.get(doc.filePath);
     const isNew = !dbRow;
     const isStale = dbRow && new Date(dbRow.updated_at) < doc.mtime;
     if (isNew || isStale) {
-      console.log(`${isNew ? '✨ new' : '♻️ updating'} → ${doc.filePath}`);
-      const text = fs.readFileSync(doc.fullPath, 'utf-8');
-      const embedding = await embed(text);
-      console.log('successfully generated embedding for ', doc.filePath);
+      console.log(`${isNew ? '✨ New' : '♻️ Updated'} → ${doc.filePath}`);
+      const embedding = await embed(doc.content);
       upserts.push({
         package_name: doc.packageName,
         function_name: doc.functionName,
         file_path: doc.filePath,
-        embedding,
         content: doc.content,
+        embedding,
         updated_at: new Date().toISOString(),
       });
     }
   }
+
   if (upserts.length) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from(DOCS_TABLE)
       .upsert(upserts, { onConflict: 'file_path' });
-    if (error) {
-      console.error(error);
-    }
-    console.log(`✅ upserted ${upserts.length} docs.`);
+    if (error) throw error;
+    console.log(`✅ Upserted ${upserts.length} docs.`);
   } else {
-    console.log('✅ no new or changed docs to upsert.');
+    console.log('✅ No new or changed docs to upsert.');
   }
 }
 
 main()
-  .then(() => console.log('🎉 done!'))
+  .then(() => console.log('🎉 Done!'))
   .catch(err => {
-    console.error(err);
+    console.error('❌ Error:', err);
     process.exit(1);
   });
