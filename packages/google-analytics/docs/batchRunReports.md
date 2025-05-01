@@ -1,10 +1,29 @@
-Batch runs reports.
+## Function: `batchRunReports`
 
-Parameters:
+Runs multiple reports in a single request.
 
-- `property`: The property ID.
-- `request`: The batch report request.
+**Purpose:**
 
-Returns:
+Executes multiple Google Analytics reports in a batch.
 
-- A promise that resolves to the batch report response.
+**Parameters:**
+
+- `property`: string - The property ID to query.
+- `request`: BatchRunReportsRequest - The batch report request parameters.
+
+**Return Value:**
+
+- `Promise<BatchRunReportsResponse>` - A promise that resolves to the batch report response.
+
+**Examples:**
+
+```typescript
+// Example: Run multiple reports
+const response = await sdk.batchRunReports('properties/<propertyId>', {
+  requests: [
+    { metrics: [{ name: 'sessions' }], dimensions: [{ name: 'country' }] },
+    { metrics: [{ name: 'users' }], dimensions: [{ name: 'city' }] },
+  ],
+});
+console.log(response);
+```

@@ -1,10 +1,27 @@
+## Function: `checkCompatibility`
+
 Checks compatibility.
 
-Parameters:
+**Purpose:**
 
-- `property`: The property ID.
-- `request`: The compatibility check request.
+Checks the compatibility of report parameters.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the compatibility check response.
+- `property`: string - The property ID to check.
+- `request`: CheckCompatibilityRequest - The compatibility request parameters.
+
+**Return Value:**
+
+- `Promise<CheckCompatibilityResponse>` - A promise that resolves to the compatibility response.
+
+**Examples:**
+
+```typescript
+// Example: Check compatibility
+const response = await sdk.checkCompatibility('properties/<propertyId>', {
+  metrics: [{ name: 'sessions' }],
+  dimensions: [{ name: 'country' }],
+});
+console.log(response);
+```

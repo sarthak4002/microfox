@@ -1,9 +1,23 @@
+## Function: `listAudienceExports`
+
 Lists audience exports.
 
-Parameters:
+**Purpose:**
 
-- `parent`: The parent resource name.
+Retrieves a list of audience exports.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the list of audience exports.
+- `parent`: string - The parent resource name.
+
+**Return Value:**
+
+- `Promise<ListAudienceExportsResponse>` - A promise that resolves to the list of audience exports.
+
+**Examples:**
+
+```typescript
+// Example: List audience exports
+const response = await sdk.listAudienceExports('properties/<propertyId>');
+console.log(response);
+```

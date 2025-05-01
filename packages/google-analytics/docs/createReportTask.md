@@ -1,10 +1,26 @@
+## Function: `createReportTask`
+
 Creates a report task.
 
-Parameters:
+**Purpose:**
 
-- `parent`: The parent resource name.
-- `request`: The report task creation request.
+Creates a new report task.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the report task.
+- `parent`: string - The parent resource name.
+- `request`: CreateReportTaskRequest - The report task request parameters.
+
+**Return Value:**
+
+- `Promise<ReportTask>` - A promise that resolves to the created report task.
+
+**Examples:**
+
+```typescript
+// Example: Create a report task
+const reportTask = await sdk.createReportTask('properties/<propertyId>', {
+  reportTask: { name: '<name>', description: '<description>' },
+});
+console.log(reportTask);
+```

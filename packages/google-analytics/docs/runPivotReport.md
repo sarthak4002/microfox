@@ -1,10 +1,28 @@
+## Function: `runPivotReport`
+
 Runs a pivot report.
 
-Parameters:
+**Purpose:**
 
-- `property`: The property ID.
-- `request`: The pivot report request.
+Executes a Google Analytics pivot report.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the pivot report response.
+- `property`: string - The property ID to query.
+- `request`: RunPivotReportRequest - The pivot report request parameters.
+
+**Return Value:**
+
+- `Promise<RunPivotReportResponse>` - A promise that resolves to the pivot report response.
+
+**Examples:**
+
+```typescript
+// Example: Run a pivot report
+const response = await sdk.runPivotReport('properties/<propertyId>', {
+  metrics: [{ name: 'sessions' }],
+  dimensions: [{ name: 'country' }],
+  pivots: [{ fieldNames: ['country'] }],
+});
+console.log(response);
+```

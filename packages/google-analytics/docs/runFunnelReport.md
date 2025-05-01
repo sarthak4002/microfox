@@ -1,10 +1,29 @@
+## Function: `runFunnelReport`
+
 Runs a funnel report.
 
-Parameters:
+**Purpose:**
 
-- `property`: The property ID.
-- `request`: The funnel report request.
+Executes a Google Analytics funnel report.
 
-Returns:
+**Parameters:**
 
-- A promise that resolves to the funnel report response.
+- `property`: string - The property ID to query.
+- `request`: RunFunnelReportRequest - The funnel report request parameters.
+
+**Return Value:**
+
+- `Promise<RunFunnelReportResponse>` - A promise that resolves to the funnel report response.
+
+**Examples:**
+
+```typescript
+// Example: Run a funnel report
+const response = await sdk.runFunnelReport('properties/<propertyId>', {
+  steps: [
+    { name: 'Step 1', isGoal: false },
+    { name: 'Step 2', isGoal: true },
+  ],
+});
+console.log(response);
+```
