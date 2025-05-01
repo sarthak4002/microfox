@@ -282,7 +282,6 @@
       "description": "Create a new Microfox Discord SDK client through which you can interact with the API",
       "auth": "apikey",
       "apiType": "bot_token",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

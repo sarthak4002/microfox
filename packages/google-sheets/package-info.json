@@ -110,7 +110,6 @@
       "auth": "oauth2",
       "authSdk": "@microfox/google-oauth",
       "authEndpoint": "/connect/google-oauth",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

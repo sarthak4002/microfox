@@ -214,7 +214,6 @@
       "description": "Create a new Google Analytics SDK client through which you can interact with the API",
       "auth": "oauth2",
       "authSdk": "@microfox/google-oauth",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

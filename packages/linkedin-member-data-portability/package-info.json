@@ -86,7 +86,6 @@
       "auth": "oauth2",
       "authSdk": "@microfox/linkedin-oauth",
       "authEndpoint": "/connect/linkedin-oauth",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

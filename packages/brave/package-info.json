@@ -91,7 +91,6 @@
       "auth": "apiKey",
       "apiType": "api_key",
       "authSdk": "",
-      "outputKeys": [],
       "requiredKeys": [
         {
           "key": "BRAVE_API_KEY",

@@ -123,7 +123,6 @@
       "description": "Create a new Microfox X SDK client through which you can interact with the API",
       "auth": "apikey",
       "apiType": "api_key",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

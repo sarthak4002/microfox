@@ -161,7 +161,6 @@
       "name": "InstagramSDK",
       "description": "Create a new Instagram SDK client through which you can interact with the API",
       "auth": "oauth2",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

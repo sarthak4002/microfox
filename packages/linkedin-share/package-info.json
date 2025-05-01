@@ -16,7 +16,6 @@
       "description": "Create a new LinkedIn Share client through which you can interact with the API",
       "auth": "oauth2",
       "authEndpoint": "/connect/linkedin",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {

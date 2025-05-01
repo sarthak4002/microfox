@@ -51,7 +51,6 @@
       "description": "Create a new Microfox AWS SES client through which you can interact with the API",
       "auth": "apikey",
       "apiType": "api_key",
-      "outputKeys": [],
       "requiredKeys": [],
       "internalKeys": [
         {
