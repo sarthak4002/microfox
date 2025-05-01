@@ -88,7 +88,7 @@
     {
       "name": "createBraveSDK",
       "description": "Create a new Brave TypeScript SDK client through which you can interact with the API",
-      "auth": "apiKey",
+      "auth": "apikey",
       "apiType": "api_key",
       "authSdk": "",
       "requiredKeys": [
