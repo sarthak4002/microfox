@@ -1,68 +1,34 @@
-# imageSearch
+## Function: `imageSearch`
 
-The `imageSearch` method performs an image search using the Brave Search API.
+Performs an image search using the Brave Search API.
 
-## Syntax
+**Purpose:**
+Retrieves image search results for a given query and optional parameters.
 
+**Parameters:**
+- `params`: object<ImageSearchParams> - Required. Image search parameters.
+  - `q`: string - Required. The search query (maximum 400 characters).
+  - `country`: string - Optional. Two-letter country code (e.g., "US").
+  - `search_lang`: string - Optional. Language code (e.g., "en", "es"). Minimum 2 characters.
+  - `count`: number - Optional. Number of results to return (integer between 1 and 100). Defaults to 10.
+  - `safesearch`: enum<SafeSearchOption> - Optional. SafeSearch option. Possible values: "off", "moderate", "strict".
+  - `spellcheck`: boolean - Optional. Whether to enable spellcheck.
+
+**Return Value:**
+- `Promise<any>` - A promise that resolves to the image search results.
+
+**Examples:**
 ```typescript
-async imageSearch(params: ImageSearchParams): Promise<any>
-```
+// Example 1: Minimal usage
+const results = await braveSDK.imageSearch({ q: 'cat' });
 
-## Parameters
-
-The method accepts a single parameter:
-
-- `params` (required): An object of type `ImageSearchParams` containing the search parameters.
-
-### ImageSearchParams
-
-The `ImageSearchParams` object has the following properties:
-
-- `q` (required): A string representing the search query (max 400 characters).
-- `country` (optional): A two-letter country code string.
-- `search_lang` (optional): A language code string (e.g., 'en', 'es').
-- `count` (optional): A number between 1 and 100 representing the number of results to return.
-- `safesearch` (optional): A string enum ('off', 'moderate', 'strict') for SafeSearch option.
-- `spellcheck` (optional): A boolean to enable or disable spellcheck.
-
-## Return Value
-
-The method returns a Promise that resolves to the API response containing the image search results.
-
-## Usage Example
-
-```typescript
-import { createBraveSDK } from 'brave-search-sdk';
-
-const braveSDK = createBraveSDK({
-  apiKey: 'your-api-key-here',
+// Example 2: Full usage
+const results = await braveSDK.imageSearch({
+  q: 'dogs',
+  country: 'UK',
+  search_lang: 'fr',
+  count: 50,
+  safesearch: 'strict',
+  spellcheck: false
 });
-
-async function performImageSearch() {
-  try {
-    const results = await braveSDK.imageSearch({
-      q: 'cute cats',
-      country: 'US',
-      count: 20,
-      safesearch: 'moderate',
-    });
-    console.log('Image search results:', results);
-  } catch (error) {
-    console.error('Error performing image search:', error);
-  }
-}
-
-performImageSearch();
 ```
-
-## Error Handling
-
-The method uses Zod for input validation. If invalid parameters are provided, a `ZodError` will be thrown. API errors will result in a thrown `Error` with the HTTP status code. It's recommended to wrap the method call in a try-catch block to handle potential errors.
-
-## Notes
-
-- The `q` parameter is required and must not exceed 400 characters.
-- The `count` parameter is limited to a maximum of 100 results per request.
-- The `safesearch` option can be used to filter out potentially inappropriate images.
-- Ensure that you respect the rate limits imposed by the Brave Search API to avoid temporary blocks or account suspension.
-- The response will include metadata about the images, such as thumbnails, original URLs, and dimensions.
