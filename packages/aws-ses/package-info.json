@@ -3,60 +3,89 @@
   "title": "Microfox AWS SES",
   "description": "A lightweight, type-safe SDK for interacting with AWS Simple Email Service (SES)",
   "path": "packages/aws-ses",
-  "dependencies": ["@microfox/rest-sdk", "zod"],
+  "dependencies": [
+    "@microfox/rest-sdk",
+    "crypto",
+    "zod"
+  ],
   "status": "stable",
   "authEndpoint": "/connect/aws",
   "documentation": "https://www.npmjs.com/package/@microfox/aws-ses",
   "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/aws-ses.svg",
   "readme_map": {
-    "path": "/README.md",
-    "title": "createSESClient Microfox",
-    "functionalities": ["sendEmail", "sendBulkEmails"],
-    "description": "The full README for the AWS SES SDK"
+    "title": "Microfox AWS SES",
+    "description": "The full README for the Microfox AWS SES",
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/aws-ses/README.md",
+    "functionalities": [
+      "createSESSdk",
+      "sendEmail",
+      "sendBulkEmails"
+    ],
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/aws-ses/docs/createSESSdk.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "createSESSdk",
+        "description": "Creates an instance of the AWS SES SDK. This function configures and returns an object with methods for sending emails via the AWS SES service."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/aws-ses/docs/sendEmail.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "sendEmail",
+        "description": "Sends a single email using the provided parameters."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/aws-ses/docs/sendBulkEmails.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "sendBulkEmails",
+        "description": "Sends multiple emails in parallel using the provided parameters."
+      }
+    ]
   },
   "constructors": [
     {
-      "name": "createSESClient",
-      "description": "Create a new AWS SES client through which you can send emails",
+      "name": "createSESSdk",
+      "description": "Create a new Microfox AWS SES client through which you can interact with the API",
       "auth": "apikey",
-      "apiType": "bot_token",
-      "requiredKeys": [
+      "apiType": "api_key",
+      "outputKeys": [],
+      "requiredKeys": [],
+      "internalKeys": [
         {
-          "key": "AWS_SES_ACCESS_KEY_ID",
-          "displayName": "Access Key ID",
-          "description": "The access key ID for the AWS SES client"
+          "key": "AWS_ACCESS_KEY_ID",
+          "displayName": "AWS Access Key ID",
+          "description": "The AWS access key ID.  Used to authenticate with AWS SES."
         },
         {
-          "key": "AWS_SES_SECRET_ACCESS_KEY",
-          "displayName": "Secret Access Key",
-          "description": "The secret access key for the AWS SES client"
-        },
-        {
-          "key": "AWS_SES_REGION",
-          "displayName": "Region",
-          "description": "The region for the AWS SES client"
+          "key": "AWS_SECRET_ACCESS_KEY",
+          "displayName": "AWS Secret Access Key",
+          "description": "The AWS secret access key. Used to authenticate with AWS SES."
         }
       ],
-      "internalKeys": []
+      "functionalities": [
+        "sendEmail",
+        "sendBulkEmails"
+      ]
     }
   ],
   "keysInfo": [
     {
-      "key": "AWS_SES_ACCESS_KEY_ID",
-      "constructors": ["createSESClient"],
-      "description": "The access key ID for the AWS SES client",
+      "key": "AWS_ACCESS_KEY_ID",
+      "constructors": [
+        "createSESSdk"
+      ],
+      "description": "The AWS access key ID.  Used to authenticate with AWS SES.",
       "required": true
     },
     {
-      "key": "AWS_SES_SECRET_ACCESS_KEY",
-      "constructors": ["createSESClient"],
-      "description": "The secret access key for the AWS SES client",
-      "required": true
-    },
-    {
-      "key": "AWS_SES_REGION",
-      "constructors": ["createSESClient"],
-      "description": "The region for the AWS SES client",
+      "key": "AWS_SECRET_ACCESS_KEY",
+      "constructors": [
+        "createSESSdk"
+      ],
+      "description": "The AWS secret access key. Used to authenticate with AWS SES.",
       "required": true
     }
   ],
