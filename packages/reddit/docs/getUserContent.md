@@ -1,18 +1,26 @@
-## getUserContent(username, section, params)
+## Function: `getUserContent`
 
 Retrieves content (posts and comments) submitted by a specific user.
 
-```typescript
-const content = await reddit.getUserContent('some_username', 'submitted', {
-  limit: 50,
-});
-console.log(content);
-```
+**Purpose:**
+Fetches the user's posts and comments based on the specified section.
 
 **Parameters:**
+- `username`: string - The username of the user whose content to retrieve.
+- `section`: 'overview' | 'submitted' | 'comments' | 'upvoted' | 'downvoted' | 'hidden' | 'saved' | 'gilded' - The section of content to retrieve.
+- `params`: ListingParams - Optional parameters for filtering and sorting the results.
+  - `after`: string - The full name of a thing to fetch after.
+  - `before`: string - The full name of a thing to fetch before.
+  - `count`: number - The number of items already seen in this listing. Starts at 0.
+  - `limit`: number - The maximum number of items to return in this slice of the listing.
+  - `show`: string - Show specific content (e.g., 'all', 'given').
+  - `sr_detail`: string - Expand subreddit information.
 
-- `username`: The username of the user whose content to retrieve.
-- `section`: The section of the user's profile to retrieve content from (e.g., 'overview', 'submitted', 'comments').
-- `params`: Optional listing parameters (e.g., limit, after, before).
+**Return Value:**
+array<Post | Comment> - An array of posts and comments submitted by the user.
 
-**Returns:** A promise that resolves to an array of Post or Comment objects.
+**Examples:**
+```typescript
+const content = await sdk.getUserContent('reddit_username', 'submitted');
+console.log(content);
+```

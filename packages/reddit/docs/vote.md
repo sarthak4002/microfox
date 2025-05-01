@@ -1,19 +1,18 @@
-## vote(id, direction)
+## Function: `vote`
 
 Votes on a post or comment.
 
-```typescript
-// Upvote a post
-await reddit.vote('t3_12345', '1');
-
-// Downvote a comment
-await reddit.vote('t1_67890', '-1');
-
-// Remove a vote
-await reddit.vote('t3_12345', '0');
-```
+**Purpose:**
+Casts an upvote, downvote, or removes a vote on a post or comment.
 
 **Parameters:**
+- `id`: string - The full name of the item to vote on (e.g., 't3_12345').
+- `direction`: number<VoteDirection> - The vote direction (1 for upvote, -1 for downvote, 0 to remove vote).
 
-- `id`: The ID of the post or comment to vote on.
-- `direction`: The vote direction ('1' for upvote, '-1' for downvote, '0' for no vote).
+**Return Value:**
+void
+
+**Examples:**
+```typescript
+await sdk.vote('t3_12345', 1); // Upvote
+```

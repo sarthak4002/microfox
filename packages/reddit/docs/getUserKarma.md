@@ -1,10 +1,18 @@
-## getUserKarma()
+## Function: `getUserKarma`
 
-Retrieves the karma of the currently authenticated user.
+Retrieves the karma breakdown for the currently authenticated user.
 
+**Purpose:**
+Fetches the user's karma information.
+
+**Parameters:**
+None
+
+**Return Value:**
+Record<string, { link_karma: number; comment_karma: number }> - An object containing the user's karma breakdown.
+
+**Examples:**
 ```typescript
-const karma = await reddit.getUserKarma();
+const karma = await sdk.getUserKarma();
 console.log(karma);
 ```
-
-**Returns:** A promise that resolves to an object containing the user's karma.

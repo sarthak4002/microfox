@@ -561,10 +561,10 @@ export async function generateDocs(
             description:
               f.description ||
               'The full README for the ' +
-                metadata.title +
-                ' ' +
-                f.name +
-                ' functionality',
+              metadata.title +
+              ' ' +
+              f.name +
+              ' functionality',
           })),
         ],
       };
@@ -586,17 +586,17 @@ export async function generateDocs(
           }),
           requiredKeys: !packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-                key: key.key,
-                displayName: key.displayName,
-                description: key.description,
-              })) || []
+              key: key.key,
+              displayName: key.displayName,
+              description: key.description,
+            })) || []
             : [],
           internalKeys: packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-                key: key.key,
-                displayName: key.displayName,
-                description: key.description,
-              })) || []
+              key: key.key,
+              displayName: key.displayName,
+              description: key.description,
+            })) || []
             : [],
           functionalities: validatedData.functionsDocs.map(f => f.name),
         },
@@ -625,16 +625,16 @@ export async function generateDocs(
         if (depsString) {
           console.log('📦 Installing dependencies...', depsString);
           await execAsync(`npm i ${depsString}`);
+          console.log(`✅ Installed dependencies: ${depsString}`);
         }
         if (devDepsString) {
           console.log('📦 Installing dev dependencies...', devDepsString);
-          await execAsync(`npm i ${devDepsString}`);
+          await execAsync(`npm i ${devDepsString} --save-dev`);
+          console.log(`✅ Installed dev dependencies: ${devDepsString}`);
         }
-
         // Return to original directory
         process.chdir(originalDir);
 
-        console.log(`✅ Installed dependencies: ${depsString}`);
       } catch (error) {
         console.error(`❌ Failed to install dependencies: ${error}`);
       }
@@ -797,8 +797,8 @@ if (require.main === module) {
     authType: packageInfo.constructors[0]?.auth || 'none',
     ...(packageInfo.constructors[0]?.auth === 'oauth2' &&
       packageInfo.constructors[0]?.authSdk && {
-        authSdk: packageInfo.constructors[0]?.authSdk,
-      }),
+      authSdk: packageInfo.constructors[0]?.authSdk,
+    }),
   };
 
   const extraInfo = packageInfo.extraInfo || [];

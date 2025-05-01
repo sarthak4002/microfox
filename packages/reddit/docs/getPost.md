@@ -1,14 +1,18 @@
-## getPost(id)
+## Function: `getPost`
 
 Retrieves a specific post by its ID.
 
-```typescript
-const post = await reddit.getPost('t3_12345');
-console.log(post);
-```
+**Purpose:**
+Fetches a single post by its full name.
 
 **Parameters:**
+- `id`: string - The full name of the post to retrieve (e.g., 't3_12345').
 
-- `id`: The ID of the post to retrieve.
+**Return Value:**
+Post - The requested post object.
 
-**Returns:** A promise that resolves to a Post object.
+**Examples:**
+```typescript
+const post = await sdk.getPost('t3_12345');
+console.log(post);
+```

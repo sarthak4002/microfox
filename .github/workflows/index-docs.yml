@@ -1,0 +1,38 @@
+name: Index Changed Docs
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  index-docs:
+    name: 🔄 Index Docs on PR
+    runs-on: ubuntu-latest
+    steps:
+      # 1) Get the full git history for accurate git-based timestamps
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2) Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      # 3) Run your embedDocs script
+      - name: Index changed docs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          echo "Running embedDocs.ts to sync changed docs…"
+          cd scripts
+          npm i
+          npm run embed:docs
