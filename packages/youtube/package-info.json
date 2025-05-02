@@ -1,7 +1,7 @@
 {
   "name": "@microfox/youtube",
   "title": "YouTube Data",
-  "description": "YouTube Data API SDK - Upload videos, manage playlists, add comments, search videos, list channel vidoes, get Channel details..",
+  "description": "YouTube Data v3 API SDK - Upload videos, manage playlists, add comments, search videos, list channel vidoes, get Channel details..",
   "path": "packages/youtube",
   "dependencies": ["@microfox/google", "@microfox/rest-sdk", "zod"],
   "status": "stable",
@@ -42,7 +42,11 @@
           "key": "SCOPES",
           "displayName": "Scopes",
           "description": "The scopes for the YouTube client",
-          "defaultValue": ["https://www.googleapis.com/auth/youtube"]
+          "defaultValue": [
+            "https://www.googleapis.com/auth/youtube",
+            "https://www.googleapis.com/auth/youtube.upload",
+            "https://www.googleapis.com/auth/youtube.force-ssl"
+          ]
         }
       ]
     }

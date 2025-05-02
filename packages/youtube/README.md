@@ -48,10 +48,10 @@ import { createYouTubeSDKWithTokens } from '@microfox/youtube';
 
 // Create a YouTube SDK with full token management
 const youtube = await createYouTubeSDKWithTokens({
-  accessToken: 'your-access-token',
-  refreshToken: 'your-refresh-token',
-  clientId: 'your-client-id',
-  clientSecret: 'your-client-secret',
+  accessToken: process.env.GOOGLE_ACCESS_TOKEN,
+  refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+  clientId: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 });
 
 // Get token status
@@ -61,22 +61,6 @@ console.log(`Token valid: ${tokenStatus.isValid}`);
 // List videos from a channel
 const videos = await youtube.listChannelVideos('CHANNEL_ID');
 console.log(videos);
-```
-
-## Environment Variables
-
-You can use environment variables for authentication:
-
-```typescript
-// Using specific YouTube variables
-YOUTUBE_ACCESS_TOKEN = your - access - token;
-YOUTUBE_REFRESH_TOKEN = your - refresh - token;
-
-// Or generic OAuth variables
-GOOGLE_ACCESS_TOKEN = your - access - token;
-GOOGLE_REFRESH_TOKEN = your - refresh - token;
-GOOGLE_CLIENT_ID = your - client - id;
-GOOGLE_CLIENT_SECRET = your - client - secret;
 ```
 
 ## API Reference
@@ -211,10 +195,10 @@ import { YouTubeAuthError } from '@microfox/youtube';
 
 try {
   const youtube = await createYouTubeSDKWithTokens({
-    accessToken: 'invalid-token',
-    refreshToken: 'refresh-token',
-    clientId: 'client-id',
-    clientSecret: 'client-secret',
+    accessToken: process.env.GOOGLE_ACCESS_TOKEN,
+    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   });
 } catch (error) {
   if (error instanceof YouTubeAuthError) {
