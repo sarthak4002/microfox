@@ -1,6 +1,6 @@
 {
   "name": "@microfox/brave",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "TypeScript SDK for the Brave search API, providing functions for web search, summarizer search, image search, video search, news search, suggestions, and spellcheck.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

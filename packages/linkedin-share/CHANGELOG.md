@@ -1,5 +1,11 @@
 # @microfox/linkedin-share
 
+## 1.2.0
+
+### Minor Changes
+
+- dc9a23d: Changes from PR #148: vwjt_gen_docs_script_fix
+
 ## 1.1.3
 
 ### Patch Changes
