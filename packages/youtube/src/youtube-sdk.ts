@@ -1,9 +1,5 @@
 import { z } from 'zod';
-import {
-  googleOAuthManager,
-  GoogleOAuthOptions,
-  Tokens,
-} from '@microfox/google';
+import { GoogleOAuthSdk, GoogleScope } from '@microfox/google-oauth';
 
 // YouTube API base URL
 const YOUTUBE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
@@ -79,9 +75,24 @@ export type YouTubeVideo = z.infer<typeof YouTubeVideoSchema>;
 
 // Custom error class for YouTube SDK authentication issues
 export class YouTubeAuthError extends Error {
-  tokenStatus: Tokens;
+  tokenStatus: {
+    isValid: boolean;
+    expiresAt?: number;
+    scopes?: string[];
+    email?: string;
+    error?: string;
+  };
 
-  constructor(message: string, tokenStatus: Tokens) {
+  constructor(
+    message: string,
+    tokenStatus: {
+      isValid: boolean;
+      expiresAt?: number;
+      scopes?: string[];
+      email?: string;
+      error?: string;
+    },
+  ) {
     super(message);
     this.name = 'YouTubeAuthError';
     this.tokenStatus = tokenStatus;
@@ -111,34 +122,54 @@ export const createYouTubeSDKWithTokens = async (
 
   // Default Google OAuth scopes for YouTube if not provided
   const DEFAULT_YOUTUBE_SCOPES = [
-    'https://www.googleapis.com/auth/youtube',
-    'https://www.googleapis.com/auth/youtube.readonly',
-    'https://www.googleapis.com/auth/youtube.upload',
-    'https://www.googleapis.com/auth/youtube.force-ssl',
-    'https://www.googleapis.com/auth/youtubepartner',
+    GoogleScope.YOUTUBE,
+    GoogleScope.YOUTUBE_READONLY,
+    GoogleScope.YOUTUBE_UPLOAD,
+    GoogleScope.YOUTUBE_PARTNER,
+    GoogleScope.YOUTUBE_FORCE_SSL,
   ];
 
-  // Create Google OAuth options with scopes (use custom scopes if provided)
-  const googleOAuthOptions: GoogleOAuthOptions = {
-    accessToken: parsedOptions.accessToken,
-    refreshToken: parsedOptions.refreshToken,
-    clientId: parsedOptions.clientId,
-    clientSecret: parsedOptions.clientSecret,
+  // Create Google OAuth SDK instance
+  const googleOAuthSdk = new GoogleOAuthSdk({
+    clientId: parsedOptions.clientId || '',
+    clientSecret: parsedOptions.clientSecret || '',
+    redirectUri: '', // Not needed for token validation/refresh
     scopes: parsedOptions.scopes || DEFAULT_YOUTUBE_SCOPES,
-  };
+  });
 
-  // Validate and refresh tokens if needed
-  const tokenStatus = await googleOAuthManager(googleOAuthOptions);
+  // Validate the access token
+  const tokenStatus = await googleOAuthSdk.validateAccessToken(
+    parsedOptions.accessToken,
+  );
 
   if (!tokenStatus.isValid) {
     throw new YouTubeAuthError(
-      tokenStatus.errorMessage || 'Token validation failed',
+      tokenStatus.error || 'Token validation failed',
       tokenStatus,
     );
   }
 
+  // If we have a refresh token and the access token is expired, try to refresh it
+  if (
+    parsedOptions.refreshToken &&
+    tokenStatus.expiresAt &&
+    Date.now() >= tokenStatus.expiresAt
+  ) {
+    try {
+      const refreshedTokens = await googleOAuthSdk.refreshAccessToken(
+        parsedOptions.refreshToken,
+      );
+      parsedOptions.accessToken = refreshedTokens.accessToken;
+    } catch (error) {
+      throw new YouTubeAuthError(
+        error instanceof Error ? error.message : 'Failed to refresh token',
+        tokenStatus,
+      );
+    }
+  }
+
   // We now have a valid token, so we can create the YouTube SDK
-  const accessToken = tokenStatus.accessToken;
+  const accessToken = parsedOptions.accessToken;
 
   // Helper to make authorized requests to the YouTube API
   const makeRequest = async (

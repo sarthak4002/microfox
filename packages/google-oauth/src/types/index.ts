@@ -68,6 +68,7 @@ export enum GoogleScope {
   YOUTUBE_READONLY = 'https://www.googleapis.com/auth/youtube.readonly',
   YOUTUBE_UPLOAD = 'https://www.googleapis.com/auth/youtube.upload',
   YOUTUBE_PARTNER = 'https://www.googleapis.com/auth/youtubepartner',
+  YOUTUBE_FORCE_SSL = 'https://www.googleapis.com/auth/youtube.force-ssl',
 
   // Google Photos API
   PHOTOS = 'https://www.googleapis.com/auth/photoslibrary',
