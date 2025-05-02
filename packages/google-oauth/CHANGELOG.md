@@ -1,5 +1,11 @@
 # @microfox/google-oauth
 
+## 1.0.4
+
+### Patch Changes
+
+- 59826fd: Changes from PR #150: youtubesdk
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @microfox/instagram
 
+## 1.1.0
+
+### Minor Changes
+
+- dc9a23d: Changes from PR #148: vwjt_gen_docs_script_fix
+
 ## 1.0.2
 
 ### Patch Changes

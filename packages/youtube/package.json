@@ -1,6 +1,6 @@
 {
   "name": "@microfox/youtube",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "YouTube SDK for Microfox",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
