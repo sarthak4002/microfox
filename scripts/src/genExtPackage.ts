@@ -4,6 +4,7 @@ import { Octokit } from 'octokit';
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import { EXT_PACKAGE_URLS } from './constants';
+import { PackageInfo } from './types';
 
 // Load environment variables
 dotenv.config();
@@ -12,32 +13,6 @@ dotenv.config();
 const InputSchema = z.object({
   githubUrl: z.string().url(),
 });
-
-// Define the package info schema based on the existing structure
-const PackageInfoSchema = z.object({
-  name: z.string(),
-  title: z.string(),
-  description: z.string(),
-  path: z.string(),
-  dependencies: z.array(z.string()),
-  status: z.string(),
-  authEndpoint: z.string().optional(),
-  documentation: z.string().optional(),
-  icon: z.string().optional(),
-  readme_map: z
-    .object({
-      path: z.string(),
-      title: z.string(),
-      functionalities: z.array(z.string()),
-      description: z.string(),
-    })
-    .optional(),
-  constructors: z.array(z.any()).optional(),
-  keysInfo: z.array(z.any()).optional(),
-  extraInfo: z.array(z.any()).optional(),
-});
-
-type PackageInfo = z.infer<typeof PackageInfoSchema>;
 
 // Function to extract owner, repo, and path from GitHub URL
 function extractGitHubInfo(githubUrl: string): {
@@ -134,7 +109,7 @@ async function fetchPackageJson(
 }
 
 // Function to create package-info.json
-function createPackageInfo(packageJson: any, readme: string): PackageInfo {
+function createPackageInfo(packageJson: any, readme: string) {
   const packageName = packageJson.name;
   const formattedPackageName = packageName.replace('/', '#');
   const directoryName = `@ext_${formattedPackageName}`;
@@ -160,7 +135,7 @@ function createPackageInfo(packageJson: any, readme: string): PackageInfo {
     constructors: [],
     keysInfo: [],
     extraInfo: [],
-  };
+  } as PackageInfo;
 }
 
 // Function to process a single GitHub URL
