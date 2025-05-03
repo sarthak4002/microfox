@@ -1,0 +1,10 @@
+{
+  "requests": [
+    {
+      "url": "https://developers.google.com/youtube/analytics/reference/",
+      "baseurl": true,
+      "query": "Youtube Analytics API",
+      "type": "feature"
+    }
+  ]
+}

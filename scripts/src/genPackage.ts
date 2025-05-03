@@ -955,6 +955,34 @@ export async function generateSDK(
       sdkResult.extraInfo,
     );
 
+    const foxlog = fs.readFileSync(
+      path.join(
+        process.cwd()?.replace('/scripts', ''),
+        '.microfox/packagefox-build.json',
+      ),
+      'utf8',
+    );
+    if (foxlog) {
+      const foxlogData = JSON.parse(foxlog);
+      const newRequests: any[] = [
+        {
+          type: 'build-issues',
+          packageName: metadata.packageName,
+        },
+      ];
+      foxlogData.requests.forEach((request: any) => {
+        if (request.url === validatedArgs.url && request.type === 'feature') {
+        } else {
+          newRequests.push(request);
+        }
+      });
+      foxlogData.requests = newRequests;
+      fs.writeFileSync(
+        path.join(process.cwd(), '.microfox/packagefox-build.json'),
+        JSON.stringify(foxlogData, null, 2),
+      );
+    }
+
     return {
       name: metadata.apiName,
       packageDir: path.join(
