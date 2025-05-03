@@ -27,7 +27,7 @@ async function randomDelay(min = 2000, max = 5000): Promise<void> {
 
 // Schema for link analysis
 const LinkAnalysisSchema = z.object({
-  usefulLinks: z
+  documentationLinks: z
     .array(z.string())
     .describe('A full array of useful links for package creation.'),
   reason: z.string().describe('Reason why these links were selected'),
@@ -176,7 +176,7 @@ export async function analyzeLinks(
     model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
     system: `
-      You are a helpful assistant that analyzes links and determines which ones are most useful for creating a package based on a query.
+      You are a helpful assistant that analyzes links and determines which links are documentation related and are most useful for creating a package.
       You can also figure out the link to the setup instructions for the required API (only if needed).
     `,
     prompt: `
@@ -212,7 +212,7 @@ export async function analyzeLinks(
   console.log(usage);
 
   console.log(
-    `✅ Selected ${analysis.usefulLinks.length} useful links: ${analysis.reason}`,
+    `✅ Selected ${analysis.documentationLinks.length} useful links: ${analysis.reason}`,
   );
 
   const packageBuilderFile = path.join(
@@ -242,7 +242,7 @@ export async function analyzeLinks(
     fs.writeFileSync(packageInfoFile, JSON.stringify(packageInfoJson, null, 2));
   }
 
-  return analysis.usefulLinks;
+  return analysis.documentationLinks;
 }
 
 /**

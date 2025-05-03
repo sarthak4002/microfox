@@ -583,7 +583,7 @@ export async function generateDocs(
       });
       console.log('logo picked', logo);
       if (logo.logo) {
-        packageInfo.icon = `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${logo.logo}.svg`;
+        packageInfo.icon = `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${logo.logo?.endsWith('.svg') ? logo.logo : logo.logo + '.svg'}`;
       }
 
       console.log('Setting a better description for the package');
