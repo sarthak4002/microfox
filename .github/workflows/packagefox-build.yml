@@ -72,6 +72,7 @@ jobs:
 
           # Run the build script
           cd scripts
+          npm install
           npm run gen:pkg -- "${{ steps.config.outputs.package_query }}" "${{ steps.config.outputs.base_url }}" baseurl
 
       - name: Check for changes
