@@ -3,14 +3,16 @@ name: 'packagefox: build'
 on:
   pull_request:
     types: [opened]
+    
+permissions:
+  contents: write
+  pull-requests: write # Keep for potential future interactions, though not strictly needed for this flow
 
 jobs:
   build:
+    # Only run on opened PRs with a title starting with "packagefox: build:"
+    if: github.event_name == 'opened' && startsWith(github.event.pull_request.title, 'packagefox: build:')
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
