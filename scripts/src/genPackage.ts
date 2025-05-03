@@ -12,6 +12,7 @@ import {
   extractContentFromUrls,
 } from './utils/webScraper';
 import { PackageInfo } from './types';
+import { fixBuildIssues } from './fixBuildIssues';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -402,16 +403,16 @@ const FileContentSchema = z.object({
 });
 
 const WriteToFileSchema = z.object({
-  mainSdk: FileContentSchema.describe(
+  mainSdkFile: FileContentSchema.describe(
     'The main SDK implementation file details containing the API client class with authentication, API methods, and integration',
   ),
-  types: FileContentSchema.describe(
+  typesFile: FileContentSchema.describe(
     'TypeScript type definitions file details containing interfaces for configuration, responses, and other SDK-specific types',
   ),
-  schemas: FileContentSchema.describe(
+  schemasFile: FileContentSchema.describe(
     'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects',
   ),
-  exports: FileContentSchema.describe(
+  exportsFile: FileContentSchema.describe(
     'Entry point file details that exports the main SDK class, types, and utilities for package consumers',
   ),
   setupInfo: z
@@ -630,20 +631,20 @@ export async function generateSDK(
         // Write the generated files
         const files = [
           {
-            content: data.mainSdk.content,
-            path: path.join(packageDir, data.mainSdk.path),
+            content: data.mainSdkFile.content,
+            path: path.join(packageDir, data.mainSdkFile.path),
           },
           {
-            content: data.types.content,
-            path: path.join(packageDir, data.types.path),
+            content: data.typesFile.content,
+            path: path.join(packageDir, data.typesFile.path),
           },
           {
-            content: data.schemas.content,
-            path: path.join(packageDir, data.schemas.path),
+            content: data.schemasFile.content,
+            path: path.join(packageDir, data.schemasFile.path),
           },
           {
-            content: data.exports.content,
-            path: path.join(packageDir, data.exports.path),
+            content: data.exportsFile.content,
+            path: path.join(packageDir, data.exportsFile.path),
           },
         ];
 
@@ -681,10 +682,10 @@ export async function generateSDK(
           success: true,
           packageDir,
           sdkImplementation: {
-            mainSdk: data.mainSdk,
-            types: data.types,
-            schemas: data.schemas,
-            exports: data.exports,
+            mainSdkFile: data.mainSdkFile,
+            typesFile: data.typesFile,
+            schemasFile: data.schemasFile,
+            exportsFile: data.exportsFile,
           },
           extraInfo: [data.setupInfo],
         };
@@ -778,10 +779,18 @@ export async function generateSDK(
 
       ## Tool Usage
       - To write the SDK code, use the write_to_file tool with the following parameters (all are objects, do not pass strings):
-        - mainSdk: The mainSdk OBJECT with separate code and paths for main SDK
-        - types: The types OBJECT with separate code and paths for types file
-        - schemas: The schemas OBJECT with separate code and paths for schemas file
-        - exports: The exports OBJECT with separate code and paths for exports file
+        - mainSdk: The mainSdk OBJECT with 
+          - content: The code content of the main SDK file
+          - path: The path to the main SDK file
+        - types: The types OBJECT with 
+          - content: The code content of the types file
+          - path: The path to the types file
+        - schemas: The schemas OBJECT with 
+          - content: The code content of the schemas file
+          - path: The path to the schemas file
+        - exports: The exports OBJECT with 
+          - content: The code content of the exports file
+          - path: The path to the exports file
         - setupInfo: Additional information for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.)
         - authType: Authentication type ("apikey", "oauth2", or "none")
         - oauth2Scopes: Required an array of OAuth2 scopes (required when authType is "oauth2")
@@ -898,33 +907,23 @@ export async function generateSDK(
 
     // Generate SDK code with Claude 3.5 Sonnet
     console.log('\n🧠 Generating SDK code...');
-    const result = await generateText({
+    const result = await generateObject({
       model: models.claude35Sonnet,
       system: systemPrompt,
       prompt: generationPrompt,
       maxTokens: 8000,
-      tools: {
-        write_to_file: writeToFileTool,
-      },
-      toolChoice: 'required',
-      maxSteps: 1,
-      onStepFinish: step => {
-        console.log('step', step.usage);
-      },
+      schema: WriteToFileSchema,
+    });
+
+    const writeToFileToolResult = await writeToFileTool.execute(result.object, {
+      toolCallId: Date.now().toString(),
+      messages: [],
     });
 
     console.log('Usage:', result.usage);
 
-    // Check for tool results
-    if (!result.toolResults || result.toolResults.length === 0) {
-      console.warn(
-        '⚠️ No tool results received, SDK generation may have failed',
-      );
-      return undefined;
-    }
-
     // Get the SDK code and extraInfo from the first generation
-    const sdkResult = result.toolResults[0].result;
+    const sdkResult = writeToFileToolResult;
     if (!sdkResult || !sdkResult.success) {
       console.warn('⚠️ SDK generation failed');
       return undefined;
@@ -932,13 +931,13 @@ export async function generateSDK(
 
     const combinedCode = `
     // Main SDK (src/[packageName]Sdk.ts)
-    ${sdkResult.sdkImplementation.mainSdk.content}\n\n
+    ${sdkResult.sdkImplementation.mainSdkFile.content}\n\n
     // Types (src/types/index.ts)
-    ${sdkResult.sdkImplementation.types.content}\n\n
+    ${sdkResult.sdkImplementation.typesFile.content}\n\n
     // Schemas (src/schemas/index.ts)
-    ${sdkResult.sdkImplementation.schemas.content}\n\n
+    ${sdkResult.sdkImplementation.schemasFile.content}\n\n
     // Exports (src/index.ts)
-    ${sdkResult.sdkImplementation.exports.content}
+    ${sdkResult.sdkImplementation.exportsFile.content}
     `;
     // Generate documentation
     await generateDocs(
@@ -954,6 +953,29 @@ export async function generateSDK(
       packageDir,
       sdkResult.extraInfo,
     );
+
+    const foxlog = fs.readFileSync(
+      path.join(
+        process.cwd()?.replace('/scripts', ''),
+        '.microfox/packagefox-build.json',
+      ),
+      'utf8',
+    );
+    if (foxlog) {
+      const foxlogData = JSON.parse(foxlog);
+      const newRequests: any[] = [];
+      foxlogData.requests.forEach((request: any) => {
+        if (request.url === validatedArgs.url && request.type === 'feature') {
+        } else {
+          newRequests.push(request);
+        }
+      });
+      foxlogData.requests = newRequests;
+      fs.writeFileSync(
+        path.join(process.cwd(), '.microfox/packagefox-build.json'),
+        JSON.stringify(foxlogData, null, 2),
+      );
+    }
 
     return {
       name: metadata.apiName,
@@ -997,9 +1019,14 @@ if (require.main === module) {
       if (result) {
         console.log(`✅ SDK generation complete for ${result.packageName}`);
         console.log(`📂 Package location: ${result.packageDir}`);
+        return fixBuildIssues(result?.packageName);
       } else {
         console.log('⚠️ SDK generation completed with warnings');
+        process.exit(1);
       }
+    })
+    .then(result => {
+      console.log(`✅ All steps completed`);
     })
     .catch(error => {
       console.error('❌ Fatal error generating SDK:', error);

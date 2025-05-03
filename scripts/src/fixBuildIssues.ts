@@ -1,10 +1,10 @@
 import { buildPackage } from './utils/execCommands';
 import { fixPackage } from './fixPackage';
 import path from 'path';
-
+import fs from 'fs';
 const MAX_RETRIES = 5;
 
-async function fixBuildIssues(packageDir: string) {
+export async function fixBuildIssues(packageDir: string) {
   console.log(`🛠️ Starting iterative build and fix process for ${packageDir}`);
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
 
@@ -41,6 +41,30 @@ async function fixBuildIssues(packageDir: string) {
         break; // Stop if fixPackage itself errors critically
       }
     }
+  }
+
+  const foxlog = fs.readFileSync(
+    path.join(
+      process.cwd()?.replace('/scripts', ''),
+      '.microfox/packagefox-build.json',
+    ),
+    'utf8',
+  );
+  const packageName = '@microfox/' + packageDir.split('/').pop();
+  if (foxlog) {
+    const foxlogData = JSON.parse(foxlog);
+    const newRequests: any[] = [];
+    foxlogData.requests.forEach((request: any) => {
+      if (request.packageName === packageName && request.type === 'pkg-build') {
+      } else {
+        newRequests.push(request);
+      }
+    });
+    foxlogData.requests = newRequests;
+    fs.writeFileSync(
+      path.join(process.cwd(), '.microfox/packagefox-build.json'),
+      JSON.stringify(foxlogData, null, 2),
+    );
   }
 
   if (buildSucceeded) {

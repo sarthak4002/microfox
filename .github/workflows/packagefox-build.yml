@@ -2,7 +2,7 @@ name: 'packagefox: build'
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 
 permissions:
   contents: write
@@ -28,40 +28,99 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run PackageFox build
+      - name: Read packagefox config
+        id: config
+        run: |
+          CONFIG_FILE=".microfox/packagefox-build.json"
+          SHOULD_RUN="false"
+          REQUEST_TYPE=""
+          PACKAGE_QUERY=""
+          BASE_URL=""
+          PACKAGE_NAME=""
+
+          if [ -f "$CONFIG_FILE" ]; then
+            if jq -e '.requests | length > 0' "$CONFIG_FILE" > /dev/null; then
+              FIRST_REQUEST=$(jq -c '.requests[0]' "$CONFIG_FILE")
+              REQUEST_TYPE=$(echo "$FIRST_REQUEST" | jq -r '.type // ""')
+
+              if [ "$REQUEST_TYPE" == "feature" ]; then
+                PACKAGE_QUERY=$(echo "$FIRST_REQUEST" | jq -r '.query // ""')
+                BASE_URL=$(echo "$FIRST_REQUEST" | jq -r '.url // ""')
+                if [ -n "$PACKAGE_QUERY" ] && [ -n "$BASE_URL" ]; then
+                  SHOULD_RUN="true"
+                else
+                  echo "Warning: Found 'feature' request but 'query' or 'url' missing/empty."
+                fi
+              elif [ "$REQUEST_TYPE" == "pkg-build" ]; then
+                PACKAGE_NAME=$(echo "$FIRST_REQUEST" | jq -r '.packageName // ""')
+                if [ -n "$PACKAGE_NAME" ]; then
+                  SHOULD_RUN="true"
+                else
+                  echo "Warning: Found 'pkg-build' request but 'packageName' missing/empty."
+                fi
+              else
+                echo "Warning: First request has unknown or missing type: '$REQUEST_TYPE'."
+              fi
+            else
+              echo "Warning: Config file found but 'requests' array is empty."
+            fi
+          else
+            echo "Warning: Config file $CONFIG_FILE not found."
+          fi
+
+          echo "should_run=$SHOULD_RUN" >> $GITHUB_OUTPUT
+          echo "request_type=$REQUEST_TYPE" >> $GITHUB_OUTPUT
+          echo "package_query=$PACKAGE_QUERY" >> $GITHUB_OUTPUT
+          echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Run PackageFox build (New Package Build)
+        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'feature'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Extract package query and base URL from PR title
-          PACKAGE_QUERY=$(echo "${{ github.event.pull_request.title }}" | grep -oP 'packagefox: build: \K[^ ]+')
-          BASE_URL=$(echo "${{ github.event.pull_request.title }}" | grep -oP 'packagefox: build: [^ ]+ \K.+')
-
-          if [ -z "$PACKAGE_QUERY" ] || [ -z "$BASE_URL" ]; then
-            echo "Error: PR title must be in format 'packagefox: build: {PackageQuery} {BASE_URL}'"
-            exit 1
-          fi
-
           # Check for required environment variables
-          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$GOOGLE_API_KEY" ]; then
-            echo "Error: At least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or GOOGLE_API_KEY must be set"
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
+            echo "Error: At least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY must be set"
             exit 1
           fi
 
           # Run the build script
           cd scripts
-          npm run gen:pkg -- "$PACKAGE_QUERY" "$BASE_URL" baseurl
+          npm install
+          npm run gen:pkg -- "${{ steps.config.outputs.package_query }}" "${{ steps.config.outputs.base_url }}" baseurl
+
+      - name: Run PackageFox build (Check & Fix Build Issues)
+        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'pkg-build'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check for required environment variables
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
+            echo "Error: At least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY must be set"
+            exit 1
+          fi
+
+          # Run the build script
+          cd scripts
+          npm install
+          npm run gen:pkg-build -- "${{ steps.config.outputs.package_name }}"
 
       - name: Check for changes
         id: git-check
+        if: steps.config.outputs.should_run == 'true'
         run: |
           git add .
           git diff --staged --quiet || echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Commit and push if changed
-        if: steps.git-check.outputs.changes == 'true'
+        if: steps.config.outputs.should_run == 'true' && steps.git-check.outputs.changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
