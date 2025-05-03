@@ -50,7 +50,7 @@ jobs:
           fi
 
           # Run the build script
-          npm run build:package -- "$PACKAGE_QUERY" "$BASE_URL"
+          npm run build:package -- "$PACKAGE_QUERY" "$BASE_URL" baseurl
 
       - name: Check for changes
         id: git-check
