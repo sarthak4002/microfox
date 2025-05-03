@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: contains(github.event.pull_request.title, 'packagefox:') && contains(github.event.pull_request.title, 'build:')
+    if: contains(github.event.pull_request.title, 'packagefox:')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
