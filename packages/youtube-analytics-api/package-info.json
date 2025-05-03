@@ -1,0 +1,210 @@
+{
+  "name": "@microfox/youtube-analytics-api",
+  "title": "YouTube Analytics API",
+  "description": "A TypeScript SDK for interacting with the YouTube Analytics API. Supports reportsQuery, group management (list, insert, update, delete), and group item management (list, insert, delete).",
+  "path": "packages/youtube-analytics-api",
+  "dependencies": [
+    "zod",
+    "@microfox/google-oauth"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/google-oauth",
+  "oauth2Scopes": [
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+    "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
+    "https://www.googleapis.com/auth/youtube",
+    "https://www.googleapis.com/auth/youtubepartner"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/youtube-analytics-api",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube-icon.svg.svg",
+  "readme_map": {
+    "title": "YouTube Analytics API",
+    "description": "The full README for the YouTube Analytics API",
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/README.md",
+    "functionalities": [
+      "YouTubeAnalyticsAPISDK",
+      "reportsQuery",
+      "listGroups",
+      "insertGroup",
+      "updateGroup",
+      "deleteGroup",
+      "listGroupItems",
+      "insertGroupItem",
+      "deleteGroupItem"
+    ],
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/YouTubeAnalyticsAPISDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "YouTubeAnalyticsAPISDK",
+        "description": "Initializes a new instance of the YouTubeAnalyticsAPISDK."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/reportsQuery.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "reportsQuery",
+        "description": "Retrieves YouTube Analytics data for a given set of parameters."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/listGroups.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listGroups",
+        "description": "Lists all groups belonging to the authenticated user."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/insertGroup.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "insertGroup",
+        "description": "Creates a new group."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/updateGroup.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "updateGroup",
+        "description": "Updates an existing group."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/deleteGroup.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteGroup",
+        "description": "Deletes a group."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/listGroupItems.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listGroupItems",
+        "description": "Lists all items within a specific group."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/insertGroupItem.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "insertGroupItem",
+        "description": "Creates a new group item."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics-api/docs/deleteGroupItem.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "deleteGroupItem",
+        "description": "Deletes a group item."
+      }
+    ]
+  },
+  "constructors": [
+    {
+      "name": "YouTubeAnalyticsAPISDK",
+      "description": "Create a new YouTube Analytics API client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/google-oauth",
+      "authEndpoint": "/connect/google-oauth",
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "displayName": "Google Client ID",
+          "description": "The client ID for your OAuth 2.0 credentials."
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "displayName": "Google Client Secret",
+          "description": "The client secret for your OAuth 2.0 credentials."
+        },
+        {
+          "key": "GOOGLE_REDIRECT_URI",
+          "displayName": "Google Redirect URI",
+          "description": "The redirect URI for your OAuth 2.0 credentials."
+        },
+        {
+          "key": "GOOGLE_ACCESS_TOKEN",
+          "displayName": "Google Access Token",
+          "description": "The access token obtained after completing the OAuth 2.0 flow."
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Google OAuth Scopes",
+          "description": "The scopes required by the SDK.",
+          "defaultValue": [
+            "https://www.googleapis.com/auth/yt-analytics.readonly",
+            "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
+            "https://www.googleapis.com/auth/youtube",
+            "https://www.googleapis.com/auth/youtubepartner"
+          ]
+        }
+      ],
+      "functionalities": [
+        "reportsQuery",
+        "listGroups",
+        "insertGroup",
+        "updateGroup",
+        "deleteGroup",
+        "listGroupItems",
+        "insertGroupItem",
+        "deleteGroupItem"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": [
+        "YouTubeAnalyticsAPISDK"
+      ],
+      "description": "The client ID for your OAuth 2.0 credentials.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": [
+        "YouTubeAnalyticsAPISDK"
+      ],
+      "description": "The client secret for your OAuth 2.0 credentials.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_REDIRECT_URI",
+      "constructors": [
+        "YouTubeAnalyticsAPISDK"
+      ],
+      "description": "The redirect URI for your OAuth 2.0 credentials.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": [
+        "YouTubeAnalyticsAPISDK"
+      ],
+      "description": "The access token obtained after completing the OAuth 2.0 flow.",
+      "required": true
+    },
+    {
+      "key": "SCOPES",
+      "constructors": [
+        "YouTubeAnalyticsAPISDK"
+      ],
+      "description": "The scopes required by the SDK.",
+      "required": true,
+      "defaultValue": [
+        "https://www.googleapis.com/auth/yt-analytics.readonly",
+        "https://www.googleapis.com/auth/yt-analytics-monetary.readonly",
+        "https://www.googleapis.com/auth/youtube",
+        "https://www.googleapis.com/auth/youtubepartner"
+      ]
+    }
+  ],
+  "extraInfo": [
+    "To use the YouTube Analytics API SDK, follow these steps:\n\n1. Set up a Google Cloud Project:\n   - Go to the Google Cloud Console (https://console.cloud.google.com/)\n   - Create a new project or select an existing one\n   - Enable the YouTube Analytics API for your project\n\n2. Create OAuth 2.0 credentials:\n   - In the Google Cloud Console, go to \"APIs & Services\" > \"Credentials\"\n   - Click \"Create Credentials\" and select \"OAuth client ID\"\n   - Choose \"Web application\" as the application type\n   - Set the authorized redirect URIs (include your application's callback URL)\n   - Note down the Client ID and Client Secret\n\n3. Set up environment variables:\n   - GOOGLE_CLIENT_ID: Your OAuth 2.0 client ID\n   - GOOGLE_CLIENT_SECRET: Your OAuth 2.0 client secret\n   - GOOGLE_REDIRECT_URI: Your authorized redirect URI\n\n4. Install the SDK:\n   ```\n   npm install @yourdomain/youtube-analytics-api-sdk\n   ```\n\n5. Implement the OAuth 2.0 flow in your application to obtain an access token. You can use the @microfox/google-oauth package for this purpose.\n\n6. Initialize the SDK with the obtained credentials:\n   ```typescript\n   import { createYoutubeAnalyticsAPISDK } from '@yourdomain/youtube-analytics-api-sdk';\n\n   const sdk = createYoutubeAnalyticsAPISDK({\n     clientId: process.env.GOOGLE_CLIENT_ID!,\n     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,\n     redirectUri: process.env.GOOGLE_REDIRECT_URI!,\n     accessToken: 'YOUR_ACCESS_TOKEN',\n   });\n   ```\n\n7. Use the SDK methods to interact with the YouTube Analytics API.\n\nImportant notes:\n- Ensure you have the necessary YouTube Analytics API scopes when obtaining the access token.\n- The SDK automatically handles token validation and will throw an error if the token is invalid.\n- Respect YouTube Analytics API quotas and rate limits to avoid service interruptions.\n- Keep your client ID and client secret secure and never expose them in client-side code.\n- Regularly refresh your access token using the refresh token obtained during the OAuth flow.\n\nFor more detailed information on using the YouTube Analytics API, refer to the official documentation: https://developers.google.com/youtube/analytics"
+  ],
+  "keyInstructions": {
+    "link": "https://developers.google.com/youtube/analytics/",
+    "setupInfo": "To use the YouTube Analytics API SDK, follow these steps:\n\n1. Set up a Google Cloud Project:\n   - Go to the Google Cloud Console (https://console.cloud.google.com/)\n   - Create a new project or select an existing one\n   - Enable the YouTube Analytics API for your project\n\n2. Create OAuth 2.0 credentials:\n   - In the Google Cloud Console, go to \"APIs & Services\" > \"Credentials\"\n   - Click \"Create Credentials\" and select \"OAuth client ID\"\n   - Choose \"Web application\" as the application type\n   - Set the authorized redirect URIs (include your application's callback URL)\n   - Note down the Client ID and Client Secret\n\n3. Set up environment variables:\n   - GOOGLE_CLIENT_ID: Your OAuth 2.0 client ID\n   - GOOGLE_CLIENT_SECRET: Your OAuth 2.0 client secret\n   - GOOGLE_REDIRECT_URI: Your authorized redirect URI\n\n4. Install the SDK:\n   ```\n   npm install @yourdomain/youtube-analytics-api-sdk\n   ```\n\n5. Implement the OAuth 2.0 flow in your application to obtain an access token. You can use the @microfox/google-oauth package for this purpose.\n\n6. Initialize the SDK with the obtained credentials:\n   ```typescript\n   import { createYoutubeAnalyticsAPISDK } from '@yourdomain/youtube-analytics-api-sdk';\n\n   const sdk = createYoutubeAnalyticsAPISDK({\n     clientId: process.env.GOOGLE_CLIENT_ID!,\n     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,\n     redirectUri: process.env.GOOGLE_REDIRECT_URI!,\n     accessToken: 'YOUR_ACCESS_TOKEN',\n   });\n   ```\n\n7. Use the SDK methods to interact with the YouTube Analytics API.\n\nImportant notes:\n- Ensure you have the necessary YouTube Analytics API scopes when obtaining the access token.\n- The SDK automatically handles token validation and will throw an error if the token is invalid.\n- Respect YouTube Analytics API quotas and rate limits to avoid service interruptions.\n- Keep your client ID and client secret secure and never expose them in client-side code.\n- Regularly refresh your access token using the refresh token obtained during the OAuth flow.\n\nFor more detailed information on using the YouTube Analytics API, refer to the official documentation: https://developers.google.com/youtube/analytics"
+  },
+  "authType": "oauth2"
+}
