@@ -1,0 +1,25 @@
+name: Reset Microfox Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  reset-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reset Microfox Files
+        run: |
+          chmod +x scripts/reset-microfox-files.sh
+          ./scripts/reset-microfox-files.sh
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .microfox/
+          git commit -m "Reset microfox files after merge to main"
+          git push
