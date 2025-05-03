@@ -52,11 +52,11 @@ jobs:
                   echo "Warning: Found 'feature' request but 'query' or 'url' missing/empty."
                 fi
               elif [ "$REQUEST_TYPE" == "pkg-build" ]; then
-                PACKAGE_NAME=$(echo "$FIRST_REQUEST" | jq -r '.package_name // ""')
+                PACKAGE_NAME=$(echo "$FIRST_REQUEST" | jq -r '.packageName // ""')
                 if [ -n "$PACKAGE_NAME" ]; then
                   SHOULD_RUN="true"
                 else
-                  echo "Warning: Found 'pkg-build' request but 'package_name' missing/empty."
+                  echo "Warning: Found 'pkg-build' request but 'packageName' missing/empty."
                 fi
               else
                 echo "Warning: First request has unknown or missing type: '$REQUEST_TYPE'."
