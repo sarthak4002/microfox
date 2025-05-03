@@ -158,7 +158,8 @@ export async function analyzeLinks(
     `🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`,
   );
 
-  const { object: analysis } = await generateObject({
+  console.log(links);
+  const { object: analysis, usage } = await generateObject({
     model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
     system: `
@@ -189,6 +190,8 @@ export async function analyzeLinks(
     `,
     temperature: 0.5,
   });
+
+  console.log(usage);
 
   console.log(
     `✅ Selected ${analysis.usefulLinks.length} useful links: ${analysis.reason}`,
