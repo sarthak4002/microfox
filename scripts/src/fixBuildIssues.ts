@@ -4,7 +4,7 @@ import path from 'path';
 
 const MAX_RETRIES = 5;
 
-async function fixBuildIssues(packageDir: string) {
+export async function fixBuildIssues(packageDir: string) {
   console.log(`🛠️ Starting iterative build and fix process for ${packageDir}`);
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
 

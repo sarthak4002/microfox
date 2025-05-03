@@ -12,6 +12,7 @@ import {
   extractContentFromUrls,
 } from './utils/webScraper';
 import { PackageInfo } from './types';
+import { fixBuildIssues } from './fixBuildIssues';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -962,12 +963,7 @@ export async function generateSDK(
     );
     if (foxlog) {
       const foxlogData = JSON.parse(foxlog);
-      const newRequests: any[] = [
-        {
-          type: 'build-issues',
-          packageName: metadata.packageName,
-        },
-      ];
+      const newRequests: any[] = [];
       foxlogData.requests.forEach((request: any) => {
         if (request.url === validatedArgs.url && request.type === 'feature') {
         } else {
@@ -1023,9 +1019,14 @@ if (require.main === module) {
       if (result) {
         console.log(`✅ SDK generation complete for ${result.packageName}`);
         console.log(`📂 Package location: ${result.packageDir}`);
+        return fixBuildIssues(result?.packageName);
       } else {
         console.log('⚠️ SDK generation completed with warnings');
+        process.exit(1);
       }
+    })
+    .then(result => {
+      console.log(`✅ All steps completed`);
     })
     .catch(error => {
       console.error('❌ Fatal error generating SDK:', error);

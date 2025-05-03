@@ -359,16 +359,16 @@ const FileContentSchema = z.object({
 const WriteToFileSchema = z.object({
   sdkImplementation: z
     .object({
-      mainSdk: FileContentSchema.describe(
+      mainSdkFile: FileContentSchema.describe(
         'The main SDK implementation file containing the OAuth client class with authentication flows, token management, and API integration',
       ),
-      types: FileContentSchema.describe(
+      typesFile: FileContentSchema.describe(
         'TypeScript type definitions file containing interfaces for configuration, tokens, responses, and other SDK-specific types',
       ),
-      schemas: FileContentSchema.describe(
+      schemasFile: FileContentSchema.describe(
         'Zod validation schemas for runtime validation of inputs, outputs, and configuration objects',
       ),
-      exports: FileContentSchema.describe(
+      exportsFile: FileContentSchema.describe(
         'Entry point file that exports the main SDK class, types, and utilities for package consumers',
       ),
     })
@@ -738,20 +738,20 @@ export async function generateOAuthPackage(
     // Write the generated files
     const files = [
       {
-        content: data.sdkImplementation.mainSdk.content,
-        path: path.join(packageDir, data.sdkImplementation.mainSdk.path),
+        content: data.sdkImplementation.mainSdkFile.content,
+        path: path.join(packageDir, data.sdkImplementation.mainSdkFile.path),
       },
       {
-        content: data.sdkImplementation.types.content,
-        path: path.join(packageDir, data.sdkImplementation.types.path),
+        content: data.sdkImplementation.typesFile.content,
+        path: path.join(packageDir, data.sdkImplementation.typesFile.path),
       },
       {
-        content: data.sdkImplementation.schemas.content,
-        path: path.join(packageDir, data.sdkImplementation.schemas.path),
+        content: data.sdkImplementation.schemasFile.content,
+        path: path.join(packageDir, data.sdkImplementation.schemasFile.path),
       },
       {
-        content: data.sdkImplementation.exports.content,
-        path: path.join(packageDir, data.sdkImplementation.exports.path),
+        content: data.sdkImplementation.exportsFile.content,
+        path: path.join(packageDir, data.sdkImplementation.exportsFile.path),
       },
     ];
 
@@ -799,13 +799,13 @@ export async function generateOAuthPackage(
 
     const combinedCode = `
     // Main SDK
-    ${oauthResult.sdkImplementation.mainSdk.content}
+    ${oauthResult.sdkImplementation.mainSdkFile.content}
     // Types
-    ${oauthResult.sdkImplementation.types.content}
+    ${oauthResult.sdkImplementation.typesFile.content}
     // Schemas
-    ${oauthResult.sdkImplementation.schemas.content}
+    ${oauthResult.sdkImplementation.schemasFile.content}
     // Exports
-    ${oauthResult.sdkImplementation.exports.content}
+    ${oauthResult.sdkImplementation.exportsFile.content}
     `;
     // Generate documentation
     await generateDocs(
@@ -821,6 +821,34 @@ export async function generateOAuthPackage(
       packageDir,
       oauthResult.extraInfo,
     );
+
+    const foxlog = fs.readFileSync(
+      path.join(
+        process.cwd()?.replace('/scripts', ''),
+        '.microfox/packagefox-build.json',
+      ),
+      'utf8',
+    );
+    if (foxlog) {
+      const foxlogData = JSON.parse(foxlog);
+      const newRequests: any[] = [
+        {
+          type: 'pkg-build',
+          packageName: metadata.packageName,
+        },
+      ];
+      foxlogData.requests.forEach((request: any) => {
+        if (request.url === validatedArgs.url && request.type === 'feature') {
+        } else {
+          newRequests.push(request);
+        }
+      });
+      foxlogData.requests = newRequests;
+      fs.writeFileSync(
+        path.join(process.cwd(), '.microfox/packagefox-build.json'),
+        JSON.stringify(foxlogData, null, 2),
+      );
+    }
 
     return {
       name: metadata.providerName,
