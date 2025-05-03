@@ -68,7 +68,8 @@
     "packages/slack-web-tiny",
     "packages/twitter",
     "packages/whatsapp-business",
-    "packages/youtube"
+    "packages/youtube",
+    "packages/youtube-analytics-api"
   ],
   "oauthConnectorPackages": [
     "packages/google",
@@ -78,6 +79,6 @@
   "internalPackages": [
     "packages/rest-sdk"
   ],
-  "total": 69,
-  "generatedAt": "2025-04-30T10:36:52.953Z"
+  "total": 70,
+  "generatedAt": "2025-05-03T23:00:05.661Z"
 }
