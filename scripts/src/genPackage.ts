@@ -898,33 +898,23 @@ export async function generateSDK(
 
     // Generate SDK code with Claude 3.5 Sonnet
     console.log('\n🧠 Generating SDK code...');
-    const result = await generateText({
+    const result = await generateObject({
       model: models.claude35Sonnet,
       system: systemPrompt,
       prompt: generationPrompt,
       maxTokens: 8000,
-      tools: {
-        write_to_file: writeToFileTool,
-      },
-      toolChoice: 'required',
-      maxSteps: 1,
-      onStepFinish: step => {
-        console.log('step', step.usage);
-      },
+      schema: WriteToFileSchema,
+    });
+
+    const writeToFileToolResult = await writeToFileTool.execute(result.object, {
+      toolCallId: Date.now().toString(),
+      messages: [],
     });
 
     console.log('Usage:', result.usage);
 
-    // Check for tool results
-    if (!result.toolResults || result.toolResults.length === 0) {
-      console.warn(
-        '⚠️ No tool results received, SDK generation may have failed',
-      );
-      return undefined;
-    }
-
     // Get the SDK code and extraInfo from the first generation
-    const sdkResult = result.toolResults[0].result;
+    const sdkResult = writeToFileToolResult;
     if (!sdkResult || !sdkResult.success) {
       console.warn('⚠️ SDK generation failed');
       return undefined;
