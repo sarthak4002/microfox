@@ -21,6 +21,7 @@ const GenerateOAuthPackageArgsSchema = z.object({
     .string()
     .url('Please provide a valid URL including the protocol (https://)')
     .describe('URL to scrape for OAuth documentation'),
+  isBaseUrl: z.boolean().optional().describe('Whether the URL is a base URL'),
 });
 
 type GenerateOAuthPackageArgs = z.infer<typeof GenerateOAuthPackageArgsSchema>;
@@ -215,7 +216,10 @@ export default defineConfig([
 /**
  * Summarize content using Gemini to extract OAuth information
  */
-async function summarizeContent(content: string): Promise<string> {
+async function summarizeContent(
+  content: string,
+  options: { packageDir: string },
+): Promise<string> {
   console.log('🧠 Summarizing content using Gemini...');
 
   const { text: summary, usage } = await generateText({
@@ -245,6 +249,10 @@ async function summarizeContent(content: string): Promise<string> {
 
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
+
+  const baseSummaryTextPath = path.join(options.packageDir, 'docSummary.md');
+  fs.writeFileSync(baseSummaryTextPath, summary);
+
   return summary;
 }
 
@@ -490,10 +498,17 @@ export async function generateOAuthPackage(
     const allLinks = await extractLinks(validatedArgs.url);
 
     // Analyze links to find useful ones for OAuth package creation
-    const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query);
+    const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query, {
+      isBaseUrl: args.isBaseUrl ?? false,
+      url: validatedArgs.url,
+      packageDir,
+    });
 
     // Extract content from useful links
-    const scrapedContents = await extractContentFromUrls(usefulLinks);
+    const scrapedContents = await extractContentFromUrls(usefulLinks, {
+      packageDir,
+      baseUrl: validatedArgs.url,
+    });
 
     // Combine all scraped content into a single document
     const combinedContent = scrapedContents
@@ -501,7 +516,9 @@ export async function generateOAuthPackage(
       .join('\n\n---\n\n');
 
     // Generate a single summary from all the combined content
-    const docsSummary = await summarizeContent(combinedContent);
+    const docsSummary = await summarizeContent(combinedContent, {
+      packageDir,
+    });
 
     // Create tool to handle file writing
     // const writeToFileTool = tool({
@@ -824,7 +841,7 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   const queryArg = args[0] || '';
   const urlArg = args[1] || '';
-
+  const isBaseUrlArg = args[2] || '';
   if (!queryArg) {
     console.error('❌ Error: Query argument is required');
     console.log(
@@ -841,7 +858,11 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  generateOAuthPackage({ query: queryArg, url: urlArg })
+  generateOAuthPackage({
+    query: queryArg,
+    url: urlArg,
+    isBaseUrl: isBaseUrlArg === 'true',
+  })
     .then(result => {
       if (result) {
         console.log(

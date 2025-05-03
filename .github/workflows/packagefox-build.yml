@@ -3,15 +3,14 @@ name: 'packagefox: build'
 on:
   pull_request:
     types: [opened]
-    
+
 permissions:
   contents: write
   pull-requests: write # Keep for potential future interactions, though not strictly needed for this flow
 
 jobs:
   build:
-    # Only run on opened PRs with a title starting with "packagefox: build:"
-    if: github.event_name == 'opened' && startsWith(github.event.pull_request.title, 'packagefox: build:')
+    if: contains(github.event.pull_request.title, 'packagefox:') && contains(github.event.pull_request.title, 'build:')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -52,7 +51,8 @@ jobs:
           fi
 
           # Run the build script
-          npm run build:package -- "$PACKAGE_QUERY" "$BASE_URL" baseurl
+          cd scripts
+          npm run gen:pkg -- "$PACKAGE_QUERY" "$BASE_URL" baseurl
 
       - name: Check for changes
         id: git-check
@@ -65,5 +65,5 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "chore: update package files [skip ci]"
+          git commit -m "packagefox: write: update package files [skip ci]"
           git push

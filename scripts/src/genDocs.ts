@@ -561,13 +561,42 @@ export async function generateDocs(
             description:
               f.description ||
               'The full README for the ' +
-              metadata.title +
-              ' ' +
-              f.name +
-              ' functionality',
+                metadata.title +
+                ' ' +
+                f.name +
+                ' functionality',
           })),
         ],
       };
+
+      console.log('searching for the logo');
+      const listItemsInDirectory = fs.readdirSync(
+        path.join(__dirname, '../../logos'),
+      );
+      const { object: logo } = await generateObject({
+        model: models.googleGeminiPro,
+        system: `You are a helpful assistant that searches the correct logo for the package.`,
+        prompt: `The list of logos is: ${listItemsInDirectory.join(', ')}. Pick the correct logo for the package: ${packageInfo.title} - ${packageInfo.description}`,
+        schema: z.object({
+          logo: z.string().describe('picked slug of the logo').optional(),
+        }),
+      });
+      console.log('logo picked', logo);
+      if (logo.logo) {
+        packageInfo.icon = `https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/${logo.logo}.svg`;
+      }
+
+      console.log('Setting a better description for the package');
+      const { object: description } = await generateObject({
+        model: models.googleGeminiPro,
+        system: `You are a helpful assistant that sets a better description for the package.`,
+        prompt: `The current description is: ${packageInfo.description}. Set a better description for the package based on the following information:
+        The package supports the following functionalities: ${validatedData.functionsDocs.map(f => f.name).join(', ')}.
+        .`,
+        schema: z.string(),
+      });
+      packageInfo.description = description;
+      console.log('new description', packageInfo.description);
 
       // Add constructor info
       packageInfo.constructors = [
@@ -586,17 +615,23 @@ export async function generateDocs(
           }),
           requiredKeys: !packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-              key: key.key,
-              displayName: key.displayName,
-              description: key.description,
-            })) || []
+                key: key.key,
+                displayName: key.displayName,
+                description: key.description,
+                ...(key.key.includes('SCOPES') && {
+                  defaultValue: packageInfo.oauth2Scopes,
+                }),
+              })) || []
             : [],
           internalKeys: packageInfo.authEndpoint
             ? validatedData.envKeys?.map(key => ({
-              key: key.key,
-              displayName: key.displayName,
-              description: key.description,
-            })) || []
+                key: key.key,
+                displayName: key.displayName,
+                description: key.description,
+                ...(key.key.includes('SCOPES') && {
+                  defaultValue: packageInfo.oauth2Scopes,
+                }),
+              })) || []
             : [],
           functionalities: validatedData.functionsDocs.map(f => f.name),
         },
@@ -609,6 +644,9 @@ export async function generateDocs(
           constructors: [constructorName],
           description: key.description,
           required: key.required,
+          ...(key.key.includes('SCOPES') && {
+            defaultValue: packageInfo.oauth2Scopes,
+          }),
         })) || [];
 
       // Add extraInfo
@@ -634,7 +672,6 @@ export async function generateDocs(
         }
         // Return to original directory
         process.chdir(originalDir);
-
       } catch (error) {
         console.error(`❌ Failed to install dependencies: ${error}`);
       }
@@ -697,8 +734,13 @@ function generateMainReadme(
   // Create README content
   let content = `# ${title}\n\n${description}\n\n`;
 
+  let installPackages = [packageName];
+  if (metadata.authType === 'oauth2' && metadata.authSdk) {
+    installPackages.push(metadata.authSdk);
+  }
+
   // Add installation section
-  content += `## Installation\n\n\`\`\`bash\nnpm install ${packageName}\n\`\`\`\n\n`;
+  content += `## Installation\n\n\`\`\`bash\nnpm install ${installPackages.join(' ')}\n\`\`\`\n\n`;
 
   // // Add authentication section
   // content += `## Authentication\n\n`;
@@ -735,13 +777,13 @@ function generateMainReadme(
   }
 
   // Add extra information section
-  if (extraInfo.length > 0) {
-    content += `## Additional Information\n\n`;
+  // if (extraInfo.length > 0) {
+  //   content += `## Additional Information\n\n`;
 
-    for (const info of extraInfo) {
-      content += `${info}\n\n`;
-    }
-  }
+  //   for (const info of extraInfo) {
+  //     content += `${info}\n\n`;
+  //   }
+  // }
 
   content += '## API Reference\n\n';
   content +=
@@ -797,8 +839,8 @@ if (require.main === module) {
     authType: packageInfo.constructors[0]?.auth || 'none',
     ...(packageInfo.constructors[0]?.auth === 'oauth2' &&
       packageInfo.constructors[0]?.authSdk && {
-      authSdk: packageInfo.constructors[0]?.authSdk,
-    }),
+        authSdk: packageInfo.constructors[0]?.authSdk,
+      }),
   };
 
   const extraInfo = packageInfo.extraInfo || [];

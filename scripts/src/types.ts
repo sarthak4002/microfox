@@ -156,6 +156,8 @@ export const Constructor = z
     },
   );
 
+export type Constructor = z.infer<typeof Constructor>;
+
 export const PackageInfo = z
   .object({
     name: z
@@ -168,6 +170,9 @@ export const PackageInfo = z
       .refine(value => !value.startsWith('@'), {
         message: 'Title must not start with "@"',
       }),
+    authEndpoint: z.string().optional(),
+    authType: z.enum(['oauth2', 'apikey', 'none']).optional(),
+    oauth2Scopes: z.array(z.string()).optional(),
     description: z.string().describe('One line Description of the package'),
     path: z
       .string()
@@ -201,6 +206,12 @@ export const PackageInfo = z
         required: z.boolean().optional(),
       }),
     ),
+    keyInstructions: z
+      .object({
+        link: z.string().url(),
+        setupInfo: z.string().optional(),
+      })
+      .optional(),
     extraInfo: z.array(z.string()),
   })
   .refine(
@@ -254,3 +265,5 @@ export const PackageInfo = z
       path: ['icon'],
     },
   );
+
+export type PackageInfo = z.infer<typeof PackageInfo>;

@@ -2,7 +2,9 @@ import puppeteer from 'puppeteer';
 import { generateObject } from 'ai';
 import { models } from '../ai/models';
 import { z } from 'zod';
-
+import fs from 'fs';
+import path from 'path';
+import { PackageInfo } from '../types';
 // User agents to rotate
 const USER_AGENTS = [
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
@@ -27,8 +29,12 @@ async function randomDelay(min = 2000, max = 5000): Promise<void> {
 const LinkAnalysisSchema = z.object({
   usefulLinks: z
     .array(z.string())
-    .describe('Array of useful links for package creation'),
+    .describe('A full array of useful links for package creation.'),
   reason: z.string().describe('Reason why these links were selected'),
+  setupInstructionsLink: z
+    .string()
+    .optional()
+    .describe('Link to the setup instructions for the API'),
 });
 
 type LinkAnalysis = z.infer<typeof LinkAnalysisSchema>;
@@ -156,21 +162,22 @@ export async function analyzeLinks(
   options: {
     isBaseUrl: boolean;
     url: string;
+    packageDir: string;
   },
 ): Promise<string[]> {
-  console.log(
-    `🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`,
-  );
-
   let newLinks = [...links];
   if (options.isBaseUrl) {
     newLinks = newLinks.filter(link => link.includes(options.url));
   }
+  console.log(
+    `🧠 Analyzing ${newLinks.length} links to find useful ones for "${query}"...`,
+  );
   const { object: analysis, usage } = await generateObject({
     model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
     system: `
       You are a helpful assistant that analyzes links and determines which ones are most useful for creating a package based on a query.
+      You can also figure out the link to the setup instructions for the required API (only if needed).
     `,
     prompt: `
       Analyze these links and determine which ones are most useful for creating a package based on this query: "${query}"
@@ -178,7 +185,7 @@ export async function analyzeLinks(
       Links:
       ${newLinks.map((link, i) => `${i + 1}. ${link}`).join('\n')}
       
-      Select only the links that contain:
+      Select all the links that contain:
       1. API documentation
       2. Authentication information
       3. Endpoint descriptions
@@ -194,7 +201,10 @@ export async function analyzeLinks(
       6. Any link from an external website
       7. i18n versions of the URL
 
-      Return only the most relevant links that will help in creating a comprehensive SDK.
+      Return all the relevant links that will help in creating a comprehensive SDK.
+
+      Setup instructions link (optional):
+      Check if there exists a link that better describes the setup instructions for the required API.
     `,
     temperature: 0.5,
   });
@@ -204,6 +214,34 @@ export async function analyzeLinks(
   console.log(
     `✅ Selected ${analysis.usefulLinks.length} useful links: ${analysis.reason}`,
   );
+
+  const packageBuilderFile = path.join(
+    options.packageDir,
+    'package-builder.json',
+  );
+  const packageBuilderJson = JSON.parse(
+    fs.readFileSync(packageBuilderFile, 'utf8'),
+  );
+  packageBuilderJson.allLinks = links;
+  packageBuilderJson.filteredLinks = newLinks;
+  packageBuilderJson.linkAnalysis = analysis;
+  packageBuilderJson.linksUpdatedAt = new Date().toISOString();
+  fs.writeFileSync(
+    packageBuilderFile,
+    JSON.stringify(packageBuilderJson, null, 2),
+  );
+
+  if (analysis.setupInstructionsLink) {
+    const packageInfoFile = path.join(options.packageDir, 'package-info.json');
+    const packageInfoJson = JSON.parse(
+      fs.readFileSync(packageInfoFile, 'utf8'),
+    ) as PackageInfo;
+    packageInfoJson.keyInstructions = {
+      link: analysis.setupInstructionsLink,
+    };
+    fs.writeFileSync(packageInfoFile, JSON.stringify(packageInfoJson, null, 2));
+  }
+
   return analysis.usefulLinks;
 }
 
@@ -212,6 +250,7 @@ export async function analyzeLinks(
  */
 export async function extractContentFromUrls(
   urls: string[],
+  options: { packageDir: string; baseUrl: string },
 ): Promise<{ url: string; content: string }[]> {
   console.log(`🌐 Extracting content from ${urls.length} URLs...`);
 
@@ -228,6 +267,10 @@ export async function extractContentFromUrls(
   });
 
   let results: { url: string; content: string }[] = [];
+
+  fs.mkdirSync(path.join(options.packageDir, './scrapedDocs'), {
+    recursive: true,
+  });
 
   try {
     for (const url of urls) {
@@ -273,6 +316,23 @@ export async function extractContentFromUrls(
           // Get text content from body
           return document.body.innerText;
         });
+
+        let cleanURLwithoutSlashes = validatedUrl
+          ?.replace(options.baseUrl, '')
+          .replace(/\//g, '-');
+        cleanURLwithoutSlashes = 'base-' + cleanURLwithoutSlashes;
+
+        fs.writeFileSync(
+          path.join(
+            options.packageDir,
+            `./scrapedDocs/${cleanURLwithoutSlashes}.json`,
+          ),
+          JSON.stringify(
+            { url: validatedUrl, content, updatedAt: new Date().toISOString() },
+            null,
+            2,
+          ),
+        );
 
         results.push({ url: validatedUrl, content });
         console.log(
