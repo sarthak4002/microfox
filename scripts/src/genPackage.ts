@@ -19,6 +19,7 @@ const GenerateSDKArgsSchema = z.object({
     .string()
     .url('Please provide a valid URL including the protocol (https://)')
     .describe('URL to scrape for API documentation'),
+  isBaseUrl: z.boolean().describe('Whether the URL is the base URL'),
 });
 
 type GenerateSDKArgs = z.infer<typeof GenerateSDKArgsSchema>;
@@ -539,7 +540,10 @@ export async function generateSDK(
     const allLinks = await extractLinks(validatedArgs.url);
 
     // Analyze links to find useful ones for package creation
-    const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query);
+    const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query, {
+      isBaseUrl: args.isBaseUrl,
+      url: args.url,
+    });
     console.log(`🔍 Found ${usefulLinks.length} useful links`);
     console.log(usefulLinks);
 
@@ -937,6 +941,7 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   const queryArg = args[0] || '';
   const urlArg = args[1] || '';
+  const isBaseUrlArg = args[2] || '';
 
   if (!queryArg) {
     console.error('❌ Error: Query argument is required');
@@ -950,7 +955,11 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  generateSDK({ query: queryArg, url: urlArg })
+  generateSDK({
+    query: queryArg,
+    url: urlArg,
+    isBaseUrl: isBaseUrlArg?.toLowerCase() === 'baseurl',
+  })
     .then(result => {
       if (result) {
         console.log(`✅ SDK generation complete for ${result.packageName}`);

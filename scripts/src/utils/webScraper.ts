@@ -153,12 +153,19 @@ export async function extractLinks(url: string): Promise<string[]> {
 export async function analyzeLinks(
   links: string[],
   query: string,
+  options: {
+    isBaseUrl: boolean;
+    url: string;
+  },
 ): Promise<string[]> {
   console.log(
     `🧠 Analyzing ${links.length} links to find useful ones for "${query}"...`,
   );
 
-  console.log(links);
+  let newLinks = [...links];
+  if (options.isBaseUrl) {
+    newLinks = newLinks.filter(link => link.includes(options.url));
+  }
   const { object: analysis, usage } = await generateObject({
     model: models.googleGeminiPro,
     schema: LinkAnalysisSchema,
@@ -169,7 +176,7 @@ export async function analyzeLinks(
       Analyze these links and determine which ones are most useful for creating a package based on this query: "${query}"
 
       Links:
-      ${links.map((link, i) => `${i + 1}. ${link}`).join('\n')}
+      ${newLinks.map((link, i) => `${i + 1}. ${link}`).join('\n')}
       
       Select only the links that contain:
       1. API documentation
@@ -185,6 +192,7 @@ export async function analyzeLinks(
       4. Support pages
       5. Pricing pages
       6. Any link from an external website
+      7. i18n versions of the URL
 
       Return only the most relevant links that will help in creating a comprehensive SDK.
     `,
