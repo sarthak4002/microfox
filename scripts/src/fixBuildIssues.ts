@@ -6,9 +6,15 @@ import { updateBuildReport } from './octokit/octokit';
 
 const MAX_RETRIES = 5;
 
-export async function fixBuildIssues(packageDir: string) {
-  console.log(`🛠️ Starting iterative build and fix process for ${packageDir}`);
+export async function fixBuildIssues(packageName: string) {
+  console.log(`🛠️ Starting iterative build and fix process for ${packageName}`);
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
+
+  const packageDir = path.resolve(
+    process.cwd(),
+    '..',
+    packageName.replace('@microfox/', 'packages/'),
+  );
 
   let buildSucceeded = false;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -103,7 +109,6 @@ export async function fixBuildIssues(packageDir: string) {
     ),
     'utf8',
   );
-  const packageName = '@microfox/' + packageDir.split('/').pop();
   if (foxlog) {
     const foxlogData = JSON.parse(foxlog);
     const newRequests: any[] = [];
@@ -149,11 +154,6 @@ if (require.main === module) {
 
   const packagePathArg = args[0];
   // Resolve the absolute path relative to the monorepo root (assuming scripts is one level down)
-  const absolutePackageDir = path.resolve(
-    process.cwd(),
-    '..',
-    packagePathArg.replace('@microfox/', 'packages/'),
-  );
 
   // Basic check if the directory might exist (can be improved)
   // Consider adding fs.existsSync if needed, but buildPackage might handle it
@@ -162,7 +162,7 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  fixBuildIssues(absolutePackageDir).catch(error => {
+  fixBuildIssues(packagePathArg).catch(error => {
     console.error('❌ Unhandled error during the fix process:', error);
     process.exit(1);
   });

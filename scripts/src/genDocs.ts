@@ -507,11 +507,14 @@ export async function generateDocs(
     try {
       // Update documentation report - validation step
       await updateDocReport(
-        'validate',
+        'All Docs Generated',
         {
-          status: 'in-progress',
+          status: 'success',
           details: {
-            usage: docsResult.usage,
+            'Total Tokens': docsResult.usage.totalTokens,
+            'Constructor Docs': docsResult.object.constructorDocs.docs.length,
+            'Functions Docs': docsResult.object.functionsDocs.length,
+            'Env Keys': docsResult.object.envKeys?.length || 0,
           },
         },
         packageDir,

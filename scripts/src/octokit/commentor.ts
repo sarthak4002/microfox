@@ -128,7 +128,7 @@ export class PRCommentor {
       return await this.createComment({
         owner,
         repo,
-        body: `${marker}\n${body}`,
+        body,
       });
     }
   }
