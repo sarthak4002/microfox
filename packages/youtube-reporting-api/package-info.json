@@ -1,0 +1,190 @@
+{
+  "name": "@microfox/youtube-reporting-api",
+  "title": "YouTube Reporting API",
+  "description": "A TypeScript SDK for interacting with the YouTube Reporting API. Supports listing report types, creating reporting jobs, listing jobs, listing available reports, and downloading reports.",
+  "path": "packages/youtube-reporting-api",
+  "dependencies": [
+    "zod",
+    "@microfox/google-oauth"
+  ],
+  "status": "stable",
+  "authEndpoint": "/connect/google-oauth",
+  "oauth2Scopes": [
+    "https://www.googleapis.com/auth/yt-analytics.readonly",
+    "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
+  ],
+  "documentation": "https://www.npmjs.com/package/@microfox/youtube-reporting-api",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube.svg",
+  "readme_map": {
+    "title": "YouTube Reporting API",
+    "description": "The full README for the YouTube Reporting API",
+    "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/README.md",
+    "functionalities": [
+      "YouTubeReportingAPISDK",
+      "listReportTypes",
+      "createJob",
+      "listJobs",
+      "listReports",
+      "downloadReport"
+    ],
+    "all_readmes": [
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/YouTubeReportingAPISDK.md",
+        "type": "constructor",
+        "extension": "md",
+        "functionality": "YouTubeReportingAPISDK",
+        "description": "Initializes a new instance of the YouTubeReportingAPISDK."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/listReportTypes.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listReportTypes",
+        "description": "Lists available report types."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/createJob.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "createJob",
+        "description": "Creates a new reporting job."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/listJobs.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listJobs",
+        "description": "Lists all reporting jobs."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/listReports.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "listReports",
+        "description": "Lists reports for a given job ID."
+      },
+      {
+        "path": "https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/docs/downloadReport.md",
+        "type": "functionality",
+        "extension": "md",
+        "functionality": "downloadReport",
+        "description": "Downloads the report data from the provided URL."
+      }
+    ]
+  },
+  "constructors": [
+    {
+      "name": "YouTubeReportingAPISDK",
+      "description": "Create a new YouTube Reporting API client through which you can interact with the API",
+      "auth": "oauth2",
+      "authSdk": "@microfox/google-oauth",
+      "authEndpoint": "/connect/google-oauth",
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "GOOGLE_CLIENT_ID",
+          "displayName": "Google Client ID",
+          "description": "The client ID for the Google OAuth 2.0 credentials."
+        },
+        {
+          "key": "GOOGLE_CLIENT_SECRET",
+          "displayName": "Google Client Secret",
+          "description": "The client secret for the Google OAuth 2.0 credentials."
+        },
+        {
+          "key": "GOOGLE_REDIRECT_URI",
+          "displayName": "Google Redirect URI",
+          "description": "The redirect URI for the Google OAuth 2.0 flow."
+        },
+        {
+          "key": "GOOGLE_ACCESS_TOKEN",
+          "displayName": "Google Access Token",
+          "description": "The access token for authenticated requests (optional)."
+        },
+        {
+          "key": "GOOGLE_REFRESH_TOKEN",
+          "displayName": "Google Refresh Token",
+          "description": "The refresh token to obtain new access tokens (optional)."
+        },
+        {
+          "key": "SCOPES",
+          "displayName": "Google Scopes",
+          "description": "The scopes required for the YouTube Reporting API.",
+          "defaultValue": [
+            "https://www.googleapis.com/auth/yt-analytics.readonly",
+            "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
+          ]
+        }
+      ],
+      "functionalities": [
+        "listReportTypes",
+        "createJob",
+        "listJobs",
+        "listReports",
+        "downloadReport"
+      ]
+    }
+  ],
+  "keysInfo": [
+    {
+      "key": "GOOGLE_CLIENT_ID",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The client ID for the Google OAuth 2.0 credentials.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_CLIENT_SECRET",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The client secret for the Google OAuth 2.0 credentials.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_REDIRECT_URI",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The redirect URI for the Google OAuth 2.0 flow.",
+      "required": true
+    },
+    {
+      "key": "GOOGLE_ACCESS_TOKEN",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The access token for authenticated requests (optional).",
+      "required": false
+    },
+    {
+      "key": "GOOGLE_REFRESH_TOKEN",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The refresh token to obtain new access tokens (optional).",
+      "required": false
+    },
+    {
+      "key": "SCOPES",
+      "constructors": [
+        "YouTubeReportingAPISDK"
+      ],
+      "description": "The scopes required for the YouTube Reporting API.",
+      "required": true,
+      "defaultValue": [
+        "https://www.googleapis.com/auth/yt-analytics.readonly",
+        "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
+      ]
+    }
+  ],
+  "extraInfo": [
+    "To use the YouTube Reporting API SDK, follow these steps:\n\n1. Set up a Google Cloud project:\n   - Go to the Google Cloud Console (https://console.cloud.google.com/)\n   - Create a new project or select an existing one\n   - Enable the YouTube Reporting API for your project\n\n2. Create OAuth 2.0 credentials:\n   - In the Google Cloud Console, go to \"APIs & Services\" > \"Credentials\"\n   - Click \"Create Credentials\" and select \"OAuth client ID\"\n   - Choose \"Web application\" as the application type\n   - Set the authorized redirect URIs (include your application's callback URL)\n   - Note down the Client ID and Client Secret\n\n3. Set up environment variables:\n   - GOOGLE_CLIENT_ID: Your OAuth 2.0 client ID\n   - GOOGLE_CLIENT_SECRET: Your OAuth 2.0 client secret\n   - GOOGLE_REDIRECT_URI: Your authorized redirect URI\n   - GOOGLE_ACCESS_TOKEN: (Optional) A valid access token\n   - GOOGLE_REFRESH_TOKEN: (Optional) A valid refresh token\n\n4. Install the SDK:\n   ```\n   npm install @yourusername/youtube-reporting-api-sdk\n   ```\n\n5. Import and initialize the SDK:\n   ```typescript\n   import { createYoutubeReportingAPISDK } from '@yourusername/youtube-reporting-api-sdk';\n\n   const sdk = createYoutubeReportingAPISDK({\n     clientId: process.env.GOOGLE_CLIENT_ID!,\n     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,\n     redirectUri: process.env.GOOGLE_REDIRECT_URI!,\n     accessToken: process.env.GOOGLE_ACCESS_TOKEN,\n     refreshToken: process.env.GOOGLE_REFRESH_TOKEN,\n   });\n   ```\n\n6. Use the SDK methods to interact with the YouTube Reporting API:\n   ```typescript\n   // Example: List report types\n   const reportTypes = await sdk.listReportTypes();\n   console.log(reportTypes);\n   ```\n\nImportant notes:\n- Ensure you have the necessary OAuth 2.0 scopes: \n  - https://www.googleapis.com/auth/yt-analytics.readonly\n  - https://www.googleapis.com/auth/yt-analytics-monetary.readonly\n- The SDK handles token refresh automatically if a refresh token is provided\n- Daily/backfill reports are available for 60 days, historical reports for 30 days\n- Be aware of rate limits (consult the official API documentation for current limits)\n- Handle errors appropriately, as network issues or API changes may occur\n\nFor more detailed information on available methods and their usage, refer to the SDK documentation and type definitions."
+  ],
+  "keyInstructions": {
+    "link": "https://developers.google.com/youtube/reporting/v1/reports",
+    "setupInfo": "To use the YouTube Reporting API SDK, follow these steps:\n\n1. Set up a Google Cloud project:\n   - Go to the Google Cloud Console (https://console.cloud.google.com/)\n   - Create a new project or select an existing one\n   - Enable the YouTube Reporting API for your project\n\n2. Create OAuth 2.0 credentials:\n   - In the Google Cloud Console, go to \"APIs & Services\" > \"Credentials\"\n   - Click \"Create Credentials\" and select \"OAuth client ID\"\n   - Choose \"Web application\" as the application type\n   - Set the authorized redirect URIs (include your application's callback URL)\n   - Note down the Client ID and Client Secret\n\n3. Set up environment variables:\n   - GOOGLE_CLIENT_ID: Your OAuth 2.0 client ID\n   - GOOGLE_CLIENT_SECRET: Your OAuth 2.0 client secret\n   - GOOGLE_REDIRECT_URI: Your authorized redirect URI\n   - GOOGLE_ACCESS_TOKEN: (Optional) A valid access token\n   - GOOGLE_REFRESH_TOKEN: (Optional) A valid refresh token\n\n4. Install the SDK:\n   ```\n   npm install @yourusername/youtube-reporting-api-sdk\n   ```\n\n5. Import and initialize the SDK:\n   ```typescript\n   import { createYoutubeReportingAPISDK } from '@yourusername/youtube-reporting-api-sdk';\n\n   const sdk = createYoutubeReportingAPISDK({\n     clientId: process.env.GOOGLE_CLIENT_ID!,\n     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,\n     redirectUri: process.env.GOOGLE_REDIRECT_URI!,\n     accessToken: process.env.GOOGLE_ACCESS_TOKEN,\n     refreshToken: process.env.GOOGLE_REFRESH_TOKEN,\n   });\n   ```\n\n6. Use the SDK methods to interact with the YouTube Reporting API:\n   ```typescript\n   // Example: List report types\n   const reportTypes = await sdk.listReportTypes();\n   console.log(reportTypes);\n   ```\n\nImportant notes:\n- Ensure you have the necessary OAuth 2.0 scopes: \n  - https://www.googleapis.com/auth/yt-analytics.readonly\n  - https://www.googleapis.com/auth/yt-analytics-monetary.readonly\n- The SDK handles token refresh automatically if a refresh token is provided\n- Daily/backfill reports are available for 60 days, historical reports for 30 days\n- Be aware of rate limits (consult the official API documentation for current limits)\n- Handle errors appropriately, as network issues or API changes may occur\n\nFor more detailed information on available methods and their usage, refer to the SDK documentation and type definitions."
+  },
+  "authType": "oauth2"
+}
