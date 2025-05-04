@@ -39,7 +39,7 @@ jobs:
 
       - name: Get Changed Files
         id: changed-files
-        uses: tj-actions/changed-files@46.0.1 # Use latest major version v44
+        uses: tj-actions/changed-files@v46.0.1 # Use latest major version v44
         with:
           # For push events, default comparison is HEAD~1..HEAD which is github.event.before..github.sha
           # No need to specify sha or base_sha explicitly

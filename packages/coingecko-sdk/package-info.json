@@ -1,11 +1,9 @@
 {
   "name": "@microfox/coingecko-sdk",
   "title": "CoinGecko SDK",
-  "description": "A comprehensive TypeScript SDK providing convenient access to CoinGecko API endpoints for retrieving cryptocurrency data, including price, market information, and historical charts.",
+  "description": "A comprehensive TypeScript SDK providing convenient access to CoinGecko Rest API endpoints for retrieving cryptocurrency data, including price, market information, and historical charts.",
   "path": "packages/coingecko-sdk",
-  "dependencies": [
-    "zod"
-  ],
+  "dependencies": ["zod"],
   "status": "stable",
   "authEndpoint": "",
   "oauth2Scopes": [],
@@ -168,9 +166,7 @@
   "keysInfo": [
     {
       "key": "COINGECKO_API_KEY",
-      "constructors": [
-        "CoinGeckoSDK"
-      ],
+      "constructors": ["CoinGeckoSDK"],
       "description": "CoinGecko API Key. Obtain from your CoinGecko account dashboard.",
       "required": true
     }
@@ -182,10 +178,5 @@
   "extraInfo": [
     "To use the CoinGecko SDK, you need to obtain an API key from the CoinGecko Pro API.\n\n1. Sign up for a CoinGecko Pro account at https://www.coingecko.com/en/api/pricing\n2. Once you have an account, navigate to your dashboard to find your API key\n3. Store your API key securely and never share it publicly\n\nTo use the SDK:\n\n1. Install the package: `npm install @microfox/coingecko-sdk`\n2. Import and initialize the SDK:\n\n```typescript\nimport { createCoinGeckoSDK } from '@microfox/coingecko-sdk';\n\nconst sdk = createCoinGeckoSDK({\n  apiKey: 'YOUR_API_KEY_HERE'\n});\n```\n\n3. You can now use the SDK methods to interact with the CoinGecko API:\n\n```typescript\nconst bitcoinPrice = await sdk.getSimplePrice({ ids: 'bitcoin', vs_currencies: 'usd' });\nconsole.log(bitcoinPrice);\n```\n\nNote: Some endpoints are only available for paid plans. Make sure you have the appropriate subscription level to access all features.\n\nEnvironment Variables:\nYou can also use an environment variable to store your API key. Set the `COINGECKO_API_KEY` environment variable, and the SDK will automatically use it if no API key is provided during initialization."
   ],
-  "devDependencies": [
-    "@microfox/tsconfig",
-    "@types/node",
-    "tsup",
-    "typescript"
-  ]
+  "devDependencies": ["@microfox/tsconfig", "@types/node", "tsup", "typescript"]
 }
