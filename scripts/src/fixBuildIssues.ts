@@ -127,6 +127,9 @@ export async function fixBuildIssues(packageName: string) {
     console.log(
       `\n🎉 Successfully built ${packageDir} within ${MAX_RETRIES} attempts.`,
     );
+    prCommentor.createComment({
+      body: `🎉 Congratulations! ${packageName} is build-tested and working. It is ready for shipping to NPM. Just merge this PR, our moderator agents will auto release all packages to NPM at minight hour..\\n You can also force a release by modifying any file in the .changeset/ directory.`,
+    });
     process.exitCode = 0;
   } else {
     console.error(
