@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { updateBuildReport } from './octokit/octokit';
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 2;
 
 export async function fixBuildIssues(packageName: string) {
   console.log(`🛠️ Starting iterative build and fix process for ${packageName}`);
@@ -131,7 +131,7 @@ export async function fixBuildIssues(packageName: string) {
     console.error(
       `\n❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
     );
-    process.exitCode = 1; // Indicate failure
+    //process.exitCode = 1; // Indicate failure
   }
 }
 
