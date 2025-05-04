@@ -75,7 +75,7 @@ async function generateMetadata(query: string): Promise<OAuthPackageMetadata> {
   // Ensure required keywords are present
   metadata.keywords = ensureRequiredKeywords(metadata.keywords);
 
-  logUsage(models.googleGeminiFlash, usage);
+  logUsage(models.googleGeminiFlash.modelId, usage);
 
   console.log('✅ Generated metadata successfully');
   return metadata;
@@ -250,7 +250,7 @@ async function summarizeContent(
     temperature: 0.5,
   });
 
-  logUsage(models.googleGeminiFlash, usage);
+  logUsage(models.googleGeminiFlash.modelId, usage);
 
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
