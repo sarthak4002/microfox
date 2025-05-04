@@ -58,20 +58,28 @@ export async function updateResearchReport(
 
   const newRow = `| ${emojiMap[step]} ${step} | ${status} | ${details} | ${tokenUsage} | ${totalTokens} |\n`;
 
-  // Remove existing row for this step if it exists
   const lines = report.split('\n');
   const stepIndex = lines.findIndex(line => line.includes(step));
+  let insertIndex = -1;
+
   if (stepIndex !== -1) {
+    insertIndex = stepIndex;
     lines.splice(stepIndex, 1);
+  } else {
+    const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+    if (separatorIndex !== -1) {
+      insertIndex = separatorIndex + 1;
+    } else {
+      insertIndex = 3;
+    }
   }
 
-  // Add new row
-  lines.push(newRow);
+  lines.splice(insertIndex, 0, newRow);
+
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 
-  // Update PR comment if PR_NUMBER is available
   if (process.env.PR_NUMBER) {
     await prCommentor.createOrUpdateComment(
       {
@@ -131,20 +139,28 @@ export async function updateBuildReport(
 
   const newRow = `| ${emojiMap[step]} ${step} | ${status} | ${details} | ${error} |\n`;
 
-  // Remove existing row for this step if it exists
   const lines = report.split('\n');
   const stepIndex = lines.findIndex(line => line.includes(step));
+  let insertIndex = -1;
+
   if (stepIndex !== -1) {
+    insertIndex = stepIndex;
     lines.splice(stepIndex, 1);
+  } else {
+    const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+    if (separatorIndex !== -1) {
+      insertIndex = separatorIndex + 1;
+    } else {
+      insertIndex = 3;
+    }
   }
 
-  // Add new row
-  lines.push(newRow);
+  lines.splice(insertIndex, 0, newRow);
+
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 
-  // Update PR comment if PR_NUMBER is available
   if (process.env.PR_NUMBER) {
     await prCommentor.createOrUpdateComment(
       {
@@ -203,20 +219,28 @@ export async function updateDocReport(
 
   const newRow = `| ${emojiMap[step]} ${step} | ${status} | ${details} | ${error} |\n`;
 
-  // Remove existing row for this step if it exists
   const lines = report.split('\n');
   const stepIndex = lines.findIndex(line => line.includes(step));
+  let insertIndex = -1;
+
   if (stepIndex !== -1) {
+    insertIndex = stepIndex;
     lines.splice(stepIndex, 1);
+  } else {
+    const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+    if (separatorIndex !== -1) {
+      insertIndex = separatorIndex + 1;
+    } else {
+      insertIndex = 3;
+    }
   }
 
-  // Add new row
-  lines.push(newRow);
+  lines.splice(insertIndex, 0, newRow);
+
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 
-  // Update PR comment if PR_NUMBER is available
   if (process.env.PR_NUMBER) {
     await prCommentor.createOrUpdateComment(
       {

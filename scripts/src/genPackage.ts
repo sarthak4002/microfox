@@ -822,8 +822,7 @@ export async function generateSDK(
           : ''
       }
 
-      ## Tool Usage
-      - To write the SDK code, use the write_to_file tool with the following parameters. **Crucially, mainSdkFile, typesFile, schemasFile, and exportsFile MUST be objects, each containing 'content' (string) and 'path' (string) properties.** Do NOT pass strings directly for these fields.
+      ## Output object
         - mainSdkFile: An OBJECT containing:
           - content: The code content (string) of the main SDK file.
           - path: The relative path (string) to the main SDK file (e.g., src/yourSdkNameSdk.ts).
