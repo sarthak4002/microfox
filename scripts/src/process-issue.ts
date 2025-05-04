@@ -59,6 +59,8 @@ const PackageFoxRequestSchema = z.object({
   query: IssueDetailsSchema.shape.query,
   url: IssueDetailsSchema.shape.url,
   notes: IssueDetailsSchema.shape.notes,
+  logs: IssueDetailsSchema.shape.logs.optional(),
+  error: IssueDetailsSchema.shape.error.optional(),
   // Add other fields if needed based on type, e.g., error details for 'bug'
   packageName: z
     .string()
@@ -159,6 +161,8 @@ async function processIssue() {
       url: details.url,
       notes: details.notes,
       issueNumber: issueNumber,
+      logs: details.logs,
+      error: details.error,
     };
     // Add packageName if relevant and found (implement logic if needed)
     // if ((details.type === 'pkg-build' || details.type === 'bug') && details.packageName) {

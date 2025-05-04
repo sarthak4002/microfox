@@ -33,34 +33,10 @@ jobs:
         run: |
           CONFIG_FILE=".microfox/packagefox-build.json"
           SHOULD_RUN="false"
-          REQUEST_TYPE=""
-          PACKAGE_QUERY=""
-          BASE_URL=""
-          PACKAGE_NAME=""
 
           if [ -f "$CONFIG_FILE" ]; then
             if jq -e '.requests | length > 0' "$CONFIG_FILE" > /dev/null; then
-              FIRST_REQUEST=$(jq -c '.requests[0]' "$CONFIG_FILE")
-              REQUEST_TYPE=$(echo "$FIRST_REQUEST" | jq -r '.type // ""')
-
-              if [ "$REQUEST_TYPE" == "pkg-create" ]; then
-                PACKAGE_QUERY=$(echo "$FIRST_REQUEST" | jq -r '.query // ""')
-                BASE_URL=$(echo "$FIRST_REQUEST" | jq -r '.url // ""')
-                if [ -n "$PACKAGE_QUERY" ] && [ -n "$BASE_URL" ]; then
-                  SHOULD_RUN="true"
-                else
-                  echo "Warning: Found 'pkg-create' request but 'query' or 'url' missing/empty."
-                fi
-              elif [ "$REQUEST_TYPE" == "pkg-build" ]; then
-                PACKAGE_NAME=$(echo "$FIRST_REQUEST" | jq -r '.packageName // ""')
-                if [ -n "$PACKAGE_NAME" ]; then
-                  SHOULD_RUN="true"
-                else
-                  echo "Warning: Found 'pkg-build' request but 'packageName' missing/empty."
-                fi
-              else
-                echo "Warning: First request has unknown or missing type: '$REQUEST_TYPE'."
-              fi
+              SHOULD_RUN="true"
             else
               echo "Warning: Config file found but 'requests' array is empty."
             fi
@@ -69,10 +45,6 @@ jobs:
           fi
 
           echo "should_run=$SHOULD_RUN" >> $GITHUB_OUTPUT
-          echo "request_type=$REQUEST_TYPE" >> $GITHUB_OUTPUT
-          echo "package_query=$PACKAGE_QUERY" >> $GITHUB_OUTPUT
-          echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
-          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: Generate GitHub App Token
         id: generate_token
@@ -81,8 +53,8 @@ jobs:
           app_id: ${{ secrets.PACKAGEFOX_APP_ID }}
           private_key: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
 
-      - name: Run PackageFox build (New Package Build)
-        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'pkg-create'
+      - name: Run PackageFox Workflow
+        if: steps.config.outputs.should_run == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -98,32 +70,10 @@ jobs:
             exit 1
           fi
 
-          # Run the build script
+          # Run the workflow script
           cd scripts
           npm install
-          npm run gen:pkg -- "${{ steps.config.outputs.package_query }}" "${{ steps.config.outputs.base_url }}" baseurl
-
-      - name: Run PackageFox build (Check & Fix Build Issues)
-        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'pkg-build'
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          PACKAGEFOX_APP_ID: ${{ secrets.PACKAGEFOX_APP_ID }}
-          PACKAGEFOX_PRIVATE_KEY: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          # Check for required environment variables
-          if [ -z "$OPENAI_API_KEY" ] && [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
-            echo "Error: At least one of OPENAI_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY must be set"
-            exit 1
-          fi
-
-          # Run the build script
-          cd scripts
-          npm install
-          npm run gen:pkg-build -- "${{ steps.config.outputs.package_name }}"
+          npm run workflow:packagefox
 
       - name: Check for changes
         id: git-check
