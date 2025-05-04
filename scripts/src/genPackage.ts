@@ -456,7 +456,7 @@ const WriteToFileSchema = z.object({
     'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
   schemasFilePath: FileContentSchema.shape.path,
-  exportsFile: FileContentSchema.describe(
+  exportsFile: FileContentSchema.shape.content.describe(
     'Entry point file details that exports the main SDK class, types, and utilities for package consumers - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
   exportsFilePath: FileContentSchema.shape.path,
