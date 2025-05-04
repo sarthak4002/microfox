@@ -43,13 +43,13 @@ jobs:
               FIRST_REQUEST=$(jq -c '.requests[0]' "$CONFIG_FILE")
               REQUEST_TYPE=$(echo "$FIRST_REQUEST" | jq -r '.type // ""')
 
-              if [ "$REQUEST_TYPE" == "feature" ]; then
+              if [ "$REQUEST_TYPE" == "pkg-create" ]; then
                 PACKAGE_QUERY=$(echo "$FIRST_REQUEST" | jq -r '.query // ""')
                 BASE_URL=$(echo "$FIRST_REQUEST" | jq -r '.url // ""')
                 if [ -n "$PACKAGE_QUERY" ] && [ -n "$BASE_URL" ]; then
                   SHOULD_RUN="true"
                 else
-                  echo "Warning: Found 'feature' request but 'query' or 'url' missing/empty."
+                  echo "Warning: Found 'pkg-create' request but 'query' or 'url' missing/empty."
                 fi
               elif [ "$REQUEST_TYPE" == "pkg-build" ]; then
                 PACKAGE_NAME=$(echo "$FIRST_REQUEST" | jq -r '.packageName // ""')
@@ -75,12 +75,14 @@ jobs:
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: Run PackageFox build (New Package Build)
-        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'feature'
+        if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'pkg-create'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGEFOX_APP_ID: ${{ secrets.PACKAGEFOX_APP_ID }}
+          PACKAGEFOX_PRIVATE_KEY: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           # Check for required environment variables
@@ -101,6 +103,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGEFOX_APP_ID: ${{ secrets.PACKAGEFOX_APP_ID }}
+          PACKAGEFOX_PRIVATE_KEY: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           # Check for required environment variables

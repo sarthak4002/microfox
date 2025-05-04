@@ -10,9 +10,9 @@ import { logUsage } from './octokit/usageLogger'; // Assuming usage logging is d
 // Schema for data extracted from the issue by AI
 const IssueDetailsSchema = z.object({
   type: z
-    .enum(['feature', 'pkg-build', 'bug', 'modification'])
+    .enum(['pkg-create', 'pkg-build', 'bug', 'modification'])
     .describe(
-      'The type of request: new feature, package build task, bug fix, or modification to existing functionality.',
+      'The type of request: new packages with pkg-create, test package working with okg-build, bug fix, or modification to existing functionality.',
     ),
   occurredAt: z
     .enum(['build', 'runtime', 'undefined'])
@@ -51,7 +51,7 @@ const IssueDetailsSchema = z.object({
     ),
 });
 
-type IssueDetails = z.infer<typeof IssueDetailsSchema>;
+export type IssueDetails = z.infer<typeof IssueDetailsSchema>;
 
 // Schema for the request object to be added to packagefox-build.json
 const PackageFoxRequestSchema = z.object({
@@ -67,7 +67,7 @@ const PackageFoxRequestSchema = z.object({
   issueNumber: z.number().optional().describe('The originating issue number'),
 });
 
-type PackageFoxRequest = z.infer<typeof PackageFoxRequestSchema>;
+export type PackageFoxRequest = z.infer<typeof PackageFoxRequestSchema>;
 
 // --- Helper Functions ---
 

@@ -15,6 +15,7 @@ import { PackageInfo } from './types';
 import { fixBuildIssues } from './fixBuildIssues';
 import { updateResearchReport } from './octokit/octokit';
 import { logUsage } from './octokit/usageLogger';
+import { IssueDetails, PackageFoxRequest } from './process-issue';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -1019,8 +1020,11 @@ export async function generateSDK(
     if (foxlog) {
       const foxlogData = JSON.parse(foxlog);
       const newRequests: any[] = [];
-      foxlogData.requests.forEach((request: any) => {
-        if (request.url === validatedArgs.url && request.type === 'feature') {
+      foxlogData.requests.forEach((request: PackageFoxRequest) => {
+        if (
+          request.url === validatedArgs.url &&
+          request.type === 'pkg-create'
+        ) {
         } else {
           newRequests.push(request);
         }

@@ -3,6 +3,7 @@ import { fixPackage } from './fixPackage';
 import path from 'path';
 import fs from 'fs';
 import { prCommentor, updateBuildReport } from './octokit/octokit';
+import { IssueDetails, PackageFoxRequest } from './process-issue';
 
 const MAX_RETRIES = 2;
 
@@ -109,7 +110,7 @@ export async function fixBuildIssues(packageName: string) {
   if (foxlog) {
     const foxlogData = JSON.parse(foxlog);
     const newRequests: any[] = [];
-    foxlogData.requests.forEach((request: any) => {
+    foxlogData.requests.forEach((request: PackageFoxRequest) => {
       if (request.packageName === packageName && request.type === 'pkg-build') {
       } else {
         newRequests.push(request);

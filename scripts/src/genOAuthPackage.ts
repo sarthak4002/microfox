@@ -12,6 +12,7 @@ import {
   extractContentFromUrls,
 } from './utils/webScraper';
 import { logUsage } from './octokit/usageLogger';
+import { PackageFoxRequest } from './process-issue';
 
 // Schema for OAuth package generation arguments
 const GenerateOAuthPackageArgsSchema = z.object({
@@ -836,8 +837,11 @@ export async function generateOAuthPackage(
           packageName: metadata.packageName,
         },
       ];
-      foxlogData.requests.forEach((request: any) => {
-        if (request.url === validatedArgs.url && request.type === 'feature') {
+      foxlogData.requests.forEach((request: PackageFoxRequest) => {
+        if (
+          request.url === validatedArgs.url &&
+          request.type === 'pkg-create'
+        ) {
         } else {
           newRequests.push(request);
         }
