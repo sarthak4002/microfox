@@ -776,6 +776,18 @@ export async function generateSDK(
     const systemPrompt = dedent`
       You are a TypeScript SDK generator. Your task is to create a TypeScript SDK for an API based on documentation.
 
+
+      ## Principles
+      1. First carefully analyze the requirements and API documentation
+      2. Plan what needs to be done, including:
+          - Determining the authentication method
+          - Identifying ALL API endpoints and their parameters
+          - Planning the SDK structure and methods covering all endpoints
+       3. Criticize your plan and refine it to be specific to this task
+       4. Write complete, production-ready code with no TODOs or placeholders
+       5. Recheck your code for any linting or TypeScript errors
+       6. Make sure the SDK is easy to use and follows best practices
+
       ## Process
       1. First call the \`setupTool\` to provide the final determined authentication type ('apikey', 'oauth2', 'none'), the specific OAuth SDK if applicable ('@microfox/...-oauth'), required OAuth scopes, and detailed \`setupInfo\` (how to get keys, env vars, etc.).
       2. Then, generate the content for the main SDK file (\`src/${metadata.apiName.replace(/\s+/g, '')}Sdk.ts\`) and call the \`writeFileTool\` with the path and content.
@@ -892,13 +904,28 @@ export async function generateSDK(
       - Dev dependencies: @microfox/tsconfig, @types/node, tsup, typescript
       - Dependencies: zod ${metadata?.authSdk ? `, ${metadata?.authSdk}` : ''}
 
-      ## Generation Steps & Tool Calls
-      1.  **Call \`setupTool\`**: Provide the final \`authType\`, \`authSdk\` (if authType='oauth2'), \`oauth2Scopes\` (if authType='oauth2'), and detailed \`setupInfo\` (how to get keys, env vars, etc.).
-      2.  **Generate & Write Main SDK**: Create content for \`src/${metadata.apiName.replace(/\s+/g, '')}Sdk.ts\` and call \`writeFileTool\`.
-      3.  **Generate & Write Types**: Create content for \`src/types/index.ts\` and call \`writeFileTool\`.
-      4.  **Generate & Write Schemas**: Create content for \`src/schemas/index.ts\` and call \`writeFileTool\`.
-      5.  **Generate & Write Exports**: Create content for \`src/index.ts\` and call \`writeFileTool\`.
+       ## SDK Requirements
+       - Create a complete, production-ready SDK with no TODOs or placeholders
+       - Ensure all types are properly defined with Zod
+       - Include comprehensive error handling
+       - Make sure the SDK is easy to use and follows best practices
+       - Create a function for EVERY endpoint mentioned in the documentation
+       - Provide comprehensive extraInfo for documentation generation
+       - Make sure all the types are followed correctly in the code, and not mismatched
+       
+       ${
+         metadata.authType === 'oauth2' || metadata.authType === 'auto'
+           ? `
+       ## OAuth Implementation Requirements
+       - The SDK should accept parameters like accessToken, refreshToken, clientId, clientSecret, redirectUri, and scopes based on the OAuth package documentation
+       - The SDK should export functions to validate and refresh the access token which uses the functions exported from the OAuth package
+       - The SDK should check if the provided access token is valid and if not, throw an error
+       - The environment variable names should be related to the provider, not the package (e.g., "GOOGLE_ACCESS_TOKEN" not "GOOGLE_SHEETS_ACCESS_TOKEN")
+       `
+           : ''
+       }
 
+      
       Ensure complete, production-ready code with no TODOs. Follow all requirements from the system prompt.
     `;
 
@@ -912,7 +939,6 @@ export async function generateSDK(
       model: models.claude35Sonnet,
       system: systemPrompt,
       prompt: generationPrompt,
-      maxTokens: 8000,
       tools: { setupTool, writeFileTool },
       toolChoice: 'auto',
       maxSteps: 5,
