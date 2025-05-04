@@ -74,6 +74,7 @@ jobs:
           cd scripts
           npm install
           npm run workflow:packagefox
+          npm run embed:docs
 
       - name: Check for changes
         id: git-check
@@ -87,5 +88,5 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "packagefox: write: update package files [skip packagefox]"
+          git commit -m "packagefox: write: update package files [skip packagefox] [skip ci]"
           git push
