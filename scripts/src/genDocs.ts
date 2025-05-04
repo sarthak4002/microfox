@@ -507,7 +507,7 @@ export async function generateDocs(
     try {
       // Update documentation report - validation step
       await updateDocReport(
-        'All Docs Generated',
+        'validate',
         {
           status: 'success',
           details: {

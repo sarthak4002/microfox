@@ -47,7 +47,11 @@ function getStepName(
 function readUsageData(
   packageDir: string,
 ): { totalTokens: number; totalCost: number } | null {
-  const usageFilePath = path.join(packageDir, '.microfox', 'pr-usage.json');
+  const usageFilePath = path.join(
+    process.cwd().replace('/scripts', ''),
+    '.microfox',
+    'pr-usage.json',
+  );
 
   if (!fs.existsSync(usageFilePath)) {
     return null;
@@ -184,6 +188,8 @@ export async function updateResearchReport(
     report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
   }
 
+  // Ensure directory exists before writing
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, report);
 
   if (process.env.PR_NUMBER) {
@@ -293,6 +299,8 @@ export async function updateBuildReport(
     report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
   }
 
+  // Ensure directory exists before writing
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, report);
 
   if (process.env.PR_NUMBER) {
@@ -401,6 +409,8 @@ export async function updateDocReport(
     report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
   }
 
+  // Ensure directory exists before writing
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
   fs.writeFileSync(reportPath, report);
 
   if (process.env.PR_NUMBER) {
