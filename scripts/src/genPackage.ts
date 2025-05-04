@@ -130,6 +130,7 @@ export async function generateMetadata(
     {
       usage,
       totalTokens: usage.totalTokens,
+      status: 'success',
       details: {
         'API Name': newMetadata.apiName,
         Package: newMetadata.packageName,

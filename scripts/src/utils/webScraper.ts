@@ -168,8 +168,8 @@ export async function extractLinks(
     await updateResearchReport(
       'extractLinks',
       {
+        status: 'success',
         details: {
-          status: 'success',
           'Total Links': uniqueLinks.length,
           'Base URL': validatedUrl,
         },
