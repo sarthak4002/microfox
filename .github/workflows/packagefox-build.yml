@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: contains(github.event.pull_request.title, 'packagefox:')
+    if: contains(github.event.pull_request.title, 'packagefox:') && !contains(github.event.pull_request.head.sha, 'skip packagefox')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -137,5 +137,5 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "packagefox: write: update package files [skip ci]"
+          git commit -m "packagefox: write: update package files [skip packagefox]"
           git push
