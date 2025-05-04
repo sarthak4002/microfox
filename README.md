@@ -1,6 +1,6 @@
-# microfox
+# Microfox
 
-A monorepo for building powerful, type-safe bot development tools and utilities. This repository contains various packages that help in building and managing bots efficiently.
+
 
 ## 🚀 Getting Started
 
