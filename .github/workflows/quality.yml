@@ -19,7 +19,7 @@ jobs:
 
       - name: Get relevant changed files
         id: changed-files
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46.0.1
         with:
           # We need the paths of all changed files within packages
           files: packages/**
