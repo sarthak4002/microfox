@@ -1,18 +1,1 @@
-{
-  "gemini-1.5-pro": {
-    "usage": {
-      "promptTokens": 134274,
-      "completionTokens": 15151,
-      "totalTokens": 0
-    },
-    "cost": 0.48719500000000004
-  },
-  "claude-3-5-sonnet-20240620": {
-    "usage": {
-      "promptTokens": 40542,
-      "completionTokens": 10562,
-      "totalTokens": 0
-    },
-    "cost": 0.28005599999999997
-  }
-}
+{}
