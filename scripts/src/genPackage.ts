@@ -1034,11 +1034,7 @@ export async function generateSDK(
 
     return {
       name: metadata.apiName,
-      packageDir: path.join(
-        process.cwd(),
-        '../packages',
-        metadata.packageName.replace('@microfox/', ''),
-      ),
+      packageDir,
       packageName: metadata.packageName,
     };
   } catch (error) {

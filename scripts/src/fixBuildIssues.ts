@@ -10,11 +10,8 @@ export async function fixBuildIssues(packageName: string) {
   console.log(`🛠️ Starting iterative build and fix process for ${packageName}`);
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
 
-  const packageDir = path.resolve(
-    process.cwd(),
-    '../packages',
-    packageName.replace('@microfox/', ''),
-  );
+  const dirName = packageName.replace('@microfox/', '');
+  const packageDir = path.join(process.cwd(), './packages', dirName);
 
   let buildSucceeded = false;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
