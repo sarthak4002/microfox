@@ -4,7 +4,7 @@
   "description": "Scripts for Microfox package documentation updates",
   "scripts": {
     "build": "tsc",
-    "process-issue": "ts-node src/processIssue.ts",
+    "process-issue": "ts-node src/process-issue.ts",
     "gen:pkg-build": "ts-node src/fixBuildIssues.ts",
     "gen:pkg-fix": "ts-node src/fixPackage.ts",
     "gen:pkg": "ts-node src/genPackage.ts",
