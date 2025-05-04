@@ -801,7 +801,7 @@ export async function generateSDK(
       3. The SDK should expose a constructor function or Class named "create${metadata.apiName.replace(/\s+/g, '')}SDK"
       4. The SDK MUST have functions for ALL endpoints mentioned in the documentation
       5. The Functions MUST cover all endpoints and their parameters
-      6. A Single Function can be used to call multiple similar endpoints by combining the parameters of the endpoints
+      6. A Single Function can be used to call multiple similar endpoints by combining the parameters of the endpoints like how @octokit/rest does it.
       7. The SDK should abstract as much as possible of the API's complexity, so that the API can be easily used by any developer.
       8. The parameters of constructor and functions should be as much abstracted as possible, so that the developer can pass in the parameters in the way that is most convenient for them.
       9. The SDK should be as clean, customizable and reusable as possible
