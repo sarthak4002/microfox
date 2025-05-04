@@ -311,6 +311,8 @@ export async function generateDocs(
         system: docsSystemPrompt,
         prompt: docsGenerationPrompt,
         tools: tools,
+        toolChoice: 'auto',
+        maxSteps: 20,
       });
 
       if (result.usage) {
@@ -326,6 +328,16 @@ export async function generateDocs(
           'AI did not call the finalizeDocs tool. Documentation may be incomplete.',
         );
       }
+      await updateDocReport(
+        'generate',
+        {
+          status: 'success',
+          details: {
+            'Generated Docs': result.toolCalls.length,
+          },
+        },
+        packageDir,
+      );
     } catch (e) {
       console.error('Error during AI documentation generation:', e);
       await updateDocReport(
@@ -683,21 +695,6 @@ export async function generateDocs(
         `✅ Updated documentation files and package info at ${packageDir}`,
       );
 
-      // Build the package
-      await buildPackage(packageDir);
-
-      // Update documentation report - build step
-      await updateDocReport(
-        'build',
-        {
-          status: 'success',
-          details: {
-            package: metadata.packageName,
-          },
-        },
-        packageDir,
-      );
-
       // --- Final Cleanup ---
       console.log(
         `🧹 Cleaning up temporary documentation data for ${metadata.packageName}...`,
@@ -708,14 +705,6 @@ export async function generateDocs(
       inMemoryStore.removeItem(dependenciesStoreKey);
     } catch (error) {
       // Update documentation report - error case during processing/build
-      await updateDocReport(
-        'build',
-        {
-          status: 'failure',
-          error: error instanceof Error ? error.message : String(error),
-        },
-        packageDir,
-      );
       console.error(
         '❌ Error processing documentation or building package:',
         error,

@@ -8,6 +8,7 @@ import {
   readUsageData,
 } from './octokit/octokit';
 import { IssueDetails, PackageFoxRequest } from './process-issue';
+import { inMemoryStore } from './utils/InMemoryStore';
 
 const MAX_RETRIES = 2;
 
@@ -171,6 +172,7 @@ export async function fixBuildIssues(packageName: string) {
       P.S. Don't forget to star ⭐ our repo if you like what we're doing!
       `,
     });
+    inMemoryStore.clear();
     process.exitCode = 0;
   } else {
     console.error(
@@ -180,6 +182,8 @@ export async function fixBuildIssues(packageName: string) {
     prCommentor.createComment({
       body: `❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
     });
+    inMemoryStore.clear();
+    process.exitCode = 1;
   }
 }
 

@@ -6,7 +6,7 @@ import { models } from './ai/models';
 import dedent from 'dedent';
 import * as diff from 'diff'; // Import the diff library
 import { error } from 'console';
-import { updateBuildReport } from './octokit/octokit';
+import { prCommentor, updateBuildReport } from './octokit/octokit';
 import { logUsage } from './octokit/usageLogger';
 
 // Schema for the .foxes file content
@@ -445,14 +445,9 @@ export async function fixPackage() {
     );
   } catch (error) {
     console.error('❌ Error during the build error fixing process:', error);
-    await updateBuildReport(
-      'apply',
-      {
-        status: 'failure',
-        error: error,
-      },
-      process.cwd(),
-    );
+    await prCommentor.createComment({
+      body: '❌ Sorry! Error during the build error fixing process: ' + error,
+    });
     process.exitCode = 1;
   }
 }
