@@ -16,7 +16,8 @@
     "update:package-info": "ts-node src/updateRootPackageInfo.ts",
     "update:package": "npm run update:package-list && npm run update:package-info",
     "embed:docs": "ts-node src/embeddings/embedDocs.ts",
-    "embed:query": "ts-node src/embeddings/queryDocs.ts"
+    "embed:query": "ts-node src/embeddings/queryDocs.ts",
+    "workflow:packagefox": "tsx src/handleWorkflow.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.2.10",

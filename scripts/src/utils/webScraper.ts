@@ -65,6 +65,17 @@ export async function extractLinks(
 ): Promise<string[]> {
   const validatedUrl = validateUrl(url);
 
+  await updateResearchReport(
+    'extractLinks',
+    {
+      details: {
+        status: 'in-progress',
+        'Extracting Links from': validatedUrl,
+      },
+    },
+    packageDir,
+  );
+
   console.log(`🌐 Launching browser to extract links from ${validatedUrl}...`);
   const browser = await puppeteer.launch({
     headless: true,
@@ -158,6 +169,7 @@ export async function extractLinks(
       'extractLinks',
       {
         details: {
+          status: 'success',
           'Total Links': uniqueLinks.length,
           'Base URL': validatedUrl,
         },
@@ -189,6 +201,18 @@ export async function analyzeLinks(
   }
   console.log(
     `🧠 Analyzing ${newLinks.length} links to find useful ones for "${query}"...`,
+  );
+
+  // Update research report
+  await updateResearchReport(
+    'analyzeLinks',
+    {
+      status: 'in-progress',
+      details: {
+        'Analyzing Links': newLinks.length,
+      },
+    },
+    options.packageDir,
   );
   const { object: analysis, usage } = await generateObject({
     model: models.googleGeminiPro,
@@ -267,6 +291,7 @@ export async function analyzeLinks(
     'analyzeLinks',
     {
       usage,
+      status: 'success',
       totalTokens: usage.totalTokens,
       details: {
         'Useful Links': analysis.documentationLinks.length,
@@ -291,6 +316,18 @@ export async function extractContentFromUrls(
   options: { packageDir: string; baseUrl: string },
 ): Promise<{ url: string; content: string }[]> {
   console.log(`🌐 Extracting content from ${urls.length} URLs...`);
+
+  await updateResearchReport(
+    'extractContentFromUrls',
+    {
+      status: 'in-progress',
+      details: {
+        'Extracting Content from URLs': urls.length,
+        'Estimated Time': `This might take a while, please wait...`,
+      },
+    },
+    options.packageDir,
+  );
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -396,6 +433,7 @@ export async function extractContentFromUrls(
   await updateResearchReport(
     'extractContentFromUrls',
     {
+      status: 'success',
       details: {
         'Successfully Extracted': results.length,
         'Failed URLs': failedUrls.length,

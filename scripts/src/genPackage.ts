@@ -17,6 +17,7 @@ import { updateResearchReport } from './octokit/octokit';
 import { logUsage } from './octokit/usageLogger';
 import { IssueDetails, PackageFoxRequest } from './process-issue';
 import { inMemoryStore } from './utils/InMemoryStore';
+import { updateCodeGenReport } from './octokit/octokit';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -300,6 +301,17 @@ async function summarizeContent(
 ): Promise<string> {
   console.log('🧠 Summarizing content using Gemini...');
 
+  await updateResearchReport(
+    'summarizeContent',
+    {
+      status: 'in-progress',
+      details: {
+        'Summarizing All Documentation': content.length,
+      },
+    },
+    options.packageDir,
+  );
+
   const { text: summary, usage } = await generateText({
     model: models.googleGeminiPro,
     prompt: dedent`
@@ -342,12 +354,14 @@ async function summarizeContent(
   await updateResearchReport(
     'summarizeContent',
     {
+      status: 'success',
       usage,
       totalTokens: usage.totalTokens,
       details: {
         'Summary Length': `${(summary.length / 1024).toFixed(2)} KB`,
         'Input Length': `${(content.length / 1024).toFixed(2)} KB`,
         'Compression Ratio': `${((content.length / summary.length) * 100).toFixed(2)}%`,
+        'Saved at': baseSummaryTextPath.replace(process.cwd(), ''),
       },
     },
     options.packageDir,
@@ -937,6 +951,22 @@ export async function generateSDK(
     }
     console.log(`✅ All required files generated and written.`);
     // --- End Process Tool Results ---
+
+    // Calculate total bytes of generated files
+    const totalBytes = Object.entries(generatedFileContentsMap).reduce(
+      (total, [_, content]) => total + Buffer.byteLength(content, 'utf8'),
+      0,
+    );
+
+    // Update code generation report
+    await updateCodeGenReport(
+      {
+        files: generatedFileContentsMap,
+        setupInfo: finalSetupInfo,
+        totalBytes,
+      },
+      packageDir,
+    );
 
     // Combine generated file contents for documentation
     const combinedCode = requiredFiles

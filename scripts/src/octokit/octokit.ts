@@ -45,7 +45,7 @@ function getStepName(
  * Reads and aggregates usage data from the .microfox/pr-usage.json file.
  * Handles file not found and JSON parsing errors gracefully.
  */
-function readUsageData(
+export function readUsageData(
   packageDir: string,
 ): { totalTokens: number; totalCost: number } | null {
   const usageFilePath = path.join(
@@ -101,6 +101,7 @@ function readUsageData(
 export async function updateResearchReport(
   step: string,
   data: {
+    status?: 'success' | 'failure' | 'in-progress';
     usage?: any;
     totalTokens?: number;
     details?: Record<string, any>;
@@ -128,7 +129,7 @@ export async function updateResearchReport(
     summarizeContent: '📊',
   };
 
-  const status = data.usage ? '✅' : '⏳';
+  const status = data.status === 'success' ? '✅' : '⏳';
   const details = data.details
     ? Object.entries(data.details)
         .map(([key, value]) => `${key}: ${value}`)
@@ -465,6 +466,83 @@ export async function updateDocReport(
         body: report,
       },
       'Packagefox: Documentation Report',
+    );
+  }
+}
+
+/**
+ * Create or update code generation report markdown comment
+ */
+export async function updateCodeGenReport(
+  data: {
+    files: Record<string, string>;
+    setupInfo: {
+      authType: string;
+      authSdk?: string;
+      oauth2Scopes?: string[];
+      setupInfo: string;
+    };
+    totalBytes: number;
+  },
+  packageDir: string,
+): Promise<void> {
+  const reportPath = path.join(packageDir, 'codegen-report.md');
+  let report: string;
+
+  if (!fs.existsSync(reportPath)) {
+    report = `# Packagefox: Code Generation Report
+
+## Generated Files
+| File | Size (bytes) |
+|------|-------------|
+`;
+  } else {
+    report = fs.readFileSync(reportPath, 'utf8');
+  }
+
+  // Add file information
+  const fileRows = Object.entries(data.files)
+    .map(([file, content]) => {
+      const size = Buffer.byteLength(content, 'utf8');
+      return `| ${file} | ${size} |`;
+    })
+    .join('\n');
+
+  // Add setup information
+  const setupInfo = `
+## Setup Information
+- **Auth Type**: ${data.setupInfo.authType}
+${data.setupInfo.authSdk ? `- **Auth SDK**: ${data.setupInfo.authSdk}` : ''}
+${data.setupInfo.oauth2Scopes?.length ? `- **OAuth2 Scopes**: ${data.setupInfo.oauth2Scopes.join(', ')}` : ''}
+- **Setup Info**: ${data.setupInfo.setupInfo}
+`;
+
+  // Add usage footer
+  const usageData = readUsageData(packageDir);
+  const footerMarker = '\n\n---\n**Total Usage:**';
+  const footerContent = `Total Bytes: ${data.totalBytes} | Tokens: ${usageData?.totalTokens} | Cost: $${usageData?.totalCost.toFixed(4)}`;
+  const footerLine = `${footerMarker} ${footerContent}`;
+
+  // Construct final report
+  report = `# Packagefox: Code Generation Report
+
+## Generated Files
+| File | Size (bytes) |
+|------|-------------|
+${fileRows}
+${setupInfo}
+${footerLine}`;
+
+  // Ensure directory exists before writing
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, report);
+
+  if (process.env.PR_NUMBER) {
+    await prCommentor.createOrUpdateComment(
+      {
+        body: report,
+      },
+      'Packagefox: Code Generation Report',
     );
   }
 }

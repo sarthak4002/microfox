@@ -2,7 +2,11 @@ import { buildPackage } from './utils/execCommands';
 import { fixPackage } from './fixPackage';
 import path from 'path';
 import fs from 'fs';
-import { prCommentor, updateBuildReport } from './octokit/octokit';
+import {
+  prCommentor,
+  updateBuildReport,
+  readUsageData,
+} from './octokit/octokit';
 import { IssueDetails, PackageFoxRequest } from './process-issue';
 
 const MAX_RETRIES = 2;
@@ -12,7 +16,11 @@ export async function fixBuildIssues(packageName: string) {
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
 
   const dirName = packageName.replace('@microfox/', '');
-  const packageDir = path.join(process.cwd(), './packages', dirName);
+  const packageDir = path.join(
+    process.cwd().replace('/scripts', ''),
+    './packages',
+    dirName,
+  );
 
   let buildSucceeded = false;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
@@ -127,8 +135,41 @@ export async function fixBuildIssues(packageName: string) {
     console.log(
       `\n🎉 Successfully built ${packageDir} within ${MAX_RETRIES} attempts.`,
     );
+    const packageInfo = JSON.parse(
+      fs.readFileSync(path.join(packageDir, 'package-info.json'), 'utf8'),
+    );
+    const totalUsage = readUsageData(packageDir);
     prCommentor.createComment({
-      body: `🎉 Congratulations! ${packageName} is build-tested and working. It is ready for shipping to NPM. Just merge this PR, our moderator agents will auto release all packages to NPM at minight hour..\\n You can also force a release by modifying any file in the .changeset/ directory.`,
+      body: `
+      # 🎉 Successfully built ${packageName} 😉
+
+      Fantastic! Your package ${packageName} has been built successfully and is ready to rock! 🚀
+
+      ## 📊 Package Stats
+      - Total Functions: ${packageInfo.readme_map.functionalities.length} powerful functionalities at your fingertips
+      - Estimated Build Cost: $${totalUsage?.totalCost}$
+      - Authentication: ${packageInfo.authType} based security
+      
+      ## 📦 Where to Find Your Package
+      
+      ✨ GitHub: Check out the complete source in [packages/${packageName.replace('@microfox/', '')}](https://github.com/microfox-ai/microfox/tree/main/packages/${packageName.replace('@microfox/', '')})
+      
+      📥 NPM: Ready to install from the [NPM registry](https://www.npmjs.com/package/${packageName.replace('@microfox/', '')})
+      run \`npm install ${packageName}\` to install the package.
+
+      Note: we will deploy all built packages at the midnight hour. so will have to wait until then to use the package.
+      
+      ## 🤝 Join us
+      
+      Join our amazing developer community on [Discord](https://discord.gg/kUuJFvEtJ6) - we're on a mission to build something incredible together (100% opensource all software)!
+      
+      Keep building awesome things! 🌟
+      
+      With excitement,
+      Your Microfox 🦊
+      
+      P.S. Don't forget to star ⭐ our repo if you like what we're doing!
+      `,
     });
     process.exitCode = 0;
   } else {
