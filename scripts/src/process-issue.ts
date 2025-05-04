@@ -45,7 +45,6 @@ const IssueDetailsSchema = z.object({
     ),
   url: z
     .string()
-    .url()
     .optional()
     .describe(
       'A relevant documentation or reference URL if provided or inferable.',
