@@ -1,4 +1,4 @@
-import { Octokit } from 'octokit';
+import { Octokit } from '@octokit/rest';
 import { PRCommentor } from './commentor';
 import fs from 'fs';
 import path from 'path';
