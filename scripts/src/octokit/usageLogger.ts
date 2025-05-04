@@ -11,7 +11,7 @@ interface UsageLog {
 }
 
 export function logUsage(modelName: string, usage: LanguageModelUsage) {
-  const usageDir = '.microfox';
+  const usageDir = join(process.cwd().replace('/scripts', ''), '.microfox');
   const usageFile = join(usageDir, 'pr-usage.json');
 
   // Ensure directory exists

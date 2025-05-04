@@ -12,8 +12,8 @@ export async function fixBuildIssues(packageName: string) {
 
   const packageDir = path.resolve(
     process.cwd(),
-    '..',
-    packageName.replace('@microfox/', 'packages/'),
+    '../packages',
+    packageName.replace('@microfox/', ''),
   );
 
   let buildSucceeded = false;

@@ -182,10 +182,25 @@ export async function updateResearchReport(
   // Reconstruct the report
   report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
-  // Add usage footer
+  // Add or update usage footer
   const usageData = readUsageData(packageDir);
+  const footerMarker = '\n\n---\n**Total Usage:**';
+  const footerContent = `Tokens: ${usageData?.totalTokens} | Cost: $${usageData?.totalCost.toFixed(4)}`;
+  const footerLine = `${footerMarker} ${footerContent}`;
+
+  const footerIndex = report.indexOf(footerMarker);
+
   if (usageData) {
-    report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
+    if (footerIndex !== -1) {
+      // Update existing footer
+      report = report.substring(0, footerIndex) + footerLine;
+    } else {
+      // Append new footer
+      report += footerLine;
+    }
+  } else if (footerIndex !== -1) {
+    // Remove footer if usage data is no longer available
+    report = report.substring(0, footerIndex);
   }
 
   // Ensure directory exists before writing
@@ -293,10 +308,25 @@ export async function updateBuildReport(
   // Reconstruct the report
   report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
-  // Add usage footer
+  // Add or update usage footer
   const usageData = readUsageData(packageDir);
+  const footerMarker = '\n\n---\n**Total Usage:**';
+  const footerContent = `Tokens: ${usageData?.totalTokens} | Cost: $${usageData?.totalCost.toFixed(4)}`;
+  const footerLine = `${footerMarker} ${footerContent}`;
+
+  const footerIndex = report.indexOf(footerMarker);
+
   if (usageData) {
-    report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
+    if (footerIndex !== -1) {
+      // Update existing footer
+      report = report.substring(0, footerIndex) + footerLine;
+    } else {
+      // Append new footer
+      report += footerLine;
+    }
+  } else if (footerIndex !== -1) {
+    // Remove footer if usage data is no longer available
+    report = report.substring(0, footerIndex);
   }
 
   // Ensure directory exists before writing
@@ -403,10 +433,25 @@ export async function updateDocReport(
   // Reconstruct the report
   report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
-  // Add usage footer
+  // Add or update usage footer
   const usageData = readUsageData(packageDir);
+  const footerMarker = '\n\n---\n**Total Usage:**';
+  const footerContent = `Tokens: ${usageData?.totalTokens} | Cost: $${usageData?.totalCost.toFixed(4)}`;
+  const footerLine = `${footerMarker} ${footerContent}`;
+
+  const footerIndex = report.indexOf(footerMarker);
+
   if (usageData) {
-    report += `\n\n---\n**Total Usage:** Tokens: ${usageData.totalTokens} | Cost: $${usageData.totalCost.toFixed(4)}`;
+    if (footerIndex !== -1) {
+      // Update existing footer
+      report = report.substring(0, footerIndex) + footerLine;
+    } else {
+      // Append new footer
+      report += footerLine;
+    }
+  } else if (footerIndex !== -1) {
+    // Remove footer if usage data is no longer available
+    report = report.substring(0, footerIndex);
   }
 
   // Ensure directory exists before writing
