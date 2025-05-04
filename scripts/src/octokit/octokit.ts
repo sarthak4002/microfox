@@ -12,6 +12,34 @@ export const prCommentor = new PRCommentor(
   process.env.PR_NUMBER ? parseInt(process.env.PR_NUMBER) : undefined,
 );
 
+// Define the expected order of steps for each report type
+const researchSteps = [
+  'generateMetadata',
+  'extractLinks',
+  'analyzeLinks',
+  'extractContentFromUrls',
+  'summarizeContent',
+];
+const buildSteps = ['build', 'fix', 'analyze', 'apply', 'cleanup'];
+const docSteps = ['generate', 'validate', 'save', 'build'];
+
+// Helper function to extract step name from a table row
+function getStepName(
+  line: string,
+  emojis: Record<string, string>,
+): string | null {
+  if (!line.startsWith('|') || line.startsWith('|------')) return null; // Ignore header/separator
+  const cellContent = line.split('|')[1]?.trim();
+  if (!cellContent) return null;
+
+  for (const step in emojis) {
+    if (cellContent.startsWith(`${emojis[step]} ${step}`)) {
+      return step;
+    }
+  }
+  return null; // Should not happen if emojis are correct
+}
+
 /**
  * Create or update research report markdown comment
  */
@@ -76,7 +104,29 @@ export async function updateResearchReport(
 
   lines.splice(insertIndex, 0, newRow);
 
-  report = lines.join('\n');
+  // Separate header/separator lines from data lines
+  const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+  const headerLines = lines.slice(0, separatorIndex + 1);
+  let dataLines = lines
+    .slice(separatorIndex + 1)
+    .filter(line => line.trim() !== ''); // Filter empty lines
+
+  // Sort data lines based on predefined step order
+  dataLines.sort((a, b) => {
+    const stepA = getStepName(a, emojiMap);
+    const stepB = getStepName(b, emojiMap);
+    const indexA = stepA ? researchSteps.indexOf(stepA) : -1;
+    const indexB = stepB ? researchSteps.indexOf(stepB) : -1;
+
+    // Handle cases where a step might not be in the predefined list (shouldn't happen ideally)
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+  });
+
+  // Reconstruct the report
+  report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 
@@ -157,7 +207,29 @@ export async function updateBuildReport(
 
   lines.splice(insertIndex, 0, newRow);
 
-  report = lines.join('\n');
+  // Separate header/separator lines from data lines
+  const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+  const headerLines = lines.slice(0, separatorIndex + 1);
+  let dataLines = lines
+    .slice(separatorIndex + 1)
+    .filter(line => line.trim() !== ''); // Filter empty lines
+
+  // Sort data lines based on predefined step order
+  dataLines.sort((a, b) => {
+    const stepA = getStepName(a, emojiMap);
+    const stepB = getStepName(b, emojiMap);
+    const indexA = stepA ? buildSteps.indexOf(stepA) : -1;
+    const indexB = stepB ? buildSteps.indexOf(stepB) : -1;
+
+    // Handle cases where a step might not be in the predefined list
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+  });
+
+  // Reconstruct the report
+  report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 
@@ -237,7 +309,29 @@ export async function updateDocReport(
 
   lines.splice(insertIndex, 0, newRow);
 
-  report = lines.join('\n');
+  // Separate header/separator lines from data lines
+  const separatorIndex = lines.findIndex(line => line.startsWith('|------'));
+  const headerLines = lines.slice(0, separatorIndex + 1);
+  let dataLines = lines
+    .slice(separatorIndex + 1)
+    .filter(line => line.trim() !== ''); // Filter empty lines
+
+  // Sort data lines based on predefined step order
+  dataLines.sort((a, b) => {
+    const stepA = getStepName(a, emojiMap);
+    const stepB = getStepName(b, emojiMap);
+    const indexA = stepA ? docSteps.indexOf(stepA) : -1;
+    const indexB = stepB ? docSteps.indexOf(stepB) : -1;
+
+    // Handle cases where a step might not be in the predefined list
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+  });
+
+  // Reconstruct the report
+  report = headerLines.join('\n') + '\n' + dataLines.join('\n');
 
   fs.writeFileSync(reportPath, report);
 

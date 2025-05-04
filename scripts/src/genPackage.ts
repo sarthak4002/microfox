@@ -435,11 +435,7 @@ async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
 
 // Define the schema for the write_to_file tool
 const FileContentSchema = z.object({
-  content: z
-    .string()
-    .describe(
-      'The complete source code or text content of the file, including all necessary imports, types, and implementations',
-    ),
+  content: z.string().describe(''),
   path: z
     .string()
     .describe(
@@ -448,18 +444,22 @@ const FileContentSchema = z.object({
 });
 
 const WriteToFileSchema = z.object({
-  mainSdkFile: FileContentSchema.describe(
-    'The main SDK implementation file details containing the API client class with authentication, API methods, and integration',
+  mainSdkFile: FileContentSchema.shape.content.describe(
+    'The main SDK implementation file containing the API client class with authentication, API methods, and integration - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
-  typesFile: FileContentSchema.describe(
-    'TypeScript type definitions file details containing interfaces for configuration, responses, and other SDK-specific types',
+  mainSdkFilePath: FileContentSchema.shape.path,
+  typesFile: FileContentSchema.shape.content.describe(
+    'TypeScript type definitions file details containing interfaces for configuration, responses, and other SDK-specific types - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
-  schemasFile: FileContentSchema.describe(
-    'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects',
+  typesFilePath: FileContentSchema.shape.path,
+  schemasFile: FileContentSchema.shape.content.describe(
+    'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
+  schemasFilePath: FileContentSchema.shape.path,
   exportsFile: FileContentSchema.describe(
-    'Entry point file details that exports the main SDK class, types, and utilities for package consumers',
+    'Entry point file details that exports the main SDK class, types, and utilities for package consumers - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
+  exportsFilePath: FileContentSchema.shape.path,
   setupInfo: z
     .string()
     .describe(
@@ -676,20 +676,20 @@ export async function generateSDK(
         // Write the generated files
         const files = [
           {
-            content: data.mainSdkFile.content,
-            path: path.join(packageDir, data.mainSdkFile.path),
+            content: data.mainSdkFile,
+            path: path.join(packageDir, data.mainSdkFilePath),
           },
           {
-            content: data.typesFile.content,
-            path: path.join(packageDir, data.typesFile.path),
+            content: data.typesFile,
+            path: path.join(packageDir, data.typesFilePath),
           },
           {
-            content: data.schemasFile.content,
-            path: path.join(packageDir, data.schemasFile.path),
+            content: data.schemasFile,
+            path: path.join(packageDir, data.schemasFilePath),
           },
           {
-            content: data.exportsFile.content,
-            path: path.join(packageDir, data.exportsFile.path),
+            content: data.exportsFile,
+            path: path.join(packageDir, data.exportsFilePath),
           },
         ];
 
@@ -727,10 +727,22 @@ export async function generateSDK(
           success: true,
           packageDir,
           sdkImplementation: {
-            mainSdkFile: data.mainSdkFile,
-            typesFile: data.typesFile,
-            schemasFile: data.schemasFile,
-            exportsFile: data.exportsFile,
+            mainSdkFile: {
+              content: data.mainSdkFile,
+              path: data.mainSdkFilePath,
+            },
+            typesFile: {
+              content: data.typesFile,
+              path: data.typesFilePath,
+            },
+            schemasFile: {
+              content: data.schemasFile,
+              path: data.schemasFilePath,
+            },
+            exportsFile: {
+              content: data.exportsFile,
+              path: data.exportsFilePath,
+            },
           },
           extraInfo: [data.setupInfo],
         };
@@ -823,18 +835,14 @@ export async function generateSDK(
       }
 
       ## Output object
-        - mainSdkFile: An OBJECT containing:
-          - content: The code content (string) of the main SDK file.
-          - path: The relative path (string) to the main SDK file (e.g., src/yourSdkNameSdk.ts).
-        - typesFile: An OBJECT containing:
-          - content: The code content (string) of the types file.
-          - path: The relative path (string) to the types file (e.g., src/types/index.ts).
-        - schemasFile: An OBJECT containing:
-          - content: The code content (string) of the schemas file.
-          - path: The relative path (string) to the schemas file (e.g., src/schemas/index.ts).
-        - exportsFile: An OBJECT containing:
-          - content: The code content (string) of the exports file.
-          - path: The relative path (string) to the exports file (e.g., src/index.ts).
+        - mainSdkFile:  The code content (string) of the main SDK file.
+        - mainSdkFilePath: The relative path (string) to the main SDK file (e.g., src/yourSdkNameSdk.ts).
+        - schemasFile: The code content (string) of the schemas file.
+        - schemasFilePath: The relative path (string) to the schemas file (e.g., src/schemas/index.ts).
+        - typesFile: The code content (string) of the types file.
+        - typesFilePath: The relative path (string) to the types file (e.g., src/types/index.ts).
+        - exportsFile: The code content (string) of the exports file.
+        - exportsFilePath: The relative path (string) to the exports file (e.g., src/index.ts).
         - setupInfo: Additional information (string) for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.).
         - authType: Authentication type (string: "apikey", "oauth2", or "none").
         - authSdk: The name of the OAuth SDK (string, optional, e.g., "@microfox/google-oauth"). Required when authType is "oauth2".

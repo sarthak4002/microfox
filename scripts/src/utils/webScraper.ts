@@ -270,10 +270,11 @@ export async function analyzeLinks(
       totalTokens: usage.totalTokens,
       details: {
         'Useful Links': analysis.documentationLinks.length,
+        'Total Links': links.length,
+        'Filtered Links': newLinks.length,
         'Setup Instructions': analysis.setupInstructionsLink
           ? 'Found'
           : 'Not Found',
-        Reason: analysis.reason,
       },
     },
     options.packageDir,
