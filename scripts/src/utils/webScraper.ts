@@ -5,6 +5,8 @@ import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
 import { PackageInfo } from '../types';
+import { updateResearchReport } from '../octokit/octokit';
+import { logUsage } from '../octokit/usageLogger';
 // User agents to rotate
 const USER_AGENTS = [
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
@@ -147,6 +149,19 @@ export async function extractLinks(url: string): Promise<string[]> {
     console.log(
       `✅ Extracted ${uniqueLinks.length} unique links from ${validatedUrl}`,
     );
+
+    // Update research report
+    await updateResearchReport(
+      'extractLinks',
+      {
+        details: {
+          'Total Links': uniqueLinks.length,
+          'Base URL': validatedUrl,
+        },
+      },
+      path.join(process.cwd(), '../packages', 'temp'),
+    );
+
     return uniqueLinks;
   } finally {
     await browser.close();
@@ -209,6 +224,8 @@ export async function analyzeLinks(
     temperature: 0.5,
   });
 
+  logUsage(models.googleGeminiPro, usage);
+
   console.log(usage);
 
   console.log(
@@ -242,6 +259,23 @@ export async function analyzeLinks(
     fs.writeFileSync(packageInfoFile, JSON.stringify(packageInfoJson, null, 2));
   }
 
+  // Update research report
+  await updateResearchReport(
+    'analyzeLinks',
+    {
+      usage,
+      totalTokens: usage.totalTokens,
+      details: {
+        'Useful Links': analysis.documentationLinks.length,
+        'Setup Instructions': analysis.setupInstructionsLink
+          ? 'Found'
+          : 'Not Found',
+        Reason: analysis.reason,
+      },
+    },
+    options.packageDir,
+  );
+
   return analysis.documentationLinks;
 }
 
@@ -267,6 +301,8 @@ export async function extractContentFromUrls(
   });
 
   let results: { url: string; content: string }[] = [];
+  let totalContentLength = 0;
+  let failedUrls: string[] = [];
 
   fs.mkdirSync(path.join(options.packageDir, './scrapedDocs'), {
     recursive: true,
@@ -335,11 +371,13 @@ export async function extractContentFromUrls(
         );
 
         results.push({ url: validatedUrl, content });
+        totalContentLength += content.length;
         console.log(
           `✅ Extracted ${content.length} characters from ${validatedUrl}`,
         );
       } catch (error) {
         console.error(`❌ Error extracting content from ${url}:`, error);
+        failedUrls.push(url);
         // Add longer delay after an error
         await randomDelay(5000, 10000);
       }
@@ -349,5 +387,20 @@ export async function extractContentFromUrls(
   }
 
   console.log(`✅ Extracted content from ${results.length} URLs`);
+
+  // Update research report
+  await updateResearchReport(
+    'extractContentFromUrls',
+    {
+      details: {
+        'Successfully Extracted': results.length,
+        'Failed URLs': failedUrls.length,
+        'Total Content Length': `${(totalContentLength / 1024).toFixed(2)} KB`,
+        'Average Content Length': `${(totalContentLength / results.length / 1024).toFixed(2)} KB`,
+      },
+    },
+    options.packageDir,
+  );
+
   return results;
 }

@@ -2,6 +2,8 @@ import { buildPackage } from './utils/execCommands';
 import { fixPackage } from './fixPackage';
 import path from 'path';
 import fs from 'fs';
+import { updateBuildReport } from './octokit/octokit';
+
 const MAX_RETRIES = 5;
 
 export async function fixBuildIssues(packageDir: string) {
@@ -13,11 +15,28 @@ export async function fixBuildIssues(packageDir: string) {
     console.log(`\n--- Attempt ${attempt} of ${MAX_RETRIES} ---`);
 
     console.log(`\n[Attempt ${attempt}] ⏳ Building package: ${packageDir}`);
+    await updateBuildReport(
+      'build',
+      {
+        status: 'in-progress',
+        details: { attempt: `${attempt}/${MAX_RETRIES}` },
+      },
+      packageDir,
+    );
+
     const buildResult = await buildPackage(packageDir);
 
     if (buildResult) {
       console.log(
         `\n[Attempt ${attempt}] ✅ Build successful for ${packageDir}! No further fixes needed.`,
+      );
+      await updateBuildReport(
+        'build',
+        {
+          status: 'success',
+          details: { attempt: `${attempt}/${MAX_RETRIES}` },
+        },
+        packageDir,
       );
       buildSucceeded = true;
       break; // Exit loop on successful build
@@ -25,8 +44,33 @@ export async function fixBuildIssues(packageDir: string) {
       console.warn(
         `\n[Attempt ${attempt}] ⚠️ Build failed for ${packageDir}. Attempting to fix...`,
       );
+      await updateBuildReport(
+        'build',
+        {
+          status: 'failure',
+          details: { attempt: `${attempt}/${MAX_RETRIES}` },
+        },
+        packageDir,
+      );
+
       try {
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'in-progress',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+          },
+          packageDir,
+        );
         await fixPackage(); // Run the fix process
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'success',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+          },
+          packageDir,
+        );
         console.log(
           `\n[Attempt ${attempt}] ✨ Fix process completed. Retrying build...`,
         );
@@ -34,6 +78,15 @@ export async function fixBuildIssues(packageDir: string) {
         console.error(
           `\n[Attempt ${attempt}] ❌ Critical error during fix process:`,
           fixError,
+        );
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'failure',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+            error: fixError,
+          },
+          packageDir,
         );
         console.error(
           `Aborting fix attempts for ${packageDir} due to error in fixPackage.`,

@@ -13,6 +13,8 @@ import {
 } from './utils/webScraper';
 import { PackageInfo } from './types';
 import { fixBuildIssues } from './fixBuildIssues';
+import { updateResearchReport } from './octokit/octokit';
+import { logUsage } from './octokit/usageLogger';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -79,7 +81,7 @@ export async function generateMetadata(
     `✅ Found ${oauthPackages.length} OAuth packages: ${oauthPackages.join(', ')}`,
   );
 
-  const { object: metadata } = await generateObject({
+  const { object: metadata, usage } = await generateObject({
     model: models.googleGeminiPro,
     schema: SDKMetadataSchema.omit({ inputArgs: true }),
     prompt: dedent`
@@ -103,12 +105,38 @@ export async function generateMetadata(
     temperature: 0.5,
   });
 
+  logUsage(models.googleGeminiPro, usage);
+
   let newMetadata: SDKMetadata = { ...metadata } as any;
   // Ensure required keywords are present
   newMetadata.keywords = ensureRequiredKeywords(metadata.keywords);
   newMetadata.inputArgs = query;
 
   console.log('✅ Generated metadata successfully');
+
+  // Create initial package structure to store research report
+  const dirName = newMetadata.packageName.replace('@microfox/', '');
+  const packageDir = path.join(process.cwd(), '../packages', dirName);
+  if (!fs.existsSync(packageDir)) {
+    fs.mkdirSync(packageDir, { recursive: true });
+  }
+
+  // Update research report
+  await updateResearchReport(
+    'generateMetadata',
+    {
+      usage,
+      totalTokens: usage.totalTokens,
+      details: {
+        'API Name': newMetadata.apiName,
+        Package: newMetadata.packageName,
+        'Auth Type': newMetadata.authType,
+        'Auth SDK': newMetadata.authSdk || 'N/A',
+      },
+    },
+    packageDir,
+  );
+
   return newMetadata;
 }
 
@@ -295,11 +323,28 @@ async function summarizeContent(
     temperature: 0.5,
   });
 
+  logUsage(models.googleGeminiPro, usage);
+
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
 
   const baseSummaryTextPath = path.join(options.packageDir, 'docSummary.md');
   fs.writeFileSync(baseSummaryTextPath, summary);
+
+  // Update research report
+  await updateResearchReport(
+    'summarizeContent',
+    {
+      usage,
+      totalTokens: usage.totalTokens,
+      details: {
+        'Summary Length': `${(summary.length / 1024).toFixed(2)} KB`,
+        'Input Length': `${(content.length / 1024).toFixed(2)} KB`,
+        'Compression Ratio': `${((content.length / summary.length) * 100).toFixed(2)}%`,
+      },
+    },
+    options.packageDir,
+  );
 
   return summary;
 }
@@ -914,6 +959,8 @@ export async function generateSDK(
       maxTokens: 8000,
       schema: WriteToFileSchema,
     });
+
+    logUsage(models.claude35Sonnet, result.usage);
 
     const writeToFileToolResult = await writeToFileTool.execute(result.object, {
       toolCallId: Date.now().toString(),

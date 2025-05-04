@@ -11,6 +11,7 @@ import {
   analyzeLinks,
   extractContentFromUrls,
 } from './utils/webScraper';
+import { logUsage } from './octokit/usageLogger';
 
 // Schema for OAuth package generation arguments
 const GenerateOAuthPackageArgsSchema = z.object({
@@ -58,7 +59,7 @@ function ensureRequiredKeywords(keywords: string[]): string[] {
 async function generateMetadata(query: string): Promise<OAuthPackageMetadata> {
   console.log('🧠 Generating OAuth package metadata from query...');
 
-  const { object: metadata } = await generateObject({
+  const { object: metadata, usage } = await generateObject({
     model: models.googleGeminiFlash,
     schema: OAuthPackageMetadataSchema,
     prompt: dedent`
@@ -73,6 +74,8 @@ async function generateMetadata(query: string): Promise<OAuthPackageMetadata> {
 
   // Ensure required keywords are present
   metadata.keywords = ensureRequiredKeywords(metadata.keywords);
+
+  logUsage(models.googleGeminiFlash, usage);
 
   console.log('✅ Generated metadata successfully');
   return metadata;
@@ -246,6 +249,8 @@ async function summarizeContent(
     maxTokens: 8000,
     temperature: 0.5,
   });
+
+  logUsage(models.googleGeminiFlash, usage);
 
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
@@ -722,6 +727,8 @@ export async function generateOAuthPackage(
       maxTokens: 8000,
       schema: WriteToFileSchema,
     });
+
+    logUsage(models.claude35Sonnet, result.usage);
 
     const data = result.object;
 
