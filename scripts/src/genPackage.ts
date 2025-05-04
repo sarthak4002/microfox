@@ -105,7 +105,7 @@ export async function generateMetadata(
     temperature: 0.5,
   });
 
-  logUsage(models.googleGeminiPro.modelId.modelId, usage);
+  logUsage(models.googleGeminiPro.modelId, usage);
 
   let newMetadata: SDKMetadata = { ...metadata } as any;
   // Ensure required keywords are present
