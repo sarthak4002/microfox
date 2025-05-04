@@ -1,11 +1,3 @@
 {
-  "requests": [
-    {
-      "type": "pkg-create",
-      "query": "Create a new SDK for CoinGecko",
-      "url": "https://docs.coingecko.com/reference",
-      "notes": "Create a new SDK for CoinGecko based on the provided documentation.",
-      "issueNumber": 174
-    }
-  ]
+  "requests": []
 }
