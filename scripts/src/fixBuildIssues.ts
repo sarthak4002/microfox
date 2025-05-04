@@ -2,7 +2,7 @@ import { buildPackage } from './utils/execCommands';
 import { fixPackage } from './fixPackage';
 import path from 'path';
 import fs from 'fs';
-import { updateBuildReport } from './octokit/octokit';
+import { prCommentor, updateBuildReport } from './octokit/octokit';
 
 const MAX_RETRIES = 2;
 
@@ -132,6 +132,9 @@ export async function fixBuildIssues(packageName: string) {
       `\n❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
     );
     //process.exitCode = 1; // Indicate failure
+    prCommentor.createComment({
+      body: `❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
+    });
   }
 }
 
