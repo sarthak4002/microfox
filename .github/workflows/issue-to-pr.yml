@@ -7,7 +7,7 @@ on:
 permissions:
   contents: write # To create branches, commit files
   pull-requests: write # To create PRs
-  issues: read # To read issue data
+  issues: write # To write issue data
 
 jobs:
   process_issue:
