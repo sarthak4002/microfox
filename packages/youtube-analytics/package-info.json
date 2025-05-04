@@ -1,7 +1,7 @@
 {
   "name": "@microfox/youtube-analytics",
   "title": "Youtube Analytics V3",
-  "description": "A TypeScript SDK for interacting with the YouTube Analytics V3 API. Supports functionalities such as retrieving reports, managing groups and group items, and refreshing and validating access tokens.  Provides methods for getReports, listGroups, insertGroup, updateGroup, deleteGroup, listGroupItems, insertGroupItem, deleteGroupItem, refreshAccessToken, and validateAccessToken.",
+  "description": "A TypeScript SDK for interacting with the YouTube Analytics V3 API. Supports functionalities such as retrieving reports, managing groups and group items.  Provides methods for getReports, listGroups, insertGroup, updateGroup, deleteGroup, listGroupItems, insertGroupItem, deleteGroupItem, refreshAccessToken, and validateAccessToken.",
   "path": "packages/youtube-analytics",
   "dependencies": ["@microfox/google-oauth", "zod"],
   "status": "stable",
