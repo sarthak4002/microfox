@@ -75,10 +75,17 @@ jobs:
           echo "File .microfox/packagefox-build.json prepared successfully."
         shell: bash
 
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.PACKAGEFOX_APP_ID }}
+          private_key: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }} # Use the generated App token
           commit-message: ${{ steps.issue_data.outputs.commit_message }}
           branch: ${{ steps.issue_data.outputs.branch_name }}
           delete-branch: true
