@@ -1,9 +1,3 @@
 {
-  "requests": [
-    {
-      "type": "feature",
-      "query": "Youtube Analytics",
-      "url": "https://developers.google.com/youtube/analytics/reference/"
-    }
-  ]
+  "requests": []
 }
