@@ -728,7 +728,7 @@ export async function generateOAuthPackage(
       schema: WriteToFileSchema,
     });
 
-    logUsage(models.claude35Sonnet, result.usage);
+    logUsage(models.claude35Sonnet.modelId, result.usage);
 
     const data = result.object;
 

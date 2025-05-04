@@ -173,7 +173,7 @@ async function processFoxFile(filePath: string): Promise<FixPlan> {
         Generate a JSON object conforming to the FixPlan schema.
       `,
     });
-    logUsage(models.claude35Sonnet, usage);
+    logUsage(models.claude35Sonnet.modelId, usage);
     console.log(
       `✅ Fix plan generated for ${path.relative(process.cwd(), filePath)}`,
     );
@@ -241,7 +241,7 @@ async function applyConsolidatedFixesToFile(
       maxTokens: 8192, // Adjust as needed, might need more for large files
       temperature: 0.1,
     });
-    logUsage(models.claude35Sonnet, usage);
+    logUsage(models.claude35Sonnet.modelId, usage);
 
     const trimmedContent = generatedContent.trim();
 

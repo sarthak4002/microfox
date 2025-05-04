@@ -500,7 +500,7 @@ export async function generateDocs(
     });
 
     // Log the usage
-    logUsage(models.googleGeminiPro, docsResult.usage);
+    logUsage(models.googleGeminiPro.modelId, docsResult.usage);
 
     console.log('Usage:', docsResult.usage);
 

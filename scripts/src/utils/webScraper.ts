@@ -224,7 +224,7 @@ export async function analyzeLinks(
     temperature: 0.5,
   });
 
-  logUsage(models.googleGeminiPro, usage);
+  logUsage(models.googleGeminiPro.modelId, usage);
 
   console.log(usage);
 

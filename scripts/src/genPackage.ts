@@ -105,7 +105,7 @@ export async function generateMetadata(
     temperature: 0.5,
   });
 
-  logUsage(models.googleGeminiPro, usage);
+  logUsage(models.googleGeminiPro.modelId.modelId, usage);
 
   let newMetadata: SDKMetadata = { ...metadata } as any;
   // Ensure required keywords are present
@@ -323,7 +323,7 @@ async function summarizeContent(
     temperature: 0.5,
   });
 
-  logUsage(models.googleGeminiPro, usage);
+  logUsage(models.googleGeminiPro.modelId, usage);
 
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
@@ -960,7 +960,7 @@ export async function generateSDK(
       schema: WriteToFileSchema,
     });
 
-    logUsage(models.claude35Sonnet, result.usage);
+    logUsage(models.claude35Sonnet.modelId, result.usage);
 
     const writeToFileToolResult = await writeToFileTool.execute(result.object, {
       toolCallId: Date.now().toString(),
