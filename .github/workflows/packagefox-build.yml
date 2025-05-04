@@ -74,13 +74,20 @@ jobs:
           echo "base_url=$BASE_URL" >> $GITHUB_OUTPUT
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.PACKAGEFOX_APP_ID }}
+          private_key: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
+
       - name: Run PackageFox build (New Package Build)
         if: steps.config.outputs.should_run == 'true' && steps.config.outputs.request_type == 'pkg-create'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PACKAGEFOX_APP_ID: ${{ secrets.PACKAGEFOX_APP_ID }}
           PACKAGEFOX_PRIVATE_KEY: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -102,7 +109,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           PACKAGEFOX_APP_ID: ${{ secrets.PACKAGEFOX_APP_ID }}
           PACKAGEFOX_PRIVATE_KEY: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
           PR_NUMBER: ${{ github.event.pull_request.number }}

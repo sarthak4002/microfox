@@ -8,13 +8,8 @@ export const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
 });
 
-export const PackageFox = new App({
-  appId: process.env.PACKAGEFOX_APP_ID!,
-  privateKey: process.env.PACKAGEFOX_PRIVATE_KEY!,
-});
-
 export const prCommentor = new PRCommentor(
-  PackageFox.octokit,
+  octokit,
   process.env.PR_NUMBER ? parseInt(process.env.PR_NUMBER) : undefined,
 );
 

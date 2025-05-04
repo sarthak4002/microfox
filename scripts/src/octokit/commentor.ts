@@ -1,4 +1,4 @@
-import { Octokit } from 'octokit';
+import { Octokit } from '@octokit/rest';
 
 interface CommentOptions {
   owner?: string;
@@ -35,7 +35,7 @@ export class PRCommentor {
       return null;
     }
 
-    const response = await this.octokit.rest.issues.createComment({
+    const response = await this.octokit.issues.createComment({
       owner: owner || this.DEFAULT_OWNER,
       repo: repo || this.DEFAULT_REPO,
       issue_number: this.issueNumber,
@@ -62,7 +62,7 @@ export class PRCommentor {
       return;
     }
 
-    await this.octokit.rest.issues.updateComment({
+    await this.octokit.issues.updateComment({
       owner: owner || this.DEFAULT_OWNER,
       repo: repo || this.DEFAULT_REPO,
       comment_id: commentId,
@@ -83,7 +83,7 @@ export class PRCommentor {
       return null;
     }
 
-    const comments = await this.octokit.rest.issues.listComments({
+    const comments = await this.octokit.issues.listComments({
       owner: owner || this.DEFAULT_OWNER,
       repo: repo || this.DEFAULT_REPO,
       issue_number: this.issueNumber,
