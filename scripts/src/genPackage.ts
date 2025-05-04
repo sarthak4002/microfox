@@ -823,22 +823,23 @@ export async function generateSDK(
       }
 
       ## Tool Usage
-      - To write the SDK code, use the write_to_file tool with the following parameters (all are objects, do not pass strings):
-        - mainSdk: The mainSdk OBJECT with 
-          - content: The code content of the main SDK file
-          - path: The path to the main SDK file
-        - types: The types OBJECT with 
-          - content: The code content of the types file
-          - path: The path to the types file
-        - schemas: The schemas OBJECT with 
-          - content: The code content of the schemas file
-          - path: The path to the schemas file
-        - exports: The exports OBJECT with 
-          - content: The code content of the exports file
-          - path: The path to the exports file
-        - setupInfo: Additional information for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.)
-        - authType: Authentication type ("apikey", "oauth2", or "none")
-        - oauth2Scopes: Required an array of OAuth2 scopes (required when authType is "oauth2")
+      - To write the SDK code, use the write_to_file tool with the following parameters. **Crucially, mainSdkFile, typesFile, schemasFile, and exportsFile MUST be objects, each containing 'content' (string) and 'path' (string) properties.** Do NOT pass strings directly for these fields.
+        - mainSdkFile: An OBJECT containing:
+          - content: The code content (string) of the main SDK file.
+          - path: The relative path (string) to the main SDK file (e.g., src/yourSdkNameSdk.ts).
+        - typesFile: An OBJECT containing:
+          - content: The code content (string) of the types file.
+          - path: The relative path (string) to the types file (e.g., src/types/index.ts).
+        - schemasFile: An OBJECT containing:
+          - content: The code content (string) of the schemas file.
+          - path: The relative path (string) to the schemas file (e.g., src/schemas/index.ts).
+        - exportsFile: An OBJECT containing:
+          - content: The code content (string) of the exports file.
+          - path: The relative path (string) to the exports file (e.g., src/index.ts).
+        - setupInfo: Additional information (string) for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.).
+        - authType: Authentication type (string: "apikey", "oauth2", or "none").
+        - authSdk: The name of the OAuth SDK (string, optional, e.g., "@microfox/google-oauth"). Required when authType is "oauth2".
+        - oauth2Scopes: Required array of OAuth2 scopes (array of strings, optional). Required ONLY when authType is "oauth2".
     `;
     // ## IMPORTANT: Example of the expected input schema for the write_to_file tool:
     // {

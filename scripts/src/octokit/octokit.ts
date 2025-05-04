@@ -66,7 +66,7 @@ export async function updateResearchReport(
   }
 
   // Add new row
-  lines.splice(2, 0, newRow);
+  lines.push(newRow);
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
@@ -139,7 +139,7 @@ export async function updateBuildReport(
   }
 
   // Add new row
-  lines.splice(2, 0, newRow);
+  lines.push(newRow);
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
@@ -211,7 +211,7 @@ export async function updateDocReport(
   }
 
   // Add new row
-  lines.splice(2, 0, newRow);
+  lines.push(newRow);
   report = lines.join('\n');
 
   fs.writeFileSync(reportPath, report);
