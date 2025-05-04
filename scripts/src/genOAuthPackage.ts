@@ -11,6 +11,7 @@ import {
   analyzeLinks,
   extractContentFromUrls,
 } from './utils/webScraper';
+import { logUsage } from './octokit/usageLogger';
 
 // Schema for OAuth package generation arguments
 const GenerateOAuthPackageArgsSchema = z.object({
@@ -58,7 +59,7 @@ function ensureRequiredKeywords(keywords: string[]): string[] {
 async function generateMetadata(query: string): Promise<OAuthPackageMetadata> {
   console.log('🧠 Generating OAuth package metadata from query...');
 
-  const { object: metadata } = await generateObject({
+  const { object: metadata, usage } = await generateObject({
     model: models.googleGeminiFlash,
     schema: OAuthPackageMetadataSchema,
     prompt: dedent`
@@ -73,6 +74,8 @@ async function generateMetadata(query: string): Promise<OAuthPackageMetadata> {
 
   // Ensure required keywords are present
   metadata.keywords = ensureRequiredKeywords(metadata.keywords);
+
+  logUsage(models.googleGeminiFlash.modelId, usage);
 
   console.log('✅ Generated metadata successfully');
   return metadata;
@@ -246,6 +249,8 @@ async function summarizeContent(
     maxTokens: 8000,
     temperature: 0.5,
   });
+
+  logUsage(models.googleGeminiFlash.modelId, usage);
 
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
@@ -495,7 +500,7 @@ export async function generateOAuthPackage(
     console.log(`📁 Created initial package structure at ${packageDir}`);
 
     // Extract links from the provided URL
-    const allLinks = await extractLinks(validatedArgs.url);
+    const allLinks = await extractLinks(validatedArgs.url, packageDir);
 
     // Analyze links to find useful ones for OAuth package creation
     const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query, {
@@ -520,42 +525,34 @@ export async function generateOAuthPackage(
       packageDir,
     });
 
-    // Create tool to handle file writing
-    // const writeToFileTool = tool({
-    //   description: 'Write OAuth package code to multiple files and provide extra information for documentation',
-    //   parameters: WriteToFileSchema,
-    //   execute: async (data: WriteToFileData) => {
-
-    //   },
-    // });
-
     // Create system prompt and generation prompt
     const systemPrompt = dedent`
       You are a TypeScript OAuth package generator. Your task is to create a TypeScript OAuth package for a provider based on documentation.
       
       ## Output Schema
-      - To write the OAuth package code:
-        - sdkImplementation: The complete OAuth SDK implementation with separate code and path for main SDK, types, schemas, and exports files.
-        - extraInfo: Additional information for documentation (e.g., how to obtain credentials, environment variables, rate limits, etc.)
-        - oauth2Scopes: Required OAuth2 scopes
+      - Your response MUST be a JSON object matching the WriteToFileSchema.
+      - The top-level object should contain the following keys:
+        - sdkImplementation: An OBJECT containing the keys 'mainSdkFile', 'typesFile', 'schemasFile', and 'exportsFile'. Each of these keys holds an object with 'content' (string) and 'path' (string) properties.
+        - extraInfo: An array of strings containing additional information for documentation.
+        - oauth2Scopes: An array of strings listing the required OAuth2 scopes.
 
       ## IMPORTANT: Your response MUST be a structured object, not a string
-      ## Example of the expected output format:
+      ## Example of the expected output format (matching WriteToFileSchema):
       {
         "sdkImplementation": {
-          "mainSdk": {
+          "mainSdkFile": {
             "content": "// Main SDK implementation code here...",
             "path": "src/exampleOAuthSdk.ts"
           },
-          "types": {
+          "typesFile": {
             "content": "// Type definitions here...",
             "path": "src/types/index.ts"
           },
-          "schemas": {
+          "schemasFile": {
             "content": "// Validation schemas here...",
             "path": "src/schemas/index.ts"
           },
-          "exports": {
+          "exportsFile": {
             "content": "// Exports here...",
             "path": "src/index.ts"
           }
@@ -596,25 +593,25 @@ export async function generateOAuthPackage(
       12. Provide comprehensive extraInfo for documentation generation
 
       ## Project Structure & Requirements
-      1. Main SDK (mainSdk):
+      1. Main SDK (mainSdkFile):
          - Path: src/[packageName.replace('@microfox/', '').replace('-oauth', '')]OAuthSdk.ts
          - Must include all OAuth flows and token management
          - Complete implementation with proper error handling
          - Follow TypeScript best practices
 
-      2. Type Definitions (types):
+      2. Type Definitions (typesFile):
          - Path: src/types/index.ts
          - All necessary interfaces and types
          - Proper JSDoc documentation
          - Export everything needed by the SDK
 
-      3. Validation Schemas (schemas):
+      3. Validation Schemas (schemasFile):
          - Path: src/schemas/index.ts
          - Zod schemas matching type definitions
          - Comprehensive validation rules
          - Clear error messages
 
-      4. Package Exports (exports):
+      4. Package Exports (exportsFile):
          - Path: src/index.ts
          - Export main SDK class
          - Re-export types (must be: export * from './types')
@@ -674,22 +671,22 @@ export async function generateOAuthPackage(
       - Provide information about rate limits and other important constraints
       
       ## IMPORTANT: Response Format
-      Your response MUST be a structured JSON object with the following format:
+      Your response MUST be a structured JSON object with the following format, matching the WriteToFileSchema:
       {
         "sdkImplementation": {
-          "mainSdk": {
+          "mainSdkFile": {
             "content": "// Main SDK implementation code here...",
             "path": "src/${metadata.packageName.replace('@microfox/', '').replace('-oauth', '')}OAuthSdk.ts"
           },
-          "types": {
+          "typesFile": {
             "content": "// Type definitions here...",
             "path": "src/types/index.ts"
           },
-          "schemas": {
+          "schemasFile": {
             "content": "// Validation schemas here...",
             "path": "src/schemas/index.ts"
           },
-          "exports": {
+          "exportsFile": {
             "content": "// Exports here...",
             "path": "src/index.ts"
           }
@@ -704,7 +701,7 @@ export async function generateOAuthPackage(
         ]
       }
       
-      DO NOT return a string or markdown. Return a valid JSON object that matches the schema exactly.
+      DO NOT return a string or markdown. Return ONLY a valid JSON object that matches the schema exactly.
     `;
 
     // Log prompts
@@ -722,6 +719,8 @@ export async function generateOAuthPackage(
       maxTokens: 8000,
       schema: WriteToFileSchema,
     });
+
+    logUsage(models.claude35Sonnet.modelId, result.usage);
 
     const data = result.object;
 

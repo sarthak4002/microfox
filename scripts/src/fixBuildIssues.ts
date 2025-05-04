@@ -2,22 +2,44 @@ import { buildPackage } from './utils/execCommands';
 import { fixPackage } from './fixPackage';
 import path from 'path';
 import fs from 'fs';
-const MAX_RETRIES = 5;
+import { prCommentor, updateBuildReport } from './octokit/octokit';
 
-export async function fixBuildIssues(packageDir: string) {
-  console.log(`🛠️ Starting iterative build and fix process for ${packageDir}`);
+const MAX_RETRIES = 2;
+
+export async function fixBuildIssues(packageName: string) {
+  console.log(`🛠️ Starting iterative build and fix process for ${packageName}`);
   console.log(`🔄 Maximum retries: ${MAX_RETRIES}`);
+
+  const dirName = packageName.replace('@microfox/', '');
+  const packageDir = path.join(process.cwd(), './packages', dirName);
 
   let buildSucceeded = false;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     console.log(`\n--- Attempt ${attempt} of ${MAX_RETRIES} ---`);
 
     console.log(`\n[Attempt ${attempt}] ⏳ Building package: ${packageDir}`);
+    await updateBuildReport(
+      'build',
+      {
+        status: 'in-progress',
+        details: { attempt: `${attempt}/${MAX_RETRIES}` },
+      },
+      packageDir,
+    );
+
     const buildResult = await buildPackage(packageDir);
 
     if (buildResult) {
       console.log(
         `\n[Attempt ${attempt}] ✅ Build successful for ${packageDir}! No further fixes needed.`,
+      );
+      await updateBuildReport(
+        'build',
+        {
+          status: 'success',
+          details: { attempt: `${attempt}/${MAX_RETRIES}` },
+        },
+        packageDir,
       );
       buildSucceeded = true;
       break; // Exit loop on successful build
@@ -25,8 +47,33 @@ export async function fixBuildIssues(packageDir: string) {
       console.warn(
         `\n[Attempt ${attempt}] ⚠️ Build failed for ${packageDir}. Attempting to fix...`,
       );
+      await updateBuildReport(
+        'build',
+        {
+          status: 'failure',
+          details: { attempt: `${attempt}/${MAX_RETRIES}` },
+        },
+        packageDir,
+      );
+
       try {
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'in-progress',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+          },
+          packageDir,
+        );
         await fixPackage(); // Run the fix process
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'success',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+          },
+          packageDir,
+        );
         console.log(
           `\n[Attempt ${attempt}] ✨ Fix process completed. Retrying build...`,
         );
@@ -34,6 +81,15 @@ export async function fixBuildIssues(packageDir: string) {
         console.error(
           `\n[Attempt ${attempt}] ❌ Critical error during fix process:`,
           fixError,
+        );
+        await updateBuildReport(
+          'fix',
+          {
+            status: 'failure',
+            details: { attempt: `${attempt}/${MAX_RETRIES}` },
+            error: fixError,
+          },
+          packageDir,
         );
         console.error(
           `Aborting fix attempts for ${packageDir} due to error in fixPackage.`,
@@ -50,7 +106,6 @@ export async function fixBuildIssues(packageDir: string) {
     ),
     'utf8',
   );
-  const packageName = '@microfox/' + packageDir.split('/').pop();
   if (foxlog) {
     const foxlogData = JSON.parse(foxlog);
     const newRequests: any[] = [];
@@ -76,7 +131,10 @@ export async function fixBuildIssues(packageDir: string) {
     console.error(
       `\n❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
     );
-    process.exitCode = 1; // Indicate failure
+    //process.exitCode = 1; // Indicate failure
+    prCommentor.createComment({
+      body: `❌ Failed to build ${packageDir} after ${MAX_RETRIES} attempts. Please review logs and fix manually.`,
+    });
   }
 }
 
@@ -96,11 +154,6 @@ if (require.main === module) {
 
   const packagePathArg = args[0];
   // Resolve the absolute path relative to the monorepo root (assuming scripts is one level down)
-  const absolutePackageDir = path.resolve(
-    process.cwd(),
-    '..',
-    packagePathArg.replace('@microfox/', 'packages/'),
-  );
 
   // Basic check if the directory might exist (can be improved)
   // Consider adding fs.existsSync if needed, but buildPackage might handle it
@@ -109,7 +162,7 @@ if (require.main === module) {
     process.exit(1);
   }
 
-  fixBuildIssues(absolutePackageDir).catch(error => {
+  fixBuildIssues(packagePathArg).catch(error => {
     console.error('❌ Unhandled error during the fix process:', error);
     process.exit(1);
   });

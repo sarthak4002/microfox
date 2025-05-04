@@ -7,6 +7,8 @@ import { generateObject } from 'ai';
 import { models } from './ai/models';
 import dedent from 'dedent';
 import { buildPackage } from './utils/execCommands';
+import { updateDocReport } from './octokit/octokit';
+import { logUsage } from './octokit/usageLogger';
 
 const execAsync = promisify(exec);
 
@@ -107,6 +109,19 @@ export async function generateDocs(
   extraInfo: string[] = [],
 ): Promise<boolean> {
   try {
+    // Update documentation report - start generation
+    await updateDocReport(
+      'generate',
+      {
+        status: 'in-progress',
+        details: {
+          package: metadata.packageName,
+          title: metadata.title,
+        },
+      },
+      packageDir,
+    );
+
     // Update the system prompt to be more focused on textual documentation
     const docsSystemPrompt = dedent`
       You are a professional documentation generator for TypeScript SDKs. Your task is to create comprehensive, well-structured documentation that follows industry best practices.
@@ -484,9 +499,27 @@ export async function generateDocs(
       schema: GenerateDocsSchema,
     });
 
+    // Log the usage
+    logUsage(models.googleGeminiPro.modelId, docsResult.usage);
+
     console.log('Usage:', docsResult.usage);
 
     try {
+      // Update documentation report - validation step
+      await updateDocReport(
+        'validate',
+        {
+          status: 'success',
+          details: {
+            'Total Tokens': docsResult.usage.totalTokens,
+            'Constructor Docs': docsResult.object.constructorDocs.docs.length,
+            'Functions Docs': docsResult.object.functionsDocs.length,
+            'Env Keys': docsResult.object.envKeys?.length || 0,
+          },
+        },
+        packageDir,
+      );
+
       // Validate the data against the schema
       const validatedData = GenerateDocsSchema.parse(docsResult.object);
       const constructorName = validatedData.constructorDocs.name;
@@ -516,6 +549,20 @@ export async function generateDocs(
       for (const func of validatedData.functionsDocs) {
         fs.writeFileSync(path.join(docsDir, `${func.name}.md`), func.docs);
       }
+
+      // Update documentation report - save step
+      await updateDocReport(
+        'save',
+        {
+          status: 'success',
+          details: {
+            constructor: constructorName,
+            functions: validatedData.functionsDocs.length,
+            envKeys: validatedData.envKeys?.length || 0,
+          },
+        },
+        packageDir,
+      );
 
       // Update package-info.json with constructor info
       const packageInfoPath = path.join(packageDir, 'package-info.json');
@@ -699,13 +746,43 @@ export async function generateDocs(
 
       // Build the package
       await buildPackage(packageDir);
+
+      // Update documentation report - build step
+      await updateDocReport(
+        'build',
+        {
+          status: 'success',
+          details: {
+            package: metadata.packageName,
+          },
+        },
+        packageDir,
+      );
     } catch (error) {
+      // Update documentation report - error case
+      await updateDocReport(
+        'build',
+        {
+          status: 'failure',
+          error: error instanceof Error ? error.message : String(error),
+        },
+        packageDir,
+      );
       console.error('❌ Error generating documentation:', error);
       throw error;
     }
 
     return true;
   } catch (error) {
+    // Update documentation report - error case
+    await updateDocReport(
+      'generate',
+      {
+        status: 'failure',
+        error: error instanceof Error ? error.message : String(error),
+      },
+      packageDir,
+    );
     console.error('❌ Error generating documentation:', error);
     return false;
   }

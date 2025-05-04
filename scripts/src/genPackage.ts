@@ -13,6 +13,8 @@ import {
 } from './utils/webScraper';
 import { PackageInfo } from './types';
 import { fixBuildIssues } from './fixBuildIssues';
+import { updateResearchReport } from './octokit/octokit';
+import { logUsage } from './octokit/usageLogger';
 
 // Schema for SDK generation arguments
 const GenerateSDKArgsSchema = z.object({
@@ -79,7 +81,7 @@ export async function generateMetadata(
     `✅ Found ${oauthPackages.length} OAuth packages: ${oauthPackages.join(', ')}`,
   );
 
-  const { object: metadata } = await generateObject({
+  const { object: metadata, usage } = await generateObject({
     model: models.googleGeminiPro,
     schema: SDKMetadataSchema.omit({ inputArgs: true }),
     prompt: dedent`
@@ -103,12 +105,38 @@ export async function generateMetadata(
     temperature: 0.5,
   });
 
+  logUsage(models.googleGeminiPro.modelId, usage);
+
   let newMetadata: SDKMetadata = { ...metadata } as any;
   // Ensure required keywords are present
   newMetadata.keywords = ensureRequiredKeywords(metadata.keywords);
   newMetadata.inputArgs = query;
 
   console.log('✅ Generated metadata successfully');
+
+  // Create initial package structure to store research report
+  const dirName = newMetadata.packageName.replace('@microfox/', '');
+  const packageDir = path.join(process.cwd(), '../packages', dirName);
+  if (!fs.existsSync(packageDir)) {
+    fs.mkdirSync(packageDir, { recursive: true });
+  }
+
+  // Update research report
+  await updateResearchReport(
+    'generateMetadata',
+    {
+      usage,
+      totalTokens: usage.totalTokens,
+      details: {
+        'API Name': newMetadata.apiName,
+        Package: newMetadata.packageName,
+        'Auth Type': newMetadata.authType,
+        'Auth SDK': newMetadata.authSdk || 'N/A',
+      },
+    },
+    packageDir,
+  );
+
   return newMetadata;
 }
 
@@ -295,11 +323,28 @@ async function summarizeContent(
     temperature: 0.5,
   });
 
+  logUsage(models.googleGeminiPro.modelId, usage);
+
   console.log('✅ Content summarized successfully');
   console.log('Usage:', usage);
 
   const baseSummaryTextPath = path.join(options.packageDir, 'docSummary.md');
   fs.writeFileSync(baseSummaryTextPath, summary);
+
+  // Update research report
+  await updateResearchReport(
+    'summarizeContent',
+    {
+      usage,
+      totalTokens: usage.totalTokens,
+      details: {
+        'Summary Length': `${(summary.length / 1024).toFixed(2)} KB`,
+        'Input Length': `${(content.length / 1024).toFixed(2)} KB`,
+        'Compression Ratio': `${((content.length / summary.length) * 100).toFixed(2)}%`,
+      },
+    },
+    options.packageDir,
+  );
 
   return summary;
 }
@@ -390,11 +435,7 @@ async function createInitialPackage(metadata: SDKMetadata): Promise<string> {
 
 // Define the schema for the write_to_file tool
 const FileContentSchema = z.object({
-  content: z
-    .string()
-    .describe(
-      'The complete source code or text content of the file, including all necessary imports, types, and implementations',
-    ),
+  content: z.string().describe(''),
   path: z
     .string()
     .describe(
@@ -403,18 +444,22 @@ const FileContentSchema = z.object({
 });
 
 const WriteToFileSchema = z.object({
-  mainSdkFile: FileContentSchema.describe(
-    'The main SDK implementation file details containing the API client class with authentication, API methods, and integration',
+  mainSdkFile: FileContentSchema.shape.content.describe(
+    'The main SDK implementation file containing the API client class with authentication, API methods, and integration - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
-  typesFile: FileContentSchema.describe(
-    'TypeScript type definitions file details containing interfaces for configuration, responses, and other SDK-specific types',
+  mainSdkFilePath: FileContentSchema.shape.path,
+  typesFile: FileContentSchema.shape.content.describe(
+    'TypeScript type definitions file details containing interfaces for configuration, responses, and other SDK-specific types - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
-  schemasFile: FileContentSchema.describe(
-    'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects',
+  typesFilePath: FileContentSchema.shape.path,
+  schemasFile: FileContentSchema.shape.content.describe(
+    'Zod validation schemas file details for runtime validation of inputs, outputs, and configuration objects - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
-  exportsFile: FileContentSchema.describe(
-    'Entry point file details that exports the main SDK class, types, and utilities for package consumers',
+  schemasFilePath: FileContentSchema.shape.path,
+  exportsFile: FileContentSchema.shape.content.describe(
+    'Entry point file details that exports the main SDK class, types, and utilities for package consumers - The complete source code or text content of the file, including all necessary imports, types, and implementations',
   ),
+  exportsFilePath: FileContentSchema.shape.path,
   setupInfo: z
     .string()
     .describe(
@@ -551,7 +596,7 @@ export async function generateSDK(
     console.log(`📁 Created initial package structure at ${packageDir}`);
 
     // Extract links from the provided URL
-    const allLinks = await extractLinks(validatedArgs.url);
+    const allLinks = await extractLinks(validatedArgs.url, packageDir);
 
     // Analyze links to find useful ones for package creation
     const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query, {
@@ -631,20 +676,20 @@ export async function generateSDK(
         // Write the generated files
         const files = [
           {
-            content: data.mainSdkFile.content,
-            path: path.join(packageDir, data.mainSdkFile.path),
+            content: data.mainSdkFile,
+            path: path.join(packageDir, data.mainSdkFilePath),
           },
           {
-            content: data.typesFile.content,
-            path: path.join(packageDir, data.typesFile.path),
+            content: data.typesFile,
+            path: path.join(packageDir, data.typesFilePath),
           },
           {
-            content: data.schemasFile.content,
-            path: path.join(packageDir, data.schemasFile.path),
+            content: data.schemasFile,
+            path: path.join(packageDir, data.schemasFilePath),
           },
           {
-            content: data.exportsFile.content,
-            path: path.join(packageDir, data.exportsFile.path),
+            content: data.exportsFile,
+            path: path.join(packageDir, data.exportsFilePath),
           },
         ];
 
@@ -682,10 +727,22 @@ export async function generateSDK(
           success: true,
           packageDir,
           sdkImplementation: {
-            mainSdkFile: data.mainSdkFile,
-            typesFile: data.typesFile,
-            schemasFile: data.schemasFile,
-            exportsFile: data.exportsFile,
+            mainSdkFile: {
+              content: data.mainSdkFile,
+              path: data.mainSdkFilePath,
+            },
+            typesFile: {
+              content: data.typesFile,
+              path: data.typesFilePath,
+            },
+            schemasFile: {
+              content: data.schemasFile,
+              path: data.schemasFilePath,
+            },
+            exportsFile: {
+              content: data.exportsFile,
+              path: data.exportsFilePath,
+            },
           },
           extraInfo: [data.setupInfo],
         };
@@ -777,23 +834,19 @@ export async function generateSDK(
           : ''
       }
 
-      ## Tool Usage
-      - To write the SDK code, use the write_to_file tool with the following parameters (all are objects, do not pass strings):
-        - mainSdk: The mainSdk OBJECT with 
-          - content: The code content of the main SDK file
-          - path: The path to the main SDK file
-        - types: The types OBJECT with 
-          - content: The code content of the types file
-          - path: The path to the types file
-        - schemas: The schemas OBJECT with 
-          - content: The code content of the schemas file
-          - path: The path to the schemas file
-        - exports: The exports OBJECT with 
-          - content: The code content of the exports file
-          - path: The path to the exports file
-        - setupInfo: Additional information for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.)
-        - authType: Authentication type ("apikey", "oauth2", or "none")
-        - oauth2Scopes: Required an array of OAuth2 scopes (required when authType is "oauth2")
+      ## Output object
+        - mainSdkFile:  The code content (string) of the main SDK file.
+        - mainSdkFilePath: The relative path (string) to the main SDK file (e.g., src/yourSdkNameSdk.ts).
+        - schemasFile: The code content (string) of the schemas file.
+        - schemasFilePath: The relative path (string) to the schemas file (e.g., src/schemas/index.ts).
+        - typesFile: The code content (string) of the types file.
+        - typesFilePath: The relative path (string) to the types file (e.g., src/types/index.ts).
+        - exportsFile: The code content (string) of the exports file.
+        - exportsFilePath: The relative path (string) to the exports file (e.g., src/index.ts).
+        - setupInfo: Additional information (string) for documentation (e.g., how to obtain API keys, environment variables, rate limits, etc.).
+        - authType: Authentication type (string: "apikey", "oauth2", or "none").
+        - authSdk: The name of the OAuth SDK (string, optional, e.g., "@microfox/google-oauth"). Required when authType is "oauth2".
+        - oauth2Scopes: Required array of OAuth2 scopes (array of strings, optional). Required ONLY when authType is "oauth2".
     `;
     // ## IMPORTANT: Example of the expected input schema for the write_to_file tool:
     // {
@@ -915,6 +968,8 @@ export async function generateSDK(
       schema: WriteToFileSchema,
     });
 
+    logUsage(models.claude35Sonnet.modelId, result.usage);
+
     const writeToFileToolResult = await writeToFileTool.execute(result.object, {
       toolCallId: Date.now().toString(),
       messages: [],
@@ -979,11 +1034,7 @@ export async function generateSDK(
 
     return {
       name: metadata.apiName,
-      packageDir: path.join(
-        process.cwd(),
-        '../packages',
-        metadata.packageName.replace('@microfox/', ''),
-      ),
+      packageDir,
       packageName: metadata.packageName,
     };
   } catch (error) {

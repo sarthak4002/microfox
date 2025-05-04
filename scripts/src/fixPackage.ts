@@ -6,6 +6,8 @@ import { models } from './ai/models';
 import dedent from 'dedent';
 import * as diff from 'diff'; // Import the diff library
 import { error } from 'console';
+import { updateBuildReport } from './octokit/octokit';
+import { logUsage } from './octokit/usageLogger';
 
 // Schema for the .foxes file content
 const FoxFileSchema = z.object({
@@ -144,7 +146,7 @@ async function processFoxFile(filePath: string): Promise<FixPlan> {
 
   console.log('🧠 Generating fix plan...');
   try {
-    const { object: fixPlan } = await generateObject({
+    const { object: fixPlan, usage } = await generateObject({
       model: models.claude35Sonnet, // Using a more capable model
       schema: FixPlanSchema,
       prompt: dedent`
@@ -171,6 +173,7 @@ async function processFoxFile(filePath: string): Promise<FixPlan> {
         Generate a JSON object conforming to the FixPlan schema.
       `,
     });
+    logUsage(models.claude35Sonnet.modelId, usage);
     console.log(
       `✅ Fix plan generated for ${path.relative(process.cwd(), filePath)}`,
     );
@@ -211,7 +214,7 @@ async function applyConsolidatedFixesToFile(
 
     // Generate the complete fixed file content
     console.log(`   🧠 Generating new content for ${relativeFilePath}...`);
-    const { text: generatedContent } = await generateText({
+    const { text: generatedContent, usage } = await generateText({
       model: models.claude35Sonnet,
       prompt: dedent`
           You are an expert programmer tasked with fixing multiple issues in a single code file.
@@ -238,6 +241,7 @@ async function applyConsolidatedFixesToFile(
       maxTokens: 8192, // Adjust as needed, might need more for large files
       temperature: 0.1,
     });
+    logUsage(models.claude35Sonnet.modelId, usage);
 
     const trimmedContent = generatedContent.trim();
 
@@ -269,11 +273,28 @@ async function applyConsolidatedFixesToFile(
 export async function fixPackage() {
   try {
     console.log('🔍 Searching for fox files in .foxes directories...');
-    const foxFilePaths = findFoxFiles(); // Corrected function name
+    await updateBuildReport(
+      'analyze',
+      {
+        status: 'in-progress',
+        details: { step: 'searching fox files' },
+      },
+      process.cwd(),
+    );
+
+    const foxFilePaths = findFoxFiles();
 
     if (foxFilePaths.length === 0) {
       console.log(
         '✅ No fox files found in any .foxes directory. Nothing to fix.',
+      );
+      await updateBuildReport(
+        'analyze',
+        {
+          status: 'success',
+          details: { message: 'No fox files found' },
+        },
+        process.cwd(),
       );
       return;
     }
@@ -281,6 +302,15 @@ export async function fixPackage() {
     console.log(`📂 Found ${foxFilePaths.length} fox files:`);
     foxFilePaths.forEach(f =>
       console.log(`  - ${path.relative(process.cwd(), f)}`),
+    );
+
+    await updateBuildReport(
+      'analyze',
+      {
+        status: 'success',
+        details: { filesFound: foxFilePaths.length },
+      },
+      process.cwd(),
     );
 
     // Map to store consolidated fixes: key = absoluteFilePath
@@ -296,14 +326,29 @@ export async function fixPackage() {
       }
 
       console.log(`\n🔧 Processing ${relativeFoxPath}...`);
+      await updateBuildReport(
+        'analyze',
+        {
+          status: 'in-progress',
+          details: { currentFile: relativeFoxPath },
+        },
+        process.cwd(),
+      );
 
       // Generate fix plan for the current fox file
       const fixPlan = await processFoxFile(foxFilePath);
 
       if (!fixPlan || fixPlan.filesToFix.length === 0) {
         console.log(`⏭️ No valid fixes identified for ${relativeFoxPath}.`);
+        await updateBuildReport(
+          'analyze',
+          {
+            status: 'success',
+            details: { message: 'No fixes needed', file: relativeFoxPath },
+          },
+          process.cwd(),
+        );
         try {
-          //fs.unlinkSync(foxFilePath); // Keep deletion logic but maybe move it
           console.log(
             `🗑️ Cleaned up ${relativeFoxPath} (no fixes planned or parse error).`,
           );
@@ -312,7 +357,7 @@ export async function fixPackage() {
             `⚠️ Failed to clean up ${relativeFoxPath}: ${e.message}`,
           );
         }
-        continue; // Move to the next fox file
+        continue;
       }
 
       // Consolidate fixes from this plan
@@ -330,7 +375,6 @@ export async function fixPackage() {
         }
 
         if (!consolidatedFixes.has(absoluteFilePath)) {
-          // Read original content only once per file
           const originalContent = fs.readFileSync(absoluteFilePath, 'utf8');
           consolidatedFixes.set(absoluteFilePath, {
             originalContent,
@@ -345,18 +389,23 @@ export async function fixPackage() {
           modification: fileFix.modification,
         });
         if (!existingData.foxFilePaths.includes(foxFilePath)) {
-          existingData.foxFilePaths.push(foxFilePath); // Track originating file
+          existingData.foxFilePaths.push(foxFilePath);
         }
       }
-      // Log association for clarity
       console.log(`📈 Consolidated fixes from ${relativeFoxPath}.`);
-
-      // Deleting the fox file immediately after consolidation might be premature
-      // if the final fix application fails. Consider moving deletion after successful application.
     }
 
     console.log(
       `\n🔧 Applying consolidated fixes for ${consolidatedFixes.size} unique files...`,
+    );
+
+    await updateBuildReport(
+      'apply',
+      {
+        status: 'in-progress',
+        details: { filesToFix: consolidatedFixes.size },
+      },
+      process.cwd(),
     );
 
     // Apply consolidated fixes file by file
@@ -369,7 +418,6 @@ export async function fixPackage() {
       for (const foxFilePath of consolidatedData.foxFilePaths) {
         try {
           if (fs.existsSync(foxFilePath)) {
-            // Check if not already deleted
             fs.unlinkSync(foxFilePath);
             console.log(
               `🗑️ Deleted ${path.relative(process.cwd(), foxFilePath)} after processing its fixes for ${path.relative(process.cwd().replace('/scripts', ''), absoluteFilePath)}.`,
@@ -383,12 +431,29 @@ export async function fixPackage() {
       }
     }
 
+    await updateBuildReport(
+      'apply',
+      {
+        status: 'success',
+        details: { filesFixed: consolidatedFixes.size },
+      },
+      process.cwd(),
+    );
+
     console.log(
       '\n✅ Fix application process complete based on consolidated plans. Please review the changes.',
     );
   } catch (error) {
     console.error('❌ Error during the build error fixing process:', error);
-    process.exitCode = 1; // Indicate failure
+    await updateBuildReport(
+      'apply',
+      {
+        status: 'failure',
+        error: error,
+      },
+      process.cwd(),
+    );
+    process.exitCode = 1;
   }
 }
 
