@@ -500,7 +500,7 @@ export async function generateOAuthPackage(
     console.log(`📁 Created initial package structure at ${packageDir}`);
 
     // Extract links from the provided URL
-    const allLinks = await extractLinks(validatedArgs.url);
+    const allLinks = await extractLinks(validatedArgs.url, packageDir);
 
     // Analyze links to find useful ones for OAuth package creation
     const usefulLinks = await analyzeLinks(allLinks, validatedArgs.query, {

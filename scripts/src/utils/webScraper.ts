@@ -59,7 +59,10 @@ function validateUrl(url: string): string {
 /**
  * Extract all links from a webpage using Puppeteer
  */
-export async function extractLinks(url: string): Promise<string[]> {
+export async function extractLinks(
+  url: string,
+  packageDir: string,
+): Promise<string[]> {
   const validatedUrl = validateUrl(url);
 
   console.log(`🌐 Launching browser to extract links from ${validatedUrl}...`);
@@ -159,7 +162,7 @@ export async function extractLinks(url: string): Promise<string[]> {
           'Base URL': validatedUrl,
         },
       },
-      path.join(process.cwd(), '../packages', 'temp'),
+      packageDir,
     );
 
     return uniqueLinks;
