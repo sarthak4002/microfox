@@ -936,8 +936,8 @@ export async function generateSDK(
       throw new Error('Setup information missing.');
     }
 
-    console.log('Final setup info:', finalSetupInfo);
-    console.log('Generated file contents:', generatedFileContentsMap);
+    //console.log('Final setup info:', finalSetupInfo);
+    //console.log('Generated file contents:', generatedFileContentsMap);
     const missingFiles = requiredFiles.filter(
       file => !generatedFileContentsMap[file],
     );

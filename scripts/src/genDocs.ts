@@ -311,8 +311,9 @@ export async function generateDocs(
         system: docsSystemPrompt,
         prompt: docsGenerationPrompt,
         tools: tools,
-        toolChoice: 'auto',
+        toolChoice: 'required',
         maxSteps: 20,
+        maxRetries: 3,
       });
 
       if (result.usage) {
