@@ -8,7 +8,6 @@
     "packages/brave",
     "packages/coingecko-sdk",
     "packages/discord",
-    "packages/drive",
     "packages/gmail",
     "packages/google-analytics",
     "packages/google-seo",
@@ -22,7 +21,6 @@
     "packages/reddit",
     "packages/reddit-oauth",
     "packages/slack-web-tiny",
-    "packages/twitter",
     "packages/whatsapp-business",
     "packages/youtube",
     "packages/youtube-analytics",
@@ -31,7 +29,11 @@
   "partialPackages": [
     "packages/core",
     "packages/gravatar",
-    "packages/stdlib"
+    "packages/stdlib",
+    "packages/twitter"
+  ],
+  "semiStablePackages": [
+    "packages/drive"
   ],
   "oauthConnectorPackages": [
     "packages/google",
@@ -45,5 +47,5 @@
     "packages/rest-sdk"
   ],
   "total": 33,
-  "generatedAt": "2025-05-05T16:33:15.683Z"
+  "generatedAt": "2025-05-05T17:03:48.734Z"
 }

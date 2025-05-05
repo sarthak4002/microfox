@@ -5,6 +5,7 @@
   "path": "packages/reddit-oauth",
   "dependencies": ["zod"],
   "status": "stable",
+  "authType": "oauth2",
   "authEndpoint": "/connect/reddit",
   "oauth2Scopes": [
     "identity",

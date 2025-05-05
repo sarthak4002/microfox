@@ -28,6 +28,12 @@ const MARKERS = {
     title: 'Stable Packages',
     includeAuthType: true,
   },
+  semiStable: {
+    start: '<!-- SEMI_STABLE_PACKAGES_TABLE_START -->',
+    end: '<!-- SEMI_STABLE_PACKAGES_TABLE_END -->',
+    title: 'Semi-Stable Packages',
+    includeAuthType: true,
+  },
   oauth: {
     start: '<!-- OAUTH_CONNECTORS_TABLE_START -->',
     end: '<!-- OAUTH_CONNECTORS_TABLE_END -->',
@@ -141,6 +147,37 @@ function updateReadme(allPackagesData: PackageData[]) {
       if (startIdx !== -1 && endIdx !== -1) {
         const emptySection = `${MARKERS.stable.start}\n${MARKERS.stable.end}`;
         const newReadmeContent = `${readmeContent.substring(0, startIdx)}${emptySection}${readmeContent.substring(endIdx + MARKERS.stable.end.length)}`;
+        if (readmeContent !== newReadmeContent) {
+          readmeContent = newReadmeContent;
+          changed = true;
+        }
+      }
+    }
+
+    // --- Update Semi-Stable Packages Table ---
+    const semiStablePackages = allPackagesData.filter(
+      p => p.status === 'semiStable',
+    );
+    if (semiStablePackages.length > 0) {
+      const semiStableTable = generateMarkdownTable(semiStablePackages, true);
+      const newReadmeContent = updateReadmeSection(
+        readmeContent,
+        MARKERS.semiStable.start,
+        MARKERS.semiStable.end,
+        semiStableTable,
+        MARKERS.semiStable.title,
+      );
+      if (newReadmeContent !== readmeContent) {
+        readmeContent = newReadmeContent;
+        changed = true;
+      }
+    } else {
+      // If no semi-stable packages, ensure the section is removed or empty
+      const startIdx = readmeContent.indexOf(MARKERS.semiStable.start);
+      const endIdx = readmeContent.indexOf(MARKERS.semiStable.end);
+      if (startIdx !== -1 && endIdx !== -1) {
+        const emptySection = `${MARKERS.semiStable.start}\n${MARKERS.semiStable.end}`;
+        const newReadmeContent = `${readmeContent.substring(0, startIdx)}${emptySection}${readmeContent.substring(endIdx + MARKERS.semiStable.end.length)}`;
         if (readmeContent !== newReadmeContent) {
           readmeContent = newReadmeContent;
           changed = true;
