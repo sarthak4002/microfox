@@ -55,11 +55,19 @@ async function handleWorkflow() {
           `Running genPackage with query: "${packageQuery}", url: "${baseUrl}"`,
         );
         // Assuming genPackage takes query and url
-        await generateSDK({
+        const result = await generateSDK({
           query: packageQuery,
           url: baseUrl,
           isBaseUrl: true,
         }); // Adjust args as needed
+        if (result) {
+          console.log(`✅ SDK generation complete for ${result.packageName}`);
+          console.log(`📂 Package location: ${result.packageDir}`);
+          return fixBuildIssues(result.packageName);
+        } else {
+          console.log('⚠️ SDK generation completed with warnings or failed.');
+          process.exit(1);
+        }
         break;
       case 'pkg-build':
         if (!packageName) {
