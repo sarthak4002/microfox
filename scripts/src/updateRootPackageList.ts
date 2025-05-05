@@ -64,7 +64,7 @@ function generateMarkdownTable(
 
     const row = [
       titleDisplay,
-      `${npmLink}\n ${docsLink}`,
+      `${npmLink}, ${docsLink}`,
       statsDisplay,
       `\`Version: ${pkg.version} \n Auth Type: ${authTypeDisplay}\``, // Use backticks for version
     ];
@@ -197,7 +197,7 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
 
   // Count constructors
   if (pkgInfo.constructors && pkgInfo.constructors.length > 0) {
-    stats.push(`${pkgInfo.constructors.length} constructors`);
+    stats.push(`${pkgInfo.constructors.length} creates`);
   }
 
   // Count functionalities from readme_map
@@ -205,9 +205,7 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
     pkgInfo.readme_map?.functionalities &&
     pkgInfo.readme_map?.functionalities.length > 0
   ) {
-    stats.push(
-      `${pkgInfo.readme_map?.functionalities?.length ?? 0} functionalities`,
-    );
+    stats.push(`${pkgInfo.readme_map?.functionalities?.length ?? 0} fns`);
   }
 
   // Add auth type if present
@@ -220,7 +218,7 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
     stats.push(pkgInfo.status);
   }
 
-  return stats.length > 0 ? stats.join('\n ') : 'N/A';
+  return stats.length > 0 ? stats.join(', ') : 'N/A';
 }
 
 /**
