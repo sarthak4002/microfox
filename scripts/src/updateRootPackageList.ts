@@ -52,22 +52,25 @@ function generateMarkdownTable(
           pkg.title || pkg.name
         } logo" width="24" height="24">`
       : '';
-    const titleDisplay = `${logoHtml} ${pkg.title || pkg.name}`;
-    const npmLink = `[View on NPM](https://www.npmjs.com/package/${pkg.name})`;
-    const docsLink = pkg.docsPath ? `[Read Docs](${pkg.docsPath})` : 'N/A';
-    const statsDisplay = pkg.stats || 'N/A';
-    const authTypeDisplay = pkg.authType
-      ? pkg.authType === 'apikey'
-        ? 'API Key'
-        : 'OAuth'
+    const titleDisplay = `${logoHtml} ${pkg.title || pkg.name} v${pkg.version}`;
+
+    // Create shield badges for NPM and documentation
+    const npmBadge = `[![npm version](https://img.shields.io/npm/v/${pkg.name}.svg)](https://www.npmjs.com/package/${pkg.name})`;
+    const docsBadge = pkg.docsPath
+      ? `[![Documentation](https://img.shields.io/badge/docs-available-blue.svg)](${pkg.docsPath})`
       : 'N/A';
 
-    const row = [
-      titleDisplay,
-      `${npmLink}, ${docsLink}`,
-      statsDisplay,
-      `\`Version: ${pkg.version} \n Auth Type: ${authTypeDisplay}\``, // Use backticks for version
-    ];
+    const linksDisplay = `${npmBadge} ${docsBadge}`;
+    const authTypeDisplay = pkg.authType
+      ? pkg.authType === 'apikey'
+        ? '![API Key](https://img.shields.io/badge/auth-API%20Key-green.svg)'
+        : '![OAuth](https://img.shields.io/badge/auth-OAuth-blue.svg)'
+      : 'N/A';
+    const statsDisplay = pkg.stats
+      ? `${pkg.stats} ${authTypeDisplay}`
+      : authTypeDisplay;
+
+    const row = [titleDisplay, linksDisplay, statsDisplay];
     return `| ${row.join(' | ')} |`;
   });
 
