@@ -2,7 +2,7 @@ name: Trigger Release on Issue
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited]
 
 permissions:
   issues: read # To read issue title and user
