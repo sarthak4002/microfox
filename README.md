@@ -36,6 +36,13 @@ Our automated SDK creation system that:
 - Built with Zod for type safety and validation
 - Does compile testing & auto fix any issues if detected
 
+### 🎥 Watch Packagefox in Action
+
+<video width="100%" controls>
+  <source src=".data/packagefox-intro.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## 📦 Roadmap
 
 - **_Packagefox as MCP_** Imagine the ability to easily integrate any platform in your application
