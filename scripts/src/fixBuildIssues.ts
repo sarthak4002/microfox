@@ -10,7 +10,7 @@ import {
 import { IssueDetails, PackageFoxRequest } from './process-issue';
 import { inMemoryStore } from './utils/InMemoryStore';
 
-const MAX_RETRIES = 2;
+const MAX_RETRIES = 5;
 
 export async function fixBuildIssues(packageName: string) {
   console.log(`🛠️ Starting iterative build and fix process for ${packageName}`);
