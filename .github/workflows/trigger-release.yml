@@ -1,0 +1,52 @@
+name: Trigger Release on Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: read # To read issue title and user
+  contents: write # To checkout code and push a commit
+
+jobs:
+  create_changeset_file:
+    runs-on: ubuntu-latest
+    # Only run if the issue title starts with 'release' (case-sensitive)
+    # and the issue was opened by the repository owner
+    if: startsWith(github.event.issue.title, 'release') && github.event.issue.user.login == github.repository_owner
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          # Checkout the main branch explicitly
+          ref: main
+          # Use the GITHUB_TOKEN for authentication, permissions are set above
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create dummy changeset file
+        run: |
+          mkdir -p .changeset
+          echo "---\n---\n\nTriggered by issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}" > .changeset/trigger-${{ github.event.issue.number }}.md
+          echo "Created .changeset/trigger-${{ github.event.issue.number }}.md"
+
+      - name: Commit and push changeset file
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .changeset/trigger-${{ github.event.issue.number }}.md
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: create changeset trigger file for issue #${{ github.event.issue.number }}"
+            git push origin main
+            echo "Changes pushed to main branch."
+          fi
+
+      - name: Close the issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue close $ISSUE_NUMBER --comment "Changeset file created and pushed. Closing issue."
+          echo "Issue #${ISSUE_NUMBER} closed."
