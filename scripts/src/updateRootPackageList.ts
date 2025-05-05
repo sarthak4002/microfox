@@ -43,7 +43,7 @@ function generateMarkdownTable(
   packages: PackageData[],
   includeAuthType: boolean,
 ): string {
-  const header = ['Package', 'Links', 'Stats', 'Info'];
+  const header = ['Package', 'Links', 'Stats'];
   const separator = header.map(() => '---');
 
   const rows = packages.map(pkg => {
