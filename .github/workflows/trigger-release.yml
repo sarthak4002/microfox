@@ -33,7 +33,8 @@ jobs:
       - name: Create dummy changeset file
         run: |
           mkdir -p .changeset
-          echo "---\n---\n\nTriggered by issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}" > .changeset/trigger-${{ github.event.issue.number }}.md
+          # Use printf to correctly handle newline characters
+          printf -- "---\n---\n\nTriggered by issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}\n" > .changeset/trigger-${{ github.event.issue.number }}.md
           echo "Created .changeset/trigger-${{ github.event.issue.number }}.md"
 
       - name: Commit and push changeset file
