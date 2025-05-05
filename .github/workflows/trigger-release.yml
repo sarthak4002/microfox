@@ -5,7 +5,7 @@ on:
     types: [opened, edited]
 
 permissions:
-  issues: read # To read issue title and user
+  issues: write # To read issue title, user, and add comments
   contents: write # To checkout code and push a commit
 
 jobs:
@@ -15,13 +15,20 @@ jobs:
     # and the user triggering the event (open/edit) is the repository owner
     if: startsWith(github.event.issue.title, 'release')
     steps:
+      - name: Generate GitHub App Token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.PACKAGEFOX_APP_ID }}
+          private_key: ${{ secrets.PACKAGEFOX_PRIVATE_KEY }}
+
       - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           # Checkout the main branch explicitly
           ref: main
           # Use the GITHUB_TOKEN for authentication, permissions are set above
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }}
 
       - name: Create dummy changeset file
         run: |
