@@ -50,7 +50,7 @@ function generateMarkdownTable(
     const logoHtml = pkg.logo
       ? `<img src="${pkg.logo}" alt="${
           pkg.title || pkg.name
-        } logo" width="24" height="24">`
+        } logo" width="16" height="16">`
       : '';
     const titleDisplay = `${logoHtml} ${pkg.title || pkg.name} v${pkg.version}`;
 
@@ -199,8 +199,8 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
   const stats: string[] = [];
 
   // Count constructors
-  if (pkgInfo.constructors && pkgInfo.constructors.length > 0) {
-    stats.push(`${pkgInfo.constructors.length} creates`);
+  if (pkgInfo.keysInfo && pkgInfo.keysInfo.length > 0) {
+    stats.push(`${pkgInfo.keysInfo.length} envs`);
   }
 
   // Count functionalities from readme_map
@@ -209,16 +209,6 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
     pkgInfo.readme_map?.functionalities.length > 0
   ) {
     stats.push(`${pkgInfo.readme_map?.functionalities?.length ?? 0} fns`);
-  }
-
-  // Add auth type if present
-  if (pkgInfo.authType && pkgInfo.authType !== 'none') {
-    stats.push(`${pkgInfo.authType.toUpperCase()} auth`);
-  }
-
-  // Add status if it's not stable
-  if (pkgInfo.status !== 'stable') {
-    stats.push(pkgInfo.status);
   }
 
   return stats.length > 0 ? stats.join(', ') : 'N/A';
