@@ -4,7 +4,7 @@
   "description": "A TypeScript OAuth package for Reddit.",
   "path": "packages/reddit-oauth",
   "dependencies": ["zod"],
-  "status": "stable",
+  "status": "oauthConnector",
   "authType": "oauth2",
   "authEndpoint": "/connect/reddit",
   "oauth2Scopes": [

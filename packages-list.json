@@ -13,13 +13,10 @@
     "packages/google-seo",
     "packages/google-sheets",
     "packages/instagram",
-    "packages/instagram-business-oauth",
     "packages/instagram-fb",
-    "packages/instagram-fb-business-oauth",
     "packages/linkedin-member-data-portability",
     "packages/linkedin-share",
     "packages/reddit",
-    "packages/reddit-oauth",
     "packages/slack-web-tiny",
     "packages/whatsapp-business",
     "packages/youtube",
@@ -38,7 +35,10 @@
   "oauthConnectorPackages": [
     "packages/google",
     "packages/google-oauth",
-    "packages/linkedin-oauth"
+    "packages/instagram-business-oauth",
+    "packages/instagram-fb-business-oauth",
+    "packages/linkedin-oauth",
+    "packages/reddit-oauth"
   ],
   "unknownPackages": [
     "packages/google-sdk"
@@ -47,5 +47,5 @@
     "packages/rest-sdk"
   ],
   "total": 33,
-  "generatedAt": "2025-05-05T17:03:48.734Z"
+  "generatedAt": "2025-05-05T17:10:43.491Z"
 }
