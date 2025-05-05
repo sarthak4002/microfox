@@ -55,15 +55,13 @@ function generateMarkdownTable(
 
   const rows = packages.map(pkg => {
     const logoHtml = pkg.logo
-      ? `<img src="${pkg.path}/${pkg.logo}" alt="${
+      ? `<img src="${pkg.logo}" alt="${
           pkg.title || pkg.name
         } logo" width="48" height="48">`
       : '';
     const titleDisplay = `${logoHtml} ${pkg.title || pkg.name}`;
-    const npmLink = `[View](https://www.npmjs.com/package/${pkg.name})`;
-    const docsLink = pkg.docsPath
-      ? `[Read Docs](${pkg.path}/${pkg.docsPath})`
-      : 'N/A';
+    const npmLink = `[View on NPM](https://www.npmjs.com/package/${pkg.name})`;
+    const docsLink = pkg.docsPath ? `[Read Docs](${pkg.docsPath})` : 'N/A';
     const statsDisplay = pkg.stats || 'N/A';
     const authTypeDisplay = pkg.authType
       ? pkg.authType === 'apikey'
