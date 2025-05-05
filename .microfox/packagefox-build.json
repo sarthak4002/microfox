@@ -1,13 +1,3 @@
 {
-  "requests": [
-    {
-      "type": "pkg-create",
-      "query": "Create a package for Amazon Rekognition Face Detection.",
-      "url": "https://docs.aws.amazon.com/rekognition/latest/dg/faces-detect-images.html",
-      "notes": "Create an SDK for Amazon Rekognition Face Detection.",
-      "issueNumber": 192,
-      "logs": "",
-      "error": ""
-    }
-  ]
+  "requests": []
 }
