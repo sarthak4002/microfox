@@ -52,20 +52,22 @@ function generateMarkdownTable(
           pkg.title || pkg.name
         } logo" width="16" height="16">`
       : '';
-    const titleDisplay = `${logoHtml} ${pkg.title || pkg.name} v${pkg.version}`;
+    const titleDisplay = `${logoHtml} ${pkg.title || pkg.name}`;
 
     // Create shield badges for NPM and documentation
     const npmBadge = `[![npm version](https://img.shields.io/npm/v/${pkg.name}.svg)](https://www.npmjs.com/package/${pkg.name})`;
     const docsBadge = pkg.docsPath
-      ? `[![Documentation](https://img.shields.io/badge/docs-available-blue.svg)](${pkg.docsPath})`
+      ? `[![Documentation](https://img.shields.io/badge/docs-available-green.svg)](${pkg.docsPath})`
       : 'N/A';
 
     const linksDisplay = `${npmBadge} ${docsBadge}`;
     const authTypeDisplay = pkg.authType
       ? pkg.authType === 'apikey'
         ? '![API Key](https://img.shields.io/badge/auth-API%20Key-green.svg)'
-        : '![OAuth](https://img.shields.io/badge/auth-OAuth-blue.svg)'
-      : 'N/A';
+        : pkg.authType === 'oauth2'
+          ? '![OAuth](https://img.shields.io/badge/auth-OAuth-blue.svg)'
+          : '![None](https://img.shields.io/badge/auth-None-gray.svg)'
+      : '';
     const statsDisplay = pkg.stats
       ? `${pkg.stats} ${authTypeDisplay}`
       : authTypeDisplay;
