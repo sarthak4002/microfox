@@ -1,43 +1,62 @@
 # Microfox
 
+> Code that writes code that writes code
 
+Microfox is an ambitious open-source project that combines microservices architecture with deep coding principles. It's designed to be the foundation for the next generation of AI-powered development tools and agents.
 
-## 🚀 Getting Started
+## 🚀 Vision
 
-This repository uses npm workspaces and Turborepo for managing multiple packages. Each package in the `packages` directory is published to npm under the `@microfox` scope.
+Microfox is built on two core philosophies:
 
-### Prerequisites
+1. **Microservices Architecture**: Breaking down complex systems into small, independent services
+2. **Deep Coding**: Creating code that writes code that writes code - enabling AI agents to build and maintain software
 
-- Node.js >= 18
-- npm >= 10.2.4
+Software should never be a MOAT, and we promise that all the SDKs here will be continously mainteained, tested & free for everyone to use.
 
-### Installation
+All our SDKs are:
 
-1. Clone the repository:
+- Open source and free to use
+- Published under the `@microfox` scope on npm
+- Built with TypeScript
+- Include comprehensive documentation and examples
+- Support AI agent integration
+- Bytesized to support serverless environments
 
-```bash
-git clone https://github.com/microfox-ai/microfox.git
-cd microfox
-```
+## 🛠️ Core Components
 
-2. Install dependencies:
+### Package Fox
 
-```bash
-npm install
-```
+Our automated SDK creation system that:
 
-3. Build all packages:
+- Automatically generates TypeScript SDKs from API documentation
+- Supports REST, GraphQL, and other API types
+- Generates comprehensive documentation and examples
+- Generates embeddings for better AI agent integration
+- Built with Zod for type safety and validation
+- Does compile testing & auto fix any issues if detected
 
-```bash
-npm run build
-```
+## 📦 Roadmap
+
+- **_Packagefox as MCP_** Imagine the ability to easily integrate any platform in your application
+- **_Testfox_** Auto create unit tests & e2e tests for all packages
+- **_VersionTracking_** Auto updates for any API migrations of existing packages
+- **_Support for Python->Typscript workflow_** a template flow inside packagefox for supportting migrations of python -> typescript packages
+
+### 🤖 AI Agent Integration
+
+Our SDKs are designed to work seamlessly with AI agents:
+
+- Built-in documentation embeddings for better context
+- Example-based documentation for improved code generation
+- Type-safe interfaces for reliable integration
+- Automatic version tracking and updates
 
 ## 🛠️ Development
 
 ### Commands
 
 - `npm run build` - Build all packages
-- `npm run dev` - Start development mode for all packages
+- `npm run build -- --filter=@microfox/whatsapp-business` - Build only 1 packages
 - `npm run test` - Run tests across all packages
 - `npm run lint` - Run ESLint across all packages
 - `npm run clean` - Clean all build outputs
@@ -49,7 +68,7 @@ npm run build
 microfox/
 ├── packages/           # Core packages
 ├── examples/          # Example projects
-├── tools/            # Development tools and configs
+├── scripts/            # All coding agents live here
 └── package.json      # Root package.json
 ```
 
@@ -57,142 +76,89 @@ Each package in the `packages` directory:
 
 - Is published under the `@microfox` scope
 - Has its own documentation
-- Contains example usage in the `examples` directory
 - Follows our standard development practices
 
-### Branch Structure
+## 🤝 Contributing
 
-We follow a three-tier branching strategy for organized development and deployment:
+Here's how you can help:
 
-#### Main Branch (`main`)
+### High level Contributions
 
-- The production-ready branch
-- Contains stable, tested code
-- All releases are tagged from this branch
-- Protected branch - requires pull request and review
-- Direct commits are not allowed
+1. **_Coding Agents_** Check for issues labeled with Coding Agents (Build or Fix the core generation scripts)
+2. **_SDK Design_** Good SDKs are built on top of good design standards (create a new vision for a different kind of packages)
 
-#### Staging Branches (`staging/*`)
+### Quick Contributions (Auto Builds & Auto Fixes)
 
-- Integration branches for feature testing
-- Named as `staging/feature-group` (e.g., `staging/messaging-sdks`)
-- Used for testing multiple related features together
-- Merged into `main` after thorough testing
-- QA and integration testing happens here
-- Example: `staging/email-providers`, `staging/chat-platforms`
+1. **Request New SDKs**: Create an issue with the API documentation URL (to autobuild start issue title with `packagefox: TITLE`)
+2. **Report Issues**: Help us improve by reporting bugs or suggesting improvements (to autofix the issue title with `packagefox: TITLE`)
 
-#### Development Branches (`dev/*`)
-
-- Feature development branches
-- Named as `dev/feature-name` (e.g., `dev/slack-sdk`)
-- Created from `main` or relevant `staging` branch
-- Merged into appropriate `staging` branch when complete
-- Used for individual feature development
-- Example: `dev/discord-webhooks`, `dev/sendgrid-integration`
-
-### Branch Workflow
-
-1. Create a development branch:
-
-```bash
-git checkout main
-git pull
-git checkout -b dev/slack-sdk
-```
-
-2. Develop and test your feature:
-
-```bash
-# Make changes
-npm test
-npm run build
-git commit -m "feat: add slack sdk"
-```
-
-3. Push to staging:
-
-```bash
-git checkout staging/messaging-sdks
-git merge dev/slack-sdk
-# Run integration tests
-```
-
-4. Create release:
-
-```bash
-# Once staging is stable
-git checkout main
-git merge staging/messaging-sdks
-npm run changeset
-```
-
-### Adding a New Package
-
-When adding a new SDK or utility package, follow these naming and structure conventions:
-
-1. Create a new development branch:
-
-```bash
-git checkout main
-git pull
-git checkout -b dev/slack-sdk
-```
-
-2. Create the package structure:
-
-```bash
-mkdir packages/slack-sdk
-cd packages/slack-sdk
-npm init -y
-```
-
-3. Set up the standard package files:
-
-```
-slack-sdk/
-├── src/              # Source code
-│   ├── index.ts      # Main entry point
-│   ├── client.ts     # SDK client implementation
-│   └── types.ts      # Type definitions
-├── README.md         # Package documentation
-├── tsconfig.json     # TypeScript config
-└── package.json      # Package config
-```
-
-4. Create example implementation:
-
-```bash
-mkdir examples/slack-sdk-example
-cd examples/slack-sdk-example
-```
-
-5. Set up example project structure:
-
-```
-slack-sdk-example/
-├── src/
-│   ├── index.ts              # Main example implementation
-│   └── __tests__/           # Integration tests
-│       └── slack.test.ts
-├── README.md                 # Example documentation
-├── tsconfig.json            # TypeScript config
-└── package.json             # Example project config
-```
-
-4. Follow the development workflow in the Contributing section for next steps.
-
-## 📝 Contributing
+### Development Workflow
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b dev/amazing-feature`)
 3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to staging (`git push origin staging/feature-group`)
-5. Open a Pull Request to `main` when ready
+4. Open a Pull Request to staging (`git push origin staging/feature-group`)
 
-### Development Workflow
+## 🔒 Security
 
-1. Make changes in the relevant package(s)
-2. Run tests: `npm test`
-3. Build packages: `npm run build`
-4. Create a changeset: `npm run changeset`
-5. Commit and push your changes
+All SDKs go through a security review process:
+
+- Automated initial screening
+- Manual review by our development team
+- Scheduled npm publishing for verified packages
+
+## 🌟 Join the Revolution
+
+Microfox represents a new paradigm in software development:
+
+- AI-powered SDK generation
+- Community-driven maintenance
+- Open source and accessible to all
+- Built for the future of AI-assisted development
+
+Join us in building the future of software development!
+
+## 📝 License
+
+MIT License - See LICENSE file for details
+
+
+<!-- STABLE_PACKAGES_TABLE_START -->
+### Stable Packages
+
+| Package | NPM | Docs | Stats | Version | Auth Type |
+| --- | --- | --- | --- | --- | --- |
+| <img src="packages/aws-ses/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/aws-ses.svg" alt="Microfox AWS SES logo" width="48" height="48"> Microfox AWS SES | [View](https://www.npmjs.com/package/@microfox/aws-ses) | [Read Docs](packages/aws-ses/https://github.com/microfox-ai/microfox/blob/main/packages/aws-ses/README.md) | 1 constructors, 3 functionalities | `1.1.0` | N/A |
+| <img src="packages/brave/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/brave.svg" alt="Brave TypeScript SDK logo" width="48" height="48"> Brave TypeScript SDK | [View](https://www.npmjs.com/package/@microfox/brave) | [Read Docs](packages/brave/https://github.com/microfox-ai/microfox/blob/main/packages/brave/README.md) | 1 constructors, 8 functionalities | `1.1.0` | N/A |
+| <img src="packages/coingecko-sdk/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/coingecko-sdk.svg" alt="CoinGecko SDK logo" width="48" height="48"> CoinGecko SDK | [View](https://www.npmjs.com/package/@microfox/coingecko-sdk) | [Read Docs](packages/coingecko-sdk/https://github.com/microfox-ai/microfox/blob/main/packages/coingecko-sdk/README.md) | 1 constructors, 14 functionalities, APIKEY auth | `1.0.1` | API Key |
+| <img src="packages/discord/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/discord-icon.svg" alt="Microfox Discord SDK logo" width="48" height="48"> Microfox Discord SDK | [View](https://www.npmjs.com/package/@microfox/discord) | [Read Docs](packages/discord/https://github.com/microfox-ai/microfox/blob/main/packages/discord/README.md) | 1 constructors, 32 functionalities | `1.1.0` | N/A |
+| <img src="packages/drive/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-drive.svg" alt="Microfox Drive SDK logo" width="48" height="48"> Microfox Drive SDK | [View](https://www.npmjs.com/package/@microfox/drive) | [Read Docs](packages/drive//README.md) | 1 constructors | `1.0.3` | N/A |
+| <img src="packages/gmail/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-gmail.svg" alt="Gmail SDK logo" width="48" height="48"> Gmail SDK | [View](https://www.npmjs.com/package/@microfox/gmail) | [Read Docs](packages/gmail/https://raw.githubusercontent.com/microfox-ai/microfox/main/README.md) | 1 constructors, 11 functionalities | `1.1.0` | N/A |
+| <img src="packages/google-analytics/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-analytics.svg" alt="Google Analytics SDK logo" width="48" height="48"> Google Analytics SDK | [View](https://www.npmjs.com/package/@microfox/google-analytics) | [Read Docs](packages/google-analytics/https://github.com/microfox-ai/microfox/blob/main/packages/google-analytics/README.md) | 1 constructors, 23 functionalities | `1.1.0` | N/A |
+| <img src="packages/google-seo/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-search-console.svg" alt="Google Search Console logo" width="48" height="48"> Google Search Console | [View](https://www.npmjs.com/package/@microfox/google-seo) | [Read Docs](packages/google-seo/https://github.com/microfox-ai/microfox/blob/main/packages/google-seo/README.md) | 1 constructors, 13 functionalities | `1.1.0` | N/A |
+| <img src="packages/google-sheets/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-sheets-icon.svg" alt="Google Sheets SDK logo" width="48" height="48"> Google Sheets SDK | [View](https://www.npmjs.com/package/@microfox/google-sheets) | [Read Docs](packages/google-sheets/https://github.com/microfox-ai/microfox/blob/main/packages/google-sheets/README.md) | 1 constructors, 10 functionalities | `1.1.0` | N/A |
+| <img src="packages/instagram/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg" alt="Microfox Instagram SDK logo" width="48" height="48"> Microfox Instagram SDK | [View](https://www.npmjs.com/package/@microfox/instagram) | [Read Docs](packages/instagram/https://github.com/microfox-ai/microfox/blob/main/packages/instagram/README.md) | 1 constructors, 15 functionalities | `1.1.0` | N/A |
+| <img src="packages/instagram-business-oauth/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg" alt="Microfox Instagram Business OAuth logo" width="48" height="48"> Microfox Instagram Business OAuth | [View](https://www.npmjs.com/package/@microfox/instagram-business-oauth) | [Read Docs](packages/instagram-business-oauth//README.md) | 1 constructors | `1.0.1` | N/A |
+| <img src="packages/instagram-fb/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg" alt="Instagram SDK logo" width="48" height="48"> Instagram SDK | [View](https://www.npmjs.com/package/@microfox/instagram-fb) | [Read Docs](packages/instagram-fb/https://github.com/microfox-ai/microfox/blob/main/packages/instagram-fb/README.md) | 1 constructors, 16 functionalities | `1.1.0` | N/A |
+| <img src="packages/instagram-fb-business-oauth/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/instagram-icon.svg" alt="Microfox Instagram FB Business OAuth logo" width="48" height="48"> Microfox Instagram FB Business OAuth | [View](https://www.npmjs.com/package/@microfox/instagram-fb-business-oauth) | [Read Docs](packages/instagram-fb-business-oauth//README.md) | 1 constructors | `1.0.1` | N/A |
+| <img src="packages/linkedin-member-data-portability/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/linkedin-icon.svg" alt="LinkedIn Member Data Portability SDK logo" width="48" height="48"> LinkedIn Member Data Portability SDK | [View](https://www.npmjs.com/package/@microfox/linkedin-member-data-portability) | [Read Docs](packages/linkedin-member-data-portability/https://github.com/microfox-ai/microfox/blob/main/packages/linkedin-member-data-portability/README.md) | 1 constructors, 7 functionalities | `1.1.0` | N/A |
+| <img src="packages/linkedin-share/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-share/icon.svg" alt="LinkedIn Share logo" width="48" height="48"> LinkedIn Share | [View](https://www.npmjs.com/package/@microfox/linkedin-share) | [Read Docs](packages/linkedin-share/https://github.com/microfox-ai/microfox/blob/main/packages/linkedin-share/README.md) | 1 constructors, 3 functionalities | `1.2.0` | N/A |
+| <img src="packages/reddit/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg" alt="Reddit TypeScript SDK logo" width="48" height="48"> Reddit TypeScript SDK | [View](https://www.npmjs.com/package/@microfox/reddit) | [Read Docs](packages/reddit/https://github.com/microfox-ai/microfox/blob/main/packages/reddit/README.md) | 1 constructors, 26 functionalities | `1.1.0` | N/A |
+| <img src="packages/reddit-oauth/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/reddit.svg" alt="Microfox Reddit OAuth logo" width="48" height="48"> Microfox Reddit OAuth | [View](https://www.npmjs.com/package/@microfox/reddit-oauth) | [Read Docs](packages/reddit-oauth//README.md) | 1 constructors, 6 functionalities | `1.1.0` | N/A |
+| <img src="packages/slack-web-tiny/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/slack-icon.svg" alt="Microfox Slack Web Tiny logo" width="48" height="48"> Microfox Slack Web Tiny | [View](https://www.npmjs.com/package/@microfox/slack-web-tiny) | [Read Docs](packages/slack-web-tiny/https://github.com/microfox-ai/microfox/blob/main/packages/slack-web-tiny/README.md) | 1 constructors, 4 functionalities | `1.2.0` | N/A |
+| <img src="packages/twitter/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/x.svg" alt="Microfox X SDK logo" width="48" height="48"> Microfox X SDK | [View](https://www.npmjs.com/package/@microfox/twitter) | [Read Docs](packages/twitter/https://github.com/microfox-ai/microfox/blob/main/packages/twitter/README.md) | 1 constructors, 12 functionalities | `1.1.0` | N/A |
+| <img src="packages/whatsapp-business/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/whatsapp-icon.svg" alt="Whatsapp Business logo" width="48" height="48"> Whatsapp Business | [View](https://www.npmjs.com/package/@microfox/whatsapp-business) | [Read Docs](packages/whatsapp-business//README.md) | 1 constructors, 36 functionalities | `1.2.2` | N/A |
+| <img src="packages/youtube/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube-icon.svg" alt="YouTube Data logo" width="48" height="48"> YouTube Data | [View](https://www.npmjs.com/package/@microfox/youtube) | [Read Docs](packages/youtube//README.md) | 1 constructors | `1.0.4` | N/A |
+| <img src="packages/youtube-analytics/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube-icon.svg" alt="Youtube Analytics V3 logo" width="48" height="48"> Youtube Analytics V3 | [View](https://www.npmjs.com/package/@microfox/youtube-analytics) | [Read Docs](packages/youtube-analytics/https://github.com/microfox-ai/microfox/blob/main/packages/youtube-analytics/README.md) | 1 constructors, 11 functionalities, OAUTH2 auth | `1.0.1` | OAuth |
+| <img src="packages/youtube-reporting-api/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/youtube.svg" alt="YouTube Reporting API logo" width="48" height="48"> YouTube Reporting API | [View](https://www.npmjs.com/package/@microfox/youtube-reporting-api) | [Read Docs](packages/youtube-reporting-api/https://github.com/microfox-ai/microfox/blob/main/packages/youtube-reporting-api/README.md) | 1 constructors, 6 functionalities, OAUTH2 auth | `1.0.1` | OAuth |
+<!-- STABLE_PACKAGES_TABLE_END -->
+
+<!-- OAUTH_CONNECTORS_TABLE_START -->
+### OAuth Connectors
+
+| Package | NPM | Docs | Stats | Version |
+| --- | --- | --- | --- | --- |
+| <img src="packages/google/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google.svg" alt="Microfox Google SDK logo" width="48" height="48"> Microfox Google SDK | [View](https://www.npmjs.com/package/@microfox/google) | [Read Docs](packages/google//README.md) | 1 constructors, oauthConnector | `1.1.1` |
+| <img src="packages/google-oauth/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/google-oauth/icon.svg" alt="Microfox Google OAuth SDK logo" width="48" height="48"> Microfox Google OAuth SDK | [View](https://www.npmjs.com/package/@microfox/google-oauth) | [Read Docs](packages/google-oauth//README.md) | 1 constructors, oauthConnector | `1.0.4` |
+| <img src="packages/linkedin-oauth/https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/packages/linkedin-oauth/icon.svg" alt="LinkedIn OAuth logo" width="48" height="48"> LinkedIn OAuth | [View](https://www.npmjs.com/package/@microfox/linkedin-oauth) | [Read Docs](packages/linkedin-oauth//README.md) | 1 constructors, oauthConnector | `1.0.5` |
+<!-- OAUTH_CONNECTORS_TABLE_END -->
