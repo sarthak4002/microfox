@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     # Only run if the issue title starts with 'release' (case-sensitive)
     # and the issue was opened by the repository owner
-    if: startsWith(github.event.issue.title, 'release') && github.event.issue.user.login == github.repository_owner
+    if: startsWith(github.event.issue.title, 'release') && github.event.issue.author_association == 'OWNER'
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
