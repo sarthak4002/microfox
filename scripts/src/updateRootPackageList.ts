@@ -43,21 +43,14 @@ function generateMarkdownTable(
   packages: PackageData[],
   includeAuthType: boolean,
 ): string {
-  const header = [
-    'Package',
-    'NPM',
-    'Docs',
-    'Stats',
-    'Version',
-    ...(includeAuthType ? ['Auth Type'] : []),
-  ];
+  const header = ['Package', 'Links', 'Stats', 'Info'];
   const separator = header.map(() => '---');
 
   const rows = packages.map(pkg => {
     const logoHtml = pkg.logo
       ? `<img src="${pkg.logo}" alt="${
           pkg.title || pkg.name
-        } logo" width="48" height="48">`
+        } logo" width="24" height="24">`
       : '';
     const titleDisplay = `${logoHtml} ${pkg.title || pkg.name}`;
     const npmLink = `[View on NPM](https://www.npmjs.com/package/${pkg.name})`;
@@ -71,14 +64,10 @@ function generateMarkdownTable(
 
     const row = [
       titleDisplay,
-      npmLink,
-      docsLink,
+      `${npmLink}\n ${docsLink}`,
       statsDisplay,
-      `\`${pkg.version}\``, // Use backticks for version
+      `\`Version: ${pkg.version} \n Auth Type: ${authTypeDisplay}\``, // Use backticks for version
     ];
-    if (includeAuthType) {
-      row.push(authTypeDisplay);
-    }
     return `| ${row.join(' | ')} |`;
   });
 
@@ -231,7 +220,7 @@ function generatePackageStats(pkgInfo: PackageInfo | null): string {
     stats.push(pkgInfo.status);
   }
 
-  return stats.length > 0 ? stats.join(', ') : 'N/A';
+  return stats.length > 0 ? stats.join('\n ') : 'N/A';
 }
 
 /**
@@ -266,22 +255,6 @@ async function updatePackageList() {
       let pkgJson: any = {};
       let pkgInfo: PackageInfo | null = null;
 
-      // Read package.json
-      if (fs.existsSync(packageJsonPath)) {
-        try {
-          pkgJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-        } catch (error) {
-          console.warn(
-            `⚠️ Error reading package.json for ${dir}:`,
-            (error as Error).message,
-          );
-          continue; // Skip package if essential files are unreadable
-        }
-      } else {
-        console.warn(`⚠️ No package.json found for ${dir}, skipping.`);
-        continue;
-      }
-
       // Read package-info.json
       if (fs.existsSync(packageInfoPath)) {
         try {
@@ -300,6 +273,29 @@ async function updatePackageList() {
 
       const status = pkgInfo?.status || 'unknown';
 
+      // Maintain structure for packages-list.json
+      const statusKey = `${status}Packages`;
+      if (!statusPackages[statusKey]) {
+        statusPackages[statusKey] = [];
+      }
+      statusPackages[statusKey].push(relativePath);
+
+      // Read package.json
+      if (fs.existsSync(packageJsonPath)) {
+        try {
+          pkgJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+        } catch (error) {
+          console.warn(
+            `⚠️ Error reading package.json for ${dir}:`,
+            (error as Error).message,
+          );
+          continue; // Skip package if essential files are unreadable
+        }
+      } else {
+        console.warn(`⚠️ No package.json found for ${dir}, skipping.`);
+        continue;
+      }
+
       // Collect data for README and general processing
       const packageData: PackageData = {
         dir: dir,
@@ -316,13 +312,6 @@ async function updatePackageList() {
         authType: pkgInfo?.authType,
       };
       allPackagesData.push(packageData);
-
-      // Maintain structure for packages-list.json
-      const statusKey = `${status}Packages`;
-      if (!statusPackages[statusKey]) {
-        statusPackages[statusKey] = [];
-      }
-      statusPackages[statusKey].push(relativePath);
     } // End of package processing loop
 
     // --- Update packages-list.json ---

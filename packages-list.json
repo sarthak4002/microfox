@@ -1,4 +1,8 @@
 {
+  "externalPackages": [
+    "packages/@ext_@notionhq#client",
+    "packages/@ext_@slack#web-api"
+  ],
   "stablePackages": [
     "packages/aws-ses",
     "packages/brave",
@@ -34,9 +38,12 @@
     "packages/google-oauth",
     "packages/linkedin-oauth"
   ],
+  "unknownPackages": [
+    "packages/google-sdk"
+  ],
   "internalPackages": [
     "packages/rest-sdk"
   ],
   "total": 33,
-  "generatedAt": "2025-05-05T16:24:33.214Z"
+  "generatedAt": "2025-05-05T16:33:15.683Z"
 }
