@@ -44,8 +44,7 @@
       "description": "Create a new Microfox AWS SES client through which you can interact with the API",
       "auth": "apikey",
       "apiType": "api_key",
-      "requiredKeys": [],
-      "internalKeys": [
+      "requiredKeys": [
         {
           "key": "AWS_ACCESS_KEY_ID",
           "displayName": "AWS Access Key ID",
@@ -57,6 +56,7 @@
           "description": "The AWS secret access key. Used to authenticate with AWS SES."
         }
       ],
+      "internalKeys": [],
       "functionalities": ["sendEmail", "sendBulkEmails"]
     }
   ],
