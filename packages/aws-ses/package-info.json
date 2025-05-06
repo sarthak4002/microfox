@@ -54,6 +54,12 @@
           "key": "AWS_SECRET_ACCESS_KEY",
           "displayName": "AWS Secret Access Key",
           "description": "The AWS secret access key. Used to authenticate with AWS SES."
+        },
+        {
+          "key": "AWS_REGION",
+          "displayName": "AWS Region",
+          "description": "The AWS region to use. Used to authenticate with AWS SES.",
+          "required": false
         }
       ],
       "internalKeys": [],
@@ -72,6 +78,12 @@
       "constructors": ["createSESSdk"],
       "description": "The AWS secret access key. Used to authenticate with AWS SES.",
       "required": true
+    },
+    {
+      "key": "AWS_REGION",
+      "constructors": ["createSESSdk"],
+      "description": "The AWS region to use. Used to authenticate with AWS SES.",
+      "required": false
     }
   ],
   "extraInfo": [
