@@ -150,6 +150,6 @@ jobs:
           add-paths: .microfox/packagefox-build.json
           labels: |
             automated-pr
-            from-issue-${{ github.event.issue.number }}
+            from-issues
             approved
           assignees: ${{ github.actor }}

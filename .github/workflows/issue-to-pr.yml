@@ -115,7 +115,7 @@ jobs:
           # base: main # Specify base branch if not the default checkout branch
           labels: |
             automated-pr
-            from-issue-${{ github.event.issue.number }}
+            from-issues
           assignees: ${{ github.actor }}
           # Optional: Add reviewers
           # reviewers: user1,user2
