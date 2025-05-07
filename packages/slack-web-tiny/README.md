@@ -20,34 +20,6 @@ const slackSDK = createSlackSDK({
   baseUrl: 'https://slack.com/api',
 });
 
-// Send a simple message
-const response = await slackSDK.sendMessage({
-  channel: 'C1234567890', // Channel ID
-  text: 'Hello from Slack SDK!',
-});
-
-// Send a message in a thread
-const threadResponse = await slackSDK.sendMessage({
-  channel: 'C1234567890', // Channel ID
-  text: 'Reply in thread',
-  thread_ts: '1234567890.123456', // Thread timestamp
-});
-
-// Update an existing message
-const updatedResponse = await slackSDK.updateMessage({
-  channel: 'C1234567890', // Channel ID
-  ts: '1234567890.123456', // Message timestamp to update
-  text: 'Updated message content',
-});
-
-// Upload a file
-const fileResponse = await slackSDK.uploadFile({
-  channels: 'C1234567890', // Channel ID
-  content: 'File content as text',
-  filename: 'example.txt',
-  title: 'Example File',
-});
-
 // Use Block Kit components
 const blockMessage = await slackSDK.sendMessage({
   channel: 'C1234567890', // Channel ID
