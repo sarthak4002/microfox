@@ -10,8 +10,43 @@ permissions:
   issues: write # To write issue data
 
 jobs:
+  check_maintainer:
+    runs-on: ubuntu-latest
+    outputs:
+      is_maintainer: ${{ steps.check.outputs.is_maintainer }}
+    steps:
+      - name: Check if user is maintainer
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: collaborators } = await github.rest.repos.listCollaborators({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const issueCreator = context.payload.issue.user.login;
+            const isMaintainer = collaborators.some(collab => 
+              collab.login === issueCreator && 
+              (collab.permissions.admin || collab.permissions.maintain || collab.permissions.write)
+            );
+
+            if (!isMaintainer) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: '👋 Thank you for your contribution! This issue needs to be verified and approved by a maintainer before proceeding. A maintainer will review your request shortly.'
+              });
+            }
+
+            return isMaintainer;
+
   process_issue:
-    if: contains(github.event.issue.title, 'packagefox:')
+    needs: check_maintainer
+    if: |
+      contains(github.event.issue.title, 'packagefox:') && 
+      needs.check_maintainer.outputs.is_maintainer == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

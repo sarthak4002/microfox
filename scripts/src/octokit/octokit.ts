@@ -47,7 +47,7 @@ function getStepName(
  */
 export function readUsageData(
   packageDir: string,
-): { totalTokens: number; totalCost: number } | null {
+): { totalTokens: number; totalCost: number; usageLog: any } | null {
   const usageFilePath = path.join(
     process.cwd().replace('/scripts', ''),
     '.microfox',
@@ -88,7 +88,7 @@ export function readUsageData(
       }
     }
 
-    return { totalTokens, totalCost };
+    return { totalTokens, totalCost, usageLog };
   } catch (error) {
     console.error('Error reading or parsing usage file:', error);
     return null;

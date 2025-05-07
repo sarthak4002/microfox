@@ -5,7 +5,7 @@ import path from 'path';
 import { PackageFoxRequest } from './process-issue';
 import { fixPackage } from './fixPackage';
 import { fixBug } from './fixBug';
-
+import { cleanupUsage } from './octokit/cleanupUsage';
 async function handleWorkflow() {
   const configPath = path.join(
     process.cwd(),
@@ -63,7 +63,8 @@ async function handleWorkflow() {
         if (result) {
           console.log(`✅ SDK generation complete for ${result.packageName}`);
           console.log(`📂 Package location: ${result.packageDir}`);
-          return fixBuildIssues(result.packageName);
+          await fixBuildIssues(result.packageName);
+          await cleanupUsage();
         } else {
           console.log('⚠️ SDK generation completed with warnings or failed.');
           process.exit(1);
@@ -77,6 +78,7 @@ async function handleWorkflow() {
         console.log(`Running fixBuildIssues for package: "${packageName}"`);
         // Assuming fixBuildIssues takes packageName
         await fixBuildIssues(packageName); // Adjust args as needed
+        await cleanupUsage();
         break;
       case 'bug': // Example for future bug fixing type
         if (!packageName) {
@@ -86,6 +88,7 @@ async function handleWorkflow() {
         console.log(`Running fixPackage for package: "${packageName}"`);
         // Assuming fixPackage takes packageName
         await fixBug(packageName, request); // Adjust args as needed
+        await cleanupUsage();
         break;
       default:
         console.error(
