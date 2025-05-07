@@ -1,5 +1,5 @@
 import { LanguageModelUsage } from 'ai';
-import { tokenCosts } from '../ai/tokenCosts';
+import { tokenCosts } from '../tokenCosts';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
@@ -10,6 +10,11 @@ interface UsageLog {
   };
 }
 
+/**
+ * Logs the usage of a language model to a file
+ * @param modelName - The name of the model (e.g. 'claude-3-5-sonnet-20240620')
+ * @param usage - The usage data to log
+ */
 export function logUsage(modelName: string, usage: LanguageModelUsage) {
   const usageDir = join(process.cwd().replace('/scripts', ''), '.microfox');
   const usageFile = join(usageDir, 'pr-usage.json');

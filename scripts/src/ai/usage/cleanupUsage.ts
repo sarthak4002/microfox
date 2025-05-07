@@ -1,4 +1,5 @@
-import { readUsageData, prCommentor } from './octokit';
+import { prCommentor } from '../../octokit/octokit';
+import { readUsageData } from './readUsageData';
 import fs from 'fs';
 import path from 'path';
 

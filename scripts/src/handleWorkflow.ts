@@ -5,7 +5,7 @@ import path from 'path';
 import { PackageFoxRequest } from './process-issue';
 import { fixPackage } from './fixPackage';
 import { fixBug } from './fixBug';
-import { cleanupUsage } from './octokit/cleanupUsage';
+import { cleanupUsage } from './ai/usage/cleanupUsage';
 async function handleWorkflow() {
   const configPath = path.join(
     process.cwd(),
