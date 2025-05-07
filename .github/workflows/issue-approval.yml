@@ -12,6 +12,8 @@ permissions:
 jobs:
   check_approval:
     runs-on: ubuntu-latest
+    outputs:
+      should_process: ${{ steps.check_approval.outputs.should_process }}
     steps:
       - name: Check if comment is approval command
         id: check_approval
@@ -20,7 +22,8 @@ jobs:
           script: |
             const comment = context.payload.comment.body.trim().toLowerCase();
             if (comment !== '/approve') {
-              return false;
+              core.setOutput('should_process', 'false');
+              return;
             }
 
             // Check if commenter is a maintainer
@@ -42,7 +45,8 @@ jobs:
                 issue_number: context.payload.issue.number,
                 body: '❌ Only maintainers can approve issues. Your approval request has been ignored.'
               });
-              return false;
+              core.setOutput('should_process', 'false');
+              return;
             }
 
             // Check if issue title contains packagefox:
@@ -54,7 +58,8 @@ jobs:
                 issue_number: context.payload.issue.number,
                 body: '❌ This issue is not a packagefox request. Approval ignored.'
               });
-              return false;
+              core.setOutput('should_process', 'false');
+              return;
             }
 
             // Add approved label
@@ -72,11 +77,11 @@ jobs:
               body: '✅ Issue approved by maintainer. Processing will begin shortly.'
             });
 
-            return true;
+            core.setOutput('should_process', 'true');
 
   process_approved_issue:
     needs: check_approval
-    if: needs.check_approval.outputs.result == 'true'
+    if: needs.check_approval.outputs.should_process == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
