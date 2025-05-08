@@ -60,4 +60,12 @@ const response2 = await sdk.sendMessage({
     sdk.blocks.section('Section 2'),
   ],
 });
+
+// Example 3: Reply Message in Threads
+// Send a message in a thread
+const threadResponse = await slackSDK.sendMessage({
+  channel: 'C1234567890', // Channel ID
+  text: 'Reply in thread',
+  thread_ts: '1234567890.123456', // Thread timestamp
+});
 ```
