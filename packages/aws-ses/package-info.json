@@ -46,17 +46,17 @@
       "apiType": "api_key",
       "requiredKeys": [
         {
-          "key": "AWS_ACCESS_KEY_ID",
+          "key": "AWS_SES_ACCESS_KEY_ID",
           "displayName": "AWS Access Key ID",
           "description": "The AWS access key ID.  Used to authenticate with AWS SES."
         },
         {
-          "key": "AWS_SECRET_ACCESS_KEY",
+          "key": "AWS_SES_SECRET_ACCESS_KEY",
           "displayName": "AWS Secret Access Key",
           "description": "The AWS secret access key. Used to authenticate with AWS SES."
         },
         {
-          "key": "AWS_REGION",
+          "key": "AWS_SES_REGION",
           "displayName": "AWS Region",
           "description": "The AWS region to use. Used to authenticate with AWS SES.",
           "required": false
@@ -68,19 +68,19 @@
   ],
   "keysInfo": [
     {
-      "key": "AWS_ACCESS_KEY_ID",
+      "key": "AWS_SES_ACCESS_KEY_ID",
       "constructors": ["createSESSdk"],
       "description": "The AWS access key ID.  Used to authenticate with AWS SES.",
       "required": true
     },
     {
-      "key": "AWS_SECRET_ACCESS_KEY",
+      "key": "AWS_SES_SECRET_ACCESS_KEY",
       "constructors": ["createSESSdk"],
       "description": "The AWS secret access key. Used to authenticate with AWS SES.",
       "required": true
     },
     {
-      "key": "AWS_REGION",
+      "key": "AWS_SES_REGION",
       "constructors": ["createSESSdk"],
       "description": "The AWS region to use. Used to authenticate with AWS SES.",
       "required": false

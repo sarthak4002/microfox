@@ -19,8 +19,8 @@ Creates an instance of the AWS SES SDK. This function configures and returns an 
 ```typescript
 // Example: Creating an SDK instance
 const ses = createSESSdk({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY,
   region: 'us-east-1',
 });
 ```
