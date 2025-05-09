@@ -3,6 +3,10 @@
     "packages/@ext_@notionhq#client",
     "packages/@ext_@slack#web-api"
   ],
+  "semiStablePackages": [
+    "packages/amazon-rekognition-face-detection",
+    "packages/drive"
+  ],
   "stablePackages": [
     "packages/aws-ses",
     "packages/brave",
@@ -29,9 +33,6 @@
     "packages/stdlib",
     "packages/twitter"
   ],
-  "semiStablePackages": [
-    "packages/drive"
-  ],
   "oauthConnectorPackages": [
     "packages/google",
     "packages/google-oauth",
@@ -40,12 +41,9 @@
     "packages/linkedin-oauth",
     "packages/reddit-oauth"
   ],
-  "unknownPackages": [
-    "packages/google-sdk"
-  ],
   "internalPackages": [
     "packages/rest-sdk"
   ],
   "total": 33,
-  "generatedAt": "2025-05-05T17:10:43.491Z"
+  "generatedAt": "2025-05-09T00:05:09.764Z"
 }
