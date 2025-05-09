@@ -73,10 +73,6 @@ const EmailParamsSchema = z
       .optional()
       .describe('HTML version of the email body (for rich text formatting)'),
   })
-  .refine(data => !(data.bodyText && data.bodyHtml), {
-    message: 'Cannot provide both bodyText and bodyHtml at the same time',
-    path: ['bodyContent'],
-  })
   .describe(
     'Parameters for sending a single email. Only one of bodyText or bodyHtml can be provided',
   );
@@ -270,7 +266,7 @@ const formatEmailParams = (params: EmailParams) => {
   }
 
   // Only include Text body if provided
-  if (validatedParams.bodyText) {
+  if (!validatedParams.bodyHtml && validatedParams.bodyText) {
     formattedParams['Message.Body.Text.Charset'] = 'UTF-8';
     formattedParams['Message.Body.Text.Data'] = validatedParams.bodyText;
   }

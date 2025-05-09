@@ -139,8 +139,7 @@ export async function fixBuildIssues(packageName: string) {
     );
     const totalUsage = readUsageData(packageDir);
     prCommentor.createComment({
-      body: `
-      # 🎉 Successfully built ${packageName} 😉
+      body: `# 🎉 Successfully built ${packageName} 😉
 
       Fantastic! Your package ${packageName} has been built successfully and is ready to rock! 🚀
 
@@ -167,8 +166,7 @@ export async function fixBuildIssues(packageName: string) {
       With excitement,
       Your Microfox 🦊
       
-      P.S. Don't forget to star ⭐ our repo if you like what we're doing!
-      `,
+      P.S. Don't forget to star ⭐ our repo if you like what we're doing!`,
     });
     inMemoryStore.clear();
     process.exitCode = 0;
