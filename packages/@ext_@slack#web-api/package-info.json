@@ -1,6 +1,6 @@
 {
   "name": "@slack/web-api",
-  "title": "Slack Official",
+  "title": "@slack/web-api",
   "description": "Official library for using the Slack Platform's Web API",
   "path": "packages/@ext_@slack#web-api",
   "dependencies": [
@@ -20,50 +20,14 @@
   "status": "external",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/@slack/web-api",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/slack-icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/web-api-icon.svg",
   "readme_map": {
     "path": "/README.md",
     "title": "@slack/web-api",
     "functionalities": [],
-    "description": "The full README for the package",
-    "all_readmes": []
+    "description": "The full README for the package"
   },
-  "constructors": [
-    {
-      "name": "WebClient",
-      "description": "Create a new Slack Web Client through which you can operate bots on Slack",
-      "auth": "apikey",
-      "apiType": "bot_token",
-      "requiredKeys": [
-        {
-          "key": "SLACK_TOKEN",
-          "displayName": "Slack Token",
-          "description": "The token for the Slack Web Client"
-        }
-      ],
-      "internalKeys": [],
-      "botConfig": [
-        {
-          "key": "image",
-          "displayName": "Bot Send as Image",
-          "description": "The image to use for the Slack Web Client",
-          "ui": {
-            "type": "image",
-            "required": false
-          }
-        }
-      ]
-    }
-  ],
-  "keysInfo": [
-    {
-      "key": "SLACK_TOKEN",
-      "constructors": ["WebClient"],
-      "description": "The token for the Slack Web Client",
-      "required": true
-    }
-  ],
-  "extraInfo": [
-    "Use the `WebClient` constructor to create a new Slack Web Client."
-  ]
+  "constructors": [],
+  "keysInfo": [],
+  "extraInfo": []
 }

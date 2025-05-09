@@ -3,7 +3,6 @@ import path from 'path';
 import { Octokit } from 'octokit';
 import dotenv from 'dotenv';
 import { z } from 'zod';
-import { EXT_PACKAGE_URLS } from './constants';
 import { PackageInfo } from './types';
 
 // Load environment variables
@@ -139,11 +138,13 @@ function createPackageInfo(packageJson: any, readme: string) {
 }
 
 // Function to process a single GitHub URL
-async function processGitHubUrl(
-  githubUrl: string,
-  octokit: Octokit,
-): Promise<void> {
+export async function processGitHubUrl(githubUrl: string): Promise<void> {
   console.log(`Processing GitHub URL: ${githubUrl}`);
+
+  // Initialize Octokit
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
 
   // Validate input
   try {
@@ -195,21 +196,23 @@ async function processGitHubUrl(
 
 // Main function
 async function main() {
-  // Initialize Octokit
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
+  // Get GitHub URL from command line arguments
+  const githubUrl = process.argv[2];
 
-  // Process each GitHub URL in the array
-  for (const githubUrl of EXT_PACKAGE_URLS) {
-    await processGitHubUrl(githubUrl, octokit);
+  if (!githubUrl) {
+    console.error('Please provide a GitHub URL as a command line argument');
+    process.exit(1);
   }
 
-  console.log('All packages processed successfully');
+  // Process the GitHub URL
+  await processGitHubUrl(githubUrl);
+  console.log('Package processed successfully');
 }
 
 // Run the script
-main().catch(error => {
-  console.error('Error:', error);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Error:', error);
+    process.exit(1);
+  });
+}

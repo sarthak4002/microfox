@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import 'dotenv/config';
 import { generateObject } from 'ai';
-import { models } from './ai/models'; // Assuming you have a models setup like in genPackage.ts
+import { models } from './ai/models';
 import dedent from 'dedent';
-import { logUsage } from './ai/usage/usageLogger'; // Assuming usage logging is desired
+import { logUsage } from './ai/usage/usageLogger';
 
 // --- Schemas ---
 
-// Schema for data extracted from the issue by AI
-const IssueDetailsSchema = z.object({
+// Schema for data extracted from the comment by AI
+const CommentDetailsSchema = z.object({
   type: z
     .enum([
       'pkg-create',
@@ -40,11 +40,11 @@ const IssueDetailsSchema = z.object({
   logs: z
     .string()
     .optional()
-    .describe('Any relevant logs provided in the issue body.'),
+    .describe('Any relevant logs provided in the comment.'),
   query: z
     .string()
     .describe(
-      'The core request or query extracted from the issue title/body (e.g., "Youtube Analytics API", "Fix build error in xyz package").',
+      'The core request or query extracted from the comment (e.g., "Youtube Analytics API", "Fix build error in xyz package").',
     ),
   title: z
     .string()
@@ -59,22 +59,21 @@ const IssueDetailsSchema = z.object({
     ),
 });
 
-export type IssueDetails = z.infer<typeof IssueDetailsSchema>;
+export type CommentDetails = z.infer<typeof CommentDetailsSchema>;
 
 // Schema for the request object to be added to packagefox-build.json
 const PackageFoxRequestSchema = z.object({
-  type: IssueDetailsSchema.shape.type,
-  query: IssueDetailsSchema.shape.query,
-  url: IssueDetailsSchema.shape.url,
-  notes: IssueDetailsSchema.shape.notes,
-  logs: IssueDetailsSchema.shape.logs.optional(),
-  error: IssueDetailsSchema.shape.error.optional(),
-  // Add other fields if needed based on type, e.g., error details for 'bug'
+  type: CommentDetailsSchema.shape.type,
+  query: CommentDetailsSchema.shape.query,
+  url: CommentDetailsSchema.shape.url,
+  notes: CommentDetailsSchema.shape.notes,
+  logs: CommentDetailsSchema.shape.logs.optional(),
+  error: CommentDetailsSchema.shape.error.optional(),
   packageName: z
     .string()
     .optional()
     .describe('Optional: Target package name if type is pkg-build or bug'),
-  issueNumber: z.number().optional().describe('The originating issue number'),
+  prNumber: z.number().optional().describe('The originating PR number'),
 });
 
 export type PackageFoxRequest = z.infer<typeof PackageFoxRequestSchema>;
@@ -90,7 +89,6 @@ function getFormattedDate(): string {
 }
 
 function sanitizeForBranchName(name: string): string {
-  // Remove special characters, replace spaces with '-', keep camelCase, lowercase
   return name
     .replace(/[^a-zA-Z0-9-]/g, '')
     .replace(/\s+/g, '-')
@@ -99,42 +97,39 @@ function sanitizeForBranchName(name: string): string {
 
 // --- Main Processing Function ---
 
-async function processIssue() {
-  console.log('🚀 Starting issue processing...');
+async function processComment() {
+  console.log('🚀 Starting comment processing...');
 
-  const issueTitle = process.env.ISSUE_TITLE;
-  const issueBody = process.env.ISSUE_BODY;
-  const issueUrl = process.env.ISSUE_URL;
-  const issueNumberStr = process.env.ISSUE_NUMBER;
+  const commentBody = process.env.COMMENT_BODY;
+  const prNumberStr = process.env.PR_NUMBER;
+  const prUrl = process.env.PR_URL;
 
-  if (!issueTitle || !issueBody || !issueNumberStr) {
+  if (!commentBody || !prNumberStr) {
     console.error(
-      '❌ Missing required environment variables: ISSUE_TITLE, ISSUE_BODY, ISSUE_NUMBER',
+      '❌ Missing required environment variables: COMMENT_BODY, PR_NUMBER',
     );
     process.exit(1);
   }
 
-  const issueNumber = parseInt(issueNumberStr, 10);
-  if (isNaN(issueNumber)) {
-    console.error('❌ Invalid ISSUE_NUMBER:', issueNumberStr);
+  const prNumber = parseInt(prNumberStr, 10);
+  if (isNaN(prNumber)) {
+    console.error('❌ Invalid PR_NUMBER:', prNumberStr);
     process.exit(1);
   }
 
-  console.log(`📄 Processing Issue #${issueNumber}: ${issueTitle}`);
+  console.log(`📄 Processing Comment on PR #${prNumber}`);
 
   try {
-    console.log('🧠 Calling AI to parse issue details...');
+    console.log('🧠 Calling AI to parse comment details...');
     const { object: details, usage } = await generateObject({
-      model: models.googleGeminiPro, // Or another suitable model
-      schema: IssueDetailsSchema,
+      model: models.googleGeminiPro,
+      schema: CommentDetailsSchema,
       prompt: dedent`
-        Analyze the following GitHub issue title and body to understand the user's request.
+        Analyze the following GitHub PR comment to understand the user's request.
         Extract the required information according to the schema.
 
-        **Issue Title:** ${issueTitle}
-
-        **Issue Body:**
-        ${issueBody}
+        **Comment Body:**
+        ${commentBody}
 
         **Analysis Guidelines:**
         - Determine the primary 'type' of the request (feature, pkg-build, bug, modification).
@@ -143,12 +138,12 @@ async function processIssue() {
         - Generate a concise camelCase 'title' suitable for branch names.
         - Capture any essential 'notes'.
         - Identify a relevant documentation 'url' if mentioned.
-        - If the type is 'pkg-build' or 'bug', try to identify the target package name from the title or body.
+        - If the type is 'pkg-build' or 'bug', try to identify the target package name from the comment.
       `,
-      temperature: 0.3, // Lower temperature for more predictable extraction
+      temperature: 0.3,
     });
 
-    logUsage(models.googleGeminiPro.modelId, usage); // Log usage if setup
+    logUsage(models.googleGeminiPro.modelId, usage);
     console.log('✅ AI processing complete.');
     console.log('🔧 Extracted Details:', details);
 
@@ -156,7 +151,6 @@ async function processIssue() {
 
     // 1. Branch Name
     const dateStr = getFormattedDate();
-    // Sanitize parts before joining
     const sanitizedType = sanitizeForBranchName(details.type);
     const sanitizedTitle = sanitizeForBranchName(details.title);
     const branchName = `feat/${sanitizedType}-${sanitizedTitle}-${dateStr}`;
@@ -165,31 +159,27 @@ async function processIssue() {
     // 2. JSON Payload for packagefox-build.json
     const jsonPayload: PackageFoxRequest = {
       type: details.type,
-      query: details.query, // Use AI extracted query
+      query: details.query,
       url: details.url,
       notes: details.notes,
-      issueNumber: issueNumber,
+      prNumber: prNumber,
       logs: details.logs,
       error: details.error,
     };
-    // Add packageName if relevant and found (implement logic if needed)
-    // if ((details.type === 'pkg-build' || details.type === 'bug') && details.packageName) {
-    //    jsonPayload.packageName = details.packageName;
-    // }
     const jsonPayloadString = JSON.stringify(jsonPayload);
     console.log(`📦 JSON Payload: ${jsonPayloadString}`);
 
     // 3. Commit Message
-    const commitMessage = `feat: Add request for '${details.query}' from #${issueNumber}`;
+    const commitMessage = `feat: Add request for '${details.query}' from PR #${prNumber}`;
     console.log(`💬 Commit Message: ${commitMessage}`);
 
     // 4. PR Title
-    const prTitle = `packagefox: Process '${details.query}' [Issue #${issueNumber}]`;
+    const prTitle = `packagefox: Process '${details.query}' [PR #${prNumber}]`;
     console.log(`✨ PR Title: ${prTitle}`);
 
     // 5. PR Body
     const prBody = dedent`
-      Automated PR created from issue #${issueNumber}.
+      Automated PR created from comment on PR #${prNumber}.
 
       **Request Type:** ${details.type}
       **Query:** ${details.query}
@@ -201,22 +191,15 @@ async function processIssue() {
       ${details.error ? `**Error Details:**\n\`\`\`\n${typeof details.error === 'string' ? details.error : JSON.stringify(details.error, null, 2)}\n\`\`\`` : ''}
       ${details.logs ? `**Logs:**\n\`\`\`\n${details.logs}\n\`\`\`` : ''}
 
-      Closes #${issueNumber}
+      Related to PR #${prNumber}
     `;
-    // Escape PR body for multiline output if necessary, but create-pull-request action usually handles it
     console.log(`📝 PR Body:\n${prBody}`);
 
     // --- Set Outputs for GitHub Actions ---
-    // Use console.log with the specific ::set-output format
     console.log(`::set-output name=branch_name::${branchName}`);
     console.log(`::set-output name=json_payload::${jsonPayloadString}`);
     console.log(`::set-output name=commit_message::${commitMessage}`);
     console.log(`::set-output name=pr_title::${prTitle}`);
-    // For potentially multiline content like pr_body, using environment files is safer,
-    // but create-pull-request action often handles direct multiline input well.
-    // If issues arise, switch to GITHUB_OUTPUT environment file method.
-    // Here, we'll try direct output first, ensuring newlines are preserved.
-    // We need to escape '%' -> '%25', '\n' -> '%0A', '\r' -> '%0D' for set-output
     const escapedPrBody = prBody
       .replace(/%/g, '%25')
       .replace(/\n/g, '%0A')
@@ -225,19 +208,18 @@ async function processIssue() {
 
     console.log('✅ Successfully set all outputs.');
   } catch (error) {
-    console.error('❌ Error during issue processing:', error);
-    // Optionally, set outputs indicating failure?
+    console.error('❌ Error during comment processing:', error);
     process.exit(1);
   }
 }
 
 // --- Script Execution ---
 if (require.main === module) {
-  processIssue().catch(error => {
+  processComment().catch(error => {
     console.error('❌ Unhandled error during script execution:', error);
     process.exit(1);
   });
 }
 
 // Export for potential testing or reuse
-export { processIssue, IssueDetailsSchema, PackageFoxRequestSchema };
+export { processComment, CommentDetailsSchema, PackageFoxRequestSchema };
