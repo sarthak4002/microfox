@@ -3,12 +3,7 @@
   "title": "@google/genai",
   "description": "No description available",
   "path": "packages/@ext_@google#genai",
-  "dependencies": [
-    "google-auth-library",
-    "ws",
-    "zod",
-    "zod-to-json-schema"
-  ],
+  "dependencies": ["google-auth-library", "ws", "zod", "zod-to-json-schema"],
   "status": "external",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/@google/genai",
@@ -75,22 +70,16 @@
           "required": true
         },
         {
-          "key": "GEMINI_API_KEY",
-          "displayName": "Gemini API Key",
-          "description": "API Key for Gemini API",
-          "required": true
-        },
-        {
           "key": "PROJECT_ID",
           "displayName": "Vertex AI Project ID",
           "description": "Project ID for Vertex AI",
-          "required": true
+          "required": false
         },
         {
           "key": "PROJECT_LOCATION",
           "displayName": "Vertex AI Project Location",
           "description": "Project Location for Vertex AI",
-          "required": true
+          "required": false
         },
         {
           "key": "API_KEY",
@@ -102,36 +91,6 @@
           "key": "API_VERSION",
           "displayName": "API Version",
           "description": "Optional. The API version to use. If unset, the default API version will be used.",
-          "required": false
-        },
-        {
-          "key": "GOOGLE_AUTH_OPTIONS",
-          "displayName": "Google Auth Options",
-          "description": "Optional. Authentication options defined by the by google-auth-library for Vertex AI clients. See GoogleAuthOptions interface in google-auth-library-nodejs. Only supported on Node runtimes, ignored on browser runtimes.",
-          "required": false
-        },
-        {
-          "key": "HTTP_OPTIONS",
-          "displayName": "HTTP Options",
-          "description": "Optional. A set of customizable configuration for HTTP requests.",
-          "required": false
-        },
-        {
-          "key": "LOCATION",
-          "displayName": "Location",
-          "description": "Optional. The Google Cloud project location for Vertex AI clients. Only supported on Node runtimes, ignored on browser runtimes.",
-          "required": false
-        },
-        {
-          "key": "PROJECT",
-          "displayName": "Project",
-          "description": "Optional. The Google Cloud project ID for Vertex AI clients. Find your project ID: https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects  Only supported on Node runtimes, ignored on browser runtimes.",
-          "required": false
-        },
-        {
-          "key": "VERTEX_AI",
-          "displayName": "Vertex AI",
-          "description": "Optional. Determines whether to use the Vertex AI or the Gemini API. When true, the Vertex AI API will used. When false, the Gemini API will be used. If unset, default SDK behavior is to use the Gemini API service.",
           "required": false
         }
       ],
@@ -148,90 +107,32 @@
   "keysInfo": [
     {
       "key": "GEMINI_API_KEY",
-      "constructors": [
-        "constructor"
-      ],
+      "constructors": ["constructor"],
       "description": "The API key for the Gemini Developer API.",
       "required": true
     },
     {
-      "key": "GEMINI_API_KEY",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "API Key for Gemini API",
-      "required": true
-    },
-    {
       "key": "PROJECT_ID",
-      "constructors": [
-        "constructor"
-      ],
+      "constructors": ["constructor"],
       "description": "Project ID for Vertex AI",
       "required": true
     },
     {
       "key": "PROJECT_LOCATION",
-      "constructors": [
-        "constructor"
-      ],
+      "constructors": ["constructor"],
       "description": "Project Location for Vertex AI",
       "required": true
     },
     {
       "key": "API_KEY",
-      "constructors": [
-        "constructor"
-      ],
+      "constructors": ["constructor"],
       "description": "The API Key, required for Gemini API clients. Required on browser runtimes.",
       "required": false
     },
     {
       "key": "API_VERSION",
-      "constructors": [
-        "constructor"
-      ],
+      "constructors": ["constructor"],
       "description": "Optional. The API version to use. If unset, the default API version will be used.",
-      "required": false
-    },
-    {
-      "key": "GOOGLE_AUTH_OPTIONS",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "Optional. Authentication options defined by the by google-auth-library for Vertex AI clients. See GoogleAuthOptions interface in google-auth-library-nodejs. Only supported on Node runtimes, ignored on browser runtimes.",
-      "required": false
-    },
-    {
-      "key": "HTTP_OPTIONS",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "Optional. A set of customizable configuration for HTTP requests.",
-      "required": false
-    },
-    {
-      "key": "LOCATION",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "Optional. The Google Cloud project location for Vertex AI clients. Only supported on Node runtimes, ignored on browser runtimes.",
-      "required": false
-    },
-    {
-      "key": "PROJECT",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "Optional. The Google Cloud project ID for Vertex AI clients. Find your project ID: https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects  Only supported on Node runtimes, ignored on browser runtimes.",
-      "required": false
-    },
-    {
-      "key": "VERTEX_AI",
-      "constructors": [
-        "constructor"
-      ],
-      "description": "Optional. Determines whether to use the Vertex AI or the Gemini API. When true, the Vertex AI API will used. When false, the Gemini API will be used. If unset, default SDK behavior is to use the Gemini API service.",
       "required": false
     }
   ],
