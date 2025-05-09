@@ -454,6 +454,22 @@ export async function generateExternalDocs(
         fs.writeFileSync(filePath, docs);
         console.log(`✅ Saved documentation to: ${filePath}`);
 
+        //Save scrapedDocs
+        const scrapedDocsPath = path.join(scrapedDocsDir, `${fileName}.md`);
+        fs.writeFileSync(
+          scrapedDocsPath,
+          JSON.stringify(
+            {
+              url: link,
+              content,
+              updatedAt: new Date().toISOString(),
+            },
+            null,
+            2,
+          ),
+        );
+        console.log(`✅ Saved scrapedDocs to: ${scrapedDocsPath}`);
+
         // Extract environment variables from the content
         const result = await generateObject({
           model: models.googleGeminiPro,
