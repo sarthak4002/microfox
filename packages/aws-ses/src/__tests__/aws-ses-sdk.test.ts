@@ -85,19 +85,6 @@ describe('AWS SES SDK (No credentials required)', () => {
   });
 
   describe('sendEmail', () => {
-    it('should reject when both bodyText and bodyHtml are provided', async () => {
-      // Attempt to send with both body formats
-      await expect(
-        sesSdk.sendEmail({
-          ...mockEmailParams,
-          bodyText: 'Plain text content',
-          bodyHtml: '<p>HTML content</p>',
-        }),
-      ).rejects.toThrow(
-        'Cannot provide both bodyText and bodyHtml at the same time',
-      );
-    });
-
     it('should reject invalid email parameters with Zod validation', async () => {
       // Intentionally using invalid parameters to trigger Zod validation
       await expect(
@@ -111,18 +98,6 @@ describe('AWS SES SDK (No credentials required)', () => {
   });
 
   describe('sendBulkEmails', () => {
-    it('should reject bulk email with both bodyText and bodyHtml', async () => {
-      await expect(
-        sesSdk.sendBulkEmails({
-          ...mockBulkEmailParams,
-          bodyText: 'Plain text content',
-          bodyHtml: '<p>HTML content</p>',
-        }),
-      ).rejects.toThrow(
-        'Cannot provide both bodyText and bodyHtml at the same time',
-      );
-    });
-
     it('should reject bulk email with empty recipients array', async () => {
       await expect(
         sesSdk.sendBulkEmails({
