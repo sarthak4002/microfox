@@ -1,5 +1,11 @@
 # @microfox/aws-ses
 
+## 1.1.1
+
+### Patch Changes
+
+- fc83da7: Changes from PR #210: fixes-in-awsses
+
 ## 1.1.0
 
 ### Minor Changes
