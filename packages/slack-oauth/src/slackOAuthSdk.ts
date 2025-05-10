@@ -21,6 +21,10 @@ export class SlackOAuthSdk {
   private team?: string;
   private isGovSlack: boolean;
 
+  /**
+   * Creates a new SlackOAuthSdk instance
+   * @param config The configuration object for Slack OAuth
+   */
   constructor(config: SlackOAuthConfig) {
     const validatedConfig = slackOAuthConfigSchema.parse(config);
     this.clientId = validatedConfig.clientId;
