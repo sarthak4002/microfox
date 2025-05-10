@@ -268,7 +268,7 @@
     {
       "name": "constructor",
       "description": "Create a new ai client through which you can interact with the API",
-      "auth": "none",
+      "auth": "apikey",
       "requiredKeys": [
         {
           "key": "OPENAI_API_KEY",
