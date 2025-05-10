@@ -1,5 +1,11 @@
 # @microfox/slack-oauth
 
+## 1.0.3
+
+### Patch Changes
+
+- 7366454: Changes from PR #223: slack-oauth-may11
+
 ## 1.0.2
 
 ### Patch Changes
