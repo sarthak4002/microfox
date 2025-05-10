@@ -32,7 +32,7 @@ export class SlackOAuthSdk {
     this.isGovSlack = validatedConfig.isGovSlack || false;
   }
 
-  public getAuthorizationUrl(state?: string): string {
+  public getAuthUrl(state?: string): string {
     const baseUrl = this.isGovSlack
       ? 'https://slack-gov.com/oauth/v2/authorize'
       : 'https://slack.com/oauth/v2/authorize';
@@ -83,7 +83,7 @@ export class SlackOAuthSdk {
     return slackOAuthResponseSchema.parse(data);
   }
 
-  public async validateToken(token: string): Promise<SlackTokenResponse> {
+  public async validateAccessToken(token: string): Promise<SlackTokenResponse> {
     const url = 'https://slack.com/api/auth.test';
     const response = await fetch(url, {
       method: 'POST',
