@@ -4,8 +4,7 @@
     "packages/@ext_@notionhq#client",
     "packages/@ext_@slack#web-api",
     "packages/@ext_ai",
-    "packages/@ext_puppeteer",
-    "packages/@ext_puppeteer-repo"
+    "packages/@ext_puppeteer"
   ],
   "semiStablePackages": [
     "packages/amazon-rekognition-face-detection",
@@ -49,6 +48,6 @@
   "internalPackages": [
     "packages/rest-sdk"
   ],
-  "total": 38,
-  "generatedAt": "2025-05-10T20:36:02.657Z"
+  "total": 37,
+  "generatedAt": "2025-05-10T20:41:04.520Z"
 }
