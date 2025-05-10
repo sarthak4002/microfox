@@ -1,6 +1,16 @@
 import { z } from 'zod';
-import { SlackOAuthConfig, SlackOAuthResponse, SlackTokenResponse, SlackRevokeResponse } from './types';
-import { slackOAuthConfigSchema, slackOAuthResponseSchema, slackTokenResponseSchema, slackRevokeResponseSchema } from './schemas';
+import {
+  SlackOAuthConfig,
+  SlackOAuthResponse,
+  SlackTokenResponse,
+  SlackRevokeResponse,
+} from './types';
+import {
+  slackOAuthConfigSchema,
+  slackOAuthResponseSchema,
+  slackTokenResponseSchema,
+  slackRevokeResponseSchema,
+} from './schemas';
 
 export class SlackOAuthSdk {
   private clientId: string;
@@ -48,7 +58,9 @@ export class SlackOAuthSdk {
     return `${baseUrl}?${params.toString()}`;
   }
 
-  public async exchangeCodeForToken(code: string): Promise<SlackOAuthResponse> {
+  public async exchangeCodeForTokens(
+    code: string,
+  ): Promise<SlackOAuthResponse> {
     const url = 'https://slack.com/api/oauth.v2.access';
     const response = await fetch(url, {
       method: 'POST',
@@ -76,7 +88,7 @@ export class SlackOAuthSdk {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
@@ -115,4 +127,3 @@ export class SlackOAuthSdk {
 export function createSlackOAuth(config: SlackOAuthConfig): SlackOAuthSdk {
   return new SlackOAuthSdk(config);
 }
-
