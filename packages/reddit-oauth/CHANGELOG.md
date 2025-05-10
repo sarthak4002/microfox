@@ -1,5 +1,11 @@
 # @microfox/reddit-oauth
 
+## 1.1.2
+
+### Patch Changes
+
+- 8678543: Changes from PR #226: slack-oauth-may11
+
 ## 1.1.1
 
 ### Patch Changes
