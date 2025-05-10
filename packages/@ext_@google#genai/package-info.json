@@ -7,7 +7,7 @@
   "status": "external",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/@google/genai",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/genai-icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-gemini.svg",
   "readme_map": {
     "title": "@google/genai",
     "description": "The full README for the @google/genai",
@@ -61,37 +61,14 @@
     {
       "name": "constructor",
       "description": "Create a new @google/genai client through which you can interact with the API",
-      "auth": "none",
+      "auth": "apikey",
+      "apiType": "api_key",
       "requiredKeys": [
         {
           "key": "GEMINI_API_KEY",
           "displayName": "Gemini API Key",
           "description": "The API key for the Gemini Developer API.",
           "required": true
-        },
-        {
-          "key": "PROJECT_ID",
-          "displayName": "Vertex AI Project ID",
-          "description": "Project ID for Vertex AI",
-          "required": false
-        },
-        {
-          "key": "PROJECT_LOCATION",
-          "displayName": "Vertex AI Project Location",
-          "description": "Project Location for Vertex AI",
-          "required": false
-        },
-        {
-          "key": "API_KEY",
-          "displayName": "API Key",
-          "description": "The API Key, required for Gemini API clients. Required on browser runtimes.",
-          "required": false
-        },
-        {
-          "key": "API_VERSION",
-          "displayName": "API Version",
-          "description": "Optional. The API version to use. If unset, the default API version will be used.",
-          "required": false
         }
       ],
       "internalKeys": [],
@@ -110,30 +87,6 @@
       "constructors": ["constructor"],
       "description": "The API key for the Gemini Developer API.",
       "required": true
-    },
-    {
-      "key": "PROJECT_ID",
-      "constructors": ["constructor"],
-      "description": "Project ID for Vertex AI",
-      "required": true
-    },
-    {
-      "key": "PROJECT_LOCATION",
-      "constructors": ["constructor"],
-      "description": "Project Location for Vertex AI",
-      "required": true
-    },
-    {
-      "key": "API_KEY",
-      "constructors": ["constructor"],
-      "description": "The API Key, required for Gemini API clients. Required on browser runtimes.",
-      "required": false
-    },
-    {
-      "key": "API_VERSION",
-      "constructors": ["constructor"],
-      "description": "Optional. The API version to use. If unset, the default API version will be used.",
-      "required": false
     }
   ],
   "extraInfo": [],
