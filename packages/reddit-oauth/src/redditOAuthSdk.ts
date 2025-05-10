@@ -26,7 +26,7 @@ export class RedditOAuthSdk {
     this.scopes = validatedConfig.scopes;
   }
 
-  public getAuthorizationUrl(
+  public getAuthUrl(
     state: string,
     duration: 'temporary' | 'permanent' = 'permanent',
   ): string {
@@ -121,6 +121,35 @@ export class RedditOAuthSdk {
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  }
+
+  /**
+   * Exchanges an authorization code for access and refresh tokens
+   * @param code The authorization code received from Reddit's OAuth callback
+   * @returns A promise that resolves to the token response containing access_token and refresh_token
+   * @throws Error if the token exchange fails
+   */
+  public async exchangeCodeForTokens(
+    code: string,
+  ): Promise<RedditTokenResponse> {
+    try {
+      const tokenResponse = await this.getAccessToken(code);
+
+      // Validate the access token to ensure it's working
+      const isValid = await this.validateAccessToken(
+        tokenResponse.access_token,
+      );
+      if (!isValid) {
+        throw new Error('Received invalid access token from Reddit');
+      }
+
+      return tokenResponse;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to exchange code for tokens: ${error.message}`);
+      }
+      throw new Error('Failed to exchange code for tokens: Unknown error');
     }
   }
 }

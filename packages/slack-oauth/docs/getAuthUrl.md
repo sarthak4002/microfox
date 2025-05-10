@@ -1,4 +1,4 @@
-## Function: `getAuthorizationUrl`
+## Function: `getAuthUrl`
 
 Generates the authorization URL to initiate the Slack OAuth flow.
 
@@ -17,8 +17,8 @@ Creates the URL that redirects the user to Slack for authorization.
 
 ```typescript
 // Example 1: Minimal usage
-const authUrl = slackOAuth.getAuthorizationUrl();
+const authUrl = slackOAuth.getAuthUrl();
 
 // Example 2: With state parameter
-const authUrl = slackOAuth.getAuthorizationUrl('my_state');
+const authUrl = slackOAuth.getAuthUrl('my_state');
 ```

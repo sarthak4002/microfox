@@ -1,4 +1,4 @@
-## Function: `validateToken`
+## Function: `validateAccessToken`
 
 Validates a Slack access token.
 
@@ -25,7 +25,7 @@ Checks if a given access token is valid.
 ```typescript
 // Example usage
 try {
-  const validationResponse = await slackOAuth.validateToken('YOUR_TOKEN');
+  const validationResponse = await slackOAuth.validateAccessToken('YOUR_TOKEN');
   console.log(validationResponse);
 } catch (error) {
   console.error('Error validating token:', error);
