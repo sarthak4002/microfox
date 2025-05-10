@@ -1,4 +1,4 @@
-## Function: `exchangeCodeForToken`
+## Function: `exchangeCodeForTokens`
 
 Exchanges the authorization code received from Slack for an access token.
 
@@ -36,7 +36,7 @@ Retrieves an access token that can be used to make API calls on behalf of the us
 ```typescript
 // Example usage
 try {
-  const tokenResponse = await slackOAuth.exchangeCodeForToken('YOUR_CODE');
+  const tokenResponse = await slackOAuth.exchangeCodeForTokens('YOUR_CODE');
   console.log(tokenResponse);
 } catch (error) {
   console.error('Error exchanging code for token:', error);
