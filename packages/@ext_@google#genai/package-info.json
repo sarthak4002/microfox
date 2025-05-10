@@ -7,7 +7,7 @@
   "status": "external",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/@google/genai",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/genai-icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/google-gemini.svg",
   "readme_map": {
     "title": "@google/genai",
     "description": "The full README for the @google/genai",
@@ -62,6 +62,7 @@
       "name": "constructor",
       "description": "Create a new @google/genai client through which you can interact with the API",
       "auth": "apikey",
+      "apiType": "api_key",
       "requiredKeys": [
         {
           "key": "GEMINI_API_KEY",

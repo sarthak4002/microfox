@@ -1,6 +1,6 @@
 {
   "name": "ai",
-  "title": "ai",
+  "title": "Vercel AI",
   "description": "AI SDK by Vercel - The AI Toolkit for TypeScript and JavaScript",
   "path": "packages/@ext_ai",
   "dependencies": [
@@ -14,7 +14,7 @@
   "status": "external",
   "authEndpoint": "",
   "documentation": "https://www.npmjs.com/package/ai",
-  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/ai-icon.svg",
+  "icon": "https://raw.githubusercontent.com/microfox-ai/microfox/refs/heads/main/logos/vercel.svg",
   "readme_map": {
     "title": "ai",
     "description": "The full README for the ai",
@@ -269,6 +269,7 @@
       "name": "constructor",
       "description": "Create a new ai client through which you can interact with the API",
       "auth": "apikey",
+      "apiType": "api_key",
       "requiredKeys": [
         {
           "key": "OPENAI_API_KEY",
