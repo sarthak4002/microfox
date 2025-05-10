@@ -32,6 +32,11 @@ export class SlackOAuthSdk {
     this.isGovSlack = validatedConfig.isGovSlack || false;
   }
 
+  /**
+   * Generates the authorization URL for Slack OAuth
+   * @param state Optional state parameter to maintain state across the redirect
+   * @returns The complete authorization URL
+   */
   public getAuthUrl(state?: string): string {
     const baseUrl = this.isGovSlack
       ? 'https://slack-gov.com/oauth/v2/authorize'
@@ -58,6 +63,12 @@ export class SlackOAuthSdk {
     return `${baseUrl}?${params.toString()}`;
   }
 
+  /**
+   * Exchanges an authorization code for access and refresh tokens
+   * @param code The authorization code received from Slack's OAuth callback
+   * @returns A promise that resolves to the token response containing access_token and refresh_token
+   * @throws Error if the token exchange fails
+   */
   public async exchangeCodeForTokens(
     code: string,
   ): Promise<SlackOAuthResponse> {
@@ -83,6 +94,12 @@ export class SlackOAuthSdk {
     return slackOAuthResponseSchema.parse(data);
   }
 
+  /**
+   * Validates an access token by making a request to the Slack API's auth.test endpoint
+   * @param token The access token to validate
+   * @returns A promise that resolves to the token response containing the user's ID and team ID
+   * @throws Error if the token is invalid or the request fails
+   */
   public async validateAccessToken(token: string): Promise<SlackTokenResponse> {
     const url = 'https://slack.com/api/auth.test';
     const response = await fetch(url, {
@@ -101,6 +118,12 @@ export class SlackOAuthSdk {
     return slackTokenResponseSchema.parse(data);
   }
 
+  /**
+   * Revokes an access token by making a request to the Slack API's auth.revoke endpoint
+   * @param token The access token to revoke
+   * @returns A promise that resolves to the revoke response
+   * @throws Error if the token is invalid or the request fails
+   */
   public async revokeToken(token: string): Promise<SlackRevokeResponse> {
     const url = 'https://slack.com/api/auth.revoke';
     const response = await fetch(url, {

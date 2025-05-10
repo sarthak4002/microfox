@@ -136,7 +136,7 @@ export class RedditOAuthSdk {
     try {
       const tokenResponse = await this.getAccessToken(code);
 
-      // Validate the access token to ensure it's working
+      // Validate the access token to ensure its working
       const isValid = await this.validateAccessToken(
         tokenResponse.access_token,
       );
