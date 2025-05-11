@@ -67,8 +67,9 @@
     {
       "name": "OAuthWebClient",
       "description": "Create a new Microfox Slack Web Tiny client through which you can interact with the API",
-      "auth": "apikey",
-      "apiType": "bot_token",
+      "auth": "oauth2",
+      "authSdk": "@microfox/slack-oauth",
+      "authEndpoint": "/connect/slack-oauth",
       "requiredKeys": [],
       "internalKeys": [
         {
