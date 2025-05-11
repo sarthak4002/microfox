@@ -32,7 +32,7 @@ export class RedditOAuthSdk {
    * @param duration The duration of the token (temporary or permanent)
    * @returns The complete authorization URL
    */
-  public getAuthUrl(
+  public getAuthorizationUrl(
     state: string,
     duration: 'temporary' | 'permanent' = 'permanent',
   ): string {
@@ -46,6 +46,16 @@ export class RedditOAuthSdk {
     });
 
     return `${this.authorizationEndpoint}?${params.toString()}`;
+  }
+
+  /**
+   * Generates the authorization URL for Reddit OAuth
+   * @returns The complete authorization URL
+   */
+  public getAuthUrl(): string {
+    const state = `${Math.random().toString(36).substring(2, 15)}`;
+    const duration = 'permanent';
+    return this.getAuthorizationUrl(state, duration);
   }
 
   /**
