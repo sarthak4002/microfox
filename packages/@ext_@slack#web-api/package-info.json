@@ -62,7 +62,43 @@
           }
         }
       ],
-      "functionalities": ["sendMessage", "updateMessage", "uploadFile"]
+      "functionalities": ["allFunctionalities"]
+    },
+    {
+      "name": "OAuthWebClient",
+      "description": "Create a new Microfox Slack Web Tiny client through which you can interact with the API",
+      "auth": "apikey",
+      "apiType": "bot_token",
+      "requiredKeys": [],
+      "internalKeys": [
+        {
+          "key": "SLACK_ACCESS_TOKEN",
+          "displayName": "Slack Access Token",
+          "description": "The access token for authenticating with the Slack API."
+        }
+      ],
+      "botConfig": [
+        {
+          "key": "SLACK_AUTHOR_NAME",
+          "displayName": "Bot Name",
+          "description": "Name that will appear as the message sender",
+          "ui": {
+            "type": "text",
+            "label": "Bot Name",
+            "placeholder": "Enter bot name"
+          }
+        },
+        {
+          "key": "SLACK_ICON_URL",
+          "displayName": "Bot Icon",
+          "description": "Icon that will appear as the bot's avatar",
+          "ui": {
+            "type": "image",
+            "label": "Bot Icon"
+          }
+        }
+      ],
+      "functionalities": ["allFunctionalities"]
     }
   ],
   "keysInfo": [
