@@ -98,9 +98,9 @@ function walkDocs() {
     // package-info and sub-docs
     if (fs.existsSync(packageInfoPath)) {
       const packageInfo: PackageInfo = JSON.parse(fs.readFileSync(packageInfoPath, 'utf-8'));
-      const readmeMap = new Map(packageInfo.readme_map.all_readmes.map(r => [r.functionality, r]));
+      const readmeMap = new Map(packageInfo?.readme_map?.all_readmes?.map(r => [r?.functionality, r]));
 
-      if (fs.existsSync(docsDir)) {
+      if (fs.existsSync(docsDir) && readmeMap) {
         for (const file of fs.readdirSync(docsDir).filter(f => f.endsWith('.md'))) {
           const fullPath = path.join(docsDir, file);
           const functionName = file.replace(/\.md$/, '');
