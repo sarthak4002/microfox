@@ -11,34 +11,25 @@ dotenv.config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 1) Use process.cwd() so it works the same on Windows, macOS, Linux, and in GH Actions:
 const PACKAGES_DIR = path.resolve(process.cwd(), '..', 'packages');
 const DOCS_TABLE = 'docs_embeddings';
 const GITHUB_BASE_URL = "https://github.com/microfox-ai/microfox/blob/main/packages/";
 
-// initialize Supabase
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// 2) Try git timestamp, but fall back to FS mtime if it fails:
 function getGitLastModified(fullPath: string): Date {
   try {
-    // git expects a repo root, so we run from process.cwd()
     const out = execSync(
       `git log -1 --format=%ct -- "${path.relative(process.cwd(), fullPath)}"`,
       { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'ignore'] }
-    )
-      .toString()
-      .trim();
+    ).toString().trim();
     const sec = Number(out);
     if (!isNaN(sec)) {
       return new Date(sec * 1000);
     }
   } catch {
-    console.log(`Error getting git last modified for ${fullPath}`);
-    // ignore errors
+    console.warn(`Error getting git timestamp for ${fullPath}, falling back to FS mtime`);
   }
-  // fallback:
   return fs.statSync(fullPath).mtime;
 }
 
@@ -50,14 +41,7 @@ async function getExistingDocs() {
   return data as Array<{ id: string; file_path: string; updated_at: string }>;
 }
 
-interface ReadmeInfo {
-  path: string;
-  type: string;
-  extension: string;
-  functionality: string;
-  description: string;
-}
-
+interface ReadmeInfo { path: string; type: string; extension: string; functionality: string; description: string; }
 interface PackageInfo {
   readme_map: {
     title: string;
@@ -68,7 +52,6 @@ interface PackageInfo {
   };
 }
 
-// Convert relative file path to GitHub URL
 function getGithubUrl(relativePath: string): string {
   return `${GITHUB_BASE_URL}${relativePath.replace(/\\/g, '/')}`;
 }
@@ -95,7 +78,7 @@ function walkDocs() {
     const docsDir = path.join(pkgDir, 'docs');
     const packageInfoPath = path.join(pkgDir, 'package-info.json');
 
-    // Handle main README.md
+    // Main README
     const mainReadmePath = path.join(pkgDir, 'README.md');
     if (fs.existsSync(mainReadmePath)) {
       const mtime = getGitLastModified(mainReadmePath);
@@ -112,35 +95,32 @@ function walkDocs() {
       });
     }
 
-    // Handle package-info.json and docs
+    // package-info and sub-docs
     if (fs.existsSync(packageInfoPath)) {
       const packageInfo: PackageInfo = JSON.parse(fs.readFileSync(packageInfoPath, 'utf-8'));
-      const readmeMap = new Map(packageInfo?.readme_map?.all_readmes?.map(r => [r?.functionality, r]));
+      const readmeMap = new Map(packageInfo.readme_map.all_readmes.map(r => [r.functionality, r]));
 
-      if (fs.existsSync(docsDir) && readmeMap) {
+      if (fs.existsSync(docsDir)) {
         for (const file of fs.readdirSync(docsDir).filter(f => f.endsWith('.md'))) {
           const fullPath = path.join(docsDir, file);
           const functionName = file.replace(/\.md$/, '');
           const readmeInfo = readmeMap.get(functionName);
-          
-          if (readmeInfo) {
-            const mtime = getGitLastModified(fullPath);
-            const relativePath = path.relative(PACKAGES_DIR, fullPath);
-            
-            // Use the path from package-info.json if available
-            const githubUrl = readmeInfo.path || getGithubUrl(relativePath);
-            
-            results.push({
-              packageName: pkg,
-              functionName,
-              docType: readmeInfo.type,
-              filePath: relativePath,
-              githubUrl,
-              fullPath,
-              mtime,
-              content: fs.readFileSync(fullPath, 'utf-8'),
-            });
-          }
+          if (!readmeInfo) continue;
+
+          const mtime = getGitLastModified(fullPath);
+          const relativePath = path.relative(PACKAGES_DIR, fullPath);
+          const githubUrl = readmeInfo.path || getGithubUrl(relativePath);
+
+          results.push({
+            packageName: pkg,
+            functionName,
+            docType: readmeInfo.type,
+            filePath: relativePath,
+            githubUrl,
+            fullPath,
+            mtime,
+            content: fs.readFileSync(fullPath, 'utf-8'),
+          });
         }
       }
     }
@@ -158,7 +138,7 @@ async function main() {
   const localDocs = walkDocs();
   const localPaths = new Set(localDocs.map(d => d.githubUrl));
 
-  // 1) Remove deleted files
+  // 1) Delete removed
   const toDelete = existing.filter(r => !localPaths.has(r.file_path));
   if (toDelete.length) {
     console.log(`🗑 Deleting ${toDelete.length} removed docs…`);
@@ -167,7 +147,7 @@ async function main() {
     }
   }
 
-  // 2) Upsert new/updated files
+  // 2) Upsert new & updated
   const upserts: any[] = [];
   for (const doc of localDocs) {
     const dbRow = existingMap.get(doc.githubUrl);
@@ -197,11 +177,11 @@ async function main() {
   } else {
     console.log('✅ No new or changed docs to upsert.');
   }
+
+  console.log('🎉 Done!');
 }
 
-main()
-  .then(() => console.log('🎉 Done!'))
-  .catch(err => {
-    console.error('❌ Error:', err);
-    process.exit(1);
-  });
+main().catch(err => {
+  console.error('❌ Error:', err);
+  process.exit(1);
+});
