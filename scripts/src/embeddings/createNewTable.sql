@@ -5,7 +5,8 @@ create extension if not exists vector;
 create table if not exists docs_embeddings (
     id uuid primary key default gen_random_uuid(),
     package_name text not null,
-    function_name text not null,
+    function_name text,
+    doc_type text not null,
     file_path text not null unique,
     content text not null,
     embedding vector(768), -- Gemini text-embedding-004
@@ -26,6 +27,7 @@ returns table (
     id uuid,
     package_name text,
     function_name text,
+    doc_type text,
     file_path text,
     content text,
     similarity float
@@ -36,6 +38,7 @@ as $$
         id,
         package_name,
         function_name,
+        doc_type,
         file_path,
         content,
         1 - (embedding <#> query_embedding) as similarity
@@ -54,6 +57,7 @@ returns table (
     id uuid,
     package_name text,
     function_name text,
+    doc_type text,
     file_path text,
     content text,
     similarity float
@@ -64,6 +68,7 @@ as $$
         id,
         package_name,
         function_name,
+        doc_type,
         file_path,
         content,
         1 - (embedding <#> query_embedding) as similarity
