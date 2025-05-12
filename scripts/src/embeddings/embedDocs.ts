@@ -11,33 +11,25 @@ dotenv.config();
 
 const SUPABASE_URL = process.env.SUPABASE_URL!;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-// 1) Use process.cwd() so it works the same on Windows, macOS, Linux, and in GH Actions:
-const PACKAGES_DIR = path.resolve(process.cwd(), '..', 'packages');
-const DOCS_TABLE = 'docs_embeddings';
-
-// initialize Supabase
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 2) Try git timestamp, but fall back to FS mtime if it fails:
+const PACKAGES_DIR = path.resolve(process.cwd(), '..', 'packages');
+const DOCS_TABLE = 'docs_embeddings';
+const GITHUB_BASE_URL = "https://github.com/microfox-ai/microfox/blob/main/packages/";
+
 function getGitLastModified(fullPath: string): Date {
   try {
-    // git expects a repo root, so we run from process.cwd()
     const out = execSync(
       `git log -1 --format=%ct -- "${path.relative(process.cwd(), fullPath)}"`,
       { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'ignore'] }
-    )
-      .toString()
-      .trim();
+    ).toString().trim();
     const sec = Number(out);
     if (!isNaN(sec)) {
       return new Date(sec * 1000);
     }
   } catch {
-    console.log(`Error getting git last modified for ${fullPath}`);
-    // ignore errors
+    console.warn(`Error getting git timestamp for ${fullPath}, falling back to FS mtime`);
   }
-  // fallback:
   return fs.statSync(fullPath).mtime;
 }
 
@@ -49,11 +41,28 @@ async function getExistingDocs() {
   return data as Array<{ id: string; file_path: string; updated_at: string }>;
 }
 
+interface ReadmeInfo { path: string; type: string; extension: string; functionality: string; description: string; }
+interface PackageInfo {
+  readme_map: {
+    title: string;
+    description: string;
+    path: string;
+    functionalities: string[];
+    all_readmes: ReadmeInfo[];
+  };
+}
+
+function getGithubUrl(relativePath: string): string {
+  return `${GITHUB_BASE_URL}${relativePath.replace(/\\/g, '/')}`;
+}
+
 function walkDocs() {
   const results: Array<{
     packageName: string;
-    functionName: string;
+    functionName: string | null;
+    docType: string;
     filePath: string;
+    githubUrl: string;
     fullPath: string;
     mtime: Date;
     content: string;
@@ -65,20 +74,55 @@ function walkDocs() {
   }
 
   for (const pkg of fs.readdirSync(PACKAGES_DIR)) {
-    const docsDir = path.join(PACKAGES_DIR, pkg, 'docs');
-    if (!fs.existsSync(docsDir)) continue;
+    const pkgDir = path.join(PACKAGES_DIR, pkg);
+    const docsDir = path.join(pkgDir, 'docs');
+    const packageInfoPath = path.join(pkgDir, 'package-info.json');
 
-    for (const file of fs.readdirSync(docsDir).filter(f => f.endsWith('.md'))) {
-      const fullPath = path.join(docsDir, file);
-      const mtime = getGitLastModified(fullPath);
+    // Main README
+    const mainReadmePath = path.join(pkgDir, 'README.md');
+    if (fs.existsSync(mainReadmePath)) {
+      const mtime = getGitLastModified(mainReadmePath);
+      const relativePath = path.relative(PACKAGES_DIR, mainReadmePath);
       results.push({
         packageName: pkg,
-        functionName: file.replace(/\.md$/, ''),
-        filePath: path.relative(PACKAGES_DIR, fullPath),
-        fullPath,
+        functionName: null,
+        docType: 'main',
+        filePath: relativePath,
+        githubUrl: getGithubUrl(relativePath),
+        fullPath: mainReadmePath,
         mtime,
-        content: fs.readFileSync(fullPath, 'utf-8'),
+        content: fs.readFileSync(mainReadmePath, 'utf-8'),
       });
+    }
+
+    // package-info and sub-docs
+    if (fs.existsSync(packageInfoPath)) {
+      const packageInfo: PackageInfo = JSON.parse(fs.readFileSync(packageInfoPath, 'utf-8'));
+      const readmeMap = new Map(packageInfo?.readme_map?.all_readmes?.map(r => [r?.functionality, r]));
+
+      if (fs.existsSync(docsDir) && readmeMap) {
+        for (const file of fs.readdirSync(docsDir).filter(f => f.endsWith('.md'))) {
+          const fullPath = path.join(docsDir, file);
+          const functionName = file.replace(/\.md$/, '');
+          const readmeInfo = readmeMap.get(functionName);
+          if (!readmeInfo) continue;
+
+          const mtime = getGitLastModified(fullPath);
+          const relativePath = path.relative(PACKAGES_DIR, fullPath);
+          const githubUrl = readmeInfo.path || getGithubUrl(relativePath);
+
+          results.push({
+            packageName: pkg,
+            functionName,
+            docType: readmeInfo.type,
+            filePath: relativePath,
+            githubUrl,
+            fullPath,
+            mtime,
+            content: fs.readFileSync(fullPath, 'utf-8'),
+          });
+        }
+      }
     }
   }
 
@@ -92,9 +136,9 @@ async function main() {
 
   console.log('⏳ Scanning filesystem…');
   const localDocs = walkDocs();
-  const localPaths = new Set(localDocs.map(d => d.filePath));
+  const localPaths = new Set(localDocs.map(d => d.githubUrl));
 
-  // 1) Remove deleted files
+  // 1) Delete removed
   const toDelete = existing.filter(r => !localPaths.has(r.file_path));
   if (toDelete.length) {
     console.log(`🗑 Deleting ${toDelete.length} removed docs…`);
@@ -103,19 +147,20 @@ async function main() {
     }
   }
 
-  // 2) Upsert new/updated files
+  // 2) Upsert new & updated
   const upserts: any[] = [];
   for (const doc of localDocs) {
-    const dbRow = existingMap.get(doc.filePath);
+    const dbRow = existingMap.get(doc.githubUrl);
     const isNew = !dbRow;
     const isStale = dbRow && new Date(dbRow.updated_at) < doc.mtime;
     if (isNew || isStale) {
-      console.log(`${isNew ? '✨ New' : '♻️ Updated'} → ${doc.filePath}`);
+      console.log(`${isNew ? '✨ New' : '♻️ Updated'} → ${doc.githubUrl}`);
       const embedding = await embed(doc.content);
       upserts.push({
         package_name: doc.packageName,
         function_name: doc.functionName,
-        file_path: doc.filePath,
+        doc_type: doc.docType,
+        file_path: doc.githubUrl,
         content: doc.content,
         embedding,
         updated_at: new Date().toISOString(),
@@ -132,11 +177,11 @@ async function main() {
   } else {
     console.log('✅ No new or changed docs to upsert.');
   }
+
+  console.log('🎉 Done!');
 }
 
-main()
-  .then(() => console.log('🎉 Done!'))
-  .catch(err => {
-    console.error('❌ Error:', err);
-    process.exit(1);
-  });
+main().catch(err => {
+  console.error('❌ Error:', err);
+  process.exit(1);
+});
